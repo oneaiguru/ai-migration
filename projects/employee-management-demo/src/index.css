@@ -1,0 +1,80 @@
+/* /Users/m/Documents/wfm/competitor/naumen/employee-management/src/index.css */
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom scrollbar styles */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* Custom animations */
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.slide-in {
+  animation: slideIn 0.3s ease-out;
+}
+
+/* Focus styles for accessibility */
+.focus-ring:focus {
+  @apply ring-2 ring-blue-500 ring-offset-2 outline-none;
+}
+
+/* Custom button variants */
+.btn-primary {
+  @apply px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors font-medium;
+}
+
+.btn-secondary {
+  @apply px-4 py-2 border border-gray-300 text-gray-700 bg-white rounded-lg hover:bg-gray-50 focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition-colors font-medium;
+}
+
+.btn-danger {
+  @apply px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 focus:ring-2 focus:ring-red-500 focus:ring-offset-2 transition-colors font-medium;
+}
+
+/* Card hover effects */
+.card-hover {
+  @apply transition-all duration-200 hover:shadow-lg hover:scale-[1.02];
+}
+
+/* Status indicator styles */
+.status-active {
+  @apply bg-green-100 text-green-800 border-green-200;
+}
+
+.status-inactive {
+  @apply bg-gray-100 text-gray-800 border-gray-200;
+}
+
+.status-vacation {
+  @apply bg-yellow-100 text-yellow-800 border-yellow-200;
+}
+
+.status-probation {
+  @apply bg-blue-100 text-blue-800 border-blue-200;
+}

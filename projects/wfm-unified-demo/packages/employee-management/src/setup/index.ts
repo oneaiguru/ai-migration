@@ -1,0 +1,1 @@
+export { setupRU } from './setupRU';

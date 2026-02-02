@@ -1,0 +1,13 @@
+{
+  "name": "wfm-unified-demo",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "npm --workspace apps/shell run dev",
+    "build": "npm --workspace apps/shell run build",
+    "preview": "npm --workspace apps/shell run preview"
+  }
+}

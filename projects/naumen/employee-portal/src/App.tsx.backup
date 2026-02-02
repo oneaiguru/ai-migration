@@ -1,0 +1,27 @@
+import React from 'react';
+import EmployeePortalDemo from './components/EmployeePortalDemo';
+import './App.css';
+
+// Main App component that serves as the entry point
+// This integrates all the employee portal functionality
+function App() {
+  return (
+    <div className="App">
+      {/* 
+        EmployeePortalDemo is the main component that contains:
+        - All Task 1-5 components integrated
+        - Employee layout with navigation
+        - Personal schedule, requests, shift exchange
+        - Profile management and personal reports
+        - Complete demo-ready workflow
+      */}
+      <EmployeePortalDemo 
+        theme="light"
+        locale="ru"
+        demoMode={true}
+      />
+    </div>
+  );
+}
+
+export default App;

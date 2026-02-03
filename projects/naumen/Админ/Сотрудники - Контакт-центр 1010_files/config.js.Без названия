@@ -1,3 +1,0 @@
-window.$oswfm = {
-  backend: 'https://cloud.oswfm.ru/wfmserver/api/'
-};

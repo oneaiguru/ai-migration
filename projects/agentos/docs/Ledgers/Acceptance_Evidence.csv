@@ -1,0 +1,15 @@
+window_id,capability_id,test_run_id,runner,result,artifacts_path,artifact_hash,notes
+W0-20,CAP-UAT-PYTEST,TR-20251019T162300Z-pytest,pytest,pass,artifacts/test_runs/TR-20251019T162256Z-pytest/pytest.txt,d9cf6bd5c7303b6e771b533eb862a97eee26ae7f7406b4228891c7b3987bf843,uat opener
+W0-20,CAP-UAT-BEHAVE,TR-20251019T162301Z-behave,behave,pass,artifacts/test_runs/TR-20251019T162256Z-behave/behave.txt,8cccc4e606479f70c46477f881c6b6657a0889c21c1f3e5928b6cae537dbf31c,uat opener
+W0-19,CAP-UAT-PYTEST,TR-20251019T162309Z-pytest,pytest,pass,artifacts/test_runs/TR-20251019T162256Z-pytest/pytest.txt,d9cf6bd5c7303b6e771b533eb862a97eee26ae7f7406b4228891c7b3987bf843,uat opener
+W0-19,CAP-UAT-BEHAVE,TR-20251019T162309Z-behave,behave,pass,artifacts/test_runs/TR-20251019T162256Z-behave/behave.txt,8cccc4e606479f70c46477f881c6b6657a0889c21c1f3e5928b6cae537dbf31c,uat opener
+W0-CHP,CAP-UAT-PYTEST,TR-20251019T171811Z-pytest,pytest,pass,artifacts/test_runs/TR-20251019T162256Z-pytest/pytest.txt,d9cf6bd5c7303b6e771b533eb862a97eee26ae7f7406b4228891c7b3987bf843,uat opener
+W0-CHP,CAP-UAT-BEHAVE,TR-20251019T171816Z-behave,behave,pass,artifacts/test_runs/TR-20251019T162256Z-behave/behave.txt,8cccc4e606479f70c46477f881c6b6657a0889c21c1f3e5928b6cae537dbf31c,uat opener
+W0-CHP-1,CAP-UAT-PYTEST,TR-20251020T003001Z-pytest,pytest,pass,artifacts/test_runs/W0-CHP-1/pytest.txt,dc50585c7d3edd20b1213582d03585edb503dad7d666e66a4418b8ad9ea3e6ed,W0-CHP-1 feature run
+W0-CHP-1,CAP-UAT-BEHAVE,TR-20251020T003005Z-behave,behave,pass,artifacts/test_runs/W0-CHP-1/behave.txt,736727a6dbc4535e6ee2d98996049d3c607b71a404c73d5cf5b6d60ab2a22954,W0-CHP-1 feature run
+W0-CHP-1,CAP-LEDGER-CHECKPOINT-AUTO,TR-20251020T003017Z-manual,manual,pass,artifacts/test_runs/TR-20251020-ledger/ledger_checkpoint_v2.out,c6db95e8b6740e9840dd0386f120922bf76c5e63b3161a9e94a79c6b23e1f69e,ledger checkpoint auto decision card
+W0-CHP-1,CAP-FEATURE-RESERVE,TR-20251020T003032Z-manual,manual,pass,artifacts/test_runs/W0-CHP-1/feature_reserve.txt,8c182883658b099f4823ea9ea7cc32e0a51ccce6373404cbbd79a7f2c74e46c4,feature log reservation
+W0-CHP-2,CAP-UAT-PYTEST,TR-20251020T035607Z-pytest,pytest,pass,artifacts/test_runs/W0-CHP-2/pytest.txt,c0a6e1c4a897aa86ee06054f54b03909cd3fb864af0737acb7a4fa28c4dee7fd,week0 W0-CHP-2
+W0-CHP-2,CAP-UAT-BEHAVE,TR-20251020T035611Z-behave,behave,pass,artifacts/test_runs/W0-CHP-2/behave.txt,6d5bf2e99aea750ae9dac96ef4a36c89faea3927bbf520a563bd52fa54db2775,week0 W0-CHP-2
+W0-CHP-3,CAP-UAT-PYTEST,TR-20251020T153444Z-pytest,pytest,pass,artifacts/test_runs/W0-CHP-3/pytest.txt,40c6ae834aec6ff2dd55e2c707ae23f6e3c85bfe6bfd0cce34441fb2006c055a,week0 W0-CHP-3
+W0-CHP-3,CAP-UAT-BEHAVE,TR-20251020T153455Z-behave,behave,pass,artifacts/test_runs/W0-CHP-3/behave.txt,f3aca18502dccc2c1ad8241d537407bc6b57144cfcc140c373b46d0d9cfd345e,week0 W0-CHP-3

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<QuickAction xmlns="http://soap.sforce.com/2006/04/metadata">
+    <label>Create QuickBooks Invoice</label>
+    <optionsCreateFeedItem>false</optionsCreateFeedItem>
+    <quickActionLayout>
+        <layoutSectionStyle>OneColumn</layoutSectionStyle>
+        <quickActionLayoutColumns>
+            <quickActionLayoutItems>
+                <field>Name</field>
+            </quickActionLayoutItems>
+            <quickActionLayoutItems>
+                <field>Amount</field>
+            </quickActionLayoutItems>
+            <quickActionLayoutItems>
+                <field>StageName</field>
+            </quickActionLayoutItems>
+        </quickActionLayoutColumns>
+    </quickActionLayout>
+    <targetObject>Opportunity</targetObject>
+    <targetRecordType>Opportunity</targetRecordType>
+    <type>Update</type>
+    <successMessage>QuickBooks invoice creation initiated! Check the opportunity in a few seconds for the invoice ID.</successMessage>
+</QuickAction>

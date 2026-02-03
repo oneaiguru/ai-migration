@@ -1,0 +1,21 @@
+{
+    "timestamp": "2025-12-08 14:57:00",
+    "mode": "full",
+    "entity_type": "categories",
+    "start_date": null,
+    "end_date": null,
+    "is_test_mode": false,
+    "entities": {
+        "categories": {
+            "success": [],
+            "error": [
+                {
+                    "vipflat_id": "9001",
+                    "name": "Export Services",
+                    "error": "API call failed"
+                }
+            ],
+            "total": 1
+        }
+    }
+}

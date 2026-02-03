@@ -1,0 +1,57 @@
+#!/bin/bash
+
+# Test script for Salesforce-QuickBooks Integration
+
+# Colors for output
+GREEN='\033[0;32m'
+RED='\033[0;31m'
+NC='\033[0m' # No Color
+
+# Configuration
+BASE_URL="http://localhost:3000"
+API_KEY="your_api_key_here"
+
+echo "====================================="
+echo "Salesforce-QuickBooks Integration Test"
+echo "====================================="
+
+# Health check
+echo -e "\n${GREEN}1. Testing health endpoint...${NC}"
+curl -s "${BASE_URL}/health" | jq .
+
+# Auth status
+echo -e "\n${GREEN}2. Checking authentication status...${NC}"
+curl -s "${BASE_URL}/auth/status" | jq .
+
+# Test connection
+echo -e "\n${GREEN}3. Testing connections...${NC}"
+curl -s -X POST "${BASE_URL}/api/test-connection" \
+  -H "Content-Type: application/json" \
+  -H "X-API-Key: ${API_KEY}" \
+  -d '{
+    "salesforceInstance": "https://test.salesforce.com",
+    "quickbooksRealm": "1234567890"
+  }' | jq .
+
+# Create invoice
+echo -e "\n${GREEN}4. Creating invoice...${NC}"
+curl -s -X POST "${BASE_URL}/api/create-invoice" \
+  -H "Content-Type: application/json" \
+  -H "X-API-Key: ${API_KEY}" \
+  -d '{
+    "opportunityId": "006XX000012345ABC",
+    "salesforceInstance": "https://test.salesforce.com",
+    "quickbooksRealm": "1234567890"
+  }' | jq .
+
+# Check payment status
+echo -e "\n${GREEN}5. Checking payment status...${NC}"
+curl -s -X POST "${BASE_URL}/api/check-payment-status" \
+  -H "Content-Type: application/json" \
+  -H "X-API-Key: ${API_KEY}" \
+  -d '{
+    "salesforceInstance": "https://test.salesforce.com",
+    "quickbooksRealm": "1234567890"
+  }' | jq .
+
+echo -e "\n${GREEN}Test completed!${NC}"

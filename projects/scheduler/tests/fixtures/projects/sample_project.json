@@ -1,0 +1,24 @@
+[
+  {
+    "id": "project-001",
+    "name": "Website Redesign",
+    "description": "Redesign client website with new branding",
+    "priority": 8,
+    "deadline": "2025-04-15T00:00:00Z",
+    "tasks": [
+      {"description": "Wireframe homepage", "status": "pending"},
+      {"description": "Design product pages", "status": "pending"}
+    ]
+  },
+  {
+    "id": "project-002",
+    "name": "Bug Fixing Sprint",
+    "description": "Fix critical bugs in the app",
+    "priority": 9,
+    "deadline": "2025-03-25T00:00:00Z",
+    "tasks": [
+      {"description": "Fix login issues", "status": "pending"},
+      {"description": "Fix checkout flow", "status": "pending"}
+    ]
+  }
+]

@@ -1,0 +1,4 @@
+334:    token: resetToken ? users[username].token : undefined,
+459:            currentBalance: users[user]?.usage?.balance || 0
+585:                    \${data.isAdmin ? '<p><strong>Admin privileges</strong></p>' : ''}
+598:          <h2>Need Help?</h2>

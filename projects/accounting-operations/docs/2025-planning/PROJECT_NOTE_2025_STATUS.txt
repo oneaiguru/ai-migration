@@ -1,0 +1,31 @@
+# 2025 Coverage & Overflow Accounting (Project Note)
+
+## Current 2025 Status
+
+| Account | 2025 Range | Status |
+|---------|-----------|--------|
+| KGS-BIZ-3967 | 24.12.2024 - 29.04.2025 | ✅ Partial (Jan-Apr) |
+| USD-BIZ-4068 | 27.12.2024 - 29.04.2025 | ✅ Partial (Jan-Apr) |
+| EUR-BIZ-4169 | — | ❌ None yet |
+| RUB-BIZ-4270 | 01.01.2025 - 31.03.2025 | ✅ Partial (Q1) |
+
+## Overflow Accounting
+
+**2024→2025 statements are acceptable:**
+- ✅ Standard banking practice (quarters don't align with calendars)
+- ✅ No double-counting (each day in one year only)
+- ✅ For annual reports: Dec portions → 2024 total; Jan-Feb portions → 2025 total
+
+**For 2025 Annual Report (Jan 2026):**
+- 3 of 4 accounts have partial coverage (good start)
+- EUR needs full year (Q1-Q4)
+- Others need remaining quarters (Q2-Q4)
+
+## Next Actions
+
+Request before 2025 year-end:
+- EUR-BIZ-4169: Q1, Q2, Q3, Q4 2025
+- KGS-BIZ-3967: Q2, Q3, Q4 2025 (Q1 partial in overlap)
+- USD-BIZ-4068: Q2, Q3, Q4 2025 (Q1 partial in overlap)
+- RUB-BIZ-4270: Q2, Q3, Q4 2025 (Q1 complete)
+

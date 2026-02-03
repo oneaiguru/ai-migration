@@ -1,0 +1,17 @@
+<template>
+    <lightning-card title="Create QuickBooks Invoice">
+        <div class="slds-p-horizontal_medium">
+            <lightning-button
+                variant="brand"
+                label="Create Invoice"
+                title="Create QuickBooks Invoice"
+                onclick={handleCreateInvoice}
+                disabled={isLoading}
+                class="slds-m-left_x-small">
+            </lightning-button>
+            <template if:true={isLoading}>
+                <lightning-spinner alternative-text="Loading" size="small"></lightning-spinner>
+            </template>
+        </div>
+    </lightning-card>
+</template>

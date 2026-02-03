@@ -1,0 +1,4 @@
+site_id,year_month,actual,forecast,wape,accuracy_pct,abs_error
+S100,2024-08,100,110,0.1,90,10
+S200,2024-08,200,180,0.1,90,20
+S300,2024-08,300,240,0.2,80,60

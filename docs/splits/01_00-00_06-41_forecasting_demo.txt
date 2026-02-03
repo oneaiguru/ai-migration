@@ -1,0 +1,72 @@
+# Forecasting Demo & Validation (00:00–06:41)
+
+## Section 1: Container Site Selection (00:00–00:29)
+
+00:00
+This is the page where we select specific container sites.  Here's her ID and address.  we are immediately on the card.  Yes, we chose it. Dates where we are some, week type. Yes, we took a week. What is this? It's like the garbage truck we have here. How much does it take? 22 cubes. Why do you need this?  Well, like...
+
+## Section 2: Task Clarification & Unnecessary Exports (00:29–00:52)
+
+00:29
+It's not really needed here. This is not necessary at all. One more time.  This is the task of deprogramming exports. For some reason, everyone is confusing it. This is the task of deprogramming education.  I agree. This is superfluous here.  This is unnecessary.  Basically, all we're interested in is...
+
+## Section 3: Accuracy Metrics Without Weather Data (00:52–01:45)
+
+00:52
+At the moment, apart from this accuracy, I can't show you anything. Everything else is my outline, so that I can already understand how it is written in your interface. So far, I wanted to show you that despite the fact that we don't take the weather or any real estate, we don't take anything at all, just your data, this is already much better than pretending that it's like a day, this year it will be the same. Of course, this will not work, and since I take the last days, I get a fairly good accurate forecast.
+
+01:19
+OK, Vape accuracy, what data did you use to compare it? by what? What about what?  I've been comparing, meaning I'm blindly taking, I'm only using 23 year data and trying to guess what will happen in year 23 on a specific date.  And I'll compare it, and I can do it. That is, conditionally, I say, today we have 24 years on March 2, we know all the data until March 2. I think I've been waiting for you for 25 years, no?
+
+## Section 4: Demo Visualization Strategy (01:45–02:38)
+
+01:45
+no I just didn't take it from you specifically so that if you want us to do a blind one from 4 to 3 yes let's do it that is my task was to make you believe that I didn't draw these numbers that I already have from 23 to 24 let's do it on 25 and we will have a good demo that we can show and we can look at real time real data conditionally we take some statistics from December
+
+02:15
+for every day, or for every week, for example, you take, just draw two graphs side by side. Here is a fact for such and such an interval, conditionally some, I don't know, June 23rd. Yes, yes, and this is our forecast. And this is… No, no, no, on the 25th, we are working with the 25th year. Well, yes, you'll give it to me… Here is the June 25 fact, and here is our forecast.
+
+## Section 5: Rolling Forecast by Date (02:38–03:49)
+
+02:38
+And you can work with it.  We set the date up to which point the system knows the data, for example, today.  Accordingly, we will not be able to draw the fact any further.  We take a fact from January to December.
+
+02:57
+until early December. 1 million for the 25th year, and here's myographic on it. You just need to understand that the system is always in some state, that it knows something. For example, it knows not only the 24th year, but also the 25th up to the point where we make the forecast. No, we are now starting to evaluate the algorithm. Only like we have here we have recorded that we only have December 31, 24th year, and everything else is based on the forecast. Yes. You can take January.
+
+03:25
+25 years old.  build a direct forecast. That's what I wanted to do. I wanted to build a January forecast for you first. I just wanted it to be more flexible, so that we can set any date. Conditionally, January was shown, but now it's February. Any date of the 25th year. Yes, of course.  But this is the 24th, this is your sample for training.  Well, yes, yes. Look. And only from the 3rd year.
+
+## Section 6: Data Quality & Manual Processing (03:49–04:40)
+
+03:49
+Yes, well, here I am, in fact, let's do it, that is, to me, well, you uploaded the data very well to me, it is very convenient to work with them. Terrible, of course, it turned out that no one pulls your Excel, I do not know where you open them yourself, but I figured out what, well, that is, everything is there, pandas and everything else, in short, the goal. Well, they open the usual goals. Well, yes, so I had, in short, to open it with my hands in Excel and pull it all out in TSVSHKI, but it's okay, the main thing is that...
+
+04:12
+The data is good, everything is very cool and neat. The only thing is that since I do not know which ones to choose, this is all a very random set.  I didn't try to make a universal system that can do anything right now. count some here, well, I chose a discount and that's it.  That is, the main thing, look, me in general now, since we agreed with you that there will be a demo, this thing with graphs, after all...
+
+## Section 7: Demo Interface Requirements (04:40–05:31)
+
+04:40
+there is such an idea that I need to understand, of course, I really want to make a direct piece of your interface, this one that you are... well, you were once a very good friend to me? Wait, where is the interface, somehow this is not particularly needed, that is, if you have Excel, conditionally, with some random selection of hundreds of KP's in Excel, and for this hundred PCs for each, you have a forecast conditionally for each day, then this thing, graphs, are made with forces Excel.
+
+05:08
+Well, that's understandable.  I just, first of all, it's a little more convenient to work with frontend, because you can see all these elections there, let's show them up to this point And now I'll recalculate them, because after all... If you want to bother writing mini-x or this is the way forward, then you can. In the sense of frontend. No, I naturally would just throw out my software...
+
+## Section 8: Final Demo Outputs (05:31–06:41)
+
+05:31
+CSV file that picks up Excel and builds its own graphs. Of course, I don't have to build u charts, although it's not difficult for me.  What's important is that you once gave me this beautiful PDF.  That's what we're talking about. Do you have something like this left in the working documentation document or not?  Because it's a little more interesting than what you're saying. That is, in addition to Excel, I can do this thing here.
+
+06:02
+I can't, can I? You can't do that.  I don't have enough data for it.  You can make a forecast thing like this. That yes.  That is, here I have a KP, one line, one KP. And you can make the same table, these are my original tables that I gave you. I gave you 204 years to make the same 25. In short, it is clear, yes. that is, we are essentially making the same excent.  They'll just survive. That's it, I get it. Well good.
+
+06:32
+Look, now, it means that if you and I have agreed on all this, I am just a little bit completely... Basically, that's all, I can go, I can not detain you any longer, I understand what needs to be completed.
+
+06:41
+
+---
+## Raw Timestamps
+Original timestamps: 00:00–06:41
+Source: jury-en-EDITED-3-FIXED.txt lines 1-49

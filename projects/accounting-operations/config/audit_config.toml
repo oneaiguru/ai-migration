@@ -1,0 +1,8 @@
+# Audit packaging configuration
+root = "/Users/m/Documents/accounting/bank"
+
+[[audit]]
+name = "audit2023-2024"
+years = [2023, 2024]
+dest = "audits/audit2023-2024"
+readme = "docs/current/README.md"

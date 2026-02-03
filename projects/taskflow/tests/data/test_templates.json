@@ -1,0 +1,10 @@
+{
+  "test-template": {
+    "version": "1.0",
+    "display_name": "Test Template",
+    "description": "A test template.",
+    "categories": ["test"],
+    "ai_level": "L4",
+    "prompt": "Test prompt"
+  }
+}

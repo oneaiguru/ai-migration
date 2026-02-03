@@ -1,0 +1,5 @@
+[run]
+omit =
+  scripts/site_backtest_report.py
+  scripts/api_export_openapi.py
+

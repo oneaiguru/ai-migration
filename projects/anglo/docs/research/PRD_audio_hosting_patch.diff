@@ -1,0 +1,19 @@
+--- PRD_Enhanced_v1_3.md
++++ PRD_Enhanced_v1_3_with_audio_hosting.md
+@@ -303,6 +303,8 @@
+ * DECISION: Instrumentation: track audio start success rate, time-to-first-audio, and failures by ISP/operator.
+ * DECISION: Validation: include a Golden Path test assertion “**audio plays without VPN** on RU networks” (manual initially, automated later).
+ * DECISION: Development/staging infra is RU-hosted so we can run in-country verification (no VPN, no simulation required).
++
++#### Audio hosting decision (v1.3)
+* DECISION: Host audio on **Timeweb (RU region)** and serve via **audio.english.dance**.
+* DECISION: Allowlist `audio.english.dance` in outbound domain checks; do not call global CDNs.
+* DECISION: Fallback if primary host is blocked or degraded:
+  * maintain the stable hostname `audio.english.dance` and switch the origin via DNS (CNAME),
+  * keep a parallel origin on **Yandex Cloud** or **Beget** ready for cutover,
+  * run RU SIM verification (Beeline/MTS/Megafon, no VPN) before and after any cutover,
+  * keep dual-host serving for 7 days (or until error rate stabilizes),
+  * update CI allowlist and release notes when the origin changes.
+ 
+ ### Offline mode (core parity, operational rules)
+ * DECISION: Offline packs must include everything required to learn without connectivity (content + audio + review queue).

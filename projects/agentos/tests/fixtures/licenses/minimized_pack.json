@@ -1,0 +1,10 @@
+{
+  "license": {
+    "schema": "ccp.license.v1",
+    "kid": "test-key",
+    "plan": "trial",
+    "features": ["telemetry_minimized"],
+    "exp": 32503680000
+  },
+  "signature": "valid-sig"
+}

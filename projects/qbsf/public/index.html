@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Salesforce-QuickBooks Integration Dashboard</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+      background-color: #f8f9fa;
+      padding-top: 20px;
+    }
+    .card {
+      margin-bottom: 20px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+    .card-header {
+      font-weight: 600;
+      background-color: #f1f8ff;
+    }
+    .status-indicator {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      display: inline-block;
+      margin-right: 8px;
+    }
+    .status-active {
+      background-color: #28a745;
+    }
+    .status-inactive {
+      background-color: #dc3545;
+    }
+    .log-container {
+      max-height: 400px;
+      overflow-y: auto;
+      background-color: #f8f9fa;
+      border-radius: 4px;
+      padding: 10px;
+      font-family: monospace;
+      font-size: 12px;
+    }
+    .log-entry {
+      margin-bottom: 8px;
+      border-bottom: 1px solid #e9ecef;
+      padding-bottom: 8px;
+    }
+    .log-info {
+      color: #0d6efd;
+    }
+    .log-warn {
+      color: #fd7e14;
+    }
+    .log-error {
+      color: #dc3545;
+    }
+    .refresh-button {
+      float: right;
+      margin-top: -5px;
+    }
+    .small-stats {
+      font-size: 0.85rem;
+      color: #6c757d;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="row mb-4">
+      <div class="col-12">
+        <h1 class="display-5">Salesforce-QuickBooks Integration Dashboard</h1>
+        <p class="lead">Monitor your integration status and activities</p>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-6">
+        <div class="card">
+          <div class="card-header">
+            Connection Status 
+            <button id="refresh-connection" class="btn btn-sm btn-outline-primary refresh-button">Refresh</button>
+          </div>
+          <div class="card-body">
+            <div id="connection-status">
+              <div class="d-flex justify-content-between mb-2">
+                <div>
+                  <span class="status-indicator" id="sf-status-indicator"></span>
+                  <span>Salesforce:</span>
+                </div>
+                <div id="sf-status">Loading...</div>
+              </div>
+              <div class="d-flex justify-content-between">
+                <div>
+                  <span class="status-indicator" id="qb-status-indicator"></span>
+                  <span>QuickBooks:</span>
+                </div>
+                <div id="qb-status">Loading...</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            Scheduler Status
+            <button id="refresh-scheduler" class="btn btn-sm btn-outline-primary refresh-button">Refresh</button>
+          </div>
+          <div class="card-body">
+            <div id="scheduler-status">Loading...</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-6">
+        <div class="card">
+          <div class="card-header">
+            Manual Actions
+          </div>
+          <div class="card-body">
+            <div class="d-grid gap-2">
+              <button id="run-invoice-creation" class="btn btn-primary mb-2">Run Invoice Creation</button>
+              <button id="run-payment-check" class="btn btn-primary">Run Payment Status Check</button>
+              <div id="action-result" class="mt-3"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            Stats
+          </div>
+          <div class="card-body">
+            <h5 class="card-title">Integration Activity</h5>
+            <div id="stats-container">
+              <p><strong>Last 24 Hours:</strong></p>
+              <div class="row mb-3">
+                <div class="col-6">
+                  <div class="card">
+                    <div class="card-body text-center">
+                      <h3 id="invoice-count">-</h3>
+                      <div class="small-stats">Invoices Created</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-6">
+                  <div class="card">
+                    <div class="card-body text-center">
+                      <h3 id="payment-count">-</h3>
+                      <div class="small-stats">Payments Processed</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row mt-2">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-header">
+            Logs
+            <button id="refresh-logs" class="btn btn-sm btn-outline-primary refresh-button">Refresh</button>
+          </div>
+          <div class="card-body">
+            <div class="log-container" id="logs">
+              <div class="text-center">Loading logs...</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Configuration
+    const API_KEY = 'test_api_key_123'; // This should be obtained securely in a production environment
+    const API_BASE_URL = window.location.origin;
+
+    // Helper function for API calls
+    async function fetchAPI(endpoint, method = 'GET', body = null) {
+      try {
+        const response = await fetch(`${API_BASE_URL}${endpoint}`, {
+          method,
+          headers: {
+            'X-API-Key': API_KEY,
+            'Content-Type': 'application/json'
+          },
+          body: body ? JSON.stringify(body) : null
+        });
+        return await response.json();
+      } catch (error) {
+        console.error(`Error calling ${endpoint}:`, error);
+        return { success: false, error: error.message };
+      }
+    }
+
+    // Load connection status
+    async function loadConnectionStatus() {
+      const status = await fetchAPI('/auth/status');
+      const sfStatusEl = document.getElementById('sf-status');
+      const qbStatusEl = document.getElementById('qb-status');
+      const sfIndicator = document.getElementById('sf-status-indicator');
+      const qbIndicator = document.getElementById('qb-status-indicator');
+
+      if (status.success) {
+        // Salesforce status
+        if (status.status.salesforce.connected) {
+          sfStatusEl.textContent = `Connected (${status.status.salesforce.instances.length} instances)`;
+          sfIndicator.className = 'status-indicator status-active';
+        } else {
+          sfStatusEl.textContent = 'Not connected';
+          sfIndicator.className = 'status-indicator status-inactive';
+        }
+
+        // QuickBooks status
+        if (status.status.quickbooks.connected) {
+          qbStatusEl.textContent = `Connected (${status.status.quickbooks.companies.length} companies)`;
+          qbIndicator.className = 'status-indicator status-active';
+        } else {
+          qbStatusEl.textContent = 'Not connected';
+          qbIndicator.className = 'status-indicator status-inactive';
+        }
+      } else {
+        sfStatusEl.textContent = 'Error';
+        qbStatusEl.textContent = 'Error';
+        sfIndicator.className = 'status-indicator status-inactive';
+        qbIndicator.className = 'status-indicator status-inactive';
+      }
+    }
+
+    // Load scheduler status
+    async function loadSchedulerStatus() {
+      const status = await fetchAPI('/scheduler/status');
+      const schedulerStatusEl = document.getElementById('scheduler-status');
+
+      if (status.success) {
+        let html = '';
+        status.jobs.forEach(job => {
+          const statusClass = job.active ? 'status-active' : 'status-inactive';
+          const nextRun = job.nextRun ? new Date(job.nextRun).toLocaleString() : 'Not scheduled';
+          
+          html += `
+            <div class="mb-3">
+              <div class="d-flex justify-content-between align-items-center mb-1">
+                <div>
+                  <span class="status-indicator ${statusClass}"></span>
+                  <strong>${formatJobName(job.name)}</strong>
+                </div>
+                <span class="badge bg-${job.active ? 'success' : 'danger'}">${job.active ? 'Active' : 'Inactive'}</span>
+              </div>
+              <div class="small-stats">Next run: ${nextRun}</div>
+            </div>
+          `;
+        });
+        schedulerStatusEl.innerHTML = html;
+      } else {
+        schedulerStatusEl.innerHTML = '<div class="alert alert-danger">Error loading scheduler status</div>';
+      }
+    }
+
+    // Format job name for display
+    function formatJobName(name) {
+      return name
+        .split(/(?=[A-Z])/)
+        .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+        .join(' ');
+    }
+
+    // Load logs
+    async function loadLogs() {
+      const logs = await fetchAPI('/api/logs?limit=20');
+      const logsEl = document.getElementById('logs');
+
+      if (logs.success && logs.logs && logs.logs.length > 0) {
+        let html = '';
+        logs.logs.forEach(log => {
+          const timestamp = new Date(log.timestamp).toLocaleString();
+          const levelClass = log.level === 'error' ? 'log-error' : 
+                            log.level === 'warn' ? 'log-warn' : 'log-info';
+          
+          html += `
+            <div class="log-entry">
+              <div class="${levelClass}">
+                <strong>[${timestamp}]</strong> [${log.level.toUpperCase()}] ${log.message}
+              </div>
+            </div>
+          `;
+        });
+        logsEl.innerHTML = html;
+      } else {
+        logsEl.innerHTML = '<div class="text-center">No logs available</div>';
+      }
+    }
+
+    // Run invoice creation
+    async function runInvoiceCreation() {
+      const button = document.getElementById('run-invoice-creation');
+      const resultEl = document.getElementById('action-result');
+      
+      button.disabled = true;
+      button.textContent = 'Running...';
+      resultEl.innerHTML = '<div class="spinner-border spinner-border-sm text-primary" role="status"></div> Processing opportunities...';
+      
+      const result = await fetchAPI('/scheduler/invoice-creation', 'POST');
+      
+      if (result.success) {
+        resultEl.innerHTML = `
+          <div class="alert alert-success">
+            <strong>Success!</strong> Processed ${result.processed} opportunities, created ${result.successful} invoices.
+          </div>
+        `;
+      } else {
+        resultEl.innerHTML = `
+          <div class="alert alert-danger">
+            <strong>Error!</strong> ${result.error || 'Failed to run invoice creation'}
+          </div>
+        `;
+      }
+      
+      button.disabled = false;
+      button.textContent = 'Run Invoice Creation';
+      
+      // Refresh logs after action
+      setTimeout(loadLogs, 1000);
+    }
+
+    // Run payment check
+    async function runPaymentCheck() {
+      const button = document.getElementById('run-payment-check');
+      const resultEl = document.getElementById('action-result');
+      
+      button.disabled = true;
+      button.textContent = 'Running...';
+      resultEl.innerHTML = '<div class="spinner-border spinner-border-sm text-primary" role="status"></div> Checking payment status...';
+      
+      const result = await fetchAPI('/scheduler/payment-check', 'POST');
+      
+      if (result.success) {
+        resultEl.innerHTML = `
+          <div class="alert alert-success">
+            <strong>Success!</strong> Processed ${result.invoicesProcessed} invoices, found ${result.paidInvoicesFound} payments, updated ${result.invoicesUpdated} opportunities.
+          </div>
+        `;
+      } else {
+        resultEl.innerHTML = `
+          <div class="alert alert-danger">
+            <strong>Error!</strong> ${result.error || 'Failed to run payment check'}
+          </div>
+        `;
+      }
+      
+      button.disabled = false;
+      button.textContent = 'Run Payment Status Check';
+      
+      // Refresh logs after action
+      setTimeout(loadLogs, 1000);
+    }
+
+    // Load stats from logs
+    async function loadStats() {
+      // This would normally be fetched from an API endpoint that aggregates stats
+      // For demo purposes, we're just showing placeholder values
+      document.getElementById('invoice-count').textContent = '8';
+      document.getElementById('payment-count').textContent = '5';
+    }
+
+    // Initialize page
+    window.addEventListener('DOMContentLoaded', () => {
+      // Load initial data
+      loadConnectionStatus();
+      loadSchedulerStatus();
+      loadLogs();
+      loadStats();
+      
+      // Add event listeners for refresh buttons
+      document.getElementById('refresh-connection').addEventListener('click', loadConnectionStatus);
+      document.getElementById('refresh-scheduler').addEventListener('click', loadSchedulerStatus);
+      document.getElementById('refresh-logs').addEventListener('click', loadLogs);
+      
+      // Add event listeners for action buttons
+      document.getElementById('run-invoice-creation').addEventListener('click', runInvoiceCreation);
+      document.getElementById('run-payment-check').addEventListener('click', runPaymentCheck);
+    });
+  </script>
+</body>
+</html>

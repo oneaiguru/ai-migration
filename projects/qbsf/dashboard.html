@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Salesforce-QuickBooks Integration Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body {
+            padding-top: 20px;
+            background-color: #f5f5f5;
+        }
+        .card {
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .status-indicator {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 5px;
+        }
+        .status-connected {
+            background-color: #28a745;
+        }
+        .status-disconnected {
+            background-color: #dc3545;
+        }
+        .log-container {
+            max-height: 400px;
+            overflow-y: scroll;
+            background-color: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+            padding: 10px;
+            font-family: monospace;
+        }
+        .log-entry {
+            margin-bottom: 5px;
+            border-bottom: 1px solid #e9ecef;
+            padding-bottom: 5px;
+        }
+        .log-error {
+            color: #dc3545;
+        }
+        .log-warning {
+            color: #ffc107;
+        }
+        .log-info {
+            color: #17a2b8;
+        }
+        #toast-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 9999;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="pb-3 mb-4 border-bottom">
+            <div class="d-flex align-items-center text-dark text-decoration-none">
+                <span class="fs-4">Salesforce-QuickBooks Integration Dashboard</span>
+                <span class="ms-auto badge bg-primary" id="environment">Production</span>
+            </div>
+        </header>
+
+        <div class="row">
+            <!-- System Status -->
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>System Status</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-6">
+                                <p><strong>Salesforce:</strong> 
+                                    <span id="sf-status"><span class="status-indicator status-disconnected"></span>Disconnected</span>
+                                </p>
+                                <p><strong>QuickBooks:</strong> 
+                                    <span id="qb-status"><span class="status-indicator status-disconnected"></span>Disconnected</span>
+                                </p>
+                            </div>
+                            <div class="col-6">
+                                <p><strong>Last Check:</strong> <span id="last-check">Never</span></p>
+                                <p><strong>Server Status:</strong> <span id="server-status">Unknown</span></p>
+                            </div>
+                        </div>
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                            <button class="btn btn-primary btn-sm" id="refresh-status">
+                                <i class="fas fa-sync-alt"></i> Refresh Status
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Connection Details -->
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>Connection Details</h5>
+                    </div>
+                    <div class="card-body">
+                        <div id="sf-details">
+                            <p><strong>Salesforce Instance:</strong> <span id="sf-instance">None</span></p>
+                            <p><strong>Token Expires:</strong> <span id="sf-expires">N/A</span></p>
+                        </div>
+                        <div id="qb-details">
+                            <p><strong>QuickBooks Company:</strong> <span id="qb-company">None</span></p>
+                            <p><strong>Token Expires:</strong> <span id="qb-expires">N/A</span></p>
+                        </div>
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                            <a href="/auth/salesforce" class="btn btn-outline-primary btn-sm" target="_blank">
+                                <i class="fas fa-plug"></i> Connect Salesforce
+                            </a>
+                            <a href="/auth/quickbooks" class="btn btn-outline-success btn-sm" target="_blank">
+                                <i class="fas fa-plug"></i> Connect QuickBooks
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mt-4">
+            <!-- Manual Operations -->
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>Manual Operations</h5>
+                    </div>
+                    <div class="card-body">
+                        <p>Trigger integration processes manually:</p>
+                        <div class="d-grid gap-2">
+                            <button class="btn btn-primary mb-2" id="process-opportunities">
+                                <i class="fas fa-cogs"></i> Process Eligible Opportunities
+                            </button>
+                            <button class="btn btn-success mb-2" id="check-payments">
+                                <i class="fas fa-money-bill-wave"></i> Check Payment Status
+                            </button>
+                            <button class="btn btn-info" id="test-connection">
+                                <i class="fas fa-vial"></i> Test API Connection
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Activity -->
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h5>Recent Activity</h5>
+                        <button class="btn btn-sm btn-outline-secondary" id="refresh-activity">
+                            <i class="fas fa-sync-alt"></i>
+                        </button>
+                    </div>
+                    <div class="card-body">
+                        <div id="activity-list">
+                            <div class="text-center text-muted">
+                                <p>No recent activity</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- System Logs -->
+        <div class="row mt-4">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h5>System Logs</h5>
+                        <div>
+                            <select class="form-select form-select-sm" id="log-filter" style="width: auto; display: inline-block;">
+                                <option value="all">All Logs</option>
+                                <option value="error">Errors Only</option>
+                                <option value="info">Info Only</option>
+                            </select>
+                            <button class="btn btn-sm btn-outline-secondary ms-2" id="refresh-logs">
+                                <i class="fas fa-sync-alt"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="log-container" id="logs">
+                            <div class="log-entry">
+                                <span class="log-info">[INFO]</span> System initialized
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <footer class="pt-3 mt-4 text-muted border-top">
+            &copy; 2025 Salesforce-QuickBooks Integration
+        </footer>
+    </div>
+
+    <!-- Toast Container for Notifications -->
+    <div id="toast-container"></div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // API Key - in a real application, this would be stored securely
+        const API_KEY = 'your_api_key_here'; // Replace with your actual API key
+
+        // Helper function to show toast notifications
+        function showToast(message, type = 'info') {
+            const toastId = 'toast-' + Date.now();
+            const bgClass = type === 'error' ? 'bg-danger' : 
+                            type === 'success' ? 'bg-success' : 
+                            type === 'warning' ? 'bg-warning' : 'bg-info';
+            
+            const toast = `
+                <div id="${toastId}" class="toast ${bgClass} text-white" role="alert" aria-live="assertive" aria-atomic="true">
+                    <div class="toast-header">
+                        <strong class="me-auto">Integration Dashboard</strong>
+                        <small>Just now</small>
+                        <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                    </div>
+                    <div class="toast-body">
+                        ${message}
+                    </div>
+                </div>
+            `;
+            
+            $('#toast-container').append(toast);
+            $(`#${toastId}`).toast({delay: 5000}).toast('show');
+            
+            // Remove toast from DOM after it's hidden
+            $(`#${toastId}`).on('hidden.bs.toast', function() {
+                $(this).remove();
+            });
+        }
+
+        // Function to refresh the status
+        function refreshStatus() {
+            $.ajax({
+                url: '/auth/status',
+                type: 'GET',
+                headers: {
+                    'X-API-Key': API_KEY
+                },
+                success: function(data) {
+                    if (data.success) {
+                        const status = data.status;
+                        
+                        // Update Salesforce status
+                        if (status.salesforce.connected) {
+                            $('#sf-status').html('<span class="status-indicator status-connected"></span>Connected');
+                            
+                            if (status.salesforce.instances.length > 0) {
+                                const instance = status.salesforce.instances[0];
+                                $('#sf-instance').text(instance.instanceUrl);
+                                $('#sf-expires').text(new Date(instance.expiresAt).toLocaleString());
+                            }
+                        } else {
+                            $('#sf-status').html('<span class="status-indicator status-disconnected"></span>Disconnected');
+                            $('#sf-instance').text('None');
+                            $('#sf-expires').text('N/A');
+                        }
+                        
+                        // Update QuickBooks status
+                        if (status.quickbooks.connected) {
+                            $('#qb-status').html('<span class="status-indicator status-connected"></span>Connected');
+                            
+                            if (status.quickbooks.companies.length > 0) {
+                                const company = status.quickbooks.companies[0];
+                                $('#qb-company').text(company.realmId);
+                                $('#qb-expires').text(new Date(company.expiresAt).toLocaleString());
+                            }
+                        } else {
+                            $('#qb-status').html('<span class="status-indicator status-disconnected"></span>Disconnected');
+                            $('#qb-company').text('None');
+                            $('#qb-expires').text('N/A');
+                        }
+                        
+                        // Update last check time
+                        $('#last-check').text(new Date().toLocaleString());
+                        $('#server-status').text('Online');
+                        
+                        showToast('Status refreshed successfully', 'success');
+                    } else {
+                        showToast('Failed to refresh status: ' + (data.error || 'Unknown error'), 'error');
+                    }
+                },
+                error: function(xhr, status, error) {
+                    $('#server-status').text('Error');
+                    showToast('Failed to connect to server: ' + error, 'error');
+                }
+            });
+        }
+
+        // Function to process eligible opportunities
+        function processOpportunities() {
+            $.ajax({
+                url: '/scheduler/invoice-creation',
+                type: 'POST',
+                headers: {
+                    'X-API-Key': API_KEY,
+                    'Content-Type': 'application/json'
+                },
+                success: function(data) {
+                    if (data.success) {
+                        showToast(`Processed ${data.processed} opportunities. Success: ${data.successful}, Failed: ${data.failed}`, 'success');
+                        refreshActivity();
+                    } else {
+                        showToast('Failed to process opportunities: ' + (data.error || 'Unknown error'), 'error');
+                    }
+                },
+                error: function(xhr, status, error) {
+                    showToast('Failed to process opportunities: ' + error, 'error');
+                }
+            });
+        }
+
+        // Function to check payment status
+        function checkPayments() {
+            $.ajax({
+                url: '/scheduler/payment-check',
+                type: 'POST',
+                headers: {
+                    'X-API-Key': API_KEY,
+                    'Content-Type': 'application/json'
+                },
+                success: function(data) {
+                    if (data.success) {
+                        showToast(`Checked ${data.invoicesProcessed} invoices. Paid: ${data.paidInvoicesFound}, Updated: ${data.invoicesUpdated}`, 'success');
+                        refreshActivity();
+                    } else {
+                        showToast('Failed to check payment status: ' + (data.error || 'Unknown error'), 'error');
+                    }
+                },
+                error: function(xhr, status, error) {
+                    showToast('Failed to check payment status: ' + error, 'error');
+                }
+            });
+        }
+
+        // Function to test API connection
+        function testConnection() {
+            $.ajax({
+                url: '/api/health',
+                type: 'GET',
+                headers: {
+                    'X-API-Key': API_KEY
+                },
+                success: function(data) {
+                    if (data.success) {
+                        showToast('API connection test successful', 'success');
+                    } else {
+                        showToast('API connection test failed: ' + (data.error || 'Unknown error'), 'error');
+                    }
+                },
+                error: function(xhr, status, error) {
+                    showToast('API connection test failed: ' + error, 'error');
+                }
+            });
+        }
+
+        // Function to refresh activity
+        function refreshActivity() {
+            $.ajax({
+                url: '/api/recent-activity',
+                type: 'GET',
+                headers: {
+                    'X-API-Key': API_KEY
+                },
+                success: function(data) {
+                    if (data.success && data.activities) {
+                        $('#activity-list').empty();
+                        
+                        if (data.activities.length === 0) {
+                            $('#activity-list').html('<div class="text-center text-muted"><p>No recent activity</p></div>');
+                        } else {
+                            data.activities.forEach(activity => {
+                                const timestamp = new Date(activity.timestamp).toLocaleString();
+                                const icon = activity.type === 'invoice' ? 'file-invoice-dollar' :
+                                           activity.type === 'payment' ? 'money-bill-wave' :
+                                           activity.type === 'error' ? 'exclamation-triangle' : 'info-circle';
+                                
+                                const html = `
+                                    <div class="activity-item mb-2">
+                                        <div><i class="fas fa-${icon} me-2"></i> <strong>${activity.title}</strong></div>
+                                        <div class="text-muted small">${activity.description}</div>
+                                        <div class="text-muted small">${timestamp}</div>
+                                    </div>
+                                `;
+                                
+                                $('#activity-list').append(html);
+                            });
+                        }
+                    } else {
+                        showToast('Failed to refresh activity: ' + (data.error || 'Unknown error'), 'error');
+                    }
+                },
+                error: function(xhr, status, error) {
+                    showToast('Failed to refresh activity: ' + error, 'error');
+                }
+            });
+        }
+
+        // Function to refresh logs
+        function refreshLogs() {
+            const filter = $('#log-filter').val();
+            
+            $.ajax({
+                url: '/api/logs',
+                type: 'GET',
+                headers: {
+                    'X-API-Key': API_KEY
+                },
+                data: {
+                    filter: filter,
+                    limit: 50
+                },
+                success: function(data) {
+                    if (data.success && data.logs) {
+                        $('#logs').empty();
+                        
+                        if (data.logs.length === 0) {
+                            $('#logs').html('<div class="text-center text-muted"><p>No logs available</p></div>');
+                        } else {
+                            data.logs.forEach(log => {
+                                const timestamp = new Date(log.timestamp).toLocaleString();
+                                const levelClass = log.level === 'error' ? 'log-error' :
+                                                log.level === 'warn' ? 'log-warning' : 'log-info';
+                                
+                                const html = `
+                                    <div class="log-entry">
+                                        <span class="${levelClass}">[${log.level.toUpperCase()}]</span>
+                                        <span class="text-muted">${timestamp}</span>
+                                        ${log.message}
+                                    </div>
+                                `;
+                                
+                                $('#logs').append(html);
+                            });
+                        }
+                    } else {
+                        showToast('Failed to refresh logs: ' + (data.error || 'Unknown error'), 'error');
+                    }
+                },
+                error: function(xhr, status, error) {
+                    showToast('Failed to refresh logs: ' + error, 'error');
+                }
+            });
+        }
+
+        // Document ready
+        $(document).ready(function() {
+            // Set environment badge
+            $.ajax({
+                url: '/',
+                type: 'GET',
+                success: function(data) {
+                    if (data.environment) {
+                        $('#environment').text(data.environment);
+                    }
+                }
+            });
+            
+            // Initial refresh
+            refreshStatus();
+            refreshActivity();
+            refreshLogs();
+            
+            // Set up event handlers
+            $('#refresh-status').click(refreshStatus);
+            $('#process-opportunities').click(processOpportunities);
+            $('#check-payments').click(checkPayments);
+            $('#test-connection').click(testConnection);
+            $('#refresh-activity').click(refreshActivity);
+            $('#refresh-logs').click(refreshLogs);
+            $('#log-filter').change(refreshLogs);
+            
+            // Set up refresh interval (every 30 seconds)
+            setInterval(refreshStatus, 30000);
+        });
+    </script>
+</body>
+</html>

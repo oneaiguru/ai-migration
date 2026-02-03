@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TaskFlow - Mobile Task Creator</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>New Task</h1>
+        <label for="templateSelect">Choose Template:</label>
+        <select id="templateSelect"></select>
+        <form id="taskForm"></form>
+        <div id="preview" class="hidden preview"></div>
+        <button id="submitBtn">Create Task</button>
+        <div id="message" class="hidden"></div>
+    </div>
+
+    <script src="main.js"></script>
+    <script>
+        if ("serviceWorker" in navigator) {
+            navigator.serviceWorker.register("sw.js");
+        }
+    </script>
+</body>
+</html>

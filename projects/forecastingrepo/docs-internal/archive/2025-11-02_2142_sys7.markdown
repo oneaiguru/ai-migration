@@ -1,0 +1,217 @@
+Perfect—here’s exactly what you asked for: **(1) the precise tests/paths for PR‑0 (scaffolding) and PR‑1 (weather skeleton)**, **(2) a ready‑to‑paste task file**, and **(3) an environment‑parity plan** so a zipped repo “just runs” on my side and yours.
+
+------
+
+## PR‑0 — *Scenario & plugin scaffolding + golden stability (no behavior change)*
+
+**Add / modify files**
+
+```
+docs/architecture/VDD.md                      # already added
+specs/source-plugins/PLUGIN_CONTRACT.md       # already added
+specs/scenarios/SCENARIO_SPEC.md              # already added
+scenarios/baseline.yml                        # already added
+scenarios/weather_only.yml                    # already added
+
+src/scenarios/manager.py                      # parse YAML + overrides
+src/plugins/loader.py                         # discover/get plugins
+scripts/ingest_and_forecast.py                # parse (but do NOT use yet):
+                                              #   --scenario-path
+                                              #   --flag key=value (repeatable)
+                                              #   --param key=value (repeatable)
+
+specs/bdd/features/scenario_parsing.feature   # SCN-001 (shell ok)
+specs/bdd/features/scenario_no_change.feature # SCN-002 (shell ok)
+specs/bdd/features/plugin_discovery.feature   # PLG-001 (shell ok)
+specs/bdd/features/golden_regression.feature  # GOLD-001 (shell ok)
+
+tests/specs/test_scenario_plugin_shells.py    # SCN-001, SCN-002, PLG-001
+tests/golden/golden.yml                       # placeholder now; hashes later
+tests/golden/test_golden_baseline.py          # run baseline, compare hashes
+.tools/spec_sync.py                           # already present
+```
+
+**What the tests must assert**
+
+- **SCN‑001**: `load_scenario()` loads YAML; `apply_overrides()` sets flags/params; deterministic merge.
+- **SCN‑002**: with no scenario or with `use_weather=false`, pipeline outputs are **identical** to current baseline (we’ll flip from “skip” to “assert” once golden hashes are set).
+- **PLG‑001**: `discover()` finds `src/plugins/weather/manifest.yml`; `get('weather')` returns meta.
+- **GOLD‑001**: golden regression exists; for now marked `xfail/skip` until we pin hashes.
+
+**DoD (Definition of Done)**
+
+- CI green (tests/spec‑sync/docs‑check/coverage ≥85%).
+- No changes to client CSV outputs with default flags.
+- Golden test file scaffold present.
+
+------
+
+## PR‑1 — *Weather plugin skeleton behind a flag (still no behavior change)*
+
+**Add / modify files**
+
+```
+src/plugins/weather/manifest.yml              # id: weather; provides: f_* (placeholder)
+src/plugins/weather/adapter.py                # stub: minimal structure; no IO yet
+src/plugins/weather/features.py               # stub API; no features yet
+src/plugins/weather/join.py                   # stub join(policy); returns base_df unchanged
+src/plugins/weather/qa.py                     # stub qa dict
+
+specs/bdd/features/weather_flag.feature       # WEA-000 (skeleton): disabled → no change
+tests/plugins/test_weather_disabled.py        # asserts disabled flag keeps outputs identical
+```
+
+**What the tests must assert**
+
+- **WEA‑000**: When `use_weather=false` (default) the end‑to‑end forecasts are **bit‑for‑bit identical** to baseline for a small window (hash equality).
+- Plugin discovery still works; no accidental imports/side effects.
+
+**DoD**
+
+- CI green; **no output diffs** by default.
+- Plugin files exist; scenario toggling plumbed **only to the extent of being parsed**.
+
+> *Note:* The **actual** weather feature engineering and joins land in later PRs (e.g., PR‑2), and will be guarded by `use_weather=true` + new tests/scoreboards.
+
+------
+
+## Ready‑to‑paste task file (drop into the repo as `docs/Tasks/PR-0_and_PR-1.md` or hand to the agent)
+
+```md
+# Tasks: PR-0 (Scaffolding) and PR-1 (Weather Skeleton)
+
+## Scope
+Implement pluggable scenarios and plugin loader with a weather plugin skeleton, without changing current outputs. Add golden stability scaffolding.
+
+## PR-0 — Scenario/Plugin scaffolding + Golden (no behavior change)
+### Files
+- Add/confirm:
+  - docs/architecture/VDD.md
+  - specs/source-plugins/PLUGIN_CONTRACT.md
+  - specs/scenarios/SCENARIO_SPEC.md
+  - scenarios/baseline.yml, scenarios/weather_only.yml
+  - src/scenarios/manager.py  (load_scenario, apply_overrides, is_enabled)
+  - src/plugins/loader.py     (discover, get)
+  - scripts/ingest_and_forecast.py: parse --scenario-path, --flag, --param (no pipeline use)
+  - specs/bdd/features/{scenario_parsing.feature, scenario_no_change.feature, plugin_discovery.feature, golden_regression.feature}
+  - tests/specs/test_scenario_plugin_shells.py
+  - tests/golden/{golden.yml, test_golden_baseline.py}
+### Tests
+- SCN-001: scenario parsing/overrides deterministic
+- SCN-002: disabled sources leave outputs unchanged (mark skip until golden set)
+- PLG-001: plugin discovery/get
+- GOLD-001: golden scaffold exists
+### Gates
+- CI green: tests + spec-sync + docs-check + coverage ≥85%
+- No change in outputs by default
+
+## PR-1 — Weather skeleton (behind flag, still no behavior change)
+### Files
+- src/plugins/weather/{manifest.yml, adapter.py, features.py, join.py, qa.py}
+- specs/bdd/features/weather_flag.feature  (WEA-000)
+- tests/plugins/test_weather_disabled.py
+### Tests
+- WEA-000: with use_weather=false, outputs exactly match baseline (hash compare on small window)
+### Gates
+- CI green; no output change by default; spec-sync covers WEA-000
+```
+
+------
+
+## Environment parity plan (so zips “just run” for both of us)
+
+**Target runtime**
+
+- **Python 3.11.x** (pin in `runtime.txt` or `pyproject.toml` if you later move to Poetry).
+- OS: macOS (dev) and Ubuntu (CI). No platform‑specific code permitted.
+
+**Explicit dependencies (dev)**
+
+```
+requirements-dev.txt
+  pandas>=2.1
+  numpy>=1.26
+  PyYAML>=6.0
+  pytest>=7.4
+  pytest-cov>=4.1
+  freezegun>=1.2
+  ruff>=0.6
+  black>=24.4
+  matplotlib>=3.7        # for quicklook_report
+```
+
+*(If pandas/numpy already pinned elsewhere, keep one authoritative `requirements\*.txt` pair.)*
+
+**Determinism & headless settings**
+
+- In CI and local smoke scripts, set:
+  - `PYTHONHASHSEED=0`
+  - `TZ=UTC`
+  - `LC_ALL=C.UTF-8`
+  - `MPLBACKEND=Agg`
+- Always open files with `encoding="utf-8"` (you already do).
+
+**Bootstrap script (put in repo root as `scripts/bootstrap.sh`)**
+
+```bash
+#!/usr/bin/env bash
+set -euo pipefail
+python3 -m venv .venv
+source .venv/bin/activate
+python -m pip install --upgrade pip
+pip install -r requirements-dev.txt
+export PYTHONHASHSEED=0 TZ=UTC LC_ALL=C.UTF-8 MPLBACKEND=Agg
+pytest -q --cov=scripts --cov-report=term-missing
+python .tools/spec_sync.py
+python .tools/docs_check.py
+echo "OK: env ready, tests/docs/spec-sync green."
+```
+
+**Smoke run (works from a zip)**
+
+```bash
+source .venv/bin/activate
+python scripts/ingest_and_forecast.py forecast \
+  --train-until 2024-12-31 \
+  --daily-window 2025-01-01:2025-01-31 \
+  --monthly-window 2025-01:2025-03 \
+  --scopes region,districts \
+  --methods daily=weekday_mean,monthly=last3m_mean
+python scripts/quicklook_report.py \
+  --actual-daily data/daily_waste_by_district.csv \
+  --actual-monthly data/monthly_waste_by_district.csv \
+  --forecast-daily deliveries/*/forecasts/daily_2025-01-01_to_2025-01-31.csv \
+  --forecast-monthly deliveries/*/forecasts/monthly_2025-01_to_2025-03.csv \
+  --outdir reports/quicklook_smoke
+```
+
+**Zip hygiene (for portability)**
+
+- Include: `scripts/**`, `src/**`, `specs/**`, `tests/**`, `.tools/**`, `.github/**`, `docs/System/**`, `docs/architecture/**`, `scenarios/**`, `requirements*.txt`, `README.md`.
+- Exclude: `deliveries/**`, `delivery/**`, `forecasts/**`, `data/raw/**`, `*.xlsx`, caches (`__pycache__`, `.pytest_cache`), `spec_registry/spec_index.yml`.
+- Ensure **relative** paths only (no `/Users/m/...` references).
+
+**Cyrillic filenames**
+
+- Keep training inputs in **CSV** with ASCII filenames for portability; preserve original XLSX in `data/raw/` (excluded from zips).
+- If you need to keep RU names, ensure all file opens specify `encoding="utf-8"` and tests cover such paths.
+
+------
+
+## Status on the “task file”
+
+- You already have `/Users/m/Desktop/FIRST_TASK_NEXT_AGENT.md`.
+- If its content matches **PR‑1 section** above (weather skeleton behind flag; no behavior change), you’re good.
+- If not, replace it with the **Ready‑to‑paste task file** content I provided (or save it as `docs/Tasks/PR-0_and_PR-1.md` in the repo).
+
+------
+
+## What I’ll look for when I unzip your full repo
+
+1. `scripts/bootstrap.sh` exists and runs clean.
+2. `pytest`, `spec_sync`, `docs_check` all green.
+3. `scripts/quicklook_report.py` runs with your included data; generates PNGs + REPORT.md.
+4. Running the baseline forecast twice produces **identical hashes**.
+5. `--scenario-path scenarios/weather_only.yml` with `use_weather=false` still yields identical outputs.
+
+If you want, I can also draft the **PR‑2 (backtest driver)** task file in the same format—kept small and fully test‑gated.

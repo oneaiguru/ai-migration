@@ -1,0 +1,62 @@
+/**
+ * Apex class to create QuickBooks invoices from Salesforce opportunities
+ * Used by Quick Action button on Opportunity page
+ */
+public with sharing class QuickBooksInvoiceCreator {
+    
+    /**
+     * Invocable method for Process Builder / Flow
+     * Creates QuickBooks invoice for given opportunity
+     */
+    @InvocableMethod(label='Create QuickBooks Invoice' description='Creates invoice in QuickBooks from Salesforce opportunity')
+    public static List<InvoiceResult> createInvoice(List<Id> opportunityIds) {
+        List<InvoiceResult> results = new List<InvoiceResult>();
+        
+        // Process each opportunity
+        for (Id oppId : opportunityIds) {
+            InvoiceResult result = new InvoiceResult();
+            result.opportunityId = oppId;
+            
+            try {
+                // Call the API
+                String response = QuickBooksCallout.createInvoice(oppId);
+                
+                // Parse response
+                Map<String, Object> responseMap = (Map<String, Object>) JSON.deserializeUntyped(response);
+                result.success = (Boolean) responseMap.get('success');
+                result.invoiceId = (String) responseMap.get('invoiceId');
+                result.invoiceNumber = (String) responseMap.get('invoiceNumber');
+                result.message = (String) responseMap.get('message');
+                
+            } catch (Exception e) {
+                result.success = false;
+                result.message = 'Error: ' + e.getMessage();
+                System.debug('Error creating invoice: ' + e.getMessage());
+            }
+            
+            results.add(result);
+        }
+        
+        return results;
+    }
+    
+    /**
+     * Result class for invocable method
+     */
+    public class InvoiceResult {
+        @InvocableVariable(label='Success' description='Whether invoice creation was successful')
+        public Boolean success;
+        
+        @InvocableVariable(label='Invoice ID' description='QuickBooks invoice ID')
+        public String invoiceId;
+        
+        @InvocableVariable(label='Invoice Number' description='QuickBooks invoice number')
+        public String invoiceNumber;
+        
+        @InvocableVariable(label='Message' description='Success or error message')
+        public String message;
+        
+        @InvocableVariable(label='Opportunity ID' description='Salesforce opportunity ID')
+        public String opportunityId;
+    }
+}

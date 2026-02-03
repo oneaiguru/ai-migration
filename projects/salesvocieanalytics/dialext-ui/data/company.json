@@ -1,0 +1,14 @@
+{
+  "company": {
+    "id": 1,
+    "name": "voice-analytics",
+    "workspaceDomain": "my.voice-analytics.com",
+    "description": "Платформа анализа звонков, повышающая конверсию на 20%. Автоматически анализирует звонки в отделах продажи и контакт-центрах.",
+    "language": "ru",
+    "model": "Процентная",
+    "engineVersion": "4.2",
+    "products": "",
+    "callQualification": "1. холодные звонки (первичный контакт) после КЦ\n2. теплые звонки (первичный контакт)\n3. дожим клиента\n0. Разговор на другие темы",
+    "additionalInstructions": ""
+  }
+}

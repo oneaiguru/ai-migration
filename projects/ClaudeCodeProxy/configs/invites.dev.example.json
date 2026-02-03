@@ -1,0 +1,10 @@
+{
+  "DEV-TRIAL-7D": {
+    "plan": "trial",
+    "features": ["zai_offload"],
+    "ttl_days": 7,
+    "max_redemptions": 100,
+    "expires_at": "2026-01-01T00:00:00Z",
+    "redeemed": 0
+  }
+}

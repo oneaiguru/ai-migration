@@ -1,0 +1,94 @@
+# Product & Business Strategy (45:10–56:46)
+
+## Section 1: MVP Definition (45:10–46:09)
+
+[Yuri] Ideally, that we have released such a simple system without weather and other things in production and it will start working. And there it will be possible and there it would be good to collect this data and I want to prepare for this a little bit right away. If you understand what data you want to collect, write it down and draw it there. Yes, good. And then we'll see how. Well, I'll probably ask you a lot of stupid questions about drawing, I'll show you a lot of very stupid moks of my own and you'll already give me feedback. I won't load you up now, I'll just..."
+
+45:40
+[Misha] That's what you need to go through, step one. Yes, step one, we finish now.  But so that I can prepare for the second one more or less clearly, now the process is like this. You have a team of backenders in runtender, you drew all the design for them in XD, gave it to them, they have a bunch of screenshots in GitLab TZ that you gave them, no one opens it, no one there... I'll cut it up and turn us on. Yes, so you don't have any there...
+
+## Section 2: Phase 1 Deliverables (46:09–50:15)
+
+46:09
+[Yuri] As figma, do not use, in fact, yes?  And you didn't have a figma as a standard either. It's either there or you... Or on other projects, it is in the hands of a personal designer each. You, in short, have no other designers, you are a designer, only you are a designer, of course. That is, for me, the important thing is that by design and TK, you are the point of contact of other people who decide whether a product is not. Everything is great. And the whole system architecture, it's all on you too. System architecture? Well yeah
+
+### Team Structure & Responsibilities (46:39–47:23)
+
+46:39
+[Misha] Well, all the architectural solutions are technical there is a streck and so on.  In short, you are a product-oner as if in terms of there well
+
+46:56
+[Misha] Okay, because you see what's important. Let's get this straight, then. I don't give them a loan, they don't sell seeds. Just like in that joke. I mean, I tell them what to do, but I don't tell them how.  This is their task. Yes, look, then let's think about it. What I'm about to do. Naturally, since at first I generally said that ML and so on were there, but in any case, it was convenient for me to do any work, Data Science, in Python, but I didn't do it in Python.
+
+### API & Microservice Integration (47:23–52:43)
+
+47:23
+[Misha] That's how many of them will break from what I did in python, if I say, be?  They don't care, do they?  Well, that is, we just take and... The module will offend everyone, but either we rewrite it in java or we wrap it in a microservice just python remains. What do you have on microservices? Does anything work on microservices in dispatching?  Right with singzhings as expected? Yeah, well, what are we doing right now?  Mathematicians made science code in python. What did they do in python? Calculation of the MPS, location of the MPS. MPS is what?
+
+47:53
+[Yuri] Overloads, reloading instances. And, in short, where to put them, so that it was correct.  We've been debugging it in this manual mode for almost six months. Did they debug the algorithm to work properly? Who is the Paralympic code? Them or you? Strictly. Now they will be on the handbrake, we give the data, they are the results. And so on for several iterations. And for each iteration, we will decide that everything is OK, the algorithm is ready to tag it.
+
+48:23
+[Misha] It boils down to wrapping their own person code the power of minaj developers who know Python just fasten web-rest handles to it and wrap it in a microservice and that's all and they can continue working on their code if anything, add it, change it, you will definitely need it and we have access to ... who has a little bit, at least sniffed Python who will you find online? a couple of people in our codochki bekondiny so, then to be honest, you don't have these people in your team?
+
+48:53
+[Yuri] Meaning? with us?  Logistics, what kind of pair does a person need? There's enough for everyone.  Person 6 or 7 minutes.
+
+49:19
+[Misha] Since it is very early for me to switch to Java, if you give me a clear stack and at least a little bit of your code to look at, your agreements and so on, and pass the code that you can support, in principle, you can also. It doesn't seem right to me, but in principle you could show me some piece of it there, or it's just the wrappers of these mathematicians, right?   Oh, the wrappers?  Well, in short, I'm interested in both scenarios. First, you will wrap my code, and I would like to see how you are doing with MPS and what you have done with them.
+
+49:48
+[Yuri] Well, show me the code of this microservice Well, they wrapped it up with a microservice Because it's much easier to design everything so that it can be done directly, there is no advance, the design is very simple You have to write a function that gets everything it needs as input And then it can be turned into a microservice
+
+## Section 3: Phase 2 Strategy (50:15–56:46)
+
+50:15
+[Yuri] She does not assume that this data is somewhere in her personal database she is stupid, everything goes to the entrance, as input pramty is transmitted she even processes something and gives herself the result of G-Sony this is important purely for performance I have a feeling that this may not be very optimal
+
+50:43
+[Yuri] It seems to me that just here, if we save a lot of different data, well, now we have, okay, there, well, just think, there are several tens of megabytes, these CSWs, it's not much, everything is scary.  But you do understand that if we say that our forecast should be linked to them there, and we do it there for the entire district, and there we pull up a lot of data about the weather, real estate and everything else, then these jeans can be quite heavy if we constantly pull this algorithm, then there is a person out there rebuilding these forecasts. Then write to Javi and we'll just...
+
+51:14
+[Misha] Instead of mocaps on Gson, you can still work on mocaps, but then these mocaps will be replaced with requests in ClickHouse In short, let's do it differently.  I need to understand, here is the data that you gave me in Excel, where do they live? In ClickHouse, the guys who did math for you, did you also just give them all the data in the form of some Excel and everything else?
+
+51:44
+[Yuri] You didn't give them access to the prikhouse, so they got an aesthetic data shot? They work exactly as I said, then they took a function in which we pass them all the data they need in JSON, let's say a container-toschetki yes, a large JSON, which is terrible, everything is spinning there somewhere within the framework of one CD at least here, maybe even one VM in the end and that's all, and they work with it and give us JSON already
+
+52:13
+[Misha] Okay, well, because here in debt it is not very optimal, if we are talking about a real strategy based on data, it will become the core of the product, and we should work in a good way with this clickhouse. Now I have a question for you: how do you work with this clickhouse?  What does the product architecture look like in general?  It has its own language, ala SQL.  I mean, what...
+
+### Deployment & Scaling (52:43–54:25)
+
+52:43
+[Yuri] Well, you said, for example, that you have a microservice architecture, you still have a monolith, the main part of the product is a monolith. In the microservice, there is all sorts of authorization, here it is as usual, just a little, just a little bit.  Clickhouse, you don't close the microservice that some part of the monolith works directly with clickhouse, right?
+
+52:59
+[Misha] And house is a separate technical microservice I understand everything there yes that is, I understand everything if this is a separate docker container I understand everything here is what I needed to understand where it can be at all somewhere lying around it doesn't matter yes the main thing is that you have it this is a microservice everything now I understand everything you will need to set up interaction in the best possible way well not for me of course you will have to continue the interaction of my code with this microservice directly but without these intermediaries and flying jasons
+
+53:28
+[Misha] It's like this... Because, I understand, look how I really see it, that the forecast will be as good as the actual data is good. In other words, you need to make a forecast in the moment. Accordingly, at the time of making the forecast, we need to pull up the maximum data up to this point.  Accordingly, if we say that this data needs to be updated somewhere, then any synchronization and so on is a giveaway. Accordingly, it would be better...
+
+53:57
+[Yuri] So that they are collected directly from ClickHouse, so that the body knows the algorithms. It's better if you just have a function that takes this data from somewhere anyway. It can be pozgaz. It can be anything. You just have a function that receives this data as input.  I don't care how they turned out. Well, come on so that I'm just now, why do I ask a question, because now I have all this on my knee is very crooked, why do I show you a dozen drops, and not all.
+
+54:25
+[Misha] Because the current architecture will not pull more I can do this, I can't do it anymore, respectively, I need to understand now I thought, okay, I'll do my bodgress and it will be fine now I understand that it will certainly be fine, but then you redo it and throw it out you do a demo of the algorithm at all, not even the algorithm itself just like I led the concept do what you want as long as there was something to show me clearly but my task is to make as much of it as possible useful
+
+54:53
+[Yuri] That's why I'm asking you, Yes, but don't do anything useless just for that.  Do exactly what I'm showing you. Give me some time to spare. Yes, that's why it's such a curve. Then, for example, if you gave me a very representative sample of KPSH idishnikov, where it is clear that forecasting is valuable. I wish I knew. Well, yes, that would be fun. And so I had to pick up this one. Only you can say that I'm good at such-and-such KPSHS there.
+
+55:22
+[Yuri] There's even an even simpler question. It's not good, I quickly see the error there. Namely, where does filling in occur during adequate periods? Forecasting... Filling out the CSR.  They are all filled in after the fact.  Well, look, this is filling up half a percent a day.  And this is filled out there in two days.
+
+55:50
+[Misha] I don't know what these are you choose so that I have different reserve ones the sample was quite enough maybe you have data on their exports in fact this is all that they completely described it all where is more where is less well okay in short in general the picture clears up I can ask you on I really hope I can here
+
+56:19
+[Misha] How to spend 2 minutes of time. What else would I like to do with you, but not now, but just talk to you, that you are the development process, the company structure, and so on. And I have one idea that I realized is much better, everything that I told you, let me make a new Greenfield project.  The idea is very simple, that after talking from all sides,
+
+56:46
+
+---
+## Raw Timestamps
+Original timestamps: 45:10–56:46
+Source: jury-en-EDITED-3-FIXED.txt lines 302-376

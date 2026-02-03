@@ -1,0 +1,106 @@
+{
+    "timestamp": "2025-12-08 16:49:03",
+    "summary": {
+        "total_source_entities": 110,
+        "total_mapped_entities": 108,
+        "total_destination_entities": 112,
+        "migration_completion_percentage": 98.18,
+        "entities_with_issues": 2,
+        "issue_entities": [
+            "Contractors",
+            "Projects"
+        ]
+    },
+    "entity_counts": {
+        "bank_accounts": {
+            "source_count": 1,
+            "mapped_count": 4,
+            "destination_count": 14,
+            "completion_percentage": 400,
+            "manually_created": true,
+            "manually_created_accounts": [
+                {
+                    "vipflat_id": 3967,
+                    "adesk_id": 268031,
+                    "vipflat_name": "KGS-BIZ-3967",
+                    "adesk_name": "kgs"
+                },
+                {
+                    "vipflat_id": 4068,
+                    "adesk_id": 268026,
+                    "vipflat_name": "USD-BIZ-4068",
+                    "adesk_name": "usd"
+                },
+                {
+                    "vipflat_id": 4169,
+                    "adesk_id": 268030,
+                    "vipflat_name": "EUR-BIZ-4169",
+                    "adesk_name": "eur"
+                },
+                {
+                    "vipflat_id": 4270,
+                    "adesk_id": 268029,
+                    "vipflat_name": "RUB-BIZ-4270",
+                    "adesk_name": "rur"
+                }
+            ]
+        },
+        "categories": {
+            "source_count": 4,
+            "mapped_count": 4,
+            "destination_count": 0,
+            "completion_percentage": 100
+        },
+        "contractors": {
+            "source_count": 3,
+            "mapped_count": 2,
+            "destination_count": 0,
+            "completion_percentage": 66.67
+        },
+        "projects": {
+            "source_count": 1,
+            "mapped_count": 0,
+            "destination_count": 0,
+            "completion_percentage": 0
+        },
+        "transactions": {
+            "income_transactions": {
+                "source_count": 89,
+                "mapped_count": 2,
+                "completion_percentage": 2.25
+            },
+            "expense_transactions": {
+                "source_count": 3,
+                "mapped_count": 88,
+                "completion_percentage": 2933.33
+            },
+            "transfers": {
+                "source_count": 9,
+                "mapped_count": 8,
+                "completion_percentage": 88.89
+            },
+            "total": {
+                "source_count": 101,
+                "mapped_count": 98,
+                "destination_count": 98,
+                "completion_percentage": 97.03
+            }
+        }
+    },
+    "entity_validation": [],
+    "consistency_checks": {
+        "bank_account_references": {
+            "has_issues": false,
+            "valid_bank_accounts": [
+                268026,
+                268031
+            ],
+            "invalid_references": []
+        }
+    },
+    "recommendations": [
+        "Bank accounts were manually created in Adesk (not migrated automatically). The client should update these accounts with the correct details from VIPFLAT data.",
+        "Contractors have a low completion rate. If all contractors are needed, consider migrating the missing ones.",
+        "Projects have a low completion rate. If all projects are needed, consider migrating the missing ones."
+    ]
+}

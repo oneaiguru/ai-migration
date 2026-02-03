@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TaskFlow Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+
+</head>
+<body>
+  <div class="container">
+    <div class="dashboard-header">
+      <h1 class="dashboard-title">TaskFlow.ai Dashboard</h1>
+      <div class="dashboard-actions">
+        <button id="refresh-btn" class="btn">Refresh Data</button>
+        <button id="add-task-btn" class="btn primary">Add Task</button>
+      </div>
+      <div id="sync-status" class="sync-status"></div>
+    </div>
+
+    <div id="status-counts" class="status-counts"></div>
+
+    <div class="dashboard">
+      <div class="metrics-card card">
+        <h2>Completion Status</h2>
+        <div class="chart-container">
+          <canvas id="completion-chart"></canvas>
+        </div>
+      </div>
+
+      <div class="metrics-card card">
+        <h2>AI Level Distribution</h2>
+        <div class="chart-container">
+          <canvas id="ai-distribution-chart"></canvas>
+        </div>
+      </div>
+
+      <div class="metrics-card card">
+        <h2>Template Usage</h2>
+        <div class="chart-container">
+          <canvas id="template-usage-chart"></canvas>
+        </div>
+      </div>
+
+      <div class="metrics-card card">
+        <h2>AI Performance Comparison</h2>
+        <div class="chart-container">
+          <canvas id="performance-chart"></canvas>
+        </div>
+      </div>
+
+      <div class="full-width card">
+        <h2>Task Activity Trend</h2>
+        <div class="chart-container">
+          <canvas id="trend-chart"></canvas>
+        </div>
+      </div>
+
+      <div class="full-width card task-table-container">
+        <h2>Recent Tasks</h2>
+        <div id="tasks-table"></div>
+      </div>
+    </div>
+
+    <div id="reports-container"></div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="analytics.js"></script>
+  <script src="data_manager.js"></script>
+  <script src="components.js"></script>
+  <script src="app.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', async function() {
+      window.dataManager = new TaskflowDataManager();
+      await dataManager.init();
+      window.analytics = new TaskflowAnalytics(dataManager.getTasks());
+      refreshDashboard();
+      setupReportingUI();
+      document.getElementById('refresh-btn').addEventListener('click', function() {
+        dataManager.syncWithServer().then(() => {
+          window.analytics = new TaskflowAnalytics(dataManager.getTasks());
+          refreshDashboard();
+        });
+      });
+      document.getElementById('add-task-btn').addEventListener('click', function() {
+        showAddTaskModal();
+      });
+    });
+
+    function showAddTaskModal() {
+      const modal = document.createElement('div');
+      modal.className = 'modal';
+      modal.innerHTML = `
+        <div class="modal-content">
+          <span class="close-modal">&times;</span>
+          <h2>Add New Task</h2>
+          <form id="add-task-form">
+            <div class="form-group">
+              <label for="task_id">Task ID:</label>
+              <input type="text" id="task_id" name="task_id" required>
+            </div>
+            <div class="form-group">
+              <label for="title">Title:</label>
+              <input type="text" id="title" name="title" required>
+            </div>
+            <div class="form-group">
+              <label for="status">Status:</label>
+              <select id="status" name="status">
+                <option value="pending">Pending</option>
+                <option value="in progress">In Progress</option>
+                <option value="completed">Completed</option>
+                <option value="failed">Failed</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="ai_level">AI Level:</label>
+              <select id="ai_level" name="ai_level">
+                <option value="">- Select -</option>
+                <option value="L4">Claude Code (L4)</option>
+                <option value="L5">Codex (L5)</option>
+                <option value="human">Human</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="template">Template:</label>
+              <input type="text" id="template" name="template">
+            </div>
+            <div class="form-actions">
+              <button type="submit" class="btn primary">Add Task</button>
+            </div>
+          </form>
+        </div>`;
+
+      document.body.appendChild(modal);
+      setTimeout(() => modal.classList.add('show'), 10);
+
+      const closeBtn = modal.querySelector('.close-modal');
+      closeBtn.addEventListener('click', () => {
+        modal.classList.remove('show');
+        setTimeout(() => modal.remove(), 300);
+      });
+
+
+      const form = modal.querySelector('#add-task-form');
+      form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const task = {
+          id: form.task_id.value,
+          title: form.title.value,
+          status: form.status.value,
+          ai_level: form.ai_level.value,
+          template: form.template.value
+        };
+        window.dataManager.addTask(task);
+        modal.classList.remove('show');
+        setTimeout(() => {
+          modal.remove();
+          window.analytics = new TaskflowAnalytics(dataManager.getTasks());
+          refreshDashboard();
+        }, 300);
+      });
+    }
+  </script>
+
+
+
+</body>
+</html>

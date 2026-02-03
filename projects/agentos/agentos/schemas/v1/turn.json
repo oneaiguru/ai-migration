@@ -1,0 +1,28 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Turn",
+  "type": "object",
+  "required": [
+    "turn_id",
+    "session_id",
+    "model",
+    "subagent",
+    "tokens_in",
+    "tokens_out",
+    "input_kind",
+    "latency_ms"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "turn_id": {"type": "string"},
+    "session_id": {"type": "string"},
+    "model": {"type": "string"},
+    "subagent": {"type": "string"},
+    "tokens_in": {"type": "integer", "minimum": 0},
+    "tokens_out": {"type": "integer", "minimum": 0},
+    "input_kind": {"type": "string", "enum": ["text", "image", "other"]},
+    "latency_ms": {"type": "number", "minimum": 0},
+    "attribution": {"type": "object", "additionalProperties": {"type": "number"}},
+    "capacity_used": {"type": ["number", "null"], "minimum": 0}
+  }
+}

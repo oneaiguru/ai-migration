@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Прогноз объемов на КП - Demo</title>
+
+    <!-- Ant Design CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/antd@5.12.0/dist/reset.css">
+
+    <!-- React and ReactDOM -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+
+    <!-- Babel Standalone for JSX -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <!-- Ant Design -->
+    <script src="https://cdn.jsdelivr.net/npm/antd@5.12.0/dist/antd.min.js"></script>
+
+    <!-- Day.js for date handling -->
+    <script src="https://cdn.jsdelivr.net/npm/dayjs@1.11.10/dayjs.min.js"></script>
+
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: #f5f5f5;
+            padding: 0;
+            margin: 0;
+        }
+
+        .demo-container {
+            max-width: 100%;
+            margin: 0 auto;
+            padding: 24px;
+        }
+
+        .site-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .site-card {
+            background: white;
+            border-radius: 6px;
+            padding: 16px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+            cursor: pointer;
+            transition: all 0.2s;
+            border: 2px solid transparent;
+        }
+
+        .site-card:hover {
+            box-shadow: 0 2px 6px rgba(0,0,0,0.12);
+        }
+
+        .site-card.selected {
+            border-color: #1890ff;
+        }
+
+        .site-id {
+            font-size: 16px;
+            font-weight: 600;
+            color: #262626;
+            margin-bottom: 4px;
+        }
+
+        .site-location {
+            font-size: 13px;
+            color: #8c8c8c;
+            margin-bottom: 2px;
+            line-height: 1.4;
+        }
+
+        .site-address {
+            font-size: 13px;
+            color: #8c8c8c;
+            margin-bottom: 12px;
+            line-height: 1.4;
+        }
+
+        .fill-bar {
+            height: 6px;
+            background: #f0f0f0;
+            border-radius: 3px;
+            overflow: hidden;
+            margin-bottom: 8px;
+        }
+
+        .fill-progress {
+            height: 100%;
+            background: #1890ff;
+            transition: width 0.3s;
+        }
+
+        .fill-range {
+            font-size: 12px;
+            color: #8c8c8c;
+            margin-bottom: 4px;
+        }
+
+        .site-stats {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            color: #595959;
+            margin-top: 4px;
+        }
+
+        .wape {
+            font-weight: 600;
+            color: #262626;
+        }
+
+        .date-range-text {
+            font-size: 12px;
+            color: #bfbfbf;
+            margin-top: 8px;
+        }
+
+        /* Chart Container */
+        .chart-container {
+            background: #fafafa;
+            padding: 24px;
+            border-radius: 8px;
+            min-height: 320px;
+            position: relative;
+            margin-bottom: 16px;
+        }
+
+        .y-axis-label {
+            position: absolute;
+            left: 8px;
+            top: 8px;
+            font-size: 12px;
+            color: #8c8c8c;
+            font-weight: 600;
+        }
+
+        .bar-chart {
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            height: 280px;
+            gap: 8px;
+            padding-top: 40px;
+        }
+
+        .bar-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+        }
+
+        .collection-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #ff4d4f;
+            border: 2px solid white;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            cursor: pointer;
+            margin-bottom: 4px;
+            transition: transform 0.2s;
+        }
+
+        .collection-dot:hover {
+            transform: scale(1.2);
+        }
+
+        .bar {
+            border-radius: 4px 4px 0 0;
+            cursor: pointer;
+            transition: all 0.2s;
+            min-height: 2px;
+        }
+
+        .bar.historical {
+            background: #1890ff;
+        }
+
+        .bar.historical:hover {
+            background: #40a9ff;
+        }
+
+        .bar.forecast {
+            background: #52c41a;
+        }
+
+        .bar.forecast:hover {
+            background: #73d13d;
+        }
+
+        .date-label {
+            font-size: 10px;
+            color: #8c8c8c;
+            margin-top: 4px;
+            white-space: nowrap;
+            transform: rotate(-45deg);
+            transform-origin: top center;
+        }
+
+        .date-label.forecast {
+            color: #52c41a;
+            font-weight: 600;
+        }
+
+        .legend {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            background: white;
+            padding: 12px;
+            border-radius: 4px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            font-size: 12px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 6px;
+        }
+
+        .legend-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .legend-color {
+            width: 16px;
+            height: 12px;
+            border-radius: 2px;
+            margin-right: 8px;
+        }
+
+        .legend-color.circle {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .summary-card {
+            text-align: left;
+        }
+
+        .summary-label {
+            font-size: 12px;
+            color: #8c8c8c;
+            margin-bottom: 4px;
+        }
+
+        .summary-value {
+            font-size: 24px;
+            font-weight: 600;
+            color: #262626;
+        }
+
+        .summary-value.forecast {
+            color: #52c41a;
+        }
+
+        .info-banner {
+            background: white;
+            border-left: 4px solid #13c2c2;
+            border-radius: 0;
+            padding: 16px 20px;
+            margin-bottom: 24px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+        }
+
+        .info-banner h3 {
+            margin: 0 0 4px 0;
+            color: #262626;
+            font-size: 15px;
+            font-weight: 600;
+        }
+
+        .info-banner p {
+            margin: 0;
+            color: #595959;
+            font-size: 13px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 6px;
+            padding: 20px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+        }
+
+        .stat-label {
+            font-size: 13px;
+            color: #8c8c8c;
+            margin-bottom: 8px;
+        }
+
+        .stat-value {
+            font-size: 28px;
+            font-weight: 600;
+            color: #262626;
+        }
+
+        .stat-value.orange {
+            color: #fa8c16;
+        }
+
+        .stat-detail {
+            font-size: 12px;
+            color: #8c8c8c;
+            margin-top: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+        const { Modal, Radio, DatePicker, Button, Card, Row, Col, Tooltip } = antd;
+        const { RangePicker } = DatePicker;
+
+        // Sample data matching the PDF specification
+        const MOCK_SITES = [
+            {
+                id: '38111698',
+                name: 'Левый берег',
+                location: 'Культукская, 109',
+                fillFrom: 3.2,
+                fillTo: 22.6,
+                wape: 15.2,
+                dateRange: '2024-07-01 — 2024-07-07'
+            },
+            {
+                id: '38127141',
+                name: 'Иркутский район',
+                location: '2 км автодороги Иркутск-Ново...',
+                fillFrom: 1.9,
+                fillTo: 13.3,
+                wape: 27.8,
+                dateRange: '2024-07-01 — 2024-07-07'
+            },
+            {
+                id: '38127171',
+                name: 'Левый берег',
+                location: 'Сергеева 3/4 (гарник "К" Вкусн...',
+                fillFrom: 1.9,
+                fillTo: 13.3,
+                wape: 46.1,
+                dateRange: '2024-07-01 — 2024-07-07'
+            }
+        ];
+
+        const generateMockData = (siteId) => {
+            const historical = [
+                { date: '2024-07-01', accumulation: 2.1, collection: null },
+                { date: '2024-07-02', accumulation: 2.3, collection: null },
+                { date: '2024-07-03', accumulation: 2.8, collection: null },
+                { date: '2024-07-04', accumulation: 3.2, collection: null },
+                { date: '2024-07-05', accumulation: 1.8, collection: 12.5, collectionDetails: { trips: 2, weight: 10.04, dayOfWeek: 'ПТ' } },
+                { date: '2024-07-06', accumulation: 2.0, collection: null },
+                { date: '2024-07-07', accumulation: 2.4, collection: null },
+            ];
+
+            const forecast = [
+                { date: '2024-07-08', accumulation: 2.6 },
+                { date: '2024-07-09', accumulation: 2.8 },
+                { date: '2024-07-10', accumulation: 3.0 },
+                { date: '2024-07-11', accumulation: 3.2 },
+                { date: '2024-07-12', accumulation: 3.3 },
+                { date: '2024-07-13', accumulation: 2.1 },
+                { date: '2024-07-14', accumulation: 2.4 },
+            ];
+
+            const actualVolume = historical.reduce((sum, d) => sum + d.accumulation, 0);
+            const forecastVolume = forecast.reduce((sum, d) => sum + d.accumulation, 0);
+
+            return { historical, forecast, actualVolume, forecastVolume };
+        };
+
+        const aggregateData = (data, mode) => {
+            if (mode === 'daily') return data;
+
+            // For demo purposes, just return daily data
+            // In production, implement proper weekly/monthly aggregation
+            return data;
+        };
+
+        const formatDate = (dateStr) => {
+            const date = new Date(dateStr);
+            return `${date.getDate()}.${date.getMonth() + 1}`;
+        };
+
+        const formatFullDate = (dateStr) => {
+            const date = new Date(dateStr);
+            return `${String(date.getDate()).padStart(2, '0')}.${String(date.getMonth() + 1).padStart(2, '0')}.${date.getFullYear()}`;
+        };
+
+        const BarChart = ({ data, viewMode }) => {
+            const getBarWidth = () => {
+                switch (viewMode) {
+                    case 'daily': return 24;
+                    case 'weekly': return 48;
+                    case 'monthly': return 72;
+                    default: return 24;
+                }
+            };
+
+            const barWidth = getBarWidth();
+
+            return (
+                <div className="bar-chart">
+                    {/* Historical bars */}
+                    {data.historical.map((point, idx) => (
+                        <div key={`hist-${idx}`} className="bar-container">
+                            {point.collection && (
+                                <Tooltip title={
+                                    <div>
+                                        <div>Вывоз {point.collectionDetails?.dayOfWeek} {formatFullDate(point.date)}</div>
+                                        <div>Рейсов: {point.collectionDetails?.trips}</div>
+                                        <div>Объем: {point.collection} м³</div>
+                                        <div>Вес: {point.collectionDetails?.weight} т</div>
+                                    </div>
+                                }>
+                                    <div className="collection-dot" />
+                                </Tooltip>
+                            )}
+
+                            <Tooltip title={`${formatFullDate(point.date)}: Факт ${point.accumulation} м³`}>
+                                <div
+                                    className="bar historical"
+                                    style={{
+                                        width: `${barWidth}px`,
+                                        height: `${point.accumulation * 30}px`
+                                    }}
+                                />
+                            </Tooltip>
+
+                            <div className="date-label">
+                                {formatDate(point.date)}
+                            </div>
+                        </div>
+                    ))}
+
+                    {/* Forecast bars */}
+                    {data.forecast.map((point, idx) => (
+                        <div key={`fore-${idx}`} className="bar-container">
+                            <Tooltip title={`${formatFullDate(point.date)}: Прогноз ${point.accumulation} м³`}>
+                                <div
+                                    className="bar forecast"
+                                    style={{
+                                        width: `${barWidth}px`,
+                                        height: `${point.accumulation * 30}px`
+                                    }}
+                                />
+                            </Tooltip>
+
+                            <div className="date-label forecast">
+                                {formatDate(point.date)}
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            );
+        };
+
+        const ContainerHistoryDialog = ({ visible, siteId, siteName, onClose }) => {
+            const [viewMode, setViewMode] = useState('daily');
+            const data = generateMockData(siteId);
+
+            return (
+                <Modal
+                    title="Объем накопления на КП"
+                    open={visible}
+                    onCancel={onClose}
+                    width={800}
+                    footer={[
+                        <Button key="cancel" onClick={onClose}>
+                            Отменить
+                        </Button>,
+                        <Button key="save" type="primary">
+                            Сохранить
+                        </Button>
+                    ]}
+                >
+                    {/* Toolbar */}
+                    <Row gutter={16} style={{ marginBottom: 24 }}>
+                        <Col>
+                            <Radio.Group
+                                value={viewMode}
+                                onChange={(e) => setViewMode(e.target.value)}
+                                buttonStyle="solid"
+                            >
+                                <Radio.Button value="daily">За сутки</Radio.Button>
+                                <Radio.Button value="weekly">Неделю</Radio.Button>
+                                <Radio.Button value="monthly">Месяц</Radio.Button>
+                            </Radio.Group>
+                        </Col>
+                        <Col flex={1}>
+                            <RangePicker
+                                style={{ width: '100%' }}
+                                format="DD.MM.YYYY"
+                                defaultValue={[dayjs('2024-07-01'), dayjs('2024-07-07')]}
+                            />
+                        </Col>
+                        <Col>
+                            <div style={{ fontSize: 12, color: '#8c8c8c', marginBottom: 4 }}>Срез данных</div>
+                            <DatePicker format="DD.MM.YYYY" defaultValue={dayjs('2024-07-07')} />
+                        </Col>
+                    </Row>
+
+                    {/* Chart Area */}
+                    <div className="chart-container">
+                        <div className="y-axis-label">м³</div>
+
+                        <BarChart data={data} viewMode={viewMode} />
+
+                        {/* Legend */}
+                        <div className="legend">
+                            <div className="legend-item">
+                                <div className="legend-color" style={{ background: '#1890ff' }} />
+                                <span>Факт</span>
+                            </div>
+                            <div className="legend-item">
+                                <div className="legend-color" style={{ background: '#52c41a' }} />
+                                <span>Прогноз</span>
+                            </div>
+                            <div className="legend-item">
+                                <div className="legend-color circle" style={{ background: '#ff4d4f' }} />
+                                <span>Вывоз</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Summary Stats */}
+                    <Row gutter={16}>
+                        <Col span={12}>
+                            <Card size="small" className="summary-card">
+                                <div className="summary-label">
+                                    Объем факт с 01.11.2024 до 07.11.2024
+                                </div>
+                                <div className="summary-value">
+                                    {data.actualVolume.toFixed(1)} м³
+                                </div>
+                            </Card>
+                        </Col>
+                        <Col span={12}>
+                            <Card size="small" className="summary-card">
+                                <div className="summary-label">
+                                    Объем прогноз с 08.11.2024 до 14.11.2024
+                                </div>
+                                <div className="summary-value forecast">
+                                    {data.forecastVolume.toFixed(1)} м³
+                                </div>
+                            </Card>
+                        </Col>
+                    </Row>
+                </Modal>
+            );
+        };
+
+        const App = () => {
+            const [dialogVisible, setDialogVisible] = useState(false);
+            const [selectedSite, setSelectedSite] = useState(null);
+
+            const openDialog = (site) => {
+                setSelectedSite(site);
+                setDialogVisible(true);
+            };
+
+            return (
+                <div className="demo-container">
+                    <h1 style={{ marginBottom: 24, fontSize: 24, fontWeight: 600 }}>Прогноз объемов на КП</h1>
+
+                    <div className="info-banner">
+                        <h3>Готово к работе</h3>
+                        <p>Нажмите на любую карточку КП, чтобы открыть диалог "История и прогноз объемов"</p>
+                    </div>
+
+                    {/* Site Cards */}
+                    <div className="site-cards">
+                        {MOCK_SITES.map(site => (
+                            <div
+                                key={site.id}
+                                className={`site-card ${selectedSite?.id === site.id ? 'selected' : ''}`}
+                                onClick={() => openDialog(site)}
+                            >
+                                <div className="site-id">{site.id}</div>
+                                <div className="site-location">{site.name}</div>
+                                <div className="site-address">{site.location}</div>
+                                <div className="fill-bar">
+                                    <div
+                                        className="fill-progress"
+                                        style={{ width: `${site.fillTo}%` }}
+                                    />
+                                </div>
+                                <div className="fill-range">{site.fillFrom}% → {site.fillTo}%</div>
+                                <div className="site-stats">
+                                    <span className="wape">WAPE {site.wape}%</span>
+                                </div>
+                                <div className="date-range-text">
+                                    {site.dateRange}
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+
+                    {/* Stats Cards (matching the existing UI) */}
+                    {selectedSite && (
+                        <div className="stats-grid">
+                            <div className="stat-card">
+                                <div className="stat-label">Суммарный объём, м³</div>
+                                <div className="stat-value">467.22</div>
+                            </div>
+                            <div className="stat-card">
+                                <div className="stat-label">Суммарный вес, кг</div>
+                                <div className="stat-value">467,223.2</div>
+                            </div>
+                            <div className="stat-card">
+                                <div className="stat-label">Дней с накоплением</div>
+                                <div className="stat-value">11</div>
+                            </div>
+                            <div className="stat-card">
+                                <div className="stat-label">Точность (WAPE)</div>
+                                <div className="stat-value orange">{selectedSite.wape}%</div>
+                                <div className="stat-detail">Факт: 495,3 м³ • Прогноз: 357,8 м³</div>
+                            </div>
+                        </div>
+                    )}
+
+                    {/* Dialog */}
+                    {selectedSite && (
+                        <ContainerHistoryDialog
+                            visible={dialogVisible}
+                            siteId={selectedSite.id}
+                            siteName={selectedSite.name}
+                            onClose={() => setDialogVisible(false)}
+                        />
+                    )}
+                </div>
+            );
+        };
+
+        // Render the app
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+</html>

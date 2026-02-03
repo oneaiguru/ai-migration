@@ -1,0 +1,42 @@
+{
+  "react-component": {
+    "version": "1.0",
+    "display_name": "React Component",
+    "description": "Implement a React functional component",
+    "categories": ["frontend", "component"],
+    "ai_level": "L5",
+    "prompt": "Create a React functional component named {{componentName}} with the following props:\n\n{{props}}\n\nRequirements:\n{{requirements}}\n\nImplement the component following these guidelines:\n- Use TypeScript with proper type definitions\n- Include prop validation\n- Use hooks for state management if needed\n- Add comprehensive JSDoc comments\n- Include a simple test file\n\nMake sure the component is accessible, performant, and follows our project's best practices."
+  },
+  "api-endpoint": {
+    "version": "1.0",
+    "display_name": "API Endpoint",
+    "description": "Implement a REST API endpoint",
+    "categories": ["backend", "api"],
+    "ai_level": "L5",
+    "prompt": "Implement a {{method}} endpoint for {{resource}} that handles the following:\n\n{{requirements}}\n\nSpecifications:\n- Path: {{path}}\n- Request format: {{requestFormat}}\n- Response format: {{responseFormat}}\n- Error handling: Implement proper validation and error responses\n- Security: Ensure proper authentication and authorization\n\nImplement this endpoint following RESTful best practices and include appropriate tests."
+  },
+  "bug-fix": {
+    "version": "1.0",
+    "display_name": "Bug Fix",
+    "description": "Fix a bug in existing code",
+    "categories": ["maintenance"],
+    "ai_level": "L4",
+    "prompt": "Fix the following bug in our codebase:\n\nIssue: {{issueDescription}}\n\nReproduction steps:\n{{reproductionSteps}}\n\nExpected behavior: {{expectedBehavior}}\nActual behavior: {{actualBehavior}}\n\nAfter investigating, implement a fix that addresses the root cause while ensuring no regression in existing functionality. Include tests that verify the fix works correctly."
+  },
+  "feature-implementation": {
+    "version": "1.0",
+    "display_name": "Feature Implementation",
+    "description": "Implement a new feature based on specifications",
+    "categories": ["feature"],
+    "ai_level": "L5",
+    "prompt": "Implement the following feature:\n\n{{featureDescription}}\n\nRequirements:\n{{requirements}}\n\nTechnical constraints:\n{{constraints}}\n\nImplement this feature ensuring it meets all requirements and follows our project's best practices. Include appropriate tests and documentation."
+  },
+  "code-optimization": {
+    "version": "1.0",
+    "display_name": "Code Optimization",
+    "description": "Optimize existing code for performance or readability",
+    "categories": ["maintenance"],
+    "ai_level": "L4",
+    "prompt": "Optimize the following code for {{optimizationGoal}}:\n\n```\n{{codeToOptimize}}\n```\n\nCurrent issues:\n{{currentIssues}}\n\nOptimize this code while maintaining its functionality. Document your optimization approach and provide before/after performance metrics if applicable."
+  }
+}

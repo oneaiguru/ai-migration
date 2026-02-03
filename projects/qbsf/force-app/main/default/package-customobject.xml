@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Package xmlns="http://soap.sforce.com/2006/04/metadata">
+    <types>
+        <members>QuickBooks_Settings__c</members>
+        <name>CustomObject</name>
+    </types>
+    <types>
+        <members>QuickBooks_Settings__c.Middleware_URL__c</members>
+        <members>QuickBooks_Settings__c.API_Key__c</members>
+        <members>QuickBooks_Settings__c.QB_Realm_ID__c</members>
+        <name>CustomField</name>
+    </types>
+    <version>57.0</version>
+</Package>

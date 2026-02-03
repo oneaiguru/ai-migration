@@ -1,0 +1,2 @@
+UI Prod: https://mytko-forecast-ui.vercel.app
+Demo default date: 2024-08-03

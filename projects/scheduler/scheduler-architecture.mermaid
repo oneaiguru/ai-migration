@@ -1,0 +1,41 @@
+flowchart TB
+    subgraph "Input Sources"
+        A1[Project List] --> P
+        A2[Voice Notes] --> P
+        A3[Communications] --> P
+        A4[Bug Reports] --> P
+    end
+
+    subgraph "Processing Layer"
+        P[Task Parser] --> D[Task Distributor]
+        D --> B1[Project Batching]
+        D --> B2[Proposal Generation]
+        D --> B3[Bug Fix Prioritization]
+        D --> B4[Communication Handler]
+        D --> B5[Notes Processor]
+    end
+
+    subgraph "Execution Layer"
+        B1 --> C1[DeepSeek-R1\nHigh Reasoning]
+        B2 --> C1
+        B3 --> C2[DeepSeek-V3\nCode Generation]
+        B4 --> C1
+        B5 --> C1
+    end
+
+    subgraph "Scheduling Layer"
+        C1 --> S1[Peak-Time Tasks]
+        C1 --> S2[Off-Peak Tasks]
+        C2 --> S1
+        C2 --> S2
+        S1 --> E[Task Execution]
+        S2 --> E
+    end
+
+    subgraph "Output Layer"
+        E --> O1[Daily Task List]
+        E --> O2[Project Proposals]
+        E --> O3[Code Solutions]
+        E --> O4[Communication Drafts]
+        E --> O5[Strategic Summaries]
+    end

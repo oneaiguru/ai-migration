@@ -1,0 +1,7 @@
+.DS_Store
+*.zip
+*.parquet
+*.xlsx
+backtest_*/
+forecast_*/
+_incoming/

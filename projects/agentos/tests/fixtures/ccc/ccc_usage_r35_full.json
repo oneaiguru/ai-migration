@@ -1,0 +1,56 @@
+{
+  "ts": 1761268000.0,
+  "path": "configs/quotas.json",
+  "models": {
+    "claude-haiku-4.5": {
+      "provider": "zai",
+      "rolling_in": 4200,
+      "rolling_out": 3900,
+      "rolling_pct": 0.42,
+      "weekly_pct": 0.18,
+      "reqs": 112,
+      "warn": false,
+      "block": false,
+      "warn_pct_auto": 0.72,
+      "warn_pct_confidence": 0.35,
+      "gap_seconds_p50": 12,
+      "gap_seconds_p95": 48,
+      "gap_samples": 14,
+      "speeds": {
+        "rolling": {
+          "out_elr_tps": 38.7,
+          "out_dirty_tps": 31.2,
+          "in_elr_tps": 15.4,
+          "in_dirty_tps": 12.1,
+          "total_elr_tps": 54.1,
+          "total_dirty_tps": 43.3
+        }
+      }
+    },
+    "claude-3.5-sonnet": {
+      "provider": "anthropic",
+      "rolling_in": 7800,
+      "rolling_out": 6500,
+      "rolling_pct": 0.65,
+      "weekly_pct": 0.32,
+      "reqs": 88,
+      "warn": true,
+      "block": false,
+      "warn_pct_auto": 0.78,
+      "warn_pct_confidence": 0.52,
+      "gap_seconds_p50": 24,
+      "gap_seconds_p95": 60,
+      "gap_samples": 22,
+      "speeds": {
+        "rolling": {
+          "out_elr_tps": 28.9,
+          "out_dirty_tps": 22.5,
+          "in_elr_tps": 19.4,
+          "in_dirty_tps": 15.1,
+          "total_elr_tps": 48.3,
+          "total_dirty_tps": 37.6
+        }
+      }
+    }
+  }
+}

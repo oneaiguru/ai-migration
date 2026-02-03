@@ -1,0 +1,10 @@
+{
+  "repo": "projects/salesvocieanalytics",
+  "pr_index": 2,
+  "total_prs": 3,
+  "branch": "import-salesvocieanalytics-02-fb1",
+  "base_sha": "60bd90f4f02726eb2d10554fd49f72beda534df8",
+  "state": "open",
+  "last_codex_check": "",
+  "requires_rebase": false
+}

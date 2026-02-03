@@ -1,0 +1,52 @@
+// InvoiceQBSyncTrigger.trigger - с обработкой поля поставщика
+
+trigger InvoiceQBSyncTrigger on invgen__Invoice__c (after insert, after update) {
+    List<invgen__Invoice__c> invoicesToSync = new List<invgen__Invoice__c>();
+    
+    // Загружаем связанные сделки для проверки поставщика
+    Set<Id> opportunityIds = new Set<Id>();
+    for (invgen__Invoice__c invoice : Trigger.new) {
+        if (invoice.invgen__Opportunity__c != null) {
+            opportunityIds.add(invoice.invgen__Opportunity__c);
+        }
+    }
+    
+    // Получаем сделки с полем поставщика
+    Map<Id, Opportunity> opportunitiesMap = new Map<Id, Opportunity>([
+        SELECT Id, Supplier__c
+        FROM Opportunity
+        WHERE Id IN :opportunityIds
+    ]);
+    
+    for (invgen__Invoice__c invoice : Trigger.new) {
+        // Проверяем условия для отправки в QB
+        if (Trigger.isInsert || (Trigger.isUpdate && invoice.invgen__Status__c != Trigger.oldMap.get(invoice.Id).invgen__Status__c)) {
+            // Только отправляем в QB, если статус изменился на "Approved"
+            if (invoice.invgen__Status__c == 'Approved') {
+                // Проверяем поставщика, если есть связанная сделка
+                if (invoice.invgen__Opportunity__c != null) {
+                    Opportunity relatedOpp = opportunitiesMap.get(invoice.invgen__Opportunity__c);
+                    
+                    // Только отправляем, если поставщик - US компания или не указан
+                    if (relatedOpp == null || 
+                        relatedOpp.Supplier__c == null || 
+                        relatedOpp.Supplier__c == 'US' ||
+                        relatedOpp.Supplier__c == 'USA') {
+                        invoicesToSync.add(invoice);
+                    } else {
+                        // Логируем пропущенный счет
+                        System.debug('Skipping invoice ' + invoice.Id + ' for non-US supplier: ' + relatedOpp.Supplier__c);
+                    }
+                } else {
+                    // Если нет связанной сделки, по умолчанию отправляем
+                    invoicesToSync.add(invoice);
+                }
+            }
+        }
+    }
+    
+    if (!invoicesToSync.isEmpty()) {
+        // Вызываем отложенный процесс для отправки в QB
+        System.enqueueJob(new QBInvoiceSyncQueueable(invoicesToSync));
+    }
+}

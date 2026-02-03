@@ -1,0 +1,22 @@
+# Server Configuration
+PORT=3000
+NODE_ENV=development
+MIDDLEWARE_BASE_URL=http://localhost:3000
+
+# Salesforce Configuration
+SF_CLIENT_ID=your_salesforce_client_id
+SF_CLIENT_SECRET=your_salesforce_client_secret
+SF_REDIRECT_URI=http://localhost:3000/auth/salesforce/callback
+SF_LOGIN_URL=https://login.salesforce.com
+
+# QuickBooks Configuration
+QB_CLIENT_ID=your_quickbooks_client_id
+QB_CLIENT_SECRET=your_quickbooks_client_secret
+QB_REDIRECT_URI=http://localhost:3000/auth/quickbooks/callback
+QB_ENVIRONMENT=sandbox
+
+# API Security
+API_KEY=your_api_key_here
+
+# Demo Mode
+DEMO_MODE=false

@@ -1,0 +1,46 @@
+usage: claude-monitor [-h] [--plan {pro,max5,max20,custom}]
+                      [--view {realtime,daily,monthly,session}]
+                      [--timezone str] [--time-format str]
+                      [--theme {light,dark,classic,auto}]
+                      [--custom-limit-tokens {int,null}] [--refresh-rate int]
+                      [--refresh-per-second float] [--reset-hour {int,null}]
+                      [--log-level str] [--log-file {Path,null}]
+                      [--debug | --no-debug] [--version | --no-version]
+                      [--clear | --no-clear]
+
+claude-monitor - Real-time token usage monitoring for Claude AI
+
+optional arguments:
+  -h, --help            show this help message and exit
+  --plan {pro,max5,max20,custom}
+                        Plan type (pro, max5, max20, custom) (default: custom)
+  --view {realtime,daily,monthly,session}
+                        View mode (realtime, daily, monthly, session)
+                        (default: realtime)
+  --timezone str        Timezone for display (auto-detected from system).
+                        Examples: UTC, America/New_York, Europe/London,
+                        Europe/Warsaw, Asia/Tokyo, Australia/Sydney (default:
+                        auto)
+  --time-format str     Time format (12h or 24h, auto-detected from system)
+                        (default: auto)
+  --theme {light,dark,classic,auto}
+                        Display theme (light, dark, classic, auto) (default:
+                        auto)
+  --custom-limit-tokens {int,null}
+                        Token limit for custom plan (default: null)
+  --refresh-rate int    Refresh rate in seconds (default: 10)
+  --refresh-per-second float
+                        Display refresh rate per second (0.1-20 Hz). Higher
+                        values use more CPU (default: 0.75)
+  --reset-hour {int,null}
+                        Reset hour for daily limits (0-23) (default: null)
+  --log-level str       Logging level (default: INFO)
+  --log-file {Path,null}
+                        Log file path (default: null)
+  --debug, --no-debug   Enable debug logging (equivalent to --log-level DEBUG)
+                        (default: False) (default: ==SUPPRESS==)
+  --version, --no-version
+                        Show version information (default: False) (default:
+                        ==SUPPRESS==)
+  --clear, --no-clear   Clear saved configuration (default: False) (default:
+                        ==SUPPRESS==)

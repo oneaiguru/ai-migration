@@ -1,0 +1,86 @@
+/**
+ * HTTP Callout class for QuickBooks integration
+ * Handles all API communication with the middleware
+ */
+public with sharing class QuickBooksCallout {
+    
+    // Custom metadata or custom settings for configuration
+    private static final String MIDDLEWARE_URL = 'https://your-middleware.com'; // Replace with actual URL
+    private static final String API_KEY = 'your_api_key_here'; // Store in custom metadata
+    
+    /**
+     * Create invoice in QuickBooks via middleware
+     */
+    public static String createInvoice(Id opportunityId) {
+        // Prepare request
+        HttpRequest req = new HttpRequest();
+        req.setEndpoint(MIDDLEWARE_URL + '/api/create-invoice');
+        req.setMethod('POST');
+        req.setHeader('Content-Type', 'application/json');
+        req.setHeader('X-API-Key', API_KEY);
+        req.setTimeout(60000); // 60 seconds
+        
+        // Prepare request body
+        Map<String, Object> requestBody = new Map<String, Object>();
+        requestBody.put('opportunityId', opportunityId);
+        
+        req.setBody(JSON.serialize(requestBody));
+        
+        // Make callout
+        Http http = new Http();
+        HttpResponse res = http.send(req);
+        
+        // Check response
+        if (res.getStatusCode() != 200) {
+            throw new CalloutException('Error from middleware: ' + res.getStatus() + ' - ' + res.getBody());
+        }
+        
+        return res.getBody();
+    }
+    
+    /**
+     * Check payment status via middleware
+     */
+    public static String checkPaymentStatus() {
+        // Prepare request
+        HttpRequest req = new HttpRequest();
+        req.setEndpoint(MIDDLEWARE_URL + '/api/check-payment-status');
+        req.setMethod('POST');
+        req.setHeader('Content-Type', 'application/json');
+        req.setHeader('X-API-Key', API_KEY);
+        req.setTimeout(60000);
+        
+        // Empty body for checking all invoices
+        req.setBody('{}');
+        
+        // Make callout
+        Http http = new Http();
+        HttpResponse res = http.send(req);
+        
+        if (res.getStatusCode() != 200) {
+            throw new CalloutException('Error from middleware: ' + res.getStatus());
+        }
+        
+        return res.getBody();
+    }
+    
+    /**
+     * Test connection to middleware
+     */
+    public static Boolean testConnection() {
+        try {
+            HttpRequest req = new HttpRequest();
+            req.setEndpoint(MIDDLEWARE_URL + '/api/test-connection');
+            req.setMethod('GET');
+            req.setHeader('X-API-Key', API_KEY);
+            req.setTimeout(10000);
+            
+            Http http = new Http();
+            HttpResponse res = http.send(req);
+            
+            return res.getStatusCode() == 200;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+}

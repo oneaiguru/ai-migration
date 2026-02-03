@@ -1,0 +1,46 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# UI pre-commit hook: warn >350 lines, block >500 lines for TS/TSX
+
+THRESH_WARN=350
+THRESH_FAIL=500
+
+warn_list=()
+fail_list=()
+
+is_allowed() {
+  local f="$1"
+  case "$f" in
+    *.ts|*.tsx)
+      grep -q '^// @allow-large-file:' "$f" && return 0 || return 1 ;;
+    *) return 1 ;;
+  esac
+}
+
+mapfile -t STAGED < <(git diff --cached --name-only --diff-filter=ACM | grep -E '\.(ts|tsx)$' || true)
+
+for f in "${STAGED[@]}"; do
+  [ -f "$f" ] || continue
+  n=$(wc -l < "$f" | tr -d ' ')
+  if [ "$n" -gt "$THRESH_WARN" ] && ! is_allowed "$f"; then
+    warn_list+=("$f:$n")
+  fi
+  if [ "$n" -gt "$THRESH_FAIL" ] && ! is_allowed "$f"; then
+    fail_list+=("$f:$n")
+  fi
+done
+
+if [ ${#warn_list[@]} -gt 0 ]; then
+  echo "[pre-commit] Warning: TS/TSX files exceeding ${THRESH_WARN} lines:" >&2
+  for it in "${warn_list[@]}"; do echo "  - $it (consider split or add // @allow-large-file:<ticket>)" >&2; done
+fi
+
+if [ ${#fail_list[@]} -gt 0 ]; then
+  echo "[pre-commit] Error: TS/TSX files exceeding ${THRESH_FAIL} lines without allow marker:" >&2
+  for it in "${fail_list[@]}"; do echo "  - $it" >&2; done
+  exit 2
+fi
+
+exit 0
+

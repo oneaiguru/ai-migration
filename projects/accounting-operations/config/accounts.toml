@@ -1,0 +1,55 @@
+[[account]]
+id = "1280026055073967"
+alias = "KGS-BIZ-3967"
+currency = "KGS"
+type = "business"
+status = ""
+
+[[account]]
+id = "1280026055074068"
+alias = "USD-BIZ-4068"
+currency = "USD"
+type = "business"
+status = ""
+
+[[account]]
+id = "1280026055074169"
+alias = "EUR-BIZ-4169"
+currency = "EUR"
+type = "business"
+status = ""
+
+[[account]]
+id = "1280026055074270"
+alias = "RUB-BIZ-4270"
+currency = "RUB"
+type = "business"
+status = ""
+
+[[account]]
+id = "1280166055398178"
+alias = "KGS-PER-8178"
+currency = "KGS"
+type = "personal"
+status = ""
+
+[[account]]
+id = "1280166055398279"
+alias = "USD-PER-8279"
+currency = "USD"
+type = "personal"
+status = ""
+
+[[account]]
+id = "1280166055397976"
+alias = "RUB-PER-7976"
+currency = "RUB"
+type = "personal"
+status = ""
+
+[[account]]
+id = "1280166055398077"
+alias = "EUR-PER-8077"
+currency = "EUR"
+type = "personal"
+status = "archived"

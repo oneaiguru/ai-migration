@@ -1,0 +1,158 @@
+**Reasoning for Changes**
+You asked whether we really need the two **missing research files** and, if yes, to provide them now in our standard multi‑file update format. Yes—both files are needed to keep the **docs index complete** and to give the team a starting point for citations and curated links. Below I provide:
+
+* `docs/research/bibliography.bib` — a usable starter BibTeX with core, stable sources (reconciliation, baselines, competition results, ML baselines, deep nets, metrics).
+* `docs/research/links.csv` — a curated link table (query/title/url/source_type/included/reason) you can grow over time.
+
+No code behavior changes—docs only.
+
+```markdown
+# docs/research/bibliography.bib
+@comment{Starter bibliography for MSW forecasting. Keep entries primary and stable.}
+
+@book{HyndmanAthanasopoulosFPP3,
+  title   = {Forecasting: Principles and Practice},
+  author  = {Hyndman, Rob J. and Athanasopoulos, George},
+  edition = {3},
+  year    = {2021},
+  url     = {https://otexts.com/fpp3/},
+  note    = {Open textbook; baselines, ETS, ARIMA, reconciliation background}
+}
+
+@article{WickramasuriyaMinT2019,
+  title   = {Optimal Forecast Reconciliation for Hierarchical and Grouped Time Series Through Trace Minimization},
+  author  = {Wickramasuriya, Shanika L. and Athanasopoulos, George and Hyndman, Rob J.},
+  journal = {International Journal of Forecasting},
+  year    = {2019},
+  volume  = {35},
+  number  = {3},
+  pages   = {554--570},
+  doi     = {10.1016/j.ijforecast.2018.07.004}
+}
+
+@article{MakridakisM4_2018,
+  title   = {The M4 Competition: Results, Findings, Conclusion and Way Forward},
+  author  = {Makridakis, Spyros and Spiliotis, Evangelos and Assimakopoulos, Vassilis},
+  journal = {International Journal of Forecasting},
+  year    = {2018},
+  volume  = {34},
+  number  = {4},
+  pages   = {802--808},
+  doi     = {10.1016/j.ijforecast.2018.06.001}
+}
+
+@article{DeLiveraTBATS2011,
+  title   = {Forecasting Time Series with Complex Seasonal Patterns Using Exponential Smoothing},
+  author  = {De Livera, Alysha M. and Hyndman, Rob J. and Snyder, Ralph D.},
+  journal = {Journal of the American Statistical Association},
+  year    = {2011},
+  volume  = {106},
+  number  = {496},
+  pages   = {1513--1527},
+  doi     = {10.1198/jasa.2011.tm09771}
+}
+
+@inproceedings{OreshkinNBEATS2020,
+  title   = {N-BEATS: Neural Basis Expansion Analysis for Interpretable Time Series Forecasting},
+  author  = {Oreshkin, Boris and Carpov, Danila and Chapados, Nicolas and Bengio, Yoshua},
+  booktitle = {International Conference on Learning Representations (ICLR)},
+  year    = {2020},
+  url     = {https://arxiv.org/abs/1905.10437}
+}
+
+@article{LimZohrenTFT2021,
+  title   = {Temporal Fusion Transformers for Interpretable Multi-horizon Time Series Forecasting},
+  author  = {Lim, Bryan and Zohren, Stefan},
+  journal = {International Journal of Forecasting},
+  year    = {2021},
+  doi     = {10.1016/j.ijforecast.2021.03.012},
+  url     = {https://arxiv.org/abs/1912.09363}
+}
+
+@article{HyndmanKoehler2006,
+  title   = {Another Look at Measures of Forecast Accuracy},
+  author  = {Hyndman, Rob J. and Koehler, Anne B.},
+  journal = {International Journal of Forecasting},
+  year    = {2006},
+  volume  = {22},
+  number  = {4},
+  pages   = {679--688},
+  doi     = {10.1016/j.ijforecast.2006.03.001}
+}
+
+@article{MakridakisM5_2022,
+  title   = {The M5 Competition: Results, Findings and Conclusions},
+  author  = {Makridakis, Spyros and Spiliotis, Evangelos and Assimakopoulos, Vassilis and others},
+  journal = {International Journal of Forecasting},
+  year    = {2022},
+  doi     = {10.1016/j.ijforecast.2021.11.008}
+}
+
+@article{RandallIDWThiessenReview,
+  title   = {A Review of Spatial Interpolation Methods for Environmental Data},
+  author  = {Li, Jianming and Heap, Andrew},
+  journal = {Environmental Modelling \& Software},
+  year    = {2014},
+  doi     = {10.1016/j.envsoft.2013.12.018},
+  note    = {Covers IDW, Thiessen (Voronoi), kriging trade-offs}
+}
+
+@misc{CopernicusERA5Land,
+  title  = {ERA5-Land Reanalysis},
+  author = {Copernicus Climate Change Service},
+  year   = {2020},
+  url    = {https://cds.climate.copernicus.eu/cdsapp#!/dataset/reanalysis-era5-land}
+}
+
+@misc{MeteostatDocs,
+  title  = {Meteostat Python Library Documentation},
+  author = {Meteostat Foundation},
+  year   = {2024},
+  url    = {https://dev.meteostat.net/python/}
+}
+
+# docs/research/links.csv
+query,title,url,source_type,included,reason
+"FPP3 textbook","Forecasting: Principles and Practice (3e)","https://otexts.com/fpp3/","book",true,"Baselines, ETS/ARIMA, reconciliation background"
+"MinT reconciliation","Optimal Forecast Reconciliation (Trace Minimization)","https://doi.org/10.1016/j.ijforecast.2018.07.004","paper",true,"When/why to reconcile; variants incl. OLS/Shrinkage"
+"M4 competition","The M4 Competition results","https://doi.org/10.1016/j.ijforecast.2018.06.001","paper",true,"Benchmarks and error measures practice"
+"TBATS paper","Complex seasonality with exponential smoothing","https://doi.org/10.1198/jasa.2011.tm09771","paper",true,"Multiple seasonalities (weekly+annual)"
+"N-BEATS","N-BEATS: Interpretable deep TS forecasting","https://arxiv.org/abs/1905.10437","paper",true,"DL baseline if we expand history/entities"
+"TFT","Temporal Fusion Transformers","https://arxiv.org/abs/1912.09363","paper",true,"Global multi-horizon model reference"
+"Accuracy measures","Another look at forecast accuracy","https://doi.org/10.1016/j.ijforecast.2006.03.001","paper",true,"WAPE/SMAPE/MAE context and pitfalls"
+"M5 competition","The M5 Competition results","https://doi.org/10.1016/j.ijforecast.2021.11.008","paper",false,"Retail panel; useful patterns but less direct to MSW"
+"ERA5-Land dataset","ERA5-Land reanalysis dataset page","https://cds.climate.copernicus.eu/cdsapp#!/dataset/reanalysis-era5-land","dataset",true,"Primary gridded weather source"
+"Meteostat","Meteostat Python docs","https://dev.meteostat.net/python/","docs",true,"Station daily data pull & schema"
+"geoBoundaries","geoBoundaries project","https://www.geoboundaries.org/","dataset",true,"District polygons source"
+"IDW vs Thiessen","Interpolation methods overview (Env. Modelling & Software)","https://doi.org/10.1016/j.envsoft.2013.12.018","paper",true,"Trade-offs to guide mapping parameters"
+"SMAPE pitfalls","Discussion of SMAPE pros/cons","https://otexts.com/fpp3/accuracy.html","docs",true,"Stakeholder explanation of metric choices"
+```
+
+---
+
+## Next step for the coding agent (docs‑only import PR)
+
+1. **Proceed with the docs import exactly as planned**, and include these two files so `docs/System/documentation-index.md` has no dead links:
+
+   * `docs/research/bibliography.bib`
+   * `docs/research/links.csv`
+
+2. **Update nothing else** (no code changes). Ensure:
+
+   * `docs_check` passes (index links resolve),
+   * `spec_sync` unchanged,
+   * Coverage gates unaffected.
+
+3. **PR title:** `docs: import research set + complete index (no behavior changes)`
+   **Acceptance:** CI docs check green; no Python code modified.
+
+---
+
+## After that
+
+* **PR #9** (backtest driver) — finish CI (green) and merge.
+* **Docs PR:** `docs/SOP/review-bundle.md` (optional but recommended; we can supply the file text if you want it in this same format).
+* **Offline A/B PR:** add the small local CLI when you’re ready to run correlations on your local zips; still **no forecast changes**.
+
+If you prefer, I can also hand you `docs/SOP/review-bundle.md` content now in the same multi‑file format—just say the word.
+

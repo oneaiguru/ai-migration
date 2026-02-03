@@ -1,0 +1,369 @@
+{
+  "project": "Rolling-Cutoff Demo",
+  "lastUpdated": "2025-12-28",
+  "phases": {
+    "phase1": {
+      "name": "Phase 1: Demo Polish",
+      "status": "COMPLETE",
+      "completed": 9,
+      "total": 9,
+      "estimatedHours": 6,
+      "tiers": {
+        "completed": {
+          "name": "Already Done",
+          "parallelizable": true,
+          "tasks": [
+            {
+              "id": "TASK-32",
+              "name": "Pre-generated bundles CLI",
+              "status": "DONE",
+              "file": "tasks/rolling-cutoff-demo/TASK-32_bundle_cli.md",
+              "estimatedMin": 40,
+              "dependencies": [],
+              "description": "CLI script generating CSV+Excel+JSON bundles"
+            },
+            {
+              "id": "TASK-33",
+              "name": "Export All button in UI",
+              "status": "DONE",
+              "file": "tasks/rolling-cutoff-demo/TASK-33_export_all_button.md",
+              "estimatedMin": 25,
+              "dependencies": [],
+              "description": "Add Excel export to all-sites table"
+            },
+            {
+              "id": "TASK-34",
+              "name": "Metrics upload (UI + API)",
+              "status": "DONE",
+              "file": "tasks/rolling-cutoff-demo/TASK-34_metrics_upload.md",
+              "estimatedMin": 35,
+              "dependencies": [],
+              "description": "Web form + endpoint for metrics.csv upload"
+            },
+            {
+              "id": "TASK-35",
+              "name": "Iteration dashboard",
+              "status": "DONE",
+              "file": "tasks/rolling-cutoff-demo/TASK-35_iteration_dashboard.md",
+              "estimatedMin": 35,
+              "dependencies": ["TASK-34"],
+              "description": "WAPE trend chart over iterations"
+            }
+          ]
+        },
+        "tier1": {
+          "name": "Independent Features (can start immediately)",
+          "parallelizable": true,
+          "description": "These 4-5 tasks have NO dependencies and can run in parallel",
+          "tasks": [
+            {
+              "id": "TASK-36",
+              "name": "Phase 1 PRD",
+              "status": "DONE",
+              "file": "tasks/rolling-cutoff-demo/TASK-36_phase1_prd.md",
+              "estimatedMin": 20,
+              "dependencies": [],
+              "description": "Documentation of scope, features, limitations",
+              "outputFile": "docs/PHASE1_PRD.md"
+            },
+            {
+              "id": "TASK-38",
+              "name": "Architecture diagram",
+              "status": "DONE",
+              "file": "tasks/rolling-cutoff-demo/TASK-38_architecture_diagram.md",
+              "estimatedMin": 25,
+              "dependencies": [],
+              "description": "Mermaid diagram showing system components",
+              "outputFile": "docs/ARCHITECTURE.md"
+            },
+            {
+              "id": "TASK-41",
+              "name": "Static HTML report",
+              "status": "DONE",
+              "file": "tasks/rolling-cutoff-demo/TASK-41_static_html_report.md",
+              "estimatedMin": 30,
+              "dependencies": [],
+              "description": "Self-contained HTML for browser viewing (top 500 sites)"
+            },
+            {
+              "id": "TASK-43",
+              "name": "Demo data bundle",
+              "status": "DONE",
+              "file": "tasks/rolling-cutoff-demo/TASK-43_demo_data_bundle.md",
+              "estimatedMin": 20,
+              "dependencies": [],
+              "description": "12-site curated dataset for demos",
+              "outputFile": "data/demo_sites_12.csv"
+            },
+            {
+              "id": "TASK-50",
+              "name": "Structured logging",
+              "status": "DONE",
+              "file": "tasks/rolling-cutoff-demo/TASK-50_structured_logging.md",
+              "estimatedMin": 35,
+              "dependencies": [],
+              "optional": true,
+              "description": "structlog + JSON output with request ID (production necessity)"
+            }
+          ]
+        },
+        "tier2": {
+          "name": "Docs Requiring Features (after Tier 1)",
+          "parallelizable": false,
+          "description": "Sequential tasks that require feature code from previous tiers",
+          "tasks": [
+            {
+              "id": "TASK-37",
+              "name": "OpenAPI export",
+              "status": "DONE",
+              "file": "tasks/rolling-cutoff-demo/TASK-37_openapi_export.md",
+              "estimatedMin": 15,
+              "dependencies": ["TASK-32", "TASK-34", "TASK-35"],
+              "description": "Export FastAPI openapi.json for documentation",
+              "outputFile": "docs/openapi.json"
+            },
+            {
+              "id": "TASK-39",
+              "name": "Quick Start Guide",
+              "status": "DONE",
+              "file": "tasks/rolling-cutoff-demo/TASK-39_quick_start_guide.md",
+              "estimatedMin": 25,
+              "dependencies": ["TASK-36"],
+              "description": "Step-by-step setup and first forecast",
+              "outputFile": "docs/QUICK_START.md"
+            },
+            {
+              "id": "TASK-40",
+              "name": "Integration tests",
+              "status": "DONE",
+              "file": "tasks/rolling-cutoff-demo/TASK-40_integration_tests.md",
+              "estimatedMin": 40,
+              "dependencies": ["TASK-32", "TASK-34", "TASK-35"],
+              "description": "Test bundle generation, metrics flow, API pipeline",
+              "outputFile": "tests/test_integration.py"
+            }
+          ]
+        },
+        "tier3": {
+          "name": "Final Documentation (after all features)",
+          "parallelizable": false,
+          "tasks": [
+            {
+              "id": "TASK-42",
+              "name": "Demo runbook",
+              "status": "DONE",
+              "file": "tasks/rolling-cutoff-demo/TASK-42_demo_runbook.md",
+              "estimatedMin": 30,
+              "dependencies": ["TASK-36", "TASK-37", "TASK-38", "TASK-39", "TASK-40", "TASK-41", "TASK-43"],
+              "description": "Step-by-step demo script for Artem",
+              "outputFile": "docs/DEMO_RUNBOOK.md"
+            }
+          ]
+        }
+      }
+    },
+    "phase2": {
+      "name": "Phase 2: Feedback Loop & Production",
+      "status": "COMPLETE",
+      "prerequisite": "Phase 1 must be COMPLETE",
+      "completed": 8,
+      "total": 8,
+      "estimatedHours": 4,
+      "tiers": {
+        "tierA": {
+          "name": "Independent Scoring Systems (can start in parallel)",
+          "parallelizable": true,
+          "description": "Three independent systems with no interdependencies",
+          "tasks": [
+            {
+              "id": "TASK-44",
+              "name": "Feedback API",
+              "status": "DONE",
+              "file": "tasks/rolling-cutoff-demo/TASK-44_feedback_api.md",
+              "estimatedMin": 25,
+              "dependencies": [],
+              "description": "POST /api/mytko/feedback endpoint"
+            },
+            {
+              "id": "TASK-47",
+              "name": "Quality score",
+              "status": "DONE",
+              "file": "tasks/rolling-cutoff-demo/TASK-47_quality_score.md",
+              "estimatedMin": 30,
+              "dependencies": [],
+              "description": "Per-site 0-100 score based on WAPE + completeness"
+            },
+            {
+              "id": "TASK-51",
+              "name": "Prometheus metrics",
+              "status": "DONE",
+              "file": "tasks/rolling-cutoff-demo/TASK-51_prometheus_metrics.md",
+              "estimatedMin": 35,
+              "dependencies": [],
+              "description": "/metrics endpoint with request count, duration, active forecasts"
+            }
+          ]
+        },
+        "tierB": {
+          "name": "Feedback UI (requires TASK-44)",
+          "parallelizable": false,
+          "tasks": [
+            {
+              "id": "TASK-45",
+              "name": "Feedback dashboard",
+              "status": "DONE",
+              "file": "tasks/rolling-cutoff-demo/TASK-45_feedback_dashboard.md",
+              "estimatedMin": 35,
+              "dependencies": ["TASK-44"],
+              "description": "React component showing helpful/unhelpful sites"
+            },
+            {
+              "id": "TASK-46",
+              "name": "Dispatcher annotation",
+              "status": "DONE",
+              "file": "tasks/rolling-cutoff-demo/TASK-46_dispatcher_annotation.md",
+              "estimatedMin": 25,
+              "dependencies": ["TASK-44", "TASK-45"],
+              "description": "Add reason dropdown + notes to feedback form"
+            }
+          ]
+        },
+        "tierC": {
+          "name": "Rollout Recommendations (requires TASK-47)",
+          "parallelizable": false,
+          "tasks": [
+            {
+              "id": "TASK-48",
+              "name": "Rollout recommendations",
+              "status": "DONE",
+              "file": "tasks/rolling-cutoff-demo/TASK-48_rollout_recommendations.md",
+              "estimatedMin": 30,
+              "dependencies": ["TASK-47"],
+              "description": "Categorize sites by readiness (ready_now/soon/needs_work/not_ready)"
+            },
+            {
+              "id": "TASK-49",
+              "name": "District readiness report",
+              "status": "DONE",
+              "file": "tasks/rolling-cutoff-demo/TASK-49_district_readiness_report.md",
+              "estimatedMin": 30,
+              "dependencies": ["TASK-47", "TASK-48"],
+              "description": "Aggregate scores by district with CSV export"
+            }
+          ]
+        },
+        "tierD": {
+          "name": "Production Deployment (last step - requires ALL above)",
+          "parallelizable": false,
+          "tasks": [
+            {
+              "id": "TASK-52",
+              "name": "Microservice packaging",
+              "status": "DONE",
+              "file": "tasks/rolling-cutoff-demo/TASK-52_microservice_packaging.md",
+              "estimatedMin": 40,
+              "dependencies": ["TASK-44", "TASK-45", "TASK-46", "TASK-47", "TASK-48", "TASK-49", "TASK-51"],
+              "description": "Dockerfile, docker-compose, health endpoint for production deploy"
+            }
+          ]
+        }
+      }
+    }
+  },
+  "executionStrategy": {
+    "phase1": {
+      "step1_parallel": {
+        "name": "Run Tier 1 in parallel (independent)",
+        "tasks": ["TASK-36", "TASK-38", "TASK-41", "TASK-43", "TASK-50"],
+        "estimatedHours": 1.5,
+        "notes": "All can run concurrently, no dependencies between them",
+        "status": "COMPLETE"
+      },
+      "step2_sequential": {
+        "name": "Run Tier 2 sequentially (requires features)",
+        "tasks": ["TASK-37", "TASK-39", "TASK-40"],
+        "estimatedHours": 1.5,
+        "notes": "TASK-37 needs API endpoints, TASK-39 needs TASK-36 PRD, TASK-40 needs features",
+        "status": "COMPLETE"
+      },
+      "step3_final": {
+        "name": "Run Tier 3 final documentation",
+        "tasks": ["TASK-42"],
+        "estimatedHours": 0.5,
+        "notes": "Requires all features and docs from Steps 1-2",
+        "status": "COMPLETE"
+      }
+    },
+    "phase2": {
+      "step1_parallel": {
+        "name": "Run Tier A in parallel (independent)",
+        "tasks": ["TASK-44", "TASK-47", "TASK-51"],
+        "estimatedHours": 1.5,
+        "notes": "Three independent systems, can all start simultaneously",
+        "status": "COMPLETE"
+      },
+      "step2_feedbackUI": {
+        "name": "Build Feedback UI (sequential after TASK-44)",
+        "tasks": ["TASK-45", "TASK-46"],
+        "estimatedHours": 1,
+        "notes": "TASK-45 depends on TASK-44, TASK-46 depends on both",
+        "status": "COMPLETE"
+      },
+      "step3_rollout": {
+        "name": "Build Rollout (sequential after TASK-47)",
+        "tasks": ["TASK-48", "TASK-49"],
+        "estimatedHours": 1,
+        "notes": "TASK-48 depends on TASK-47, TASK-49 depends on both",
+        "status": "COMPLETE"
+      },
+      "step4_deploy": {
+        "name": "Production packaging (last step)",
+        "tasks": ["TASK-52"],
+        "estimatedHours": 0.67,
+        "notes": "Requires all Phase 1 + all Phase 2 tasks complete",
+        "status": "COMPLETE"
+      }
+    }
+  },
+  "criticalPath": {
+    "phase1": {
+      "path": "TASK-32 → TASK-34 → TASK-35 → TASK-40 → TASK-42",
+      "estimatedMin": 180,
+      "notes": "Sequential dependency chain through API features and integration tests"
+    },
+    "phase2": {
+      "path_A": "TASK-44 → TASK-45 → TASK-46 → TASK-52 (85 min)",
+      "path_B": "TASK-47 → TASK-48 → TASK-49 → TASK-52 (90 min)",
+      "path_C": "TASK-51 → TASK-52 (75 min)",
+      "bottleneck": "TASK-52 (requires all paths to complete)",
+      "estimatedMin": 130,
+      "notes": "Multiple independent chains converging at TASK-52 microservice packaging"
+    }
+  },
+  "metadata": {
+    "totalTasks": 17,
+    "totalEstimatedHours": 10,
+    "phase1TotalTasks": 9,
+    "phase1CompletedTasks": 9,
+    "phase1RemainingTasks": 0,
+    "phase2TotalTasks": 8,
+    "phase2CompletedTasks": 8,
+    "phase2RemainingTasks": 0,
+    "createdDate": "2025-12-28",
+    "completedDate": "2025-12-28",
+    "branch": "rolling-cutoff-tasks-11-23"
+  },
+  "postExecution": {
+    "codeReview": "COMPLETE",
+    "transcriptReview": "COMPLETE",
+    "criticalFixesApplied": [
+      "Dockerfile: Python urllib health check (instead of curl)",
+      "api_app.py: Error handling in ingest_metrics endpoint"
+    ],
+    "reviewReports": [
+      "CODE_REVIEW_REPORT.md",
+      "TRANSCRIPT_REVIEW.md"
+    ],
+    "followUpTasks": []
+  }
+}

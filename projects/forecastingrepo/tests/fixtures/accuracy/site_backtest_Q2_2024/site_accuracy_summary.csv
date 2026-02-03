@@ -1,0 +1,3 @@
+site_id,year_month,actual,forecast,wape,accuracy_pct,abs_error
+Q2A,2024-05,50,60,0.2,80,10
+Q2B,2024-05,100,90,0.1,90,10

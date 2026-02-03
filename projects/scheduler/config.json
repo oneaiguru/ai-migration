@@ -1,0 +1,55 @@
+{
+  "api_config": {
+    "base_url": "https://api.deepseek.com",
+    "api_key": "",
+    "models": {
+      "reasoning": "deepseek-reasoner",
+      "general": "deepseek-chat"
+    }
+  },
+  "scheduling": {
+    "peak_hours": {
+      "start": "00:30",
+      "end": "16:30",
+      "timezone": "UTC"
+    },
+    "off_peak_hours": {
+      "start": "16:30",
+      "end": "00:30",
+      "timezone": "UTC"
+    },
+    "task_priority": {
+      "urgent_client_work": 10,
+      "client_deadlines": 9,
+      "bug_fixes_critical": 8,
+      "proposal_deadlines": 7,
+      "communication_responses": 6,
+      "bug_fixes_normal": 5,
+      "new_proposals": 4,
+      "note_processing": 3,
+      "personal_projects": 2,
+      "exploration": 1
+    },
+    "scheduling_strategy": {
+      "reasoning_intensive": "off_peak",
+      "code_generation": "off_peak",
+      "client_communication": "peak",
+      "proposal_reviews": "peak"
+    }
+  },
+  "file_paths": {
+    "project_list": "./data/projects.json",
+    "voice_transcripts": "./data/transcripts/",
+    "bug_reports": "./data/bugs/",
+    "communications": "./data/communications/",
+    "output_directory": "./outputs/"
+  },
+  "prompt_templates": {
+    "project_batching": "See project_batching.txt",
+    "project_execution": "See project_execution.txt",
+    "proposal_generation": "See proposal_generation.txt",
+    "bug_fix_prioritization": "See bug_fix_prioritization.txt",
+    "communication_handling": "See communication_handling.txt",
+    "notes_processing": "See notes_processing.txt"
+  }
+}

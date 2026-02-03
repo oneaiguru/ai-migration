@@ -1,0 +1,371 @@
+/**
+ * Webhook routes for real-time integration
+ * Handles incoming notifications from Salesforce and QuickBooks
+ */
+const express = require('express');
+const router = express.Router();
+const { apiKeyAuth } = require('../middleware/error-handler');
+const logger = require('../utils/logger');
+const jsforce = require('jsforce');
+const QuickBooks = require('node-quickbooks');
+const oauthManager = require('../services/oauth-manager');
+const config = require('../config');
+
+// Protect webhook routes with API key authentication
+router.use(apiKeyAuth);
+
+/**
+ * Webhook for Salesforce opportunity updates
+ * Processes real-time opportunity events from Salesforce
+ */
+router.post('/salesforce/opportunity', async (req, res, next) => {
+  try {
+    const { event, data, instanceUrl } = req.body;
+    
+    if (!event || !data || !instanceUrl) {
+      return res.status(400).json({
+        success: false,
+        error: 'Missing required parameters: event, data, or instanceUrl'
+      });
+    }
+    
+    logger.info(`Received Salesforce opportunity webhook: ${event}`, { 
+      opportunityId: data.id,
+      stage: data.stage
+    });
+    
+    // Check if this is a closed-won opportunity that needs invoice creation
+    if (event === 'opportunity.update' && data.stage === 'Closed Won') {
+      try {
+        // Queue invoice creation asynchronously
+        // This allows us to return a quick response to the webhook
+        // while processing continues in the background
+        process.nextTick(async () => {
+          try {
+            const tokens = await oauthManager.initializeTokenStorage();
+            const quickbooksRealms = Object.keys(tokens.quickbooks || {});
+            
+            if (quickbooksRealms.length === 0) {
+              logger.warn('Cannot process webhook: No QuickBooks connection available');
+              return;
+            }
+            
+            // We'll use the first available QuickBooks realm
+            const quickbooksRealm = quickbooksRealms[0];
+            
+            // Call the API to process this opportunity
+            await processOpportunity(instanceUrl, quickbooksRealm, data.id);
+            
+            logger.info(`Successfully processed webhook for opportunity ${data.id}`);
+          } catch (err) {
+            logger.error(`Error processing webhook for opportunity ${data.id}:`, err);
+          }
+        });
+        
+        // Return success immediately
+        return res.json({
+          success: true,
+          message: 'Webhook received and processing initiated'
+        });
+      } catch (err) {
+        logger.error('Error scheduling webhook processing:', err);
+        return res.status(500).json({
+          success: false,
+          error: 'Error scheduling webhook processing'
+        });
+      }
+    }
+    
+    // For other events, just acknowledge receipt
+    res.json({
+      success: true,
+      message: 'Webhook received'
+    });
+  } catch (error) {
+    logger.error('Error processing Salesforce webhook:', error);
+    next(error);
+  }
+});
+
+/**
+ * Webhook for QuickBooks payment updates
+ * Processes real-time payment events from QuickBooks
+ */
+router.post('/quickbooks/payment', async (req, res, next) => {
+  try {
+    const { event, data, realmId } = req.body;
+    
+    if (!event || !data || !realmId) {
+      return res.status(400).json({
+        success: false,
+        error: 'Missing required parameters: event, data, or realmId'
+      });
+    }
+    
+    logger.info(`Received QuickBooks payment webhook: ${event}`, { 
+      paymentId: data.id,
+      invoiceIds: data.invoiceIds // Array of affected invoice IDs
+    });
+    
+    // Check if this is a payment creation or update that needs processing
+    if ((event === 'payment.create' || event === 'payment.update') && data.invoiceIds && data.invoiceIds.length > 0) {
+      try {
+        // Queue payment processing asynchronously
+        process.nextTick(async () => {
+          try {
+            const tokens = await oauthManager.initializeTokenStorage();
+            const salesforceInstances = Object.keys(tokens.salesforce || {});
+            
+            if (salesforceInstances.length === 0) {
+              logger.warn('Cannot process webhook: No Salesforce connection available');
+              return;
+            }
+            
+            // We'll use the first available Salesforce instance
+            const salesforceInstance = salesforceInstances[0];
+            
+            // Process each affected invoice
+            for (const invoiceId of data.invoiceIds) {
+              await processPayment(salesforceInstance, realmId, invoiceId, data.id);
+            }
+            
+            logger.info(`Successfully processed webhook for payment ${data.id}`);
+          } catch (err) {
+            logger.error(`Error processing webhook for payment ${data.id}:`, err);
+          }
+        });
+        
+        // Return success immediately
+        return res.json({
+          success: true,
+          message: 'Webhook received and processing initiated'
+        });
+      } catch (err) {
+        logger.error('Error scheduling webhook processing:', err);
+        return res.status(500).json({
+          success: false,
+          error: 'Error scheduling webhook processing'
+        });
+      }
+    }
+    
+    // For other events, just acknowledge receipt
+    res.json({
+      success: true,
+      message: 'Webhook received'
+    });
+  } catch (error) {
+    logger.error('Error processing QuickBooks webhook:', error);
+    next(error);
+  }
+});
+
+/**
+ * Process a single opportunity by creating an invoice in QuickBooks
+ */
+async function processOpportunity(salesforceInstance, quickbooksRealm, opportunityId) {
+  try {
+    logger.info(`Processing opportunity ${opportunityId} via webhook`);
+    
+    // Get access tokens for both services
+    const sfAccessToken = await oauthManager.getSalesforceAccessToken(salesforceInstance);
+    const qbAccessToken = await oauthManager.getQuickBooksAccessToken(quickbooksRealm);
+    
+    // Create API clients
+    const sfConn = new jsforce.Connection({
+      instanceUrl: salesforceInstance,
+      accessToken: sfAccessToken
+    });
+    
+    const qbo = new QuickBooks(
+      config.quickbooks.clientId,
+      config.quickbooks.clientSecret,
+      qbAccessToken,
+      false, // no token secret for OAuth2
+      quickbooksRealm,
+      config.quickbooks.environment === 'sandbox',
+      false, // debugging
+      null, // minor version
+      '2.0' // OAuth version
+    );
+    
+    // Get opportunity details
+    const opp = await sfConn.sobject('Opportunity').retrieve(opportunityId);
+    
+    // Get account details
+    const account = await sfConn.sobject('Account').retrieve(opp.AccountId);
+    
+    // Get opportunity line items
+    const lineItemsResult = await sfConn.query(`
+      SELECT Id, PricebookEntry.Product2.Name, PricebookEntry.Product2.ProductCode,
+             Quantity, UnitPrice, TotalPrice, Description,
+             PricebookEntry.Product2.QB_Item_ID__c
+      FROM OpportunityLineItem
+      WHERE OpportunityId = '${opportunityId}'
+    `);
+    
+    // Find or create customer in QuickBooks
+    const customerQuery = `SELECT * FROM Customer WHERE DisplayName = '${account.Name.replace(/'/g, "\\'")}'`;
+    const existingCustomers = await new Promise((resolve, reject) => {
+      qbo.query(customerQuery, (err, data) => {
+        if (err) return reject(err);
+        resolve(data.QueryResponse.Customer || []);
+      });
+    });
+    
+    let customerId;
+    
+    if (existingCustomers.length > 0) {
+      // Use existing customer
+      customerId = existingCustomers[0].Id;
+    } else {
+      // Create new customer
+      const customerData = {
+        DisplayName: account.Name,
+        CompanyName: account.Name,
+        BillAddr: {
+          Line1: account.BillingStreet || '',
+          City: account.BillingCity || '',
+          CountrySubDivisionCode: account.BillingState || '',
+          PostalCode: account.BillingPostalCode || '',
+          Country: account.BillingCountry || ''
+        }
+      };
+      
+      const newCustomer = await new Promise((resolve, reject) => {
+        qbo.createCustomer(customerData, (err, customer) => {
+          if (err) return reject(err);
+          resolve(customer);
+        });
+      });
+      
+      customerId = newCustomer.Id;
+    }
+    
+    // Prepare line items
+    const invoiceLines = lineItemsResult.records.map(item => {
+      // Use QB_Item_ID__c if available, fallback to service item
+      const itemRef = item.PricebookEntry.Product2.QB_Item_ID__c ? 
+        { value: item.PricebookEntry.Product2.QB_Item_ID__c } : 
+        { name: "Services" };
+      
+      return {
+        DetailType: "SalesItemLineDetail",
+        Description: item.Description || item.PricebookEntry.Product2.Name,
+        Amount: item.TotalPrice,
+        SalesItemLineDetail: {
+          ItemRef: itemRef,
+          Qty: item.Quantity,
+          UnitPrice: item.UnitPrice
+        }
+      };
+    });
+    
+    // Add note referencing Salesforce
+    invoiceLines.push({
+      DetailType: "DescriptionOnly", 
+      Description: `Created from Salesforce Opportunity: ${opp.Name} (${opp.Id})`,
+      Amount: 0,
+      LineNum: 1
+    });
+    
+    // Create invoice in QuickBooks
+    const invoiceData = {
+      Line: invoiceLines,
+      CustomerRef: {
+        value: customerId
+      },
+      DocNumber: `SF-${opp.Id.substring(0, 8)}`,
+      TxnDate: new Date().toISOString().split('T')[0]
+    };
+    
+    const invoice = await new Promise((resolve, reject) => {
+      qbo.createInvoice(invoiceData, (err, invoice) => {
+        if (err) return reject(err);
+        resolve(invoice);
+      });
+    });
+    
+    // Update Salesforce opportunity with the invoice ID
+    await sfConn.sobject('Opportunity').update({
+      Id: opportunityId,
+      QB_Invoice_ID__c: invoice.Id
+    });
+    
+    logger.info(`Successfully created invoice ${invoice.Id} for opportunity ${opportunityId}`);
+    return true;
+  } catch (error) {
+    logger.error(`Error processing opportunity ${opportunityId} via webhook:`, error);
+    throw error;
+  }
+}
+
+/**
+ * Process a payment by updating Salesforce with payment details
+ */
+async function processPayment(salesforceInstance, quickbooksRealm, invoiceId, paymentId) {
+  try {
+    logger.info(`Processing payment for invoice ${invoiceId} via webhook`);
+    
+    // Get access tokens for both services
+    const sfAccessToken = await oauthManager.getSalesforceAccessToken(salesforceInstance);
+    const qbAccessToken = await oauthManager.getQuickBooksAccessToken(quickbooksRealm);
+    
+    // Create API clients
+    const sfConn = new jsforce.Connection({
+      instanceUrl: salesforceInstance,
+      accessToken: sfAccessToken
+    });
+    
+    const qbo = new QuickBooks(
+      config.quickbooks.clientId,
+      config.quickbooks.clientSecret,
+      qbAccessToken,
+      false, // no token secret for OAuth2
+      quickbooksRealm,
+      config.quickbooks.environment === 'sandbox',
+      false, // debugging
+      null, // minor version
+      '2.0' // OAuth version
+    );
+    
+    // Find the opportunity with this invoice ID
+    const opportunityResult = await sfConn.query(`
+      SELECT Id, Name 
+      FROM Opportunity 
+      WHERE QB_Invoice_ID__c = '${invoiceId}'
+    `);
+    
+    if (!opportunityResult.records || opportunityResult.records.length === 0) {
+      logger.warn(`No opportunity found with invoice ID ${invoiceId}`);
+      return false;
+    }
+    
+    const opportunityId = opportunityResult.records[0].Id;
+    
+    // Get payment details from QuickBooks
+    const payment = await new Promise((resolve, reject) => {
+      qbo.getPayment(paymentId, (err, payment) => {
+        if (err) return reject(err);
+        resolve(payment);
+      });
+    });
+    
+    // Update Salesforce with payment details
+    await sfConn.sobject('Opportunity').update({
+      Id: opportunityId,
+      QB_Payment_Date__c: payment.TxnDate,
+      QB_Payment_ID__c: payment.Id,
+      QB_Payment_Method__c: payment.PaymentMethodRef ? payment.PaymentMethodRef.name : 'Unknown',
+      QB_Payment_Amount__c: payment.TotalAmt
+    });
+    
+    logger.info(`Successfully updated opportunity ${opportunityId} with payment details`);
+    return true;
+  } catch (error) {
+    logger.error(`Error processing payment for invoice ${invoiceId} via webhook:`, error);
+    throw error;
+  }
+}
+
+module.exports = router;

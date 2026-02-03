@@ -1,0 +1,23 @@
+{
+  "$schema": "https://example.com/schemas/ccp.quotas.v1.json",
+  "windows": {
+    "rolling_seconds": 18000,
+    "weekly_seconds": 604800
+  },
+  "models": {
+    "claude-haiku-4.5": {
+      "provider": "zai",
+      "rolling_tokens": 300000,
+      "weekly_limit_type": "hours",
+      "weekly_limit_value": 40,
+      "warn_pct": 0.8
+    },
+    "claude-sonnet-4.5": {
+      "provider": "anth",
+      "rolling_tokens": 250000,
+      "weekly_limit_type": "hours",
+      "weekly_limit_value": 40,
+      "warn_pct": 0.8
+    }
+  }
+}

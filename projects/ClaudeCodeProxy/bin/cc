@@ -1,0 +1,919 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+ROOT_DIR="$(cd "${BASH_SOURCE[0]%/*}"/.. && pwd)"
+PROFILE="${CCP_PROFILE:-prod}"
+
+case "$PROFILE" in
+  dev)
+    LOGS_DIR="${CCP_LOGS_DIR:-$ROOT_DIR/logs/dev}"
+    RESULTS_DIR="${CCP_RESULTS_DIR:-$ROOT_DIR/results/dev}"
+    LICENSE_DIR="${CCP_LICENSE_DIR:-${XDG_CONFIG_HOME:-$HOME/.config}/ccc}"
+    ;;
+  prod|*)
+    LOGS_DIR="${CCP_LOGS_DIR:-$ROOT_DIR/logs}"
+    RESULTS_DIR="${CCP_RESULTS_DIR:-$ROOT_DIR/results}"
+    LICENSE_DIR="${CCP_LICENSE_DIR:-${XDG_CONFIG_HOME:-$HOME/.config}/ccp}"
+    ;;
+esac
+
+mkdir -p "$LOGS_DIR" "$RESULTS_DIR"
+
+USAGE_FILE="$LOGS_DIR/usage.jsonl"
+PORT_DEFAULT="${CCP_PORT_DEFAULT:-8082}"
+LICENSE_PACK_PATH="$LICENSE_DIR/license.pack"
+CCP_BIN="$ROOT_DIR/services/go-anth-shim/bin/ccp"
+: "${CCP_SESSION_BUDGET_TOKENS:=500000}"
+
+ensure_ccp_bin() {
+  if [[ -x "$CCP_BIN" ]]; then
+    return
+  fi
+  echo "[cc] Building Go shim (ccp) binary..."
+  (cd "$ROOT_DIR" && make go-shim-build >/dev/null)
+  if [[ ! -x "$CCP_BIN" ]]; then
+    echo "[cc] Failed to build services/go-anth-shim/bin/ccp" >&2
+    exit 1
+  fi
+}
+
+usage() {
+  cat <<'EOF'
+cc — ClaudeCodeProxy helper
+
+Usage:
+  cc mitm start [PORT]      Start MITM on PORT (default 8082)
+  cc mitm stop [PORT]       Stop MITM on PORT
+  cc mitm status [PORT]     Show MITM status on PORT
+  cc verify                 make summarize && make verify-routing
+  cc bundle                 make bundle
+  cc usage [--banner]       Show token usage meter (per-lane breakdown)
+  cc partials [clean|cat]   List or view partial-output files
+  cc model <name>           Set default model (writes ~/.config/ccp/model)
+  cc providers              Dump merged providers catalog (table)
+  cc status                 Show quotas/usage summary + speeds from the shim
+  cc quotas [show]          Show configured quota limits per model
+  cc quotas reload [FILE]   Hot-reload quotas from FILE (absolute or repo-relative)
+  cc hud [--interval N]     Live status table (default refresh every 5s)
+  cc h [PROMPT]             One-shot Haiku (proxied terminal expected)
+  cc s [PROMPT]             One-shot Sonnet (proxied or stock)
+  cc doctor                 Env and tools check
+  cc quota                  Z.AI usage in last 5h (counts/tokens)
+  cc productize-check       Safety checks + verify summary
+  cc two-up [PORT]          Open dual terminals (tmux): A=proxied, B=stock
+  cc license set <PACK>     Save a license pack string to ~/.config/ccp/license.pack
+  cc license status         Verify and display the current license pack
+  cc license login [--invite CODE] [--email you@example.com] [--issuer URL]
+                            Run the device flow, poll for completion, and persist the pack
+
+Notes:
+  - Run from repo root or ensure $PWD points to the repo.
+  - For proxied terminal, run: source scripts/sub-env.sh [PORT]
+EOF
+}
+
+need_repo_root() {
+  if [[ ! -f "$ROOT_DIR/Makefile" ]]; then
+    echo "[cc] Could not locate repo root (Makefile missing at $ROOT_DIR)" >&2
+    exit 1
+  fi
+}
+
+cmd_mitm_start() {
+  local port="${1:-$PORT_DEFAULT}"
+  (cd "$ROOT_DIR" && MITM_FILTER_CHAIN=1 MITM_PORT="$port" FORCE_HAIKU_TO_ZAI=1 make mitm)
+}
+
+cmd_mitm_stop() {
+  local port="${1:-$PORT_DEFAULT}"
+  (cd "$ROOT_DIR" && pkill -f "mitmdump.*-p $port" >/dev/null 2>&1 || true)
+  if [[ -f "$LOGS_DIR/mitm.pid" ]]; then
+    local pid; pid=$(cat "$LOGS_DIR/mitm.pid" || true)
+    if [[ -n "${pid:-}" ]]; then kill "$pid" >/dev/null 2>&1 || true; fi
+  fi
+  echo "[cc] Stopped MITM on :$port (if running)"
+}
+
+cmd_mitm_status() {
+  local port="${1:-$PORT_DEFAULT}"
+  local listening
+  listening=$(lsof -iTCP:"$port" -sTCP:LISTEN -n -P 2>/dev/null | rg mitmdump || true)
+  if [[ -n "$listening" ]]; then
+    echo "[cc] MITM listening on :$port"; echo "$listening" | head -n 1
+  else
+    echo "[cc] No mitmdump listening on :$port"
+  fi
+}
+
+cmd_verify() { (cd "$ROOT_DIR" && make summarize && make verify-routing); }
+cmd_bundle() { (cd "$ROOT_DIR" && make bundle); }
+
+cmd_model() {
+  local name="${1:-}"
+  if [[ -z "$name" ]]; then
+    echo "Usage: cc model <model-name>" >&2
+    return 1
+  fi
+  local cfg_dir="${XDG_CONFIG_HOME:-$HOME/.config}/ccp"
+  mkdir -p "$cfg_dir"
+  printf '%s\n' "$name" >"$cfg_dir/model"
+  echo "[model] default model set to $name"
+}
+
+cmd_providers() {
+  local override="${CCP_PROVIDERS_FILE:-}"
+  if [[ -n "$override" ]]; then
+    if [[ "$override" != /* ]]; then
+      override="$ROOT_DIR/$override"
+    fi
+  fi
+  local data
+  if ! data=$(cd "$ROOT_DIR/services/go-anth-shim" && CCP_PROVIDERS_FILE="$override" CCC_REPO_ROOT="$ROOT_DIR" go run ./cmd/ccp --print-providers 2>/dev/null); then
+    echo "[providers] failed to load catalog" >&2
+    return 1
+  fi
+  python3 <<'PY' <<<"$data"
+import json, sys
+
+payload = json.load(sys.stdin)
+path = payload.get("path", "<unknown>")
+print(f"[providers] source: {path}")
+
+providers = payload.get("providers", {}) or {}
+if providers:
+    header = f"{'NAME':<16} {'AUTH':<32} {'BASE_URL':<38} {'HEADER':<10} {'VIA':<10}"
+    print(header)
+    print('-' * len(header))
+    for name in sorted(providers):
+        entry = providers[name]
+        base = entry.get('base_url', '')
+        key = entry.get('key_env', '')
+        scoped = entry.get('scoped_env') or {}
+        header_mode = entry.get('header_mode', '')
+        if scoped:
+            pairs = [f"{k}:{v}" for k, v in sorted(scoped.items())]
+            auth = "scoped " + ",".join(pairs)
+        else:
+            auth = key
+        via = entry.get('via', '')
+        print(f"{name:<16} {auth:<32} {base:<38} {header_mode:<10} {via:<10}")
+    print()
+else:
+    print("[providers] no providers configured")
+
+routes = payload.get("routes") or []
+if routes:
+    print("Routes:")
+    for route in routes:
+        pattern = route.get('pattern', '')
+        provider = route.get('provider', '')
+        cost = route.get('cost_limit') or ''
+        if cost:
+            print(f"  - {pattern} \u2192 {provider} (cost<= {cost})")
+        else:
+            print(f"  - {pattern} \u2192 {provider}")
+PY
+}
+
+cmd_quotas() {
+  local sub="${1:-show}"
+  case "$sub" in
+    show|status|table)
+      local host=127.0.0.1
+      local port="${CCP_PORT_DEFAULT:-8082}"
+      local url="http://${host}:${port}/v1/quotas"
+      local data
+      if ! data=$(curl -sS "$url"); then
+        echo "[quotas] failed to fetch $url" >&2
+        return 1
+      fi
+      python3 <<'PY' <<<"$data"
+import json, sys
+
+payload = json.load(sys.stdin)
+path = payload.get('path', '<unknown>')
+loaded = payload.get('loaded', '')
+config = payload.get('config', {}) or {}
+windows = config.get('windows', {}) or {}
+models = config.get('models', {}) or {}
+
+print(f"[quotas] source: {path}")
+if loaded:
+    print(f"[quotas] loaded: {loaded}")
+roll = windows.get('rolling_seconds')
+week = windows.get('weekly_seconds')
+if roll or week:
+    rs = f"rolling={roll}s" if roll else ''
+    ws = f"weekly={week}s" if week else ''
+    print(f"[quotas] windows: {', '.join(x for x in (rs, ws) if x)}")
+
+if not models:
+    print("[quotas] no models configured")
+    sys.exit(0)
+
+header = f"{'MODEL':<24} {'PROVIDER':<10} {'ROLL_TOKENS':>12} {'WEEKLY':>12} {'TYPE':>6} {'WARN%':>7}"
+print(header)
+print('-' * len(header))
+for name in sorted(models):
+    cfg = models[name] or {}
+    provider = cfg.get('provider', '')
+    roll_tokens = cfg.get('rolling_tokens') or 0
+    weekly_val = cfg.get('weekly_limit_value') or 0
+    weekly_type = cfg.get('weekly_limit_type') or ''
+    warn_pct = cfg.get('warn_pct') or 0
+    print(f"{name:<24} {provider:<10} {roll_tokens:12} {weekly_val:12} {weekly_type:>6} {warn_pct*100:7.1f}")
+PY
+      ;;
+    reload)
+      shift || true
+      local file="${1:-}"
+      local host=127.0.0.1
+      local port="${CCP_PORT_DEFAULT:-8082}"
+      local url="http://${host}:${port}/v1/quotas/reload"
+      if [[ -n "$file" ]]; then
+        if [[ "$file" != /* ]]; then file="$ROOT_DIR/$file"; fi
+        local enc
+        enc=$(python3 - "$file" <<'PY'
+import sys, urllib.parse
+print(urllib.parse.quote(sys.argv[1]))
+PY
+)
+        url+="?file=${enc}"
+      fi
+      curl -sS -X POST "$url" -o /dev/null -w "[quotas] reload -> %s\n" "%{http_code}"
+      ;;
+    *)
+      echo "Usage: cc quotas [show|reload <FILE>]" >&2
+      return 1
+      ;;
+  esac
+}
+
+cmd_hud() {
+  local interval=5
+  while [[ $# -gt 0 ]]; do
+    case "$1" in
+      -i|--interval)
+        interval="${2:-5}"
+        shift 2 ;;
+      *)
+        echo "Usage: cc hud [--interval N]" >&2
+        return 1 ;;
+    esac
+  done
+  while true; do
+    if command -v tput >/dev/null 2>&1; then
+      tput clear
+    else
+      printf '\033c'
+    fi
+    printf '[hud] %s\n\n' "$(date '+%Y-%m-%d %H:%M:%S')"
+    cmd_status
+    echo
+    echo "Press Ctrl+C to exit"
+    sleep "$interval" || return 0
+  done
+}
+
+cmd_status() {
+  local format="table"
+  local debug_quota="0"
+  while [[ $# -gt 0 ]]; do
+    case "$1" in
+      --json)
+        format="json"
+        ;;
+      --debug-quota)
+        debug_quota="1"
+        ;;
+      --speeds)
+        # legacy flag; no-op because status already shows speeds
+        ;;
+      *)
+        echo "[cc] unknown flag for status: $1" >&2
+        return 1
+        ;;
+    esac
+    shift || true
+  done
+  local host=127.0.0.1
+  local port="${CCP_PORT_DEFAULT:-8082}"
+  local url="http://${host}:${port}/v1/usage"
+  local data
+  if ! data=$(curl -sS "$url"); then
+    echo "[cc] failed to fetch $url" >&2
+    return 1
+  fi
+  if [[ "$format" == "json" ]]; then
+    if command -v jq >/dev/null 2>&1; then
+      jq <<<"$data"
+    else
+      printf '%s\n' "$data"
+    fi
+    return 0
+  fi
+  local py=python3
+  command -v python3 >/dev/null 2>&1 || py=python
+  CC_STATUS_DEBUG="$debug_quota" printf '%s' "$data" | "$py" <<'PYSTATUS'
+import json, os, sys
+
+MIN_HOD_SAMPLES = 10
+
+DEBUG = os.environ.get("CC_STATUS_DEBUG") == "1"
+
+def fmt_pair(stats):
+    elr = stats.get("out_elr_tps") or 0.0
+    dirty = stats.get("out_dirty_tps") or 0.0
+    return f"{elr:.1f}/{dirty:.1f}"
+
+try:
+    payload = json.load(sys.stdin)
+except json.JSONDecodeError as err:
+    print(f"[cc] invalid JSON: {err}", file=sys.stderr)
+    sys.exit(1)
+
+models = payload.get("models", {})
+if not models:
+    print("[status] no usage data yet")
+    sys.exit(0)
+
+rows = []
+for model in sorted(models):
+    stats = models[model]
+    speeds = stats.get("speeds", {}) or {}
+    roll = speeds.get("rolling", {}) or {}
+    session = speeds.get("session", {}) or {}
+    ttft = speeds.get("ttft_ms", {}) or {}
+    hourly = speeds.get("hourly", []) or []
+
+    peak_candidates = []
+    for entry in hourly:
+        samples = entry.get("samples", 0)
+        if samples < MIN_HOD_SAMPLES:
+            continue
+        val = entry.get("out_elr_tps")
+        if val is None:
+            val = entry.get("out_dirty_tps")
+        if not val:
+            continue
+        peak_candidates.append((float(val), samples, entry.get("hour", 0)))
+    peak_candidates.sort(reverse=True, key=lambda tup: tup[0])
+    tops = [f"{hour:02d}h ({val:.1f})" for val, samples, hour in peak_candidates[:3]]
+    peak_str = ", ".join(tops) if tops else "-"
+
+    p50 = ttft.get("p50", 0.0)
+    p90 = ttft.get("p90", 0.0)
+    p99 = ttft.get("p99", 0.0)
+    ttft_str = f"{p50:.0f}/{p90:.0f}/{p99:.0f}"
+
+    warn_auto_pct = (stats.get("warn_pct_auto") or 0.0) * 100.0
+    warn_conf = (stats.get("warn_pct_confidence") or 0.0) * 100.0
+    gap_p50 = stats.get("gap_seconds_p50") or 0.0
+    gap_p95 = stats.get("gap_seconds_p95") or 0.0
+    gap_samples = stats.get("gap_samples") or 0
+    gap_str = f"{gap_p50:.0f}/{gap_p95:.0f}s ({gap_samples})"
+
+    rows.append({
+        "model": model,
+        "roll_pct": (stats.get("rolling_pct") or 0.0) * 100.0,
+        "warn": "yes" if stats.get("warn") else "",
+        "block": "yes" if stats.get("block") else "",
+        "warn_auto": warn_auto_pct,
+        "warn_conf": warn_conf,
+        "gap": gap_str,
+        "roll_out": fmt_pair(roll),
+        "session_out": fmt_pair(session),
+        "ttft": ttft_str,
+        "peak": peak_str,
+    })
+header = f"{'MODEL':<28} {'ROLL%':>7} {'WARN':>5} {'BLOCK':>5} {'WARN_AUTO%':>12} {'CONF%':>8} {'ROLL OUT (elr/dirty)':>24} {'SESSION OUT (elr/dirty)':>27} {'TTFT p50/p90/p99':>18} {'PEAK ELR':>18}"
+if DEBUG:
+    header += f" {'GAP p50/p95 (s)':>18}"
+
+print("[status] model speeds (tokens/sec)")
+print(header)
+print("-" * len(header))
+for row in rows:
+    line = f"{row['model']:<28} {row['roll_pct']:7.1f} {row['warn']:>5} {row['block']:>5} {row['warn_auto']:12.1f} {row['warn_conf']:8.1f} {row['roll_out']:>24} {row['session_out']:>27} {row['ttft']:>18} {row['peak']:>18}"
+    if DEBUG:
+        line += f" {row['gap']:>18}"
+    print(line)
+PYSTATUS
+  return 0
+}
+
+cmd_usage() {
+  local mode="full"
+  if [[ "${1:-}" == "--banner" ]]; then
+    mode="banner"
+    shift || true
+  fi
+  local file="${1:-$USAGE_FILE}"
+  if [[ ! -f "$file" ]]; then
+    if [[ "$mode" == "banner" ]]; then
+      echo "[usage] no usage captured yet"
+    else
+      echo "[usage] No usage log at $file"
+    fi
+    return 0
+  fi
+  if ! command -v node >/dev/null 2>&1; then
+    echo "[usage] node CLI not available" >&2
+    return 1
+  fi
+  local summary
+  summary=$(node "$ROOT_DIR/scripts/summarize-usage.js" "$file" 2>/dev/null)
+  if [[ -z "${summary//[[:space:]]/}" ]]; then
+    if [[ "$mode" == "banner" ]]; then
+      echo "[usage] no usage captured yet"
+    else
+      echo "[usage] No usage entries in $file"
+    fi
+    return 0
+  fi
+  local py=python3
+  command -v python3 >/dev/null 2>&1 || py=python
+  local usage_tmp
+  usage_tmp=$(mktemp)
+  printf '%s
+' "$summary" >"$usage_tmp"
+  "$py" - "$mode" "${CCP_SESSION_BUDGET_TOKENS:-0}" "$usage_tmp" <<'PYMETER'
+import json, sys, os
+
+def fmt_tokens(tokens):
+    if tokens >= 1_000_000:
+        return f"{tokens/1_000_000:.2f}M"
+    if tokens >= 1_000:
+        return f"{tokens/1000:.1f}k"
+    return str(tokens)
+
+def colorize(text, level, enable):
+    if not enable:
+        return text
+    codes = {
+        "ok": "[32m",
+        "warn": "[33m",
+        "high": "[35m",
+        "over": "[31m",
+    }
+    reset = "[0m"
+    return f"{codes.get(level, '')}{text}{reset}"
+
+mode = sys.argv[1] if len(sys.argv) > 1 else "full"
+budget = float(sys.argv[2]) if len(sys.argv) > 2 else 0.0
+summary_path = sys.argv[3]
+enabled = sys.stdout.isatty()
+with open(summary_path, 'r', encoding='utf-8') as handle:
+    summary = json.load(handle)
+by_lane = summary.get("byLane", {})
+completions = summary.get("total", 0)
+errors = summary.get("errs", 0)
+total_tokens = 0
+for lane_stats in by_lane.values():
+    total_tokens += int(lane_stats.get("in", 0) + lane_stats.get("out", 0))
+percent = (total_tokens / budget * 100.0) if budget else 0.0
+level = "ok"
+if budget:
+    if percent >= 100:
+        level = "over"
+    elif percent >= 90:
+        level = "high"
+    elif percent >= 75:
+        level = "warn"
+line = f"[usage] tokens {fmt_tokens(total_tokens)}"
+if budget:
+    line += f" / {fmt_tokens(int(budget))} ({percent:.1f}%)"
+line = colorize(line, level, enabled)
+if mode == "banner":
+    print(line)
+else:
+    print(line)
+    print(f"  completions: {completions} (errors: {errors})")
+    for lane, stats in sorted(by_lane.items()):
+        lane_tokens = int(stats.get("in", 0) + stats.get("out", 0))
+        lane_line = f"  lane={lane}: count={stats.get('count', 0)} tokens={fmt_tokens(lane_tokens)}"
+        print(lane_line)
+PYMETER
+  local status=$?
+  rm -f "$usage_tmp"
+  return $status
+}
+
+cmd_partials() {
+  local action="${1:-list}"
+  local partial_dir="${CCP_LOGS_DIR:-$ROOT_DIR/logs}/partials"
+  mkdir -p "$partial_dir"
+  case "$action" in
+    clean)
+      rm -f "$partial_dir"/*.partial 2>/dev/null || true
+      echo "[partials] cleared $partial_dir"
+      ;;
+    cat)
+      local target="${2:-}"
+      if [[ -z "$target" ]]; then
+        echo "Usage: cc partials cat <file>" >&2
+        return 1
+      fi
+      if [[ ! -f "$target" ]]; then
+        target="$partial_dir/$target"
+      fi
+      if [[ ! -f "$target" ]]; then
+        echo "[partials] file not found: $target" >&2
+        return 1
+      fi
+      echo "----- $target -----"
+      cat "$target"
+      ;;
+    list|*)
+      shopt -s nullglob
+      local files=("$partial_dir"/*.partial)
+      shopt -u nullglob
+      if (( "${#files[@]}" == 0 )); then
+        echo "[partials] none at $partial_dir"
+      else
+        ls -1t "${files[@]}"
+      fi
+      ;;
+  esac
+}
+
+cmd_h() {
+  if [[ $# -eq 0 ]]; then echo "Usage: cc h \"prompt\"" >&2; exit 1; fi
+  claude -p --model haiku "$@"
+}
+
+cmd_s() {
+  if [[ $# -eq 0 ]]; then echo "Usage: cc s \"prompt\"" >&2; exit 1; fi
+  claude -p --model sonnet "$@"
+}
+
+cmd_doctor() {
+  local ok=1
+  command -v mitmdump >/dev/null || { echo "[doctor] mitmdump missing"; ok=0; }
+  command -v claude >/dev/null   || { echo "[doctor] claude CLI missing"; ok=0; }
+  [[ -f "$HOME/.mitmproxy/mitmproxy-ca-cert.pem" ]] || { echo "[doctor] CA missing at ~/.mitmproxy/mitmproxy-ca-cert.pem"; ok=0; }
+  if rg -n '"lane":"anthropic"[^\n]*"header_mode":"(x-api-key|authorization)"' "$USAGE_FILE" >/dev/null 2>&1; then
+    echo "[doctor] WARNING: Found Z.AI header on Anthropic lane in logs/usage.jsonl"
+    ok=0
+  fi
+  if [[ $ok -eq 1 ]]; then echo "[doctor] OK"; else echo "[doctor] Issues found"; fi
+  return $((ok==1?0:1))
+}
+
+cmd_quota() {
+  local file="$USAGE_FILE"
+  if [[ ! -f "$file" ]]; then echo "[quota] No $file"; return 0; fi
+  node - <<'NODE'
+const fs=require('fs');
+const p='logs/usage.jsonl';
+const lines=fs.existsSync(p)?fs.readFileSync(p,'utf8').trim().split(/\n+/):[];
+const now=Date.now()/1000, since=now-5*3600;
+let count=0,inTok=0,outTok=0,minTs=null,maxTs=null;
+for(const line of lines){let j;try{j=JSON.parse(line);}catch{continue;}
+ if(typeof j.ts!=='number') continue;
+ if(j.ts<since) continue;
+ if(j.lane!=='zai') continue;
+ if(typeof j.status==='number' && j.status>0){
+   count++;
+   inTok+=j.input_tokens||0; outTok+=j.output_tokens||0;
+   minTs=minTs==null?j.ts:Math.min(minTs,j.ts);
+   maxTs=maxTs==null?j.ts:Math.max(maxTs,j.ts);
+ }
+}
+const fmt=t=> new Date(t*1000).toLocaleTimeString();
+console.log(JSON.stringify({window_hours:5, completions:count, input_tokens:inTok, output_tokens:outTok, from:minTs?fmt(minTs):null, to:maxTs?fmt(maxTs):null},null,2));
+NODE
+}
+
+cmd_productize_check() {
+  local ok=1
+  if rg -n '"lane":"anthropic".*haiku' "$USAGE_FILE" >/dev/null 2>&1; then
+    echo "[check] Found Haiku on Anthropic lane"; ok=0; fi
+  if rg -n '"lane":"anthropic"[^\n]*"header_mode":"(x-api-key|authorization)"' "$USAGE_FILE" >/dev/null 2>&1; then
+    echo "[check] Found Z.AI header on Anthropic lane"; ok=0; fi
+  (cd "$ROOT_DIR" && make summarize && make verify-routing) || ok=0
+  if [[ $ok -eq 1 ]]; then echo "[check] OK"; else echo "[check] Issues found"; fi
+  return $((ok==1?0:1))
+}
+
+cmd_license_set() {
+  local pack_arg="${1:-}"
+  local pack_str=""
+  if [[ -n "$pack_arg" ]]; then
+    pack_str="$pack_arg"
+  else
+    if [[ -t 0 ]]; then
+      echo "Usage: cc license set <LICENSE_PACK>" >&2
+      exit 1
+    fi
+    pack_str="$(cat)"
+  fi
+  if [[ -z "${pack_str//[[:space:]]/}" ]]; then
+    echo "[cc] License pack empty" >&2
+    exit 1
+  fi
+  mkdir -p "$LICENSE_DIR"
+  local tmp="$LICENSE_PACK_PATH.tmp"
+  printf '%s\n' "$pack_str" >"$tmp"
+  ensure_ccp_bin
+  if ! "$CCP_BIN" license status --pack "$tmp" >/dev/null 2>&1; then
+    rm -f "$tmp"
+    echo "[cc] Invalid license pack" >&2
+    exit 1
+  fi
+  mv "$tmp" "$LICENSE_PACK_PATH"
+  echo "[cc] Saved license pack to $LICENSE_PACK_PATH"
+  "$CCP_BIN" license status --pack "$LICENSE_PACK_PATH"
+}
+
+cmd_license_status() {
+  ensure_ccp_bin
+  local pack_path="$LICENSE_PACK_PATH"
+  if [[ -n "${1:-}" ]]; then
+    pack_path="${1}"
+  fi
+  if [[ ! -f "$pack_path" ]]; then
+    echo "[cc] No license pack at $pack_path"
+    return 0
+  fi
+  "$CCP_BIN" license status --pack "$pack_path"
+}
+
+cmd_license_login() {
+  local invite="DEV-TRIAL-7D"
+  local email=""
+  local base="${LICISSUER_BASE_URL:-http://127.0.0.1:8787}"
+  local no_browser=0
+  local use_loopback=0
+  local loopback_tmp=""
+  local loopback_pid=""
+  local loopback_port=""
+  local device="${LICENSE_DEVICE_ID:-}"
+
+  while [[ $# -gt 0 ]]; do
+    case "$1" in
+      --invite) invite="${2:-}"; shift 2 ;;
+      --email) email="${2:-}"; shift 2 ;;
+      --issuer) base="${2:-}"; shift 2 ;;
+      --device) device="${2:-}"; shift 2 ;;
+      --loopback) use_loopback=1; shift ;;
+      --no-browser) no_browser=1; shift ;;
+      *)
+        echo "Usage: cc license login [--invite CODE] [--email you@example.com] [--issuer URL] [--device ID] [--no-browser] [--loopback]" >&2
+        return 1 ;;
+    esac
+  done
+
+  if [[ -z "$device" ]]; then
+    device="$(hostname 2>/dev/null || uname -n)"
+  fi
+
+  cleanup_loopback() {
+    local pid="${loopback_pid-}"
+    local tmpfile="${loopback_tmp-}"
+    if [[ -n "${pid:-}" ]]; then
+      kill "$pid" >/dev/null 2>&1 || true
+      wait "$pid" 2>/dev/null || true
+    fi
+    if [[ -n "${tmpfile:-}" ]]; then
+      rm -f "$tmpfile"
+    fi
+  }
+
+  trap 'cleanup_loopback' RETURN
+
+  local redirect_url=""
+  if [[ $use_loopback -eq 1 ]]; then
+    if [[ ! -x "$ROOT_DIR/scripts/license/login_loopback.sh" ]]; then
+      echo "[cc] loopback helper missing at scripts/license/login_loopback.sh" >&2
+      return 1
+    fi
+    loopback_tmp=$(mktemp)
+    "$ROOT_DIR"/scripts/license/login_loopback.sh >"$loopback_tmp" &
+    loopback_pid=$!
+    for _ in {1..100}; do
+      if [[ -s "$loopback_tmp" ]]; then
+        loopback_port=$(head -n1 "$loopback_tmp" | tr -d '
+ ')
+        [[ -n "$loopback_port" ]] && break
+      fi
+      sleep 0.1
+    done
+    if [[ -z "$loopback_port" ]]; then
+      echo "[cc] Loopback helper failed to start" >&2
+      return 1
+    fi
+    redirect_url=$(printf 'http://127.0.0.1:%s/cc-license-complete?code=%%s' "$loopback_port")
+  fi
+
+  local payload
+  if ! payload=$(LICENSE_INVITE="$invite" LICENSE_EMAIL="$email" LICENSE_DEVICE="$device" LICENSE_REDIRECT_URL="$redirect_url" python - <<'PY2'
+import json, os, sys
+payload = {"invite_code": os.environ.get("LICENSE_INVITE") or "DEV-TRIAL-7D"}
+device_env = os.environ.get("LICENSE_DEVICE")
+if device_env:
+    payload["device"] = device_env
+email_env = os.environ.get("LICENSE_EMAIL")
+if email_env:
+    payload["email"] = email_env
+redirect_env = os.environ.get("LICENSE_REDIRECT_URL")
+if redirect_env:
+    payload["redirect_url"] = redirect_env
+sys.stdout.write(json.dumps(payload))
+PY2
+  ); then
+    echo "[cc] Failed to build device flow payload" >&2
+    return 1
+  fi
+
+  local begin_json
+  if ! begin_json=$(curl -sS -X POST -H 'content-type: application/json' -d "$payload" "$base/v1/device/begin"); then
+    echo "[cc] Failed to contact issuer at $base" >&2
+    return 1
+  fi
+
+  local begin_fields
+  if ! begin_fields=$(BEGIN_JSON="$begin_json" python - <<'PY3'
+import json, os, sys
+try:
+    data = json.loads(os.environ["BEGIN_JSON"])
+except Exception:
+    sys.exit(1)
+poll = data.get("poll_token")
+code = data.get("user_code")
+url = data.get("authorize_url", "")
+interval = int(data.get("interval", 2) or 2)
+expires_in = int(data.get("expires_in", 300) or 300)
+if not poll or not code:
+    sys.exit(1)
+print(poll)
+print(code)
+print(url)
+print(interval)
+print(expires_in)
+PY3
+  ); then
+    echo "[cc] Unexpected response from issuer: $begin_json" >&2
+    return 1
+  fi
+
+  mapfile -t begin_array <<<"$begin_fields"
+  local poll_token="${begin_array[0]}"
+  local user_code="${begin_array[1]}"
+  local authorize_url="${begin_array[2]}"
+  local interval="${begin_array[3]}"
+  local expires_in="${begin_array[4]}"
+  if [[ -z "$poll_token" || -z "$user_code" ]]; then
+    echo "[cc] Issuer did not provide poll token/code" >&2
+    return 1
+  fi
+
+  echo "[cc] Device code: $user_code"
+  if [[ -n "$authorize_url" ]]; then
+    echo "[cc] Authorization URL: $authorize_url"
+    if [[ $no_browser -eq 0 ]]; then
+      (command -v open >/dev/null 2>&1 && open "$authorize_url" >/dev/null 2>&1) \
+        || (command -v xdg-open >/dev/null 2>&1 && xdg-open "$authorize_url" >/dev/null 2>&1) \
+        || echo "[cc] Visit the URL above in a browser to complete activation"
+    else
+      echo "[cc] Open the URL above in a browser to complete activation"
+    fi
+  else
+    echo "[cc] Complete the flow using your invite portal (no authorize URL provided)."
+  fi
+
+  local interval_s=${interval:-2}
+  if [[ $interval_s -lt 1 ]]; then interval_s=2; fi
+  local max_wait=${expires_in:-300}
+  if [[ $max_wait -lt 5 ]]; then max_wait=300; fi
+  local elapsed=0
+
+  while (( elapsed <= max_wait )); do
+    sleep "$interval_s"
+    elapsed=$((elapsed + interval_s))
+    local poll_json
+    poll_json=$(curl -sS -X POST -H 'content-type: application/json' -d "{\"poll_token\":\"$poll_token\"}" "$base/v1/device/poll") || {
+      echo "[cc] Poll request failed" >&2
+      return 1
+    }
+    local poll_fields
+    if ! poll_fields=$(POLL_JSON="$poll_json" python - <<'PY4'
+import json, os, sys
+try:
+    data = json.loads(os.environ["POLL_JSON"])
+except Exception:
+    sys.exit(1)
+status = data.get("status")
+pack = data.get("license_pack", "")
+if not status:
+    sys.exit(1)
+print(status)
+print(pack)
+PY4
+    ); then
+      echo "[cc] Unexpected poll response: $poll_json" >&2
+      return 1
+    fi
+    mapfile -t poll_array <<<"$poll_fields"
+    case "${poll_array[0]}" in
+      ok)
+        local license_pack=""
+        if (( ${#poll_array[@]} > 1 )); then
+          license_pack=$(printf '%s\n' "${poll_array[@]:1}")
+        fi
+        if [[ -z "$license_pack" ]]; then
+          echo "[cc] Issuer returned ok without a license pack" >&2
+          return 1
+        fi
+        echo "$license_pack" | cmd_license_set
+        cmd_license_status
+        if [[ $use_loopback -eq 1 ]]; then
+          wait "$loopback_pid" 2>/dev/null || true
+          if [[ -f "$loopback_tmp" ]]; then
+            local loopback_code
+            loopback_code=$(tail -n1 "$loopback_tmp" | tr -d '
+ ')
+            [[ -n "$loopback_code" ]] && echo "[cc] Loopback confirmed code $loopback_code"
+          fi
+        fi
+        return 0
+        ;;
+      pending) continue ;;
+      expired)
+        echo "[cc] Device flow expired; restart the login." >&2
+        return 1 ;;
+      not_found)
+        echo "[cc] Device flow was reset (token not found)." >&2
+        return 1 ;;
+      *)
+        echo "[cc] Poll returned status=${poll_array[0]}" >&2
+        echo "$poll_json" >&2
+        return 1 ;;
+    esac
+  done
+
+  echo "[cc] Device flow timed out after ${max_wait}s" >&2
+  return 1
+}
+
+cmd_two_up() {
+  local port="${1:-$PORT_DEFAULT}"
+  if command -v tmux >/dev/null; then
+    tmux new-session -d -s cc "cd '$ROOT_DIR' && source scripts/sub-env.sh '$port' >/dev/null && echo '[A] proxied ready on :$port' && claude"
+    tmux split-window -h "cd '$ROOT_DIR' && unset HTTPS_PROXY NODE_EXTRA_CA_CERTS ANTHROPIC_BASE_URL ANTHROPIC_AUTH_TOKEN && echo '[B] stock ready' && claude"
+    tmux select-pane -t 0
+    tmux attach -t cc
+  else
+    echo "[two-up] tmux not found. Open two terminals manually:"
+    echo "Terminal A: cd '$ROOT_DIR' && source scripts/sub-env.sh $port && claude"
+    echo "Terminal B: cd '$ROOT_DIR' && unset HTTPS_PROXY NODE_EXTRA_CA_CERTS ANTHROPIC_* && claude"
+  fi
+}
+
+cmd_license() {
+  local sub="${1:-}"
+  shift || true
+  case "$sub" in
+    set) cmd_license_set "$@" ;;
+    status) cmd_license_status "$@" ;;
+    login) cmd_license_login "$@" ;;
+    *)
+      echo "Usage: cc license {set|status|login}" >&2
+      exit 1
+      ;;
+  esac
+}
+
+main() {
+  need_repo_root
+  local cmd="${1:-}"
+  shift || true
+  case "$cmd" in
+    mitm) case "${1:-}" in
+            start) shift; cmd_mitm_start "${1:-}" ;;
+            stop)  shift; cmd_mitm_stop  "${1:-}" ;;
+            status)shift; cmd_mitm_status"${1:-}" ;;
+            *) usage; exit 1;;
+          esac ;;
+    verify) cmd_verify ;;
+    bundle) cmd_bundle ;;
+    h) cmd_h "$@" ;;
+    s) cmd_s "$@" ;;
+    status) cmd_status "$@" ;;
+    doctor) cmd_doctor ;;
+    quota) cmd_quota ;;
+    productize-check) cmd_productize_check ;;
+    usage) cmd_usage "$@" ;;
+    model) cmd_model "$@" ;;
+    providers) cmd_providers ;;
+    partials) cmd_partials "$@" ;;
+    quotas) cmd_quotas "$@" ;;
+    hud) cmd_hud "$@" ;;
+    two-up) cmd_two_up "${1:-}" ;;
+    license) cmd_license "$@" ;;
+    -h|--help|help|"" ) usage ;;
+    *) echo "Unknown command: $cmd"; usage; exit 1;;
+  esac
+}
+
+main "$@"

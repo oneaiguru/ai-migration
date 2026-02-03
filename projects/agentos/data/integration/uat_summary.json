@@ -1,0 +1,282 @@
+{
+  "avg_churn_score": 0.0,
+  "avg_cls": 0.0,
+  "avg_impf": 0.0,
+  "capacity_used": 0.0,
+  "features_per_capacity": null,
+  "features_shipped": 106.0,
+  "generated_at": "2025-10-24T02:46:32.768838+00:00",
+  "model_health": {
+    "claude-3.5-sonnet": {
+      "reqs": 1,
+      "speeds": {
+        "hourly": [
+          {
+            "hour": 0,
+            "samples": 0
+          },
+          {
+            "hour": 1,
+            "samples": 0
+          },
+          {
+            "hour": 2,
+            "samples": 0
+          },
+          {
+            "hour": 3,
+            "samples": 0
+          },
+          {
+            "hour": 4,
+            "samples": 0
+          },
+          {
+            "hour": 5,
+            "samples": 0
+          },
+          {
+            "hour": 6,
+            "samples": 0
+          },
+          {
+            "hour": 7,
+            "samples": 0
+          },
+          {
+            "hour": 8,
+            "samples": 0
+          },
+          {
+            "hour": 9,
+            "samples": 0
+          },
+          {
+            "hour": 10,
+            "samples": 1
+          },
+          {
+            "hour": 11,
+            "samples": 0
+          },
+          {
+            "hour": 12,
+            "samples": 0
+          },
+          {
+            "hour": 13,
+            "samples": 0
+          },
+          {
+            "hour": 14,
+            "samples": 0
+          },
+          {
+            "hour": 15,
+            "samples": 0
+          },
+          {
+            "hour": 16,
+            "samples": 0
+          },
+          {
+            "hour": 17,
+            "samples": 0
+          },
+          {
+            "hour": 18,
+            "samples": 0
+          },
+          {
+            "hour": 19,
+            "samples": 0
+          },
+          {
+            "hour": 20,
+            "samples": 0
+          },
+          {
+            "hour": 21,
+            "samples": 0
+          },
+          {
+            "hour": 22,
+            "samples": 0
+          },
+          {
+            "hour": 23,
+            "samples": 0
+          }
+        ],
+        "rolling": {
+          "in_dirty_tps": 8,
+          "in_elr_tps": 8,
+          "out_dirty_tps": 5.6,
+          "out_elr_tps": 5.6,
+          "total_dirty_tps": 13.6,
+          "total_elr_tps": 13.6
+        },
+        "rolling_samples": 1,
+        "session": {
+          "in_dirty_tps": 8,
+          "in_elr_tps": 8,
+          "out_dirty_tps": 5.6,
+          "out_elr_tps": 5.6,
+          "total_dirty_tps": 13.6,
+          "total_elr_tps": 13.6
+        },
+        "ttft_ms": {
+          "p50": 0,
+          "p90": 0,
+          "p99": 0
+        },
+        "weekly_samples": 1
+      }
+    },
+    "claude-haiku-4.5": {
+      "reqs": 2,
+      "speeds": {
+        "hourly": [
+          {
+            "hour": 0,
+            "samples": 0
+          },
+          {
+            "hour": 1,
+            "samples": 0
+          },
+          {
+            "hour": 2,
+            "samples": 0
+          },
+          {
+            "hour": 3,
+            "samples": 0
+          },
+          {
+            "hour": 4,
+            "samples": 0
+          },
+          {
+            "hour": 5,
+            "samples": 0
+          },
+          {
+            "hour": 6,
+            "samples": 0
+          },
+          {
+            "hour": 7,
+            "samples": 0
+          },
+          {
+            "hour": 8,
+            "samples": 0
+          },
+          {
+            "hour": 9,
+            "samples": 0
+          },
+          {
+            "hour": 10,
+            "samples": 2
+          },
+          {
+            "hour": 11,
+            "samples": 0
+          },
+          {
+            "hour": 12,
+            "samples": 0
+          },
+          {
+            "hour": 13,
+            "samples": 0
+          },
+          {
+            "hour": 14,
+            "samples": 0
+          },
+          {
+            "hour": 15,
+            "samples": 0
+          },
+          {
+            "hour": 16,
+            "samples": 0
+          },
+          {
+            "hour": 17,
+            "samples": 0
+          },
+          {
+            "hour": 18,
+            "samples": 0
+          },
+          {
+            "hour": 19,
+            "samples": 0
+          },
+          {
+            "hour": 20,
+            "samples": 0
+          },
+          {
+            "hour": 21,
+            "samples": 0
+          },
+          {
+            "hour": 22,
+            "samples": 0
+          },
+          {
+            "hour": 23,
+            "samples": 0
+          }
+        ],
+        "rolling": {
+          "in_dirty_tps": 6,
+          "in_elr_tps": 6,
+          "out_dirty_tps": 4,
+          "out_elr_tps": 4,
+          "total_dirty_tps": 10,
+          "total_elr_tps": 10
+        },
+        "rolling_samples": 2,
+        "session": {
+          "in_dirty_tps": 6,
+          "in_elr_tps": 6,
+          "out_dirty_tps": 4,
+          "out_elr_tps": 4,
+          "total_dirty_tps": 10,
+          "total_elr_tps": 10
+        },
+        "ttft_ms": {
+          "p50": 0,
+          "p90": 0,
+          "p99": 0
+        },
+        "weekly_samples": 2
+      },
+      "warn_pct_auto": 0.8
+    }
+  },
+  "model_value": {
+    "": 25.0,
+    "claude-haiku-4-5-20251001": 206.0,
+    "claude-haiku-4.5": 20.0,
+    "claude-sonnet-4-5-20250929": 14.0
+  },
+  "sessions": 145,
+  "sources": [
+    "../ClaudeCodeProxy/results/METRICS_go_parity_run.json",
+    "../ClaudeCodeProxy/results/METRICS_go_shim_quick.json",
+    "../ClaudeCodeProxy/results/METRICS_py_proxy_quick.json",
+    "../ClaudeCodeProxy/results/METRICS_uat.json",
+    "../ClaudeCodeProxy/results/METRICS_uat2.json",
+    "../ClaudeCodeProxy/results/METRICS_uat3.json",
+    "../ClaudeCodeProxy/results/METRICS_uat_mitm.json",
+    "../ClaudeCodeProxy/results/METRICS_uat_r1.json"
+  ],
+  "turns": 265
+}

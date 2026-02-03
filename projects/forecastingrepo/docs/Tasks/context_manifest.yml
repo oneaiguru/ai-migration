@@ -1,0 +1,23 @@
+# Bundled context for reviewer handoffs
+bundles:
+  backend_demo:
+    output: backend_demo.md
+    sources:
+      - docs/Tasks/BE_AGENT_SESSION.md
+      - docs/System/Review_Pack.md
+      - reviews/DEMO_FREEZE.md
+      - docs/ADR/DECISIONS_INDEX.md
+  api_contract:
+    output: api_contract.md
+    sources:
+      - docs/System/API_Endpoints.md
+      - docs/api/openapi.json
+  decisions_snapshot:
+    output: decisions_snapshot.md
+    sources:
+      - docs/ADR/ADR-0001-accept-P0-P1-now.md
+      - docs/ADR/ADR-0002-module-size-and-waiver-policy.md
+      - docs/ADR/ADR-0003-test-pyramid-BDD-and-E2E.md
+      - docs/ADR/ADR-0004-surface-site-accuracy-and-forecast-per-site.md
+      - docs/ADR/ADR-0005-api-contracts-openapi-v1.md
+      - docs/ADR/ADR-0006-repo-ownership-and-monorepo.md

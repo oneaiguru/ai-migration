@@ -1,0 +1,21 @@
+> /usage
+────────────────────────────────────────
+ Setting Status Config Usage (tab to
+ s:                         cycle)
+
+
+ Current session · Resets 9pm
+ (Asia/Irkutsk)
+ ▍
+ 1% used
+
+ Current week (all models) · Resets Oct
+  20, 2am (Asia/Irkutsk)
+ ██████████████████████████████████▏
+ 90% used
+
+ Current week (Opus)
+
+ 0% used
+
+ Esc to exit

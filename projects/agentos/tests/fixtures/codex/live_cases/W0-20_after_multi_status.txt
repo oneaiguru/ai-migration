@@ -1,0 +1,82 @@
+/status
+
+╭─────────────────────────────────────────────────────────────────────────────╮
+│  >_ OpenAI Codex (v0.44.0)                                                  │
+│                                                                             │
+│  Model:            gpt-5-codex (reasoning high, summaries auto)             │
+│  Directory:        ~/git/tools/agentos                                      │
+│  Approval:         never                                                    │
+│  Sandbox:          danger-full-access                                       │
+│  Agents.md:        AGENTS.md                                                │
+│  Account:          www.yesplus.ru@gmail.com (Pro)                           │
+│  Session:          0199f878-7b4c-7423-9b83-c2bd6e6749d6                     │
+│                                                                             │
+│  Context window:   53% left (132K used / 272K)                              │
+│  5h limit:         [█░░░░░░░░░░░░░░░░░░░] 3% used (resets 14:01)            │
+│  Weekly limit:     [██░░░░░░░░░░░░░░░░░░] 10% used (resets 21:11 on 25 Oct) │
+╰─────────────────────────────────────────────────────────────────────────────╯
+
+/status
+
+╭─────────────────────────────────────────────────────────────────────────────╮
+│  >_ OpenAI Codex (v0.44.0)                                                  │
+│                                                                             │
+│  Model:            gpt-5-codex (reasoning high, summaries auto)             │
+│  Directory:        ~/git/tools/agentos                                      │
+│  Approval:         never                                                    │
+│  Sandbox:          danger-full-access                                       │
+│  Agents.md:        AGENTS.md                                                │
+│  Account:          www.yesplus.ru@gmail.com (Pro)                           │
+│  Session:          0199f878-7b4c-7423-9b83-c2bd6e6749d6                     │
+│                                                                             │
+│  Context window:   53% left (132K used / 272K)                              │
+│  5h limit:         [█░░░░░░░░░░░░░░░░░░░] 3% used (resets 14:01)            │
+│  Weekly limit:     [██░░░░░░░░░░░░░░░░░░] 10% used (resets 21:11 on 25 Oct) │
+╰─────────────────────────────────────────────────────────────────────────────╯
+
+/status
+
+╭─────────────────────────────────────────────────────────────────────────────╮
+│  >_ OpenAI Codex (v0.44.0)                                                  │
+│                                                                             │
+│  Model:            gpt-5-codex (reasoning high, summaries auto)             │
+│  Directory:        ~/git/tools/agentos                                      │
+│  Approval:         never                                                    │
+│  Sandbox:          danger-full-access                                       │
+│  Agents.md:        AGENTS.md                                                │
+│  Account:          www.yesplus.ru@gmail.com (Pro)                           │
+│  Session:          0199f878-7b4c-7423-9b83-c2bd6e6749d6                     │
+│                                                                             │
+│  Context window:   53% left (132K used / 272K)                              │
+│  5h limit:         [█░░░░░░░░░░░░░░░░░░░] 3% used (resets 14:01)            │
+│  Weekly limit:     [██░░░░░░░░░░░░░░░░░░] 10% used (resets 21:11 on 25 Oct) │
+╰─────────────────────────────────────────────────────────────────────────────╯
+
+
+› give exac time with seconds
+
+
+• Ran date +'%Y-%m-%d %H:%M:%S %Z'
+  └ 2025-10-19 14:02:00 +08
+
+─ Worked for 14s ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+
+• Current time: 2025-10-19 14:02:00 +08
+
+/status
+
+╭─────────────────────────────────────────────────────────────────────────────╮
+│  >_ OpenAI Codex (v0.44.0)                                                  │
+│                                                                             │
+│  Model:            gpt-5-codex (reasoning high, summaries auto)             │
+│  Directory:        ~/git/tools/agentos                                      │
+│  Approval:         never                                                    │
+│  Sandbox:          danger-full-access                                       │
+│  Agents.md:        AGENTS.md                                                │
+│  Account:          www.yesplus.ru@gmail.com (Pro)                           │
+│  Session:          0199f878-7b4c-7423-9b83-c2bd6e6749d6                     │
+│                                                                             │
+│  Context window:   53% left (132K used / 272K)                              │
+│  5h limit:         [░░░░░░░░░░░░░░░░░░░░] 0% used (resets 19:01)            │
+│  Weekly limit:     [██░░░░░░░░░░░░░░░░░░] 10% used (resets 21:11 on 25 Oct) │
+╰─────────────────────────────────────────────────────────────────────────────╯

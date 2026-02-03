@@ -1,0 +1,10 @@
+date,window,provider,methodology,commit_start,commit_end,files_changed,insertions,deletions,net,features,normalized_churn,notes
+2025-10-19,W0-19,codex,session002,d43a3a052fa0d8b1f42ec53fcd232df2a17dd908,8afc41de41f2f23ff5bc73932ac47c41e2dc1ff1,6,51,47,4,2,2.00,
+2025-10-19,W0-20,codex,session002,d43a3a052fa0d8b1f42ec53fcd232df2a17dd908,8afc41de41f2f23ff5bc73932ac47c41e2dc1ff1,6,51,47,4,3,1.33,
+2025-10-19,W0-CHP,codex,long_session,d43a3a052fa0d8b1f42ec53fcd232df2a17dd908,8afc41de41f2f23ff5bc73932ac47c41e2dc1ff1,6,51,47,4,2,2.00,
+2025-10-20,W0-CHP-1,codex,long_session,8afc41de41f2f23ff5bc73932ac47c41e2dc1ff1,8afc41de41f2f23ff5bc73932ac47c41e2dc1ff1,0,0,0,0,2,0.00,
+2025-10-20,W0-CHP-1,codex,,8afc41de41f2f23ff5bc73932ac47c41e2dc1ff1,8afc41de41f2f23ff5bc73932ac47c41e2dc1ff1,0,0,0,0,2,0.00,
+2025-10-20,W0-CHP-1,codex,long_session,8afc41de41f2f23ff5bc73932ac47c41e2dc1ff1,8afc41de41f2f23ff5bc73932ac47c41e2dc1ff1,0,0,0,0,2,0.00,
+2025-10-20,W0-CHP-2,codex,week0,8afc41de41f2f23ff5bc73932ac47c41e2dc1ff1,8afc41de41f2f23ff5bc73932ac47c41e2dc1ff1,0,0,0,0,2,0.00,
+2025-10-20,W0-CHP-2,codex,week0,8afc41de41f2f23ff5bc73932ac47c41e2dc1ff1,8afc41de41f2f23ff5bc73932ac47c41e2dc1ff1,0,0,0,0,2,0.00,
+2025-10-20,W0-CHP-3,codex,week0,8afc41de41f2f23ff5bc73932ac47c41e2dc1ff1,8afc41de41f2f23ff5bc73932ac47c41e2dc1ff1,0,0,0,0,2,0.00,

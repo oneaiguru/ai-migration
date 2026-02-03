@@ -1,0 +1,9 @@
+Decision Card
+  Window:   W0-CHP
+  Status:   GO
+  Anoms:    0
+  Finalized:True
+  Outcome:  pass
+  Evidence: 2
+  Churn:    1
+ledger checkpoint recorded for W0-CHP (provider=codex)

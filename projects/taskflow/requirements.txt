@@ -1,0 +1,12 @@
+# Core dependencies
+pyTelegramBotAPI==4.12.0
+GitPython==3.1.44
+python-dotenv==1.0.0
+requests==2.31.0
+schedule==1.2.0
+
+# API dependencies (using compatible versions)
+fastapi==0.88.0  # Older version that doesn't need newer Rust
+uvicorn==0.29.0
+httpx==0.27.0
+

@@ -1,0 +1,30 @@
+{
+    "9001": {
+        "adesk_id": 1586898,
+        "last_updated": "2025-12-09T00:00:00Z",
+        "metadata": {
+            "name": "Export Services"
+        }
+    },
+    "9101": {
+        "adesk_id": 1587589,
+        "last_updated": "2025-12-08T16:42:30Z",
+        "metadata": {
+            "name": "Bank Service Fees"
+        }
+    },
+    "9102": {
+        "adesk_id": 1587590,
+        "last_updated": "2025-12-08T16:42:30Z",
+        "metadata": {
+            "name": "Taxes and Government Fees"
+        }
+    },
+    "9103": {
+        "adesk_id": 1587591,
+        "last_updated": "2025-12-08T16:42:30Z",
+        "metadata": {
+            "name": "Owner Transfers/Withdrawals"
+        }
+    }
+}

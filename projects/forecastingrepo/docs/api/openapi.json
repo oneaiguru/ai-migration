@@ -1,0 +1,1879 @@
+{
+  "components": {
+    "schemas": {
+      "AccuracyDistributionBin": {
+        "properties": {
+          "bucket": {
+            "title": "Bucket",
+            "type": "string"
+          },
+          "percent": {
+            "title": "Percent",
+            "type": "number"
+          },
+          "site_count": {
+            "title": "Site Count",
+            "type": "integer"
+          }
+        },
+        "title": "AccuracyDistributionBin",
+        "type": "object"
+      },
+      "Body_ingest_metrics_api_mytko_ingest_metrics_post": {
+        "properties": {
+          "iteration": {
+            "title": "Iteration",
+            "type": "integer"
+          },
+          "metrics_file": {
+            "format": "binary",
+            "title": "Metrics File",
+            "type": "string"
+          },
+          "notes": {
+            "default": "",
+            "title": "Notes",
+            "type": "string"
+          },
+          "per_site_file": {
+            "format": "binary",
+            "title": "Per Site File",
+            "type": "string"
+          }
+        },
+        "required": [
+          "metrics_file",
+          "iteration"
+        ],
+        "title": "Body_ingest_metrics_api_mytko_ingest_metrics_post",
+        "type": "object"
+      },
+      "Body_submit_feedback_api_mytko_feedback_post": {
+        "properties": {
+          "date": {
+            "title": "Date",
+            "type": "string"
+          },
+          "dispatcher_note": {
+            "default": "",
+            "title": "Dispatcher Note",
+            "type": "string"
+          },
+          "reason": {
+            "default": "",
+            "title": "Reason",
+            "type": "string"
+          },
+          "site_id": {
+            "title": "Site Id",
+            "type": "string"
+          },
+          "useful": {
+            "title": "Useful",
+            "type": "boolean"
+          }
+        },
+        "title": "Body_submit_feedback_api_mytko_feedback_post",
+        "type": "object"
+      },
+      "DistrictAccuracyEnvelope": {
+        "properties": {
+          "available_quarters": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Available Quarters",
+            "type": "array"
+          },
+          "limit": {
+            "title": "Limit",
+            "type": "integer"
+          },
+          "offset": {
+            "title": "Offset",
+            "type": "integer"
+          },
+          "quarter": {
+            "title": "Quarter",
+            "type": "string"
+          },
+          "rows": {
+            "items": {
+              "$ref": "#/components/schemas/DistrictAccuracyRow"
+            },
+            "title": "Rows",
+            "type": "array"
+          },
+          "total_districts": {
+            "title": "Total Districts",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "quarter",
+          "available_quarters",
+          "total_districts",
+          "limit",
+          "offset",
+          "rows"
+        ],
+        "title": "DistrictAccuracyEnvelope",
+        "type": "object"
+      },
+      "DistrictAccuracyRow": {
+        "properties": {
+          "accuracy_pct": {
+            "title": "Accuracy Pct",
+            "type": "number"
+          },
+          "district": {
+            "title": "District",
+            "type": "string"
+          },
+          "median_wape": {
+            "title": "Median Wape",
+            "type": "number"
+          },
+          "site_count": {
+            "title": "Site Count",
+            "type": "integer"
+          },
+          "weighted_wape": {
+            "title": "Weighted Wape",
+            "type": "number"
+          }
+        },
+        "title": "DistrictAccuracyRow",
+        "type": "object"
+      },
+      "DistrictSMAPE": {
+        "properties": {
+          "district": {
+            "title": "District",
+            "type": "string"
+          },
+          "smape": {
+            "title": "Smape",
+            "type": "number"
+          }
+        },
+        "required": [
+          "district"
+        ],
+        "title": "DistrictSMAPE",
+        "type": "object"
+      },
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "title": "Detail",
+            "type": "array"
+          }
+        },
+        "title": "HTTPValidationError",
+        "type": "object"
+      },
+      "MetricsEnvelope": {
+        "properties": {
+          "demo_default_date": {
+            "title": "Demo Default Date",
+            "type": "string"
+          },
+          "district_wape": {
+            "$ref": "#/components/schemas/QuantileTriplet"
+          },
+          "region_wape": {
+            "$ref": "#/components/schemas/QuantileTriplet"
+          }
+        },
+        "required": [
+          "region_wape",
+          "district_wape"
+        ],
+        "title": "MetricsEnvelope",
+        "type": "object"
+      },
+      "MyTKOForecastPoint": {
+        "properties": {
+          "date": {
+            "title": "Date",
+            "type": "string"
+          },
+          "dividedToTrips": {
+            "default": false,
+            "title": "Dividedtotrips",
+            "type": "boolean"
+          },
+          "isEmpty": {
+            "title": "Isempty",
+            "type": "boolean"
+          },
+          "isFact": {
+            "default": false,
+            "title": "Isfact",
+            "type": "boolean"
+          },
+          "isMixed": {
+            "title": "Ismixed",
+            "type": "boolean"
+          },
+          "overallMileage": {
+            "title": "Overallmileage",
+            "type": "number"
+          },
+          "overallVolume": {
+            "title": "Overallvolume",
+            "type": "number"
+          },
+          "tripMeasurements": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "number"
+                },
+                "type": "array"
+              },
+              {
+                "type": "number"
+              }
+            ],
+            "title": "Tripmeasurements"
+          },
+          "vehicleVolume": {
+            "title": "Vehiclevolume",
+            "type": "number"
+          }
+        },
+        "required": [
+          "date",
+          "isEmpty",
+          "vehicleVolume",
+          "overallVolume"
+        ],
+        "title": "MyTKOForecastPoint",
+        "type": "object"
+      },
+      "MyTKOSiteAccuracy": {
+        "properties": {
+          "actual_m3": {
+            "title": "Actual M3",
+            "type": "number"
+          },
+          "days": {
+            "title": "Days",
+            "type": "integer"
+          },
+          "forecast_m3": {
+            "title": "Forecast M3",
+            "type": "number"
+          },
+          "site_id": {
+            "title": "Site Id",
+            "type": "string"
+          },
+          "wape": {
+            "title": "Wape",
+            "type": "number"
+          }
+        },
+        "required": [
+          "site_id",
+          "actual_m3",
+          "forecast_m3",
+          "days"
+        ],
+        "title": "MyTKOSiteAccuracy",
+        "type": "object"
+      },
+      "QuantileTriplet": {
+        "properties": {
+          "p50": {
+            "title": "P50",
+            "type": "number"
+          },
+          "p75": {
+            "title": "P75",
+            "type": "number"
+          },
+          "p90": {
+            "title": "P90",
+            "type": "number"
+          }
+        },
+        "title": "QuantileTriplet",
+        "type": "object"
+      },
+      "RegionAccuracyResponse": {
+        "properties": {
+          "available_quarters": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Available Quarters",
+            "type": "array"
+          },
+          "distribution": {
+            "items": {
+              "$ref": "#/components/schemas/AccuracyDistributionBin"
+            },
+            "title": "Distribution",
+            "type": "array"
+          },
+          "median_site_wape": {
+            "title": "Median Site Wape",
+            "type": "number"
+          },
+          "overall_wape": {
+            "title": "Overall Wape",
+            "type": "number"
+          },
+          "quarter": {
+            "title": "Quarter",
+            "type": "string"
+          },
+          "site_count": {
+            "title": "Site Count",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "quarter",
+          "available_quarters",
+          "overall_wape",
+          "median_site_wape",
+          "site_count",
+          "distribution"
+        ],
+        "title": "RegionAccuracyResponse",
+        "type": "object"
+      },
+      "RouteRow": {
+        "properties": {
+          "date": {
+            "title": "Date",
+            "type": "string"
+          },
+          "fill_pct": {
+            "title": "Fill Pct",
+            "type": "number"
+          },
+          "last_service_dt": {
+            "title": "Last Service Dt",
+            "type": "string"
+          },
+          "overflow_prob": {
+            "title": "Overflow Prob",
+            "type": "number"
+          },
+          "policy": {
+            "title": "Policy",
+            "type": "string"
+          },
+          "schedule": {
+            "title": "Schedule",
+            "type": "string"
+          },
+          "site_id": {
+            "title": "Site Id",
+            "type": "string"
+          },
+          "visit": {
+            "title": "Visit",
+            "type": "integer"
+          },
+          "volume_m3": {
+            "title": "Volume M3",
+            "type": "number"
+          }
+        },
+        "title": "RouteRow",
+        "type": "object"
+      },
+      "RouteStopForecast": {
+        "properties": {
+          "address": {
+            "title": "Address",
+            "type": "string"
+          },
+          "fill_pct": {
+            "title": "Fill Pct",
+            "type": "number"
+          },
+          "last_service_dt": {
+            "title": "Last Service Dt",
+            "type": "string"
+          },
+          "overflow_prob": {
+            "title": "Overflow Prob",
+            "type": "number"
+          },
+          "pred_volume_m3": {
+            "title": "Pred Volume M3",
+            "type": "number"
+          },
+          "schedule": {
+            "title": "Schedule",
+            "type": "string"
+          },
+          "site_id": {
+            "title": "Site Id",
+            "type": "string"
+          },
+          "volume_m3": {
+            "title": "Volume M3",
+            "type": "number"
+          }
+        },
+        "required": [
+          "site_id"
+        ],
+        "title": "RouteStopForecast",
+        "type": "object"
+      },
+      "SiteAccuracyEnvelope": {
+        "properties": {
+          "available_quarters": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Available Quarters",
+            "type": "array"
+          },
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/SiteAccuracyRow"
+            },
+            "title": "Items",
+            "type": "array"
+          },
+          "limit": {
+            "title": "Limit",
+            "type": "integer"
+          },
+          "offset": {
+            "title": "Offset",
+            "type": "integer"
+          },
+          "quarter": {
+            "title": "Quarter",
+            "type": "string"
+          },
+          "total_sites": {
+            "title": "Total Sites",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "quarter",
+          "available_quarters",
+          "total_sites",
+          "limit",
+          "offset",
+          "items"
+        ],
+        "title": "SiteAccuracyEnvelope",
+        "type": "object"
+      },
+      "SiteAccuracyRow": {
+        "properties": {
+          "abs_error": {
+            "title": "Abs Error",
+            "type": "number"
+          },
+          "accuracy_pct": {
+            "title": "Accuracy Pct",
+            "type": "number"
+          },
+          "actual": {
+            "title": "Actual",
+            "type": "number"
+          },
+          "forecast": {
+            "title": "Forecast",
+            "type": "number"
+          },
+          "site_id": {
+            "title": "Site Id",
+            "type": "string"
+          },
+          "wape": {
+            "title": "Wape",
+            "type": "number"
+          },
+          "year_month": {
+            "title": "Year Month",
+            "type": "string"
+          }
+        },
+        "title": "SiteAccuracyRow",
+        "type": "object"
+      },
+      "SiteForecastPoint": {
+        "properties": {
+          "date": {
+            "title": "Date",
+            "type": "string"
+          },
+          "fill_pct": {
+            "title": "Fill Pct",
+            "type": "number"
+          },
+          "last_service_dt": {
+            "title": "Last Service Dt",
+            "type": "string"
+          },
+          "overflow_prob": {
+            "title": "Overflow Prob",
+            "type": "number"
+          },
+          "pred_volume_m3": {
+            "title": "Pred Volume M3",
+            "type": "number"
+          }
+        },
+        "required": [
+          "date"
+        ],
+        "title": "SiteForecastPoint",
+        "type": "object"
+      },
+      "SiteRow": {
+        "properties": {
+          "date": {
+            "title": "Date",
+            "type": "string"
+          },
+          "district": {
+            "title": "District",
+            "type": "string"
+          },
+          "fill_pct": {
+            "title": "Fill Pct",
+            "type": "number"
+          },
+          "overflow_prob": {
+            "title": "Overflow Prob",
+            "type": "number"
+          },
+          "pred_volume_m3": {
+            "title": "Pred Volume M3",
+            "type": "number"
+          },
+          "site_id": {
+            "title": "Site Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "fill_pct",
+          "overflow_prob",
+          "pred_volume_m3"
+        ],
+        "title": "SiteRow",
+        "type": "object"
+      },
+      "TrajectoryPoint": {
+        "properties": {
+          "date": {
+            "title": "Date",
+            "type": "string"
+          },
+          "fill_pct": {
+            "title": "Fill Pct",
+            "type": "number"
+          },
+          "overflow_prob": {
+            "title": "Overflow Prob",
+            "type": "number"
+          },
+          "pred_volume_m3": {
+            "title": "Pred Volume M3",
+            "type": "number"
+          },
+          "site_id": {
+            "title": "Site Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "date",
+          "fill_pct",
+          "overflow_prob",
+          "pred_volume_m3"
+        ],
+        "title": "TrajectoryPoint",
+        "type": "object"
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "title": "Location",
+            "type": "array"
+          },
+          "msg": {
+            "title": "Message",
+            "type": "string"
+          },
+          "type": {
+            "title": "Error Type",
+            "type": "string"
+          }
+        },
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError",
+        "type": "object"
+      }
+    }
+  },
+  "info": {
+    "title": "Forecast Read-only API",
+    "version": "0.1.0"
+  },
+  "openapi": "3.0.2",
+  "paths": {
+    "/api/accuracy/districts": {
+      "get": {
+        "operationId": "district_accuracy_api_accuracy_districts_get",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "quarter",
+            "required": false,
+            "schema": {
+              "title": "Quarter",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "default": 50,
+              "maximum": 500.0,
+              "minimum": 1.0,
+              "title": "Limit",
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "offset",
+            "required": false,
+            "schema": {
+              "default": 0,
+              "minimum": 0.0,
+              "title": "Offset",
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "format",
+            "required": false,
+            "schema": {
+              "title": "Format",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DistrictAccuracyEnvelope"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "District Accuracy"
+      }
+    },
+    "/api/accuracy/region": {
+      "get": {
+        "operationId": "region_accuracy_api_accuracy_region_get",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "quarter",
+            "required": false,
+            "schema": {
+              "title": "Quarter",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "format",
+            "required": false,
+            "schema": {
+              "title": "Format",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RegionAccuracyResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Region Accuracy"
+      }
+    },
+    "/api/accuracy/sites": {
+      "get": {
+        "operationId": "site_accuracy_api_accuracy_sites_get",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "quarter",
+            "required": false,
+            "schema": {
+              "title": "Quarter",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "default": 50,
+              "maximum": 500.0,
+              "minimum": 1.0,
+              "title": "Limit",
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "offset",
+            "required": false,
+            "schema": {
+              "default": 0,
+              "minimum": 0.0,
+              "title": "Offset",
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "search",
+            "required": false,
+            "schema": {
+              "title": "Search",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "format",
+            "required": false,
+            "schema": {
+              "title": "Format",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SiteAccuracyEnvelope"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Site Accuracy"
+      }
+    },
+    "/api/districts": {
+      "get": {
+        "operationId": "districts_api_districts_get",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "format",
+            "required": false,
+            "schema": {
+              "title": "Format",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/DistrictSMAPE"
+                  },
+                  "title": "Response Districts Api Districts Get",
+                  "type": "array"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Districts"
+      }
+    },
+    "/api/metrics": {
+      "get": {
+        "operationId": "metrics_api_metrics_get",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "format",
+            "required": false,
+            "schema": {
+              "title": "Format",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MetricsEnvelope"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Metrics"
+      }
+    },
+    "/api/mytko/district_readiness": {
+      "get": {
+        "description": "Get readiness summary by district.",
+        "operationId": "get_district_readiness_api_mytko_district_readiness_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Get District Readiness"
+      }
+    },
+    "/api/mytko/district_readiness/download": {
+      "get": {
+        "description": "Download district readiness as CSV.",
+        "operationId": "download_district_readiness_api_mytko_district_readiness_download_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Download District Readiness"
+      }
+    },
+    "/api/mytko/districts": {
+      "get": {
+        "description": "Return all unique district names.",
+        "operationId": "list_districts_api_mytko_districts_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "List Districts"
+      }
+    },
+    "/api/mytko/feedback": {
+      "post": {
+        "description": "Submit feedback with dispatcher annotation.",
+        "operationId": "submit_feedback_api_mytko_feedback_post",
+        "requestBody": {
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "$ref": "#/components/schemas/Body_submit_feedback_api_mytko_feedback_post"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Submit Feedback"
+      }
+    },
+    "/api/mytko/feedback_summary": {
+      "get": {
+        "description": "Get feedback summary by site.",
+        "operationId": "get_feedback_summary_api_mytko_feedback_summary_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Get Feedback Summary"
+      }
+    },
+    "/api/mytko/forecast": {
+      "get": {
+        "operationId": "mytko_forecast_api_mytko_forecast_get",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "site_id",
+            "required": true,
+            "schema": {
+              "minLength": 1,
+              "title": "Site Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "start_date",
+            "required": true,
+            "schema": {
+              "maxLength": 10,
+              "minLength": 10,
+              "title": "Start Date",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "end_date",
+            "required": true,
+            "schema": {
+              "maxLength": 10,
+              "minLength": 10,
+              "title": "End Date",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "vehicle_volume",
+            "required": false,
+            "schema": {
+              "default": 22.0,
+              "exclusiveMinimum": 0.0,
+              "title": "Vehicle Volume",
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/MyTKOForecastPoint"
+                  },
+                  "title": "Response Mytko Forecast Api Mytko Forecast Get",
+                  "type": "array"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Mytko Forecast"
+      }
+    },
+    "/api/mytko/ingest_metrics": {
+      "post": {
+        "description": "Ingest metrics CSV from Jury's validation script.",
+        "operationId": "ingest_metrics_api_mytko_ingest_metrics_post",
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/Body_ingest_metrics_api_mytko_ingest_metrics_post"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Ingest Metrics"
+      }
+    },
+    "/api/mytko/metrics_history": {
+      "get": {
+        "description": "Get iteration history for dashboard.",
+        "operationId": "get_metrics_history_api_mytko_metrics_history_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Get Metrics History"
+      }
+    },
+    "/api/mytko/rolling_forecast": {
+      "get": {
+        "description": "Generate rolling-cutoff forecast for single site or all sites.\n\nQuery Parameters:\n  cutoff_date: YYYY-MM-DD (required, max 2025-05-31)\n  horizon_days: 1-365 (required)\n  site_id: optional, if omitted returns all-sites summary\n  format: \"json\" or \"csv\" (default \"json\")\n  limit: 1-1000, default 50 (for all-sites mode)\n  offset: >= 0, default 0 (for all-sites mode)\n  district: optional, case-insensitive prefix filter (all-sites mode)\n  search: optional, case-insensitive contains match on site_id/address (all-sites mode)",
+        "operationId": "rolling_forecast_api_mytko_rolling_forecast_get",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "cutoff_date",
+            "required": true,
+            "schema": {
+              "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+              "title": "Cutoff Date",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "horizon_days",
+            "required": true,
+            "schema": {
+              "maximum": 365.0,
+              "minimum": 1.0,
+              "title": "Horizon Days",
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "site_id",
+            "required": false,
+            "schema": {
+              "title": "Site Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "format",
+            "required": false,
+            "schema": {
+              "default": "json",
+              "title": "Format",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "default": 50,
+              "maximum": 1000.0,
+              "minimum": 1.0,
+              "title": "Limit",
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "offset",
+            "required": false,
+            "schema": {
+              "default": 0,
+              "minimum": 0.0,
+              "title": "Offset",
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "district",
+            "required": false,
+            "schema": {
+              "title": "District",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "search",
+            "required": false,
+            "schema": {
+              "title": "Search",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Rolling Forecast"
+      }
+    },
+    "/api/mytko/rolling_forecast/by_district": {
+      "get": {
+        "description": "Get district-level forecast aggregations.",
+        "operationId": "rolling_forecast_by_district_api_mytko_rolling_forecast_by_district_get",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "cutoff_date",
+            "required": true,
+            "schema": {
+              "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+              "title": "Cutoff Date",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "horizon_days",
+            "required": true,
+            "schema": {
+              "maximum": 365.0,
+              "minimum": 1.0,
+              "title": "Horizon Days",
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "default": 50,
+              "maximum": 100.0,
+              "minimum": 1.0,
+              "title": "Limit",
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "sort_by",
+            "required": false,
+            "schema": {
+              "default": "name",
+              "pattern": "^(name|site_count|total_m3|wape)$",
+              "title": "Sort By",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "sort_order",
+            "required": false,
+            "schema": {
+              "default": "asc",
+              "pattern": "^(asc|desc)$",
+              "title": "Sort Order",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Rolling Forecast By District"
+      }
+    },
+    "/api/mytko/rolling_forecast/download": {
+      "get": {
+        "description": "Download cached forecast as CSV.\n\nKey format: forecast_{cutoff}_{start}_{end}[_suffix]\nExample: forecast_2025-03-15_2025-03-16_2025-03-22",
+        "operationId": "rolling_forecast_download_api_mytko_rolling_forecast_download_get",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "key",
+            "required": true,
+            "schema": {
+              "title": "Key",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Rolling Forecast Download"
+      }
+    },
+    "/api/mytko/rollout_recommendations": {
+      "get": {
+        "description": "Get sites recommended for rollout.",
+        "operationId": "get_rollout_recommendations_api_mytko_rollout_recommendations_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Get Rollout Recommendations"
+      }
+    },
+    "/api/mytko/site_accuracy": {
+      "get": {
+        "operationId": "mytko_site_accuracy_api_mytko_site_accuracy_get",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "site_id",
+            "required": true,
+            "schema": {
+              "minLength": 1,
+              "title": "Site Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "start_date",
+            "required": true,
+            "schema": {
+              "maxLength": 10,
+              "minLength": 10,
+              "title": "Start Date",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "end_date",
+            "required": true,
+            "schema": {
+              "maxLength": 10,
+              "minLength": 10,
+              "title": "End Date",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MyTKOSiteAccuracy"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Mytko Site Accuracy"
+      }
+    },
+    "/api/mytko/site_scores": {
+      "get": {
+        "description": "Get quality scores for all sites.",
+        "operationId": "get_site_scores_api_mytko_site_scores_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Get Site Scores"
+      }
+    },
+    "/api/routes": {
+      "get": {
+        "operationId": "routes_api_routes_get",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "date",
+            "required": true,
+            "schema": {
+              "title": "Date",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "policy",
+            "required": false,
+            "schema": {
+              "default": "strict",
+              "title": "Policy",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "format",
+            "required": false,
+            "schema": {
+              "title": "Format",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/RouteRow"
+                  },
+                  "title": "Response Routes Api Routes Get",
+                  "type": "array"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Routes"
+      }
+    },
+    "/api/routes/{route_id}/forecast": {
+      "get": {
+        "operationId": "get_route_forecast_api_routes__route_id__forecast_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "route_id",
+            "required": true,
+            "schema": {
+              "title": "Route Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "date",
+            "required": true,
+            "schema": {
+              "title": "Date",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "format",
+            "required": false,
+            "schema": {
+              "pattern": "^(json|csv)$",
+              "title": "Format",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "policy",
+            "required": false,
+            "schema": {
+              "default": "strict",
+              "title": "Policy",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/RouteStopForecast"
+                  },
+                  "title": "Response Get Route Forecast Api Routes  Route Id  Forecast Get",
+                  "type": "array"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Get Route Forecast"
+      }
+    },
+    "/api/site/{site_id}/trajectory": {
+      "get": {
+        "operationId": "site_trajectory_api_site__site_id__trajectory_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "site_id",
+            "required": true,
+            "schema": {
+              "title": "Site Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "start",
+            "required": true,
+            "schema": {
+              "title": "Start",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "end",
+            "required": true,
+            "schema": {
+              "title": "End",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/TrajectoryPoint"
+                  },
+                  "title": "Response Site Trajectory Api Site  Site Id  Trajectory Get",
+                  "type": "array"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Site Trajectory"
+      }
+    },
+    "/api/sites": {
+      "get": {
+        "operationId": "sites_api_sites_get",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "default": 50,
+              "maximum": 1000.0,
+              "minimum": 1.0,
+              "title": "Limit",
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "date",
+            "required": false,
+            "schema": {
+              "title": "Date",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "district",
+            "required": false,
+            "schema": {
+              "title": "District",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "offset",
+            "required": false,
+            "schema": {
+              "default": 0,
+              "title": "Offset",
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "format",
+            "required": false,
+            "schema": {
+              "title": "Format",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/SiteRow"
+                  },
+                  "title": "Response Sites Api Sites Get",
+                  "type": "array"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Sites"
+      }
+    },
+    "/api/sites/{site_id}/forecast": {
+      "get": {
+        "operationId": "site_forecast_api_sites__site_id__forecast_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "site_id",
+            "required": true,
+            "schema": {
+              "title": "Site Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "window",
+            "required": false,
+            "schema": {
+              "title": "Window",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "days",
+            "required": false,
+            "schema": {
+              "default": 7,
+              "title": "Days",
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "format",
+            "required": false,
+            "schema": {
+              "title": "Format",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/SiteForecastPoint"
+                  },
+                  "title": "Response Site Forecast Api Sites  Site Id  Forecast Get",
+                  "type": "array"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Site Forecast"
+      }
+    },
+    "/health": {
+      "get": {
+        "description": "Health check endpoint for container orchestration.",
+        "operationId": "health_check_health_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Health Check"
+      }
+    },
+    "/metrics": {
+      "get": {
+        "description": "Prometheus metrics endpoint.",
+        "operationId": "prometheus_metrics_metrics_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Prometheus Metrics"
+      }
+    }
+  }
+}

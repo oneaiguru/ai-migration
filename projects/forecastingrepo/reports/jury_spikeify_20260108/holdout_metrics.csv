@@ -1,0 +1,4 @@
+variant,micro_wape_ratio,micro_wape_pct,sum_actual
+baseline_smooth_mean_per_day,0.6176023639642473,61.76%,1328398.740000007
+spikeify_no_gate,0.5834210089037276,58.34%,1328398.740000007
+spikeify_gate_alignment>=0.60,0.5431416753450887,54.31%,1328398.740000007

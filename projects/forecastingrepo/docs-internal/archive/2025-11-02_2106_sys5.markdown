@@ -1,0 +1,123 @@
+Got it. Here’s a tight, **actionable plan** to decide “ship offer now vs. work more,” using **quick visual checks + a small backtest + (optional) weather stub** — all test‑gated and low‑risk.
+
+------
+
+## A) Decision flow (what we do next)
+
+1. **PR #1 — Quicklook visualization & report (no model change)**
+   - Already outlined earlier; produce PNGs + `REPORT.md` from current forecasts vs 2024 actuals.
+   - Purpose: *eyeball seasonality/levels* (region + top‑5 districts).
+   - Gate: tests (`VIZ-001..004`) pass; CI green.
+2. **PR #2 — Backtest driver + scoreboard (no model change)**
+   - Add `scripts/backtest_eval.py`:
+     - Re‑run forecasts with **earlier cutoff** (e.g., `--train-until 2024-09-30`) and evaluate on **Q4‑2024 actuals**.
+     - Metrics: **WAPE** (primary), **SMAPE** (secondary) at **region + district**, **daily + monthly**.
+     - Output: `reports/backtest_Q4_2024/scoreboard.csv` + `SUMMARY.md` (top/bottom districts, biggest month deltas).
+   - Tests: files exist, schema correct, metrics computed, deterministic.
+   - Purpose: *objective sanity check* before client offer.
+3. **PR #3 — Weather (2022–2024) behind a flag (optional)**
+   - Implement issues **WEA‑001..003** (join + features) **without changing POC output** unless `--use-weather` is set.
+   - Re‑run the **same backtest** with weather features enabled → compare scoreboard.
+   - Purpose: if weather gives **material gains** on Q4‑2024, we can reference this in the offer.
+
+> **Ship the offer** after PR #1 + PR #2 are green.
+>  If your friend confirms weather data is ready, do PR #3 right after; otherwise ship with the current baseline and mention weather as Phase 2.
+
+------
+
+## B) Concrete data asks (send to the client contact)
+
+- **Weather (2022–2024):** daily temp (tavg/tmin/tmax), precipitation, snow; station IDs, coordinates; license/source.
+- **Any extra waste actuals** beyond 2024 (even **1–2 months of 2023** or **some 2025**) — helps validate seasonality and a tiny forward check.
+- **District mapping**: if weather stations must map to districts, provide mapping or we’ll use nearest/area‑weighted fallback.
+
+*(Keep requests minimal; we can do useful work with only weather + 2024 actuals.)*
+
+------
+
+## C) What “better with more data” actually means (for you)
+
+- **More months (e.g., 2023):** stronger seasonal signal → **lower WAPE/SMAPE** on monthly forecasts and smoother weekday patterns.
+- **Weather 2022–2024:** helps explain intra‑month variation (heat/cold holidays), usually improves **daily** accuracy; monthly impact varies by region.
+
+------
+
+## D) Tasks for the current agent (copy‑paste)
+
+**PR #1 (Quicklook)** — if not already started, proceed as scoped earlier.
+
+**PR #2 (Backtest driver + scoreboard)**
+
+- Add `scripts/backtest_eval.py`:
+
+  - Inputs: `--actual-daily`, `--actual-monthly`, `--train-until <earlier date>`, same windows as forecast.
+
+  - Process: run forecast with the earlier cutoff; join to actuals; compute **WAPE/SMAPE** daily & monthly at region and districts.
+
+  - Outputs:
+
+    ```
+    reports/backtest_<cutoff>/
+      scoreboard_daily.csv
+      scoreboard_monthly.csv
+      SUMMARY.md
+    ```
+
+- **Specs/tests**
+
+  - `specs/bdd/features/backtest.feature` with IDs: `BT-001..004`.
+  - `tests/backtest/test_backtest_eval.py`:
+    - files created
+    - schema: columns `[level, district, date|year_month, actual, forecast, wape, smape]`
+    - determinism on fixture
+
+- **Docs**
+
+  - `docs/System/Quicklook.md` → add a “Backtest mode” section.
+
+- CI unchanged; coverage must stay ≥85%.
+
+**PR #3 (Optional — Weather behind flag)**
+
+- Implement WEA issues (join + features; no output change unless `--use-weather`).
+- Extend `backtest_eval.py` to compare `baseline` vs `weather` runs; write a **side‑by‑side** scoreboard with ΔWAPE columns.
+
+------
+
+## E) Go/No‑Go checklist before sending the offer
+
+-  **PR #1** merged: PNGs + visual quicklook look sane (no obvious level shifts).
+-  **PR #2** merged: Backtest **Q4‑2024** shows reasonable error (e.g., monthly region **WAPE ≤ ~10–15%**, districts **≤ ~15–20%**; adjust to your risk tolerance).
+-  If available: **PR #3** shows improvement with weather on daily metrics (any material gain ≥ **1–2 pp WAPE** is a good sales point).
+-  CI is green (tests/spec‑sync/docs‑check/coverage).
+-  You’re comfortable with screenshots from Quicklook + 2–3 sentences from SUMMARY.md to include in the proposal.
+
+------
+
+## F) (Optional) Short RU reply you can send later
+
+You said English here until you ask otherwise, so I won’t draft RU text now.
+ If you want, say the word and I’ll give you a 3‑line Russian reply covering: POC meaning, “yes, we already computed forecasts for chosen 2025 windows,” and “we can use your 2022–2024 weather data either in Phase 2 or as an optional add‑on.”
+
+------
+
+## G) One picture (for your own clarity)
+
+```mermaid
+flowchart LR
+  A[Current baseline forecasts] --> B[PR #1 Quicklook]
+  A --> C[PR #2 Backtest cutoff=2024-09-30]
+  C --> D[Scoreboards + SUMMARY]
+  A --> E[PR #3 Weather flagged]
+  E --> C
+  B --> F{Offer now?}
+  D --> F
+  F -->|Yes| G[Send proposal]
+  F -->|No| H[Iterate once more]
+  classDef step fill:#e6f7ff,stroke:#1e90ff,color:#1a202c;
+  class A,B,C,D,E,F,G,H step
+```
+
+------
+
+If this plan works, I’ll package the **PR #2 brief** for the agent next (file list, specs, tests, and acceptance).

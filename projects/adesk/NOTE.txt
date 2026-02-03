@@ -1,0 +1,88 @@
+Adesk migration package (desktop copy)
+
+Includes:
+- docs/: ADJUSTMENT_PLAN.md, HANDOFF.md, MIGRATION_TODO.md, MIGRATION_PLAN.md, checklist.json
+- newfiles/: accounts/contacts/target/debet plus stubs (apartments, credit, moving, currency, user_account) from the b toolkit run
+- data_mappings/: bank_accounts_mappings.json, categories_mappings.json, contractors_mappings.json, income_transactions_mappings.json with live Adesk IDs
+- logs/: migration reports and validation logs from 2025-12-08 run (income ops created as 105011439, 105011440)
+
+Known Adesk IDs:
+- Accounts: 3967→268031 (KGS), 4068→268026 (USD), 4169→268030 (EUR), 4270→268029 (RUR)
+- Category: 9001 “Export Services” → 1586898
+- Contractors: 5001 Dipesh Handa → 5221156; 5002 Avi Ashkenazi → 5221157
+
+Run summary (8 Dec 2025, using toolkit in /Users/m/git/clients/adesk/b):
+- Used v1 api_token auth; .env set in b/ with provided token.
+- Categories/contractors already existed; import skipped creating them.
+- Income import created 2/2 rows; logged in migration_report_2025-12-08_14-58-44.json.
+- Validator ran; counts for categories/contractors in the validator are off due to API response shape, but entities exist (verified via API).
+- UI initially had income on KGS; later corrected to USD account (see USD reimport below).
+
+Commands run (chronological):
+- Set auth (.env): wrote `ADESK_API_TOKEN=…`, `ADESK_API_URL=https://api.adesk.ru`, `ADESK_API_VERSION=v1` in /Users/m/git/clients/adesk/b/.
+- Validation: `php csv-validator.php newfiles/`
+- Imports:
+  - `php migrate-newfiles.php --entity=categories` (failed: already exists)
+  - `php migrate-newfiles.php --mode=incremental --entity=categories` (0 migrated)
+  - `php migrate-newfiles.php --mode=incremental --entity=contractors` (0 migrated)
+  - `php migrate-newfiles.php --entity=income_transactions` (2/2 created)
+- Validation report: `php migration_validator.php`
+- API checks:
+  - `curl -s 'https://api.adesk.ru/v1/transactions/categories?api_token=…'` (confirmed Export Services id 1586898, type=1)
+  - `curl -s 'https://api.adesk.ru/v1/transaction/105011439?api_token=…'` (income op 2001: category 1586898, contractor 5221156, account 268031)
+  - `curl -s 'https://api.adesk.ru/v1/transaction/105011440?api_token=…'` (income op 2002: category 1586898, contractor 5221157, account 268031)
+
+Correction (USD reimport on 8 Dec 2025):
+- Deleted incorrect KGS ops via API:
+  - `curl -s -X POST 'https://api.adesk.ru/v1/transaction/105011439/remove?api_token=…'`
+  - `curl -s -X POST 'https://api.adesk.ru/v1/transaction/105011440/remove?api_token=…'`
+- Replaced `newfiles/debet.csv` with USD amounts/accounts_id=4068 (see `newfiles/debet.csv` and `newfiles/debet_usd.csv`).
+- Re-imported income: `php migrate-newfiles.php --entity=income_transactions` (2/2 created; log `logs/migration_report_2025-12-08_15-23-35.json`; new Adesk IDs 105014762, 105014763).
+- Updated income mapping: `data_mappings/income_transactions_mappings.json` reflects the new Adesk IDs.
+- Validation: `php migration_validator.php` (log `logs/migration_validation_report_2025-12-08_15-23-41.txt`; category/contractor counts still off due to API response shape, but API confirms entities).
+- API checks for new ops:
+  - `curl -s 'https://api.adesk.ru/v1/transaction/105014762?api_token=…'` (4975.00 USD on account 268026, category 1586898, contractor 5221156).
+  - `curl -s 'https://api.adesk.ru/v1/transaction/105014763?api_token=…'` (24967.50 USD on account 268026, category 1586898, contractor 5221157).
+
+Clarifications / current state:
+- 1% payments are not imported; only the two income ops are in Adesk for 2023–2024.
+- Income is now posted in USD on account 268026 (after deleting KGS ops and reimporting).
+- Only the two income rows are imported; no expenses/transfers/1% entries.
+- Validator counts for categories/contractors are skewed by API response shape; categories/contractors exist (confirmed via API).
+- Manual work: UI spot-check only (verify amounts, account 268026, category 1586898, contractors 5221156/5221157).
+
+Next steps (if rerunning or extending):
+- Keep `.env` with ADESK_API_TOKEN/ADESK_API_URL (v1 api_token works); optional ADESK_API_VERSION=v2 if switching auth.
+- If importing more data (expenses/transfers), populate credit/moving/etc. and rerun with validator + importer.
+- Optional: adjust `migration_validator.php` to read `categories`/`items` keys for accurate counts.
+
+Update 2025-12-09 (full statement coverage + expenses/transfers)
+- Processed all 32 KICB statements from `/Users/m/Documents/accounting/bank/renamed-statements/` and classified every row.
+- Built new CSVs in `newfiles/`:
+  - `debet.csv` (unchanged: 2 USD income rows on account 4068 → category 9001, contractors 5001/5002).
+  - `credit.csv` (88 rows) with categories:
+    - 9101 Bank Service Fees (commissions, sales tax lines, payment fees).
+    - 9102 Taxes and Government Fees (UGNS contributions, NPT, municipal garbage fee).
+    - 9103 Owner Transfers/Withdrawals (card top-ups, Elsom/ELQR/MEGA/MBANK payments, Golden Crown sends), flagged via `is_not_stat=1`.
+  - `moving.csv` (8 FX transfers with `amount_from`/`amount_to`): USD→KGS, KGS→EUR, KGS→RUB, USD→RUB, USD→KGS.
+  - `target.csv` now holds 9001 (Приход), 9101/9102/9103 (Расход).
+- Created expense categories via API:
+  - 9101 → Adesk 1587589 (Bank Service Fees)
+  - 9102 → Adesk 1587590 (Taxes and Government Fees)
+  - 9103 → Adesk 1587591 (Owner Transfers/Withdrawals)
+- Imports (toolkit `/Users/m/git/clients/adesk/b`, .env v1 api_token):
+  - `php csv-validator.php newfiles/` (all files passed; report saved).
+  - `php migrate-newfiles.php --mode=incremental --entity=income_transactions` (0, mapped to existing 105014762/105014763).
+  - `php migrate-newfiles.php --mode=incremental --entity=expense_transactions` (88 rows total; second pass picked up last 5 due to timeout; IDs 105024278–105024423 range).
+  - `php migrate-newfiles.php --mode=incremental --entity=transfers` (8 FX transfers; Adesk IDs 4406181–4406189).
+  - `php migration_validator.php` (report `logs/migration_validation_report_2025-12-08_16-49-03.*`, overall 98.18%; category/contractor counts skewed by API shape).
+- Mapping files updated in `data_mappings/`:
+  - categories: add 9101→1587589, 9102→1587590, 9103→1587591.
+  - expense transactions: 3001–3088 mapped to Adesk IDs (see `expense_transactions_mappings.json`).
+  - transfers: 4001–4008 mapped to Adesk IDs (see `transfers_mappings.json`).
+- Logs copied to `logs/`; validation report + migration reports included. Use these for audit trail.
+- Current Adesk state (production):
+  - Income: 105014762 (Dipesh 4,975 USD 2023-01-16), 105014763 (Avi 24,967.50 USD 2023-07-27) on account 268026, category 1586898, contractors 5221156/5221157.
+  - Expenses: 88 outcomes across 9101/9102/9103 on the mapped accounts (see mappings).
+  - Transfers: 8 FX transfers across accounts 268026/268031/268029/268030 as per moving.csv.
+  - No 1% payments imported; Invoice #3 remains a 2025 item.

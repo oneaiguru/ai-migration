@@ -1,0 +1,10 @@
+pytest==7.4.3
+pytest-cov==4.1.0
+pytest-bdd==7.0.1
+psutil==5.9.6
+coverage==7.6.4
+readchar==4.2.0
+pyperclip==1.9.0
+rich==13.9.4
+pytest-mock==3.14.0
+behave

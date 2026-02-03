@@ -1,0 +1,15 @@
+{
+    "timestamp": "2025-12-08 16:44:08",
+    "mode": "incremental",
+    "entity_type": "income_transactions",
+    "start_date": null,
+    "end_date": null,
+    "is_test_mode": false,
+    "entities": {
+        "income_transactions": {
+            "success": [],
+            "error": [],
+            "total": 0
+        }
+    }
+}

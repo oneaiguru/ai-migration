@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+set -euo pipefail
+ROOT_DIR="$(cd "${BASH_SOURCE[0]%/*}"/.. && pwd)"
+export CCP_PROFILE=prod
+: "${CCP_LOGS_DIR:=$ROOT_DIR/logs}"
+: "${CCP_RESULTS_DIR:=$ROOT_DIR/results}"
+: "${CCP_LICENSE_DIR:=${XDG_CONFIG_HOME:-$HOME/.config}/ccp}"
+: "${CCP_PORT_DEFAULT:=8082}"
+exec "$ROOT_DIR/bin/cc" "$@"

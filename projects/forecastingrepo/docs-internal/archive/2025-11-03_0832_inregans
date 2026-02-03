@@ -1,0 +1,234 @@
+Thanks—this is exactly the point where we should lock down **secure access**, **repeatable setup**, and a **clean hand‑off** for the agent.
+
+Below is a concise, practical plan answering your questions and giving the agent everything needed to pull ERA5‑Land + stations on **macOS (and Linux)**.
+
+---
+
+## 0) ⚠️ Security first (very important)
+
+* You pasted a CDS API token in chat. Treat it as **sensitive**.
+  **Action:** regenerate your token in the CDS profile, then use the **new** one only via local files/env vars (don’t paste in chat again).
+* Ensure secrets are not committed:
+
+  * Add to `.gitignore` (if not already):
+
+    ```
+    .env
+    **/*.env
+    **/.cdsapirc
+    ```
+  * The repo already keeps raw data under `data/raw/` and **not** in Git—keep it that way.
+
+---
+
+## 1) Should the agent get the full repo or a subset?
+
+**Give the agent the full repo** (private access), **plus** these guardrails:
+
+* They work on a **feature branch** only; **no raw data** or secrets pushed.
+* Follow docs: `docs/System/AgentMode.md` and `docs/AgentMode/*`.
+* All downloads go to `data/raw/` with **provenance JSON** recorded.
+* If you ever need to restrict, you can share the **agent‑mode subset** only:
+
+  * `scripts/agentmode/*`, `docs/AgentMode/*`, `docs/data/*`, `scenarios/*`,
+  * plus `requirements-dev.txt` and `README.md`.
+    But for speed and fewer “what’s missing?” pings, **full repo** is better.
+
+---
+
+## 2) macOS/Linux setup (step‑by‑step, copy/paste)
+
+> macOS behaves like Linux for CDS. If they need GDAL/GEOS for geopandas, they can use Homebrew.
+
+**A. System deps (macOS)**
+
+```bash
+# macOS (Homebrew):
+brew install gdal geos proj spatialindex
+# Linux (Debian/Ubuntu, if needed):
+# sudo apt-get update && sudo apt-get install -y gdal-bin libgdal-dev libspatialindex-dev
+```
+
+**B. Python env & packages (from repo root)**
+
+```bash
+python3 -m venv .venv && source .venv/bin/activate
+pip install -r requirements-dev.txt
+# Add agent-mode libs if not already in requirements-dev
+pip install cdsapi meteostat geopandas shapely pyproj rtree xarray netCDF4 pandas requests
+```
+
+**C. Secrets (do this locally, never commit)**
+
+1. Create `.env` at repo root:
+
+```
+CDSAPI_URL=https://cds.climate.copernicus.eu/api
+CDSAPI_KEY=uid:apikey     # <-- paste the NEW regenerated token here (uid:key)
+TZ=UTC
+LC_ALL=C.UTF-8
+PYTHONHASHSEED=0
+```
+
+2. Load it for the shell:
+
+```bash
+set -a; source .env; set +a
+```
+
+3. Write `~/.cdsapirc` automatically:
+
+```bash
+bash scripts/agentmode/cds_login.sh
+```
+
+This writes `~/.cdsapirc` with your URL+key.
+
+**D. Accept dataset Terms**
+
+* In CDS UI, open the **ERA5‑Land** dataset pages you plan to use and **accept Terms** at the bottom once (per dataset).
+  Tip: prefer **ERA5‑Land hourly** and aggregate to daily in code; daily “post‑processed” pages exist but can be harder to automate consistently.
+
+---
+
+## 3) Run the downloads (exact commands)
+
+**1) ERA5‑Land (Irkutsk 2022–2024)**
+
+```bash
+python scripts/agentmode/cds_era5_land_pull.py
+# Output:
+# data/raw/weather/era5land_irkutsk_2022_2024.nc
+# provenance/era5land_irkutsk_2022_2024.json
+```
+
+Notes:
+
+* If CDS UI shows a different dataset name or variable list, click **“Show API request code”** on the dataset page, copy the block, and adjust `cds_era5_land_pull.py` (dataset id, variable keys).
+* Safe variables for our features:
+
+  * `2m_temperature` (K; you’ll convert to °C)
+  * `total_precipitation` (m; convert to mm by ×1000)
+  * `snow_depth` (`sd`) if available
+* If the daily dataset is awkward, stick to **hourly** and aggregate to daily with xarray/pandas later (we already do this in the plugin plan).
+
+**2) Meteostat stations (Irkutsk + 100 km)**
+
+```bash
+python scripts/agentmode/meteostat_pull.py
+# Output:
+# data/raw/weather/stations_meteostat.csv
+# data/raw/weather/meteostat_daily_irkutsk_2022_2024.csv
+# provenance/meteostat_irkutsk_2022_2024.json
+```
+
+> **License note:** CC‑BY‑NC for raw; fine for modeling, don’t ship raw to clients.
+
+**3) (Optional) NOAA GHCN‑Daily subset**
+
+```bash
+bash scripts/agentmode/noaa_ghcn_pull.sh
+# Produces station subset CSV. The full daily pulls are heavy—okay to skip for now.
+```
+
+**4) RU ADM2 boundaries**
+
+```bash
+bash scripts/agentmode/geoboundaries_pull.sh
+# Output: data/boundaries/irkutsk_districts.geojson (+ zip + provenance)
+```
+
+**5) RU holidays (for features)**
+
+```bash
+python scripts/agentmode/holidays_generate.py
+# Output: data/calendars/holidays_ru_2022_2025.csv (+ provenance)
+```
+
+**6) A/B mapping brief (no model change)**
+
+* Use `docs/Tasks/PR-Weather-AB-Study.md`.
+* Produce:
+
+  * `reports/weather_ab/mapping_summary.md`
+  * `reports/weather_ab/corr_tables_flat.csv`
+  * `reports/weather_ab/corr_tables_mountainous.csv`
+
+---
+
+## 4) Typical CDS pitfalls & fixes
+
+* **403 Unauthorized / 401**: token invalid → regenerate; re‑run `cds_login.sh`; ensure `~/.cdsapirc` exists and matches your new token; don’t paste in chat.
+* **“You must agree to the Terms of Use”**: visit the dataset page in the browser and accept Terms once.
+* **Job stuck**: ERA5 queues can be slow. Keep requests modest: smaller bbox, fewer variables, year‑by‑year. Our Irkutsk bbox is already reasonable.
+* **Variable names mismatch**: use the dataset page’s “Show API request code” to confirm exact keys and dataset id; update the script accordingly.
+
+---
+
+## 5) Alternative paths (the “five approaches” if one fails)
+
+1. **Programmatic (our default)**: `cdsapi` + `cds_era5_land_pull.py`.
+2. **UI‑assisted**: build the query via CDS web form → **Show API request code** → paste into a throwaway script and run.
+3. **Year‑by‑year loop**: modify the script to split by year and concatenate NetCDF files (fewer timeouts).
+4. **Switch client**: if needed, try ECMWF’s newer `ecmwf-datastores-client` (advanced; only if `cdsapi` is blocked).
+5. **Reanalysis fallback**: if ERA5‑Land daily stats are finicky, pull **hourly** only and aggregate locally to daily (xarray groupby).
+
+For stations:
+
+* **Primary**: Meteostat Python (fastest).
+* **Backup**: NOAA GHCN‑Daily/ISD filter by bbox + merge.
+
+For boundaries:
+
+* **Primary**: geoBoundaries RU ADM2.
+* **Backup**: GADM (license caveats) or official RU open data portals if available.
+
+---
+
+## 6) What to hand the agent **right now**
+
+* **Full repo access** (private).
+* **Your new (rotated) CDS token** stored locally only: create `.env`, then run `bash scripts/agentmode/cds_login.sh`.
+* **Exact task list** (copy/paste to them):
+
+  1. `git checkout -b agent/data-ingest-irkutsk`
+  2. Setup per §2, run commands in §3 in order.
+  3. Do **not** commit anything under `data/raw/` or `.env`.
+  4. Produce `reports/weather_ab/*` per A/B brief (no model changes).
+  5. Post a PR updating only: provenance JSONs (optional ignore in git), and **REPORT markdown** under `reports/weather_ab/`.
+  6. If CDS requests fail, try approaches #2–#5; report what worked.
+
+---
+
+## 7) Quick verification (run locally or by agent)
+
+```bash
+# Check files exist and are non-empty
+ls -lh data/raw/weather/era5land_irkutsk_2022_2024.nc
+ls -lh data/raw/weather/meteostat_daily_irkutsk_2022_2024.csv
+ls -lh data/boundaries/irkutsk_districts.geojson
+ls -lh data/calendars/holidays_ru_2022_2025.csv
+
+# Sanity read ERA5-Land with xarray (optional)
+python - <<'PY'
+import xarray as xr
+ds = xr.open_dataset("data/raw/weather/era5land_irkutsk_2022_2024.nc")
+print(ds)
+PY
+```
+
+---
+
+## 8) If anything blocks the agent
+
+Tell me **exactly which step** fails (dataset id, API code, error message). I’ll translate it to the minimal code/data change needed, or—if it’s truly a data gap—I’ll give you a **short RU outreach note** targeted to Irkutsk UGMС/SB RAS (we already drafted one, ready to send).
+
+---
+
+### TL;DR
+
+* **Yes**, give the agent the **full repo** and the **exact steps above**.
+* **Rotate** the CDS key you pasted; store it in `.env`, never in chat/Git.
+* Run the agent‑mode scripts in order; accept dataset Terms once; use the “Show API request” block if variable names don’t match.
+* Report back with the A/B **mapping_summary.md** and **corr tables**—that’s the signal for us to proceed to the weather‑behind‑flag PR.
+

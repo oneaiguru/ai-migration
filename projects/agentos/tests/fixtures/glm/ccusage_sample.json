@@ -1,0 +1,13 @@
+{
+  "account": "claude",
+  "generated_at": "2025-11-05T10:02:17Z",
+  "blocks": [
+    {
+      "window_id": "W0-02",
+      "provider": "glm-4.6",
+      "prompts_used": 118,
+      "duration_minutes": 300,
+      "notes": "Pro block"
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "id": "bug-001",
+  "project": "project-002",
+  "title": "Payment processing error",
+  "description": "Users receive an error when trying to complete payment",
+  "severity": 8,
+  "reported_date": "2025-03-15T10:30:00Z",
+  "steps_to_reproduce": [
+    "Go to checkout page",
+    "Enter valid credit card details",
+    "Click Submit"
+  ],
+  "expected_behavior": "Payment processes successfully",
+  "actual_behavior": "Error message appears: 'Unable to process payment'"
+}

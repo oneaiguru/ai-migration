@@ -1,0 +1,15 @@
+{
+    "timestamp": "2025-12-08 14:58:30",
+    "mode": "incremental",
+    "entity_type": "contractors",
+    "start_date": null,
+    "end_date": null,
+    "is_test_mode": false,
+    "entities": {
+        "contractors": {
+            "success": [],
+            "error": [],
+            "total": 0
+        }
+    }
+}

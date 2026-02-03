@@ -1,0 +1,175 @@
+**Short answer:** Yes—proceed. But **don’t let Agent‑2 redo PR‑0/PR‑1** (they’re already merged). Move them straight to **PR‑2 (Backtest driver & scoreboard)**. Also, fold the “Notes for the agent” into SOPs, pin the **golden baseline** now, and shift Agent‑1 into **guardian/reviewer** mode.
+
+Below are the exact actions, files, and messages to send.
+
+------
+
+## 1) Immediate actions (today)
+
+1. **Pin the golden baseline (turn GOLD‑001 from skip → assert)**
+   - Compute SHA256 for the current client CSVs (one full‑year daily + monthly file each).
+   - Write hashes into `tests/golden/golden.yml`.
+   - Ensure `tests/golden/test_golden_baseline.py` asserts exact match.
+2. **Move operational notes into SOPs**
+   - Add `docs/SOP/policies.md` (content below).
+   - Link it from `docs/System/Onboarding.md` and `docs/System/Testing.md`.
+3. **Role shift**
+   - Agent‑1 = *Guardian/Reviewer* (CODEOWNER on `scripts/**`, `specs/**`, `.tools/**`, `docs/System/**`).
+   - Agent‑2 = *Primary Implementer* (assigned to PR‑2 and weather PRs).
+
+------
+
+## 2) SOP patch (paste as new file)
+
+**`docs/SOP/policies.md`**
+
+```md
+# Engineering Policies (Client Repo)
+
+## Language & Docs
+- Russian client docs update only at paid milestones.
+- Internal docs remain English-only between milestones.
+
+## Data Handling
+- Do **not** commit raw XLSX or client-sensitive files.
+- Tests use tiny CSV fixtures under `tests/data/fixtures/`.
+
+## Determinism & Env
+- CI and local runs must set: `PYTHONHASHSEED=0`, `TZ=UTC`, `LC_ALL=C.UTF-8`.
+- Visualization uses Matplotlib **Agg** backend (no display).
+
+## Output Stability (Golden)
+- Baseline scenario must reproduce golden outputs **bit-for-bit**.
+- Golden updates only via a dedicated “golden update” PR.
+
+## Specs & Tests
+- Every behavior has a Spec‑ID and test coverage (spec‑sync enforced).
+- Coverage: global ≥85%, `scripts/ingest_and_forecast.py` ≥90%.
+```
+
+**Add links**
+
+- In `docs/System/Onboarding.md` → add a bullet: “Read `docs/SOP/policies.md`.”
+- In `docs/System/Testing.md` → reference “Output Stability (Golden)” section.
+
+------
+
+## 3) Golden hashes (one‑time now)
+
+**Compute & store**
+
+- Pick the canonical forecast files (e.g. full‑year 2025 daily/monthly you already produced).
+- Add to `tests/golden/golden.yml`:
+
+```yaml
+files:
+  - path: deliveries/phase1_run_YYYYMMDD_HHMM/forecasts/daily_2025-01-01_to_2025-12-31.csv
+    sha256: "<HEX>"
+  - path: deliveries/phase1_run_YYYYMMDD_HHMM/forecasts/monthly_2025-01_to_2025-12.csv
+    sha256: "<HEX>"
+```
+
+- Ensure `tests/golden/test_golden_baseline.py`:
+  - runs a baseline forecast (same windows),
+  - recomputes SHA256,
+  - asserts equality (fail if different).
+
+*(Agent‑1 can do this in a tiny PR “golden: pin baseline hashes”.)*
+
+------
+
+## 4) Agent‑2 task: **PR‑2 Backtest driver & scoreboard** (start now)
+
+**Files**
+
+```
+scripts/backtest_eval.py
+specs/bdd/features/backtest.feature         # IDs: BT-001..BT-004
+specs/unit-md/unit_metrics.md               # WAPE/SMAPE definitions
+tests/backtest/test_backtest_eval.py
+docs/System/Quicklook.md                    # add “Backtest mode” section
+```
+
+**Scope (no model changes)**
+
+- Inputs:
+  - `--actual-daily`, `--actual-monthly`
+  - `--train-until <YYYY-MM-DD>`
+  - `--daily-window`, `--monthly-window` (repeatable)
+  - optional: `--scenario-path` (default baseline)
+- Behavior:
+  - Call existing forecast CLI via subprocess with the **earlier cutoff**.
+  - Join forecast with actuals.
+  - Compute metrics at **monthly (primary)** and **daily (secondary)**, for **district & region**.
+- Outputs:
+
+```
+reports/backtest_<cutoff>/
+  scoreboard_monthly.csv   # level,district,year_month,actual,forecast,wape,smape,mae
+  scoreboard_daily.csv     # level,district,date,actual,forecast,wape,smape,mae
+  SUMMARY.md               # top/bottom districts, worst month, region stats
+```
+
+**Metric definitions** (document in `unit_metrics.md`, implement in code + tests)
+
+- `WAPE = sum(|y - ŷ|) / sum(|y| + 1e-9)`
+- `SMAPE = mean( 2|y-ŷ| / (|y| + |ŷ| + 1e-9) )`
+- `MAE = mean(|y-ŷ|)`
+
+**Tests (`tests/backtest/test_backtest_eval.py`)**
+
+- **BT‑001**: creates `reports/backtest_<cutoff>/` with the 3 expected files.
+- **BT‑002**: validates CSV schemas & dtypes; non‑empty rows.
+- **BT‑003**: determinism (same inputs → identical hashes).
+- **BT‑004**: region row equals sum of districts per date/month in the **actuals** and in the **joined** outputs.
+
+**CI gates**
+
+- All tests green; coverage unchanged ≥85%.
+- spec‑sync updated with BT‑001..004.
+
+------
+
+## 5) Agent‑2 next (queued after PR‑2): **PR‑3 Weather features (flagged)**
+
+**Files**
+
+```
+specs/bdd/features/weather_join.feature     # WEA-001..003
+src/plugins/weather/adapter.py              # real loader (fixtures first)
+src/plugins/weather/features.py             # HDD/CDD, rolling means, precip sums
+src/plugins/weather/join.py                 # mapping + fallback
+tests/plugins/test_weather_join.py
+docs/System/Testing.md                      # add WEA domain notes
+```
+
+**Rules**
+
+- `use_weather=false` → outputs unchanged.
+- `use_weather=true` → features materialize, but **no model change yet** (metrics computed in backtest only).
+
+------
+
+## 6) Messages to send
+
+**To Agent‑2**
+
+> Yes, proceed—but **skip PR‑0/PR‑1** (already done). Start **PR‑2 (Backtest driver & scoreboard)** now with the exact file list and tests above (BT‑001..004). No model changes; call the existing CLI with an earlier cutoff; produce `reports/backtest_<cutoff>/` with scoreboards and `SUMMARY.md`. Update spec‑sync and docs. Keep CI green and coverage ≥85%.
+
+**To Agent‑1**
+
+> Please pin the **golden baseline** now (compute hashes, write `tests/golden/golden.yml`, switch GOLD‑001 to assert). Add `docs/SOP/policies.md` and link it from Onboarding/Testing. Then switch to **guardian/reviewer** role and review Agent‑2’s PR‑2.
+
+------
+
+## 7) Sunset criteria for Agent‑1 (when to fully step back)
+
+- Two consecutive Agent‑2 PRs merged **green** (PR‑2, PR‑3).
+- Golden baseline pinned & enforced on `main`.
+- Branch protections + CODEOWNERS active.
+- docs/System and SOPs updated with the new components.
+- After that, Agent‑1 stays as **backup reviewer only** (no day‑to‑day).
+
+------
+
+If you want, I can also provide a tiny `test_golden_baseline.py` and a SHA256 helper snippet to paste directly—say the word and I’ll drop them in.

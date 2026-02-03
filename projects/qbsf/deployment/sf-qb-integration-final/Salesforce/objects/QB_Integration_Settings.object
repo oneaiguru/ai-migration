@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customSettingsType>Hierarchy</customSettingsType>
+    <description>Settings for the QuickBooks Online integration</description>
+    <enableFeeds>false</enableFeeds>
+    <label>QB Integration Settings</label>
+    <visibility>Protected</visibility>
+    
+    <fields>
+        <fullName>Middleware_Endpoint__c</fullName>
+        <description>URL of the middleware service that connects Salesforce to QuickBooks</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Enter the base URL of the middleware service without trailing slash (e.g., https://qb-sf-integration.example.com)</inlineHelpText>
+        <label>Middleware Endpoint</label>
+        <length>255</length>
+        <required>true</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    
+    <fields>
+        <fullName>API_Key__c</fullName>
+        <description>API key for authenticating with the middleware service</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Enter the API key provided for your middleware service</inlineHelpText>
+        <label>API Key</label>
+        <length>255</length>
+        <required>true</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    
+    <fields>
+        <fullName>QB_Realm_ID__c</fullName>
+        <description>QuickBooks Realm ID (Company ID)</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Enter the QuickBooks Realm ID (Company ID) for your QuickBooks Online account</inlineHelpText>
+        <label>QB Realm ID</label>
+        <length>255</length>
+        <required>true</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+</CustomObject>

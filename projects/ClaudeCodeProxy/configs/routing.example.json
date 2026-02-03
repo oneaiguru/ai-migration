@@ -1,0 +1,24 @@
+{
+  "$schema": "https://example.com/schemas/ccp.routing.v1.json",
+  "classification": {
+    "small_code_task": ["scan", "grep", "summarize diffs", "rename symbol"],
+    "large_refactor": ["multi-file refactor", "project-wide change"]
+  },
+  "start": {
+    "small_code_task": "claude-haiku-4.5",
+    "default": "claude-sonnet-4.5"
+  },
+  "escalation": {
+    "attempts_threshold": 3,
+    "eta_minutes_threshold": 15,
+    "loop_header": "x-cc-loop",
+    "allow_header": "x-cc-escalate-allow",
+    "targets": {
+      "claude-haiku-4.5": "claude-sonnet-4.5",
+      "claude-sonnet-4.5": "gpt-5-pro"
+    }
+  },
+  "budget": {
+    "header": "x-cc-max-tokens-task"
+  }
+}

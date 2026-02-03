@@ -1,0 +1,13 @@
+date,window_id,provider,feature_file,scenario,commit_id,notes,baseline_commit,implementation_commit,docs_commit,lines_added,lines_removed
+2025-10-19,W0-PLANNING,n/a,n/a,n/a,,Documentation-focused session; no new BDD scenarios,,,,,
+2025-10-20,W0-21,codex,features/tracker_ccusage.feature,Scenario: Ingest Codex ccusage session summary,,Experiment 001 Codex window,,,,,
+2025-10-20,W0-21C,claude,features/tracker_cli.feature,Scenario: Ingest Claude monitor snapshot,,Experiment 001 Claude window,,,,,
+2025-10-19,W0-CHN,codex,n/a,Subagent offload — telemetry capture (1 feature),,Tracked other agent progress,fb5b833743f2dc0c8322ac39ceb1f6840150b37d,,,,
+2025-10-19,W0-?,codex,CAP-PREVIEW-NOTES,Spec,preview notes (planned),,,,
+2025-10-19,W0-?,codex,CAP-CLI-ALIAS-DEL,Spec,od1/od2 convenience (planned),,,,
+2025-10-19,W0-?,codex,CAP-LEDGER-EVIDENCE,Spec,acceptance evidence ledger (planned),,,,
+2025-10-19,W0-?,codex,CAP-FINALIZE,Spec,finalize windows enhancements (planned),,,,
+2025-10-19,W0-?,codex,CAP-CHURN,Spec,churn docs/tests (planned),,,,
+2025-10-19,W0-?,codex,CAP-LEDGER-TOKENS,Spec,ledger checkpoint automation (planned),,,,
+2025-10-20,W0-CHP-1,codex,CAP-LEDGER-CHECKPOINT-AUTO,Ledger checkpoint auto decision card,,planned 2025-10-20,,,,,
+2025-10-20,W0-CHP-1,codex,CAP-FEATURE-RESERVE,Feature ledger reserve helper,,planned 2025-10-20,,,,,

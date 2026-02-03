@@ -1,0 +1,23 @@
+{
+  "view": "daily",
+  "generated_at": "2025-10-19T12:05:00Z",
+  "resetAt": "2025-10-20T21:11:00Z",
+  "days": [
+    {
+      "date": "2025-10-18",
+      "totalTokens": 654321,
+      "percentUsed": 11.2,
+      "costUSD": 42.17
+    },
+    {
+      "date": "2025-10-19",
+      "totalTokens": 123456,
+      "percentUsed": 12.5,
+      "costUSD": 15.75
+    }
+  ],
+  "totals": {
+    "totalTokens": 777777,
+    "costUSD": 57.92
+  }
+}

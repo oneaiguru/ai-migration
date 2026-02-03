@@ -1,0 +1,26 @@
+# Adesk Migration TODO (current status and rerun steps)
+
+- Scope (unchanged)
+  - ✅ Only 2023 Q1/Q3 income; all other 2023–2024 quarters zero. Invoice #3 (402.50 USD, Contract 24-1) is 2025; no 1% imports for 2023–2024.
+  - ✅ Unified address: `Apt. 97, House 4, 6th Microdistrict, Bishkek, Kyrgyz Republic`.
+- Data files (in `projects/adesk/newfiles/`)
+  - ✅ `accounts.csv` opening balances 0 on 2022-12-31 for 3967/4068/4169/4270.
+  - ✅ `contacts.csv` (Dipesh Handa, Avi Ashkenazi).
+  - ✅ `target.csv` with 9001 (Приход), 9101/9102/9103 (Расход).
+  - ✅ `debet.csv` (two USD income rows on account 4068 → category 9001, contractors 5001/5002).
+  - ✅ `credit.csv` (88 expenses: 9101 bank fees, 9102 taxes/municipal, 9103 owner transfers with `is_not_stat=1`).
+  - ✅ `moving.csv` (8 FX transfers with `amount_from`/`amount_to` and comments).
+  - Stubs: apartments/currency/user_account unchanged.
+- Environment & mappings
+  - ✅ `.env` set with production token/base URL (`ADESK_API_TOKEN`, `ADESK_API_URL`, `ADESK_API_VERSION=v1`).
+  - ✅ Mappings in `data/mappings/`: accounts, categories (9001→1586898; 9101→1587589; 9102→1587590; 9103→1587591), contractors (5001/5002), income (2001/2002), expenses (3001–3088), transfers (4001–4008).
+- Execution history (production)
+  - `php csv-validator.php newfiles/` (passed).
+  - `php migrate-newfiles.php --mode=incremental --entity=income_transactions` (skipped; mapped).
+  - `php migrate-newfiles.php --mode=incremental --entity=expense_transactions` (88 created; second pass picked up remaining after timeout).
+  - `php migrate-newfiles.php --mode=incremental --entity=transfers` (8 FX transfers created).
+  - `php migration_validator.php` (report `logs/migration_validation_report_2025-12-08_16-49-03.*`).
+- If rerunning/adjusting
+  - Delete/adjust the relevant records in Adesk first, then remove their IDs from the mapping JSONs before re-importing (income: 2001/2002; expenses: 3001–3088; transfers: 4001–4008).
+  - Keep incremental mode to avoid duplicates; ensure categories and contractors stay mapped to live IDs above.
+  - Do **not** import 1% payments for 2023–2024; keep Invoice #3 in 2025.***

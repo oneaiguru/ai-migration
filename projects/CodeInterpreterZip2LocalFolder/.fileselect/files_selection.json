@@ -1,0 +1,8 @@
+[
+  "README.txt",
+  "combined_test_update_project.py",
+  "config.json",
+  "update_project_from_zip.py",
+  "update_project_preserve.py",
+  "update_project_replace.py"
+]

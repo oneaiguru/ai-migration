@@ -1,0 +1,17 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Decision",
+  "type": "object",
+  "properties": {
+    "reroute_mode": {"type": "string"},
+    "reroute_decision": {"type": "string"},
+    "preferred_attempt": {"type": ["integer", "null"], "minimum": 0},
+    "warn_pct_auto": {"type": ["number", "null"]},
+    "warn_pct_confidence": {"type": ["number", "null"]},
+    "gap_seconds_p50": {"type": ["number", "null"], "minimum": 0},
+    "gap_seconds_p95": {"type": ["number", "null"], "minimum": 0},
+    "gap_samples": {"type": ["number", "null"], "minimum": 0},
+    "warn_pct_cfg": {"type": ["number", "null"]}
+  },
+  "additionalProperties": true
+}

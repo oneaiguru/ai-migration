@@ -1,0 +1,4 @@
+# Local artifacts / automation logs
+.DS_Store
+data/events*.jsonl
+data/automation/

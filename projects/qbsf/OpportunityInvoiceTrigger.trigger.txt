@@ -1,0 +1,126 @@
+// 1. Создаем триггер для Opportunity
+// OpportunityInvoiceTrigger.trigger
+
+trigger OpportunityInvoiceTrigger on Opportunity (after update) {
+    List<Opportunity> opportunitiesNeedingInvoice = new List<Opportunity>();
+    
+    for (Opportunity opp : Trigger.new) {
+        Opportunity oldOpp = Trigger.oldMap.get(opp.Id);
+        
+        // Проверяем изменение статуса на "Proposal and Agreement"
+        if (opp.StageName == 'Proposal and Agreement' && oldOpp.StageName != 'Proposal and Agreement') {
+            opportunitiesNeedingInvoice.add(opp);
+        }
+    }
+    
+    if (!opportunitiesNeedingInvoice.isEmpty()) {
+        // Вызываем метод для создания счетов
+        SFInvoiceCreator.createInvoicesFromOpportunities(opportunitiesNeedingInvoice);
+    }
+}
+
+// 2. Класс для создания счетов
+// SFInvoiceCreator.cls
+
+public class SFInvoiceCreator {
+    public static void createInvoicesFromOpportunities(List<Opportunity> opportunities) {
+        // Получаем связанные аккаунты
+        Set<Id> accountIds = new Set<Id>();
+        for (Opportunity opp : opportunities) {
+            accountIds.add(opp.AccountId);
+        }
+        
+        Map<Id, Account> accountsMap = new Map<Id, Account>([
+            SELECT Id, Name, BillingStreet, BillingCity, BillingState, 
+                   BillingPostalCode, BillingCountry, Phone, Website
+            FROM Account
+            WHERE Id IN :accountIds
+        ]);
+        
+        // Получаем строки товаров
+        Map<Id, List<OpportunityLineItem>> oppLineItemsMap = new Map<Id, List<OpportunityLineItem>>();
+        for (OpportunityLineItem lineItem : [
+            SELECT Id, OpportunityId, Quantity, UnitPrice, TotalPrice, 
+                   Product2Id, Product2.Name, Product2.Description
+            FROM OpportunityLineItem
+            WHERE OpportunityId IN :opportunities
+        ]) {
+            if (!oppLineItemsMap.containsKey(lineItem.OpportunityId)) {
+                oppLineItemsMap.put(lineItem.OpportunityId, new List<OpportunityLineItem>());
+            }
+            oppLineItemsMap.get(lineItem.OpportunityId).add(lineItem);
+        }
+        
+        // Создание счетов
+        List<invgen__Invoice__c> invoicesToInsert = new List<invgen__Invoice__c>();
+        
+        for (Opportunity opp : opportunities) {
+            Account acc = accountsMap.get(opp.AccountId);
+            
+            invgen__Invoice__c invoice = new invgen__Invoice__c();
+            invoice.invgen__Account__c = opp.AccountId;
+            invoice.invgen__Opportunity__c = opp.Id;
+            invoice.invgen__Invoice_Date__c = Date.today();
+            invoice.invgen__Due_Date__c = Date.today().addDays(30);
+            invoice.invgen__Status__c = 'Draft';
+            invoice.invgen__Amount__c = opp.Amount;
+            invoice.invgen__Description__c = 'Invoice for ' + opp.Name;
+            
+            // Заполнение адреса и контактной информации
+            invoice.invgen__Billing_Street__c = acc.BillingStreet;
+            invoice.invgen__Billing_City__c = acc.BillingCity;
+            invoice.invgen__Billing_State__c = acc.BillingState;
+            invoice.invgen__Billing_Postal_Code__c = acc.BillingPostalCode;
+            invoice.invgen__Billing_Country__c = acc.BillingCountry;
+            
+            // Дополнительные поля
+            // (Дополнить согласно структуре вашего объекта Invoice)
+            
+            invoicesToInsert.add(invoice);
+        }
+        
+        if (!invoicesToInsert.isEmpty()) {
+            insert invoicesToInsert;
+            
+            // Создание элементов счета (InvoiceLineItem)
+            createInvoiceLineItems(invoicesToInsert, oppLineItemsMap);
+        }
+    }
+    
+    private static void createInvoiceLineItems(List<invgen__Invoice__c> invoices, 
+                                              Map<Id, List<OpportunityLineItem>> oppLineItemsMap) {
+        List<invgen__Invoice_Line_Item__c> lineItemsToInsert = new List<invgen__Invoice_Line_Item__c>();
+        
+        for (invgen__Invoice__c invoice : invoices) {
+            Id opportunityId = invoice.invgen__Opportunity__c;
+            List<OpportunityLineItem> oppLineItems = oppLineItemsMap.get(opportunityId);
+            
+            if (oppLineItems == null || oppLineItems.isEmpty()) {
+                // Если у сделки нет элементов, создаем стандартный элемент
+                invgen__Invoice_Line_Item__c defaultItem = new invgen__Invoice_Line_Item__c();
+                defaultItem.invgen__Invoice__c = invoice.Id;
+                defaultItem.invgen__Description__c = 'Service';
+                defaultItem.invgen__Quantity__c = 1;
+                defaultItem.invgen__Unit_Price__c = invoice.invgen__Amount__c;
+                defaultItem.invgen__Total__c = invoice.invgen__Amount__c;
+                lineItemsToInsert.add(defaultItem);
+            } else {
+                // Создаем строки счета из строк сделки
+                for (OpportunityLineItem oppLineItem : oppLineItems) {
+                    invgen__Invoice_Line_Item__c invoiceLineItem = new invgen__Invoice_Line_Item__c();
+                    invoiceLineItem.invgen__Invoice__c = invoice.Id;
+                    invoiceLineItem.invgen__Description__c = oppLineItem.Product2.Name;
+                    invoiceLineItem.invgen__Quantity__c = oppLineItem.Quantity;
+                    invoiceLineItem.invgen__Unit_Price__c = oppLineItem.UnitPrice;
+                    invoiceLineItem.invgen__Total__c = oppLineItem.TotalPrice;
+                    invoiceLineItem.invgen__Product__c = oppLineItem.Product2Id;
+                    lineItemsToInsert.add(invoiceLineItem);
+                }
+            }
+        }
+        
+        if (!lineItemsToInsert.isEmpty()) {
+            insert lineItemsToInsert;
+        }
+    }
+}

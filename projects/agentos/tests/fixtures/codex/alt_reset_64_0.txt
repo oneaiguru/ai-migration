@@ -1,0 +1,15 @@
+╭──────────────────────────────────────────────────────────────────────────────────────╮
+│  >_ OpenAI Codex (v0.44.0)                                                           │
+│                                                                                      │
+│  Model:            gpt-5-codex (reasoning low, summaries auto)                       │
+│  Directory:        /home/brad/mydir                                                  |
+│  Approval:         on-request                                                        │
+│  Sandbox:          workspace-write                                                   │
+│  Agents.md:        AGENTS.md                                                         │
+│  Account:                                          (Plus)                            │
+│  Session:          $SESH                                                             │
+│                                                                                      │
+│  Context window:   100% left (3.47K used / 272K)                                     │
+│  5h limit:         [░░░░░░░░░░░░░░░░░░░░] 0% used (resets 21:22)                     │
+│  Weekly limit:     [█████████████░░░░░░░] 64% used (resets 13:04 on 8 Oct)           │
+╰──────────────────────────────────────────────────────────────────────────────────────╯

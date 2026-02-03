@@ -1,0 +1,37 @@
+<template>
+    <lightning-card title="QuickBooks Debug Test" icon-name="standard:account">
+        <div class="slds-p-around_medium">
+            <div class="slds-m-bottom_medium">
+                <p>This component directly tests the QuickBooks integration.</p>
+                <p>Opportunity ID: {recordId}</p>
+            </div>
+            
+            <lightning-button 
+                label="Test Direct API Call" 
+                variant="brand" 
+                onclick={handleClick}
+                class="slds-m-right_x-small">
+            </lightning-button>
+            
+            <template if:true={isLoading}>
+                <div class="slds-p-around_medium slds-text-align_center">
+                    <lightning-spinner alternative-text="Loading" size="small"></lightning-spinner>
+                </div>
+            </template>
+            
+            <template if:true={result}>
+                <div class="slds-box slds-m-top_medium">
+                    <h3 class="slds-text-heading_small">Result:</h3>
+                    <pre class="slds-m-top_small">{prettyResult}</pre>
+                </div>
+            </template>
+            
+            <template if:true={error}>
+                <div class="slds-box slds-theme_error slds-m-top_medium">
+                    <h3 class="slds-text-heading_small">Error:</h3>
+                    <pre class="slds-m-top_small">{error}</pre>
+                </div>
+            </template>
+        </div>
+    </lightning-card>
+</template>

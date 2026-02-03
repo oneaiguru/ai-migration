@@ -1,0 +1,109 @@
+# Technical Architecture (32:04–45:10)
+
+## Section 1: Current Implementation (32:04–34:20)
+
+[Misha] So, like, here's what I've just told you, how difficult do you think the demo should be and there should be some kind of presentation with some slides to convey such ideas to Artem Ivanovich and so on. This is a clear idea in principle. Well, the first thing you need to do will be, these are the same graphs, deviation, random sampling of KPs. Just on historical data, we don't take any other data, right? Well, yes, based on this data.
+
+32:33
+And then throw thoughts about what other data can be used And what you understand that they can be selected this data And how to make their impact That is, weather, differences, migration, emotional flows
+
+32:53
+[Yuri] Well, real estate there and so on in a sense. Well, I already have microthreads in mind.  Good.  Look, I'll ask you some simple questions. Here is the first thing that Artyom Nikolaevich himself said, that the PDA is placed at the moment when objects are being built. Generally speaking, the most important data. In general, we are talking about KP. KP needs to understand when they arise and disappear, who makes these decisions. Because it is very strong...
+
+33:21
+the forecast is shaky if we suddenly abruptly removed half of the CPI, as in the CPi? Usually such cases occur when the city is a municipality.  And if it's better somewhere, it's just the responsibility of the municipalities.  It's clear. they are actually your customers, and they tell you, so, we have put new tires, take them out, yes, we will be there.  And it is unusual for all sorts of businesses to do this for themselves, Private individuals can also put up a PDA for themselves.
+
+33:51
+I built a house there in the field. As a rule, it is not done as a KP, it is some kind of chain, individual export, and so on.It is not always done as a KP. Well, in short, you have no way to predict this at all.  This municipal is 99 % and you do not need to worry just. In this regard. Okay, good.  What is your interface for this data with them, when you find out that they are these Kpshki appeared, how do they end up in the system?  In my opinion, a request is made through your personal account. That is, the municipality itself
+
+## Section 2: KP Data Management (34:20–36:08)
+
+34:20
+vulka comes in says maybe he calls I don't know the letter writes officially just says how much with a big lag it gets to you although no well you actually haven't got it yet we don't take it out okay okay and the second question is more serious as I understand it you've already talked to Artyom nikolaevich
+
+34:45
+[Misha] And he told you that you don't need any real estate data?  What did you want to tell him anyway?" so that I, for example, understand, just, like, there is Misha, who is currently digging this topic. Here he threw up an idea about the fact that, in addition to, in fact, the weather, which was so clear, you can still see holidays and real estate there.  And here on nedvizhku, in fact, it was decided that, on the current KP.
+
+35:12
+it has a minimal impact because they make new kpshki usually with a new object, I think that this is not always so anyway there will be some part that will be taken out to the old KP can if it is more convenient so closer let's say but this is some small that is, I at least know such cases when
+
+35:41
+something was built, a checkpoint appeared, a lot of people who lived nearby were now taken there.  This is also a standard story.  Therefore, the impact, he is right, that it will not be global, most likely, but we just need to know locally for a specific KP to carry.  If you had them, it would be right here in the squares, where the whole area is always taken out by this garbage truck. Then it would be simple. And when you have a piece-by-piece story, it makes sense to observe it.
+
+## Section 3: Real Estate Data Impact (36:08–37:32)
+
+36:08
+[Misha] Most importantly, my conclusion right now is very simple, that computationally this is not the worst thing in the harem. there are no neural networks, no analysis using LLM to pay someone some currents. There is nothing complicated. All pretty good, clear, tough math. It was just important to unearth it that works. And then it is important to reduce it well. well, here is a description of the methods that you used, too, on something like scientific.
+
+36:35
+[Yuri] I would very much like it to be included in our agreement that I give it to you as a result, because otherwise what's the point of me being here? But if you need me directly, I can still provide value... This is the name of the method class. You don't have to directly lay out all the cards at once, but just put the method that I use there. Well, by the way, let's go back—you remember I'm very grateful to you that in the end you just gave me such a chance. I asked you there about chatbot and everything else—let's figure out how to sell something right now, in fact.
+
+37:04
+[Misha] Well, I can see that this is close to selling something. But let's update, check the clock on this topic. I mean, what I'm showing you right now is for a saleable company. Or it's all like consulting a short story, give you these algorithms and you will do everything yourself.  Of course, there must be an algorithm for us in any case, that is, we integrate it into the system. Yes. It's simple enough... And it even works itself in this task. Yes, I can just come to me to read a lecture and you will do everything yourself. Also an option.
+
+## Section 4: Method Documentation (37:32–39:23)
+
+37:32
+[Yuri] Or do you still need to make a normal module? Of course, it will be better if there is some code on something that can be integrated into the system, or directly described in detail the secret algorithm.  Here, see what I'm getting at right now with the packages, with the advice. As you can see, it would be very nice for me if I could get caught up in the long one in all of this. Because I understand that the value of these algorithms will only be when someone is meticulous...
+
+38:00
+[Misha] Long term collecting this data checking what works testing different hypotheses and in the end ideally I should have and the motivation is built so that if what I do makes the product better it saves more money and products are already being sold and more are being sold then I get more money for it this is generally the ideal story for me before it It's still like walking to the moon but I try to get there ' cause otherwise ever with anyone
+
+38:26
+[Yuri] I'm pretty sure they never worked. Usually they just negotiate. It doesn't work that way with outsourcers at all.  Let's be blunt.  But since I saw what's exactly here, I can do it.  I have a question whether it is necessary, and it is clearly hurt on Denis Tibet. I understand very well. There are a lot of founders and co-founders who will probably think about whether they need this. Or it's easier to take your own mathematicians, since I suggested that this thing works. And I'd like to start doing it as early as possible.
+
+38:54
+[Misha] Because either I will try to give the maximum value in a short time and pass a good black box, you yourself then unpacked it, looked at it, sorted it out with the algorithm, I don't need it anymore. Either I understand that my strategy is to give as much value as possible right now, and maybe not take so much for it, but then I understand that I will be successful over time. There can be a multi-way combination in any plan.  We agree on some first version that works on such and such data.
+
+## Section 5: Monetization & Value Capture (39:23–40:48)
+
+39:23
+[Yuri] And we launch it, we show that it works with such and such accuracy. Do you think there is a chance that this will happen without the weather, without all this version?  Well, maybe yes. That's what I would have prepared then now as a salesperson. In fact, everything depends on the error, that is, if we understand that the error is some kind of explicable in such-and-such cases and we understand how to improve it, then this is done further in the following stages. This will most likely be what you will have...
+
+39:50
+[Misha] As it is, well, as I can see, most likely from the fact that I just managed to see what you say okay, we turn on forecasting as a module that is visible to dispatchers who have container sites, but in this subset of container sites, that is, I did what I did even by districts, it seemed elementary to me that on some kpshkakh the forecast is good and on some, for example, there may be due to the fact that the house was built just now may be due to the fact that these are just remote areas where everything is constantly changing
+
+40:19
+[Yuri] Maybe for some other reason.  The point is that it is advisable not to take this decision like we roll out forecasting everywhere.  the same is real, you have a bunch of dispatchers, they work each on their own site.  Most likely, this is how it can be sold very well. Plus, if you understand that you are being overlooked in certain areas, if you understand why, then you can immediately say that working on such and such data, it will inevitably lead to such and such an error, but
+
+## Section 6: Phased Rollout Strategy (40:48–42:12)
+
+40:48
+[Misha] Most likely, if we start taking this and that into account, the quality will improve.  This is why I want to show you now, in 2005, on different dates.  that the more and faster we put some first version into production and people will use it, the better. Because in fact, you won't believe it, but again, everything is decided by people. Because only a specific dispatcher who builds and maintains this forecast on a specific site every day,
+
+41:16
+[Yuri] And we just thumbs up and thumbs down that the forecast in general has already bored you, it is absolutely useless here. And here is a great forecast. Because no matter what kind of error we see here, and so on, people will give us utility. They use a forecast or don't use a forecast. And do exactly why I want to get into the interface, why I want to redraw all the pictures there for you.  Because if I can make such a week that I have human data that will give me more than well...
+
+41:44
+[Misha] Just the metrics that we see here, all these cubic meters, that's when we will have the most amazing system. And this is very interesting to me, because I understand that this should be possible in theory. If we build the UX correctly, conditionally, as I ideally see it, in the future, but not now it is definitely impossible that there should be a certain conditional in the Microsoft Co-pilot code.  That is, he will be if we make some kind of task plan, he says, right here looking at how we worked in general in principle.
+
+## Section 7: Human Feedback Loop (42:12–43:10)
+
+42:12
+[Misha] Looking at how we work here, looking at what our forecast is here now and how we are doing in general, I, observing how a particular person who worked here before me, assume that the person probably would like to build a task plan like this. And here's why, and here's what it will look like. And the person corrects what is happening. I do not know when we will get to this agent, when he will start trying to really reproduce some manual work, I do not know. But if we do this systematically, then in theory we should get there.
+
+42:40
+[Misha] That is, all my experience with agents leads me to this understanding that if there is regular work that people do, it can most likely be replaced by agents. I can just show you a demo, as, for example, no one expected that the most difficult task in Call Center is quality control. It's fucking automated. That is, they just have Excel that people fill out.  And it turned out that you can make it so that instead of... Great.
+
+## Section 8: Future AI Agent Capabilities (43:10–44:41)
+
+43:10
+[Yuri] I'm happy for them. But here I understand that if we talk about the interface, and you just sort of talk about the product, and you can only decide this, then this is possible. Do you believe it or not?  No, to the agent. And it will be in 20 years.  Now I'm just saying that we should have such a user experience that interaction with the interface gives us data that will let us understand whether the forecast is already useful or not.
+
+43:40
+[Misha] If you understand how to do this, then explain.  I will think twice about whether it is possible to build it in the current version, whether it is necessary to do it so as not to interfere with me.  That's what I'm straight about... I have this individualism, which would be why I got into frontend. You gave me a daddy with some of your code, and I have quite a lot of screenshots that have documentation. And I immediately began to draw all this for myself, but how to do it?
+
+44:10
+[Yuri] I understand that I did it blindly and it's easier to do it all in close contact, because the user interface may already change and the front-end, I understood the stack, figured it out, nothing complicated, I've already started something like, at least I switched to Entence Design and so on, but I don't care you need to understand how much it makes sense for me to go there, because I do not know how you are... None. Yes. That is, once again...
+
+## Section 9: Wrap-Up (44:41–45:10)
+
+44:41
+[Misha] At this stage, to push this topic, sell it and integrate it into the system, this excel is quite enough for us.  I'll turn it off myself, make some comparative charts there. That will be enough. in other words, we need graphs that show both the forecast and the actual value.  All. look, it's just something you have to understand, that it's only supposed to be two phases. Here is one we have shown graphs and the second phase.
+
+45:10
+
+---
+## Raw Timestamps
+Original timestamps: 32:04–45:10
+Source: jury-en-EDITED-3-FIXED.txt lines 218-301

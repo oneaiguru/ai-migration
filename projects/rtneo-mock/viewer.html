@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Markdown Viewer</title>
+  <base id="doc-base" href="./">
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <style>
+    :root { color-scheme: light; }
+    body { max-width: 960px; margin: 24px auto; padding: 0 16px 48px; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; line-height: 1.6; }
+    header { position: sticky; top: 0; padding: 12px 0 16px; margin-bottom: 16px; background: #fff; }
+    .controls { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+    input[type="text"] { flex: 1 1 360px; padding: 8px; font-size: 14px; border: 1px solid #d0d7de; border-radius: 6px; }
+    button { padding: 8px 12px; font-size: 14px; border: 1px solid #d0d7de; border-radius: 6px; background: #0f62fe; color: #fff; cursor: pointer; }
+    button:hover { background: #0353e9; }
+    .hint { font-size: 13px; color: #4b5563; }
+    code, pre { font-family: ui-monospace, SFMono-Regular, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; }
+    pre { background: #f6f8fa; padding: 12px; border-radius: 6px; overflow: auto; }
+    img { max-width: 100%; height: auto; }
+  </style>
+</head>
+<body>
+  <header>
+    <div><strong>Markdown viewer</strong> – loads any repo file via <code>?file=path/to/doc.md</code>.</div>
+    <div class="hint">Examples: <code>?file=README.md</code> | <code>?file=disp/disp/routes/forecast.md</code> | <code>?file=disp/disp/routes/search.md</code></div>
+    <form class="controls" id="file-form">
+      <input id="file-input" type="text" aria-label="File path" value="">
+      <button type="submit">Load</button>
+    </form>
+    <div class="hint" id="status"></div>
+  </header>
+  <article id="content">Loading…</article>
+
+  <script>
+    const input = document.getElementById('file-input');
+    const statusEl = document.getElementById('status');
+    const content = document.getElementById('content');
+    const baseEl = document.getElementById('doc-base');
+
+    const params = new URLSearchParams(location.search);
+    const defaultFile = params.get('file') || 'README.md';
+    input.value = defaultFile;
+
+    async function loadFile(path) {
+      statusEl.textContent = `Loading ${path}…`;
+      try {
+        const res = await fetch(path);
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const text = await res.text();
+        const dir = path.includes('/') ? path.slice(0, path.lastIndexOf('/') + 1) : './';
+        baseEl.href = dir;
+        content.innerHTML = marked.parse(text);
+        statusEl.textContent = `Viewing ${path}`;
+      } catch (err) {
+        content.innerHTML = `<p>Could not load <code>${path}</code>: ${err.message}</p>`;
+        statusEl.textContent = 'Load failed';
+      }
+    }
+
+    document.getElementById('file-form').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const next = (input.value || '').trim() || 'README.md';
+      const url = new URL(location);
+      url.searchParams.set('file', next);
+      history.replaceState(null, '', url.toString());
+      loadFile(next);
+    });
+
+    loadFile(defaultFile);
+  </script>
+</body>
+</html>

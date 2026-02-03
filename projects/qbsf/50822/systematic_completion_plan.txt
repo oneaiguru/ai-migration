@@ -1,0 +1,161 @@
+# 🎯 SYSTEMATIC COMPLETION PLAN - Fix the Specific Issues
+
+## 📊 CURRENT STATUS (70% Complete)
+✅ **Core Integration Working**: Trigger → Middleware → QB flow established
+❌ **4 Critical Blockers**: Preventing final completion
+
+---
+
+## 🚨 PRIORITY 1: API KEY ALIGNMENT (30 minutes)
+
+### Issue Identified:
+- **Salesforce**: Uses `quickbooks_salesforce_api_key_2025`
+- **Middleware**: Expects different API key
+- **Result**: 401 Unauthorized errors
+
+### Solution Steps:
+```bash
+# 1. Check middleware expected API key
+ssh roman@pve.atocomm.eu -p2323
+cd /opt/qb-integration
+cat .env | grep API_KEY
+
+# 2. Update Salesforce to match
+sf data query --query "SELECT API_Key__c FROM QB_Integration_Settings__c" -o sanboxsf
+
+# 3. Align the keys (choose one approach):
+# Option A: Update SF to match middleware
+# Option B: Update middleware to match SF
+```
+
+---
+
+## 🚨 PRIORITY 2: TEST COVERAGE 46% → 75% (60 minutes)
+
+### Gap Analysis:
+- **Current**: 46% organization-wide
+- **Required**: 75% organization-wide  
+- **Gap**: 29% additional coverage needed
+
+### Systematic Approach:
+```bash
+# 1. Get exact coverage breakdown
+sf apex run test --code-coverage --result-format human -o sanboxsf
+
+# 2. Identify lowest coverage classes
+sf data query --query "SELECT ApexClassOrTrigger.Name, NumLinesCovered, NumLinesUncovered, Coverage FROM ApexCodeCoverage WHERE Coverage < 50 ORDER BY NumLinesUncovered DESC" -o sanboxsf
+
+# 3. Target highest impact classes first
+# Focus on classes with most uncovered lines
+```
+
+### Coverage Strategy:
+1. **Phase 1**: Get QB integration classes to 100% (quick wins)
+2. **Phase 2**: Target existing low-coverage production classes
+3. **Phase 3**: Systematic improvement of worst offenders
+
+---
+
+## 🚨 PRIORITY 3: DEPLOYMENT STRUCTURE (30 minutes)
+
+### Issue Identified:
+- **LWC structure problems** preventing Change Set validation
+- **Deployment validation failed**
+
+### Solution Steps:
+```bash
+# 1. Check for LWC components in deployment
+sf org list metadata -m LightningComponentBundle -o sanboxsf
+
+# 2. Remove problematic LWC components from Change Set
+# OR fix LWC structure if needed for integration
+
+# 3. Create clean Change Set with only required components:
+# - OpportunityQuickBooksTrigger
+# - QBInvoiceIntegrationQueueable  
+# - QB_Integration_Settings__c
+# - Custom fields
+# - Test classes
+```
+
+---
+
+## 🚨 PRIORITY 4: END-TO-END VERIFICATION (30 minutes)
+
+### After fixing API keys and coverage:
+```bash
+# 1. Test authentication flow
+curl -H "X-API-Key: [CORRECT_KEY]" https://sqint.atocomm.eu/api/health
+
+# 2. Test integration endpoint
+curl -X POST https://sqint.atocomm.eu/api/opportunity-to-invoice \
+  -H "Content-Type: application/json" \
+  -H "X-API-Key: [CORRECT_KEY]" \
+  -d '{"opportunityId":"test123"}'
+
+# 3. Test in Salesforce
+# Create test opportunity → Change stage → Verify QB invoice creation
+```
+
+---
+
+## 📋 EXECUTION SEQUENCE
+
+### Phase 1: Foundation Fix (30 min)
+1. ✅ Align API keys between SF and middleware
+2. ✅ Test authentication succeeds (no more 401 errors)
+3. ✅ Verify basic integration flow works
+
+### Phase 2: Coverage Improvement (60 min)  
+1. ✅ Run comprehensive coverage analysis
+2. ✅ Create/improve test classes systematically
+3. ✅ Achieve 75%+ organization-wide coverage
+
+### Phase 3: Clean Deployment (30 min)
+1. ✅ Fix LWC structure issues
+2. ✅ Create clean Change Set with only required components
+3. ✅ Validate Change Set successfully
+
+### Phase 4: Final Verification (30 min)
+1. ✅ Deploy to production
+2. ✅ Test end-to-end integration
+3. ✅ Document completion for Roman
+
+**Total Time: 2.5 hours of focused work**
+
+---
+
+## 🎯 SUCCESS CRITERIA
+
+### Before Payment Approval:
+- ✅ API authentication working (no 401 errors)
+- ✅ 75%+ test coverage achieved
+- ✅ Change Set validation passes
+- ✅ Production deployment succeeds
+- ✅ End-to-end test: Opportunity → QB invoice creation
+- ✅ Payment sync test: QB payment → SF update
+
+### Evidence Required:
+- Screenshot of 75%+ coverage
+- Successful Change Set deployment
+- Test opportunity with populated QB_Invoice_ID__c
+- QB invoice showing in Roman's account
+
+---
+
+## 🚀 NEXT STEPS
+
+Give CC this focused instruction:
+```
+Execute SYSTEMATIC_COMPLETION_PLAN.md in order:
+
+1. PRIORITY 1: Fix API key mismatch (align SF and middleware)
+2. PRIORITY 2: Achieve 75% coverage systematically  
+3. PRIORITY 3: Fix deployment structure issues
+4. PRIORITY 4: Complete end-to-end verification
+
+Document progress after each phase.
+Only claim completion when ALL success criteria met.
+```
+
+This systematic approach addresses each specific issue CC identified and provides a clear path to real completion.

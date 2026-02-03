@@ -1,0 +1,148 @@
+export type DemoSitePreset = {
+  id: string;
+  label: string;
+  district: string;
+  address: string;
+  start: string;
+  end: string;
+  fillStartPct: number;
+  fillEndPct: number;
+  wape: number;
+};
+
+export const DEMO_SITES: DemoSitePreset[] = [
+  {
+    id: '38111698',
+    label: '38111698 · ул. Плеханова, 1',
+    district: 'Черемховский район',
+    address: 'ул. Плеханова, 1',
+    start: '2024-07-01',
+    end: '2024-07-07',
+    fillStartPct: 1.3,
+    fillEndPct: 9.4,
+    wape: 0.055,
+  },
+  {
+    id: '38116709',
+    label: '38116709 · д. Карлук, ул. Трактовая, 20',
+    district: 'Иркутский район',
+    address: 'д. Карлук, ул. Трактовая, 20',
+    start: '2024-07-01',
+    end: '2024-07-07',
+    fillStartPct: 3.2,
+    fillEndPct: 22.6,
+    wape: 0.034,
+  },
+  {
+    id: '38117601',
+    label: '38117601 · д. Карлук, ул. Трактовая, 20/1',
+    district: 'Иркутский район',
+    address: 'д. Карлук, ул. Трактовая, 20/1',
+    start: '2024-07-01',
+    end: '2024-07-07',
+    fillStartPct: 3.2,
+    fillEndPct: 22.6,
+    wape: 0.034,
+  },
+  {
+    id: '38106891',
+    label: '38106891 · Ангарск, мкр. Юго-Восточный, 8 квл, 13',
+    district: 'Ангарский ГО',
+    address: 'Ангарск, мкр. Юго-Восточный, 8 квл, 13',
+    start: '2024-07-01',
+    end: '2024-07-07',
+    fillStartPct: 3.2,
+    fillEndPct: 22.6,
+    wape: 0.152,
+  },
+  {
+    id: '38123189',
+    label: '38123189 · Култукская, 109',
+    district: 'Правый берег',
+    address: 'Култукская, 109',
+    start: '2024-07-01',
+    end: '2024-07-07',
+    fillStartPct: 3.2,
+    fillEndPct: 22.6,
+    wape: 0.152,
+  },
+  {
+    id: '38122820',
+    label: '38122820 · Ангарск, 120 квл, 6А',
+    district: 'Ангарский ГО',
+    address: 'Ангарск, 120 квл, 6А',
+    start: '2024-07-01',
+    end: '2024-07-07',
+    fillStartPct: 3.2,
+    fillEndPct: 22.6,
+    wape: 0.067,
+  },
+  {
+    id: '38122054',
+    label: '38122054 · Гастелло, 11',
+    district: 'Тулунский район',
+    address: 'Гастелло, 11',
+    start: '2024-07-01',
+    end: '2024-07-07',
+    fillStartPct: 3.2,
+    fillEndPct: 22.6,
+    wape: 0.067,
+  },
+  {
+    id: '38121851',
+    label: '38121851 · рп. Куйтун, ул. Коммунальная, 38',
+    district: 'Куйтунский район',
+    address: 'рп. Куйтун, ул. Коммунальная, 38',
+    start: '2024-07-01',
+    end: '2024-07-07',
+    fillStartPct: 3.2,
+    fillEndPct: 22.6,
+    wape: 0.067,
+  },
+  {
+    id: '38117820',
+    label: '38117820 · п. Забитуй, Трактовая, 6',
+    district: 'Аларский район',
+    address: 'п. Забитуй, Трактовая, 6',
+    start: '2024-07-01',
+    end: '2024-07-07',
+    fillStartPct: 24.5,
+    fillEndPct: 100.0,
+    wape: 0.048,
+  },
+  {
+    id: '38120158',
+    label: '38120158 · с. Хор-Тагна, Школьная, 1А',
+    district: 'Заларинский район',
+    address: 'с. Хор-Тагна, Школьная, 1А',
+    start: '2024-07-01',
+    end: '2024-07-07',
+    fillStartPct: 31.4,
+    fillEndPct: 100.0,
+    wape: 0.141,
+  },
+  {
+    id: '38122954',
+    label: '38122954 · Ленина, 2В',
+    district: 'Свирск',
+    address: 'Ленина, 2В',
+    start: '2024-07-01',
+    end: '2024-07-07',
+    fillStartPct: 2.7,
+    fillEndPct: 18.8,
+    wape: 0.337,
+  },
+  {
+    id: '38127171',
+    label: '38127171 · Сергеева 3/4 (“Вкусно и точка”)',
+    district: 'Левый берег',
+    address: 'Сергеева 3/4 (“Вкусно и точка”)',
+    start: '2024-07-01',
+    end: '2024-07-07',
+    fillStartPct: 1.9,
+    fillEndPct: 13.3,
+    wape: 0.461,
+  },
+];
+
+export const DEMO_SITE_MAP = new Map(DEMO_SITES.map((preset) => [preset.id, preset]));

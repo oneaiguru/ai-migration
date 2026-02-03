@@ -1,0 +1,6 @@
+{
+    "telegram_bot_token": "REPLACE_WITH_TELEGRAM_BOT_TOKEN",
+    "database_file": "database.db",
+    "cooldown_days": 60,
+    "log_file": "system.log"
+}

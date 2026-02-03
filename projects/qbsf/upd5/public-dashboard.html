@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Salesforce-QuickBooks Integration Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background-color: #f5f5f5;
+            color: #333;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            background-color: #fff;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            padding: 20px 0;
+            margin-bottom: 30px;
+        }
+        
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+        }
+        
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .card {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            padding: 20px;
+        }
+        
+        .card h2 {
+            margin-bottom: 15px;
+            color: #2c3e50;
+            border-bottom: 2px solid #ecf0f1;
+            padding-bottom: 10px;
+        }
+        
+        .status {
+            font-size: 14px;
+            padding: 5px 10px;
+            border-radius: 4px;
+            display: inline-block;
+            margin: 5px 0;
+        }
+        
+        .status.connected {
+            background-color: #27ae60;
+            color: white;
+        }
+        
+        .status.disconnected {
+            background-color: #e74c3c;
+            color: white;
+        }
+        
+        .status.warning {
+            background-color: #f39c12;
+            color: white;
+        }
+        
+        .button {
+            background-color: #3498db;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            margin: 5px 0;
+            font-size: 14px;
+        }
+        
+        .button:hover {
+            background-color: #2980b9;
+        }
+        
+        .button.secondary {
+            background-color: #95a5a6;
+        }
+        
+        .button.secondary:hover {
+            background-color: #7f8c8d;
+        }
+        
+        .button.danger {
+            background-color: #e74c3c;
+        }
+        
+        .button.danger:hover {
+            background-color: #c0392b;
+        }
+        
+        .info {
+            margin: 10px 0;
+            font-size: 14px;
+        }
+        
+        .info strong {
+            color: #2c3e50;
+        }
+        
+        .actions {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #ecf0f1;
+        }
+        
+        .log-viewer {
+            background-color: #2c3e50;
+            color: #fff;
+            padding: 15px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        
+        .log-entry {
+            margin: 5px 0;
+            padding: 5px;
+            border-left: 3px solid transparent;
+        }
+        
+        .log-entry.info {
+            border-left-color: #3498db;
+        }
+        
+        .log-entry.error {
+            border-left-color: #e74c3c;
+        }
+        
+        .log-entry.success {
+            border-left-color: #27ae60;
+        }
+        
+        .scheduler-status {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Salesforce-QuickBooks Integration Dashboard</h1>
+    </header>
+    
+    <div class="container">
+        <div class="grid">
+            <!-- Authentication Status -->
+            <div class="card">
+                <h2>Authentication Status</h2>
+                <div id="auth-status">
+                    <p>Loading...</p>
+                </div>
+                <div class="actions">
+                    <a href="/auth/salesforce" class="button">Connect Salesforce</a>
+                    <a href="/auth/quickbooks" class="button">Connect QuickBooks</a>
+                    <button class="button secondary" onclick="checkAuthStatus()">Refresh Status</button>
+                </div>
+            </div>
+            
+            <!-- Scheduler Control -->
+            <div class="card">
+                <h2>Scheduler Control</h2>
+                <div id="scheduler-status">
+                    <p>Loading...</p>
+                </div>
+                <div class="actions">
+                    <button class="button" onclick="startScheduler()">Start Scheduler</button>
+                    <button class="button danger" onclick="stopScheduler()">Stop Scheduler</button>
+                    <button class="button secondary" onclick="runInvoiceCreation()">Run Invoice Creation</button>
+                    <button class="button secondary" onclick="runPaymentCheck()">Run Payment Check</button>
+                </div>
+            </div>
+            
+            <!-- System Information -->
+            <div class="card">
+                <h2>System Information</h2>
+                <div id="system-info">
+                    <p>Loading...</p>
+                </div>
+                <div class="actions">
+                    <button class="button secondary" onclick="getSystemInfo()">Refresh Info</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Recent Activity Log -->
+        <div class="card">
+            <h2>Recent Activity</h2>
+            <div class="log-viewer" id="activity-log">
+                <p>Loading logs...</p>
+            </div>
+            <div class="actions">
+                <button class="button secondary" onclick="loadRecentErrors()">Load Errors</button>
+                <button class="button secondary" onclick="loadSchedulerLogs()">Scheduler Logs</button>
+                <button class="button secondary" onclick="clearLogs()">Clear Display</button>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        const API_KEY = prompt('Please enter your API key:') || '';
+        const BASE_URL = window.location.origin;
+        
+        // Helper function for API calls
+        async function apiCall(method, endpoint, data = null) {
+            const options = {
+                method: method,
+                headers: {
+                    'X-API-Key': API_KEY,
+                    'Content-Type': 'application/json'
+                }
+            };
+            
+            if (data) {
+                options.body = JSON.stringify(data);
+            }
+            
+            try {
+                const response = await fetch(`${BASE_URL}${endpoint}`, options);
+                const result = await response.json();
+                return result;
+            } catch (error) {
+                console.error('API Error:', error);
+                return { success: false, error: error.message };
+            }
+        }
+        
+        // Check authentication status
+        async function checkAuthStatus() {
+            const result = await apiCall('GET', '/auth/status');
+            const statusDiv = document.getElementById('auth-status');
+            
+            if (result.success) {
+                let html = '';
+                
+                // Salesforce status
+                html += '<div class="info"><strong>Salesforce:</strong> ';
+                if (result.salesforce.connected) {
+                    html += '<span class="status connected">Connected</span>';
+                    result.salesforce.instances.forEach(instance => {
+                        html += `<div class="info">Instance: ${instance.instance}</div>`;
+                        if (instance.expired) {
+                            html += '<span class="status warning">Token Expired</span>';
+                        }
+                    });
+                } else {
+                    html += '<span class="status disconnected">Not Connected</span>';
+                }
+                html += '</div>';
+                
+                // QuickBooks status
+                html += '<div class="info"><strong>QuickBooks:</strong> ';
+                if (result.quickbooks.connected) {
+                    html += '<span class="status connected">Connected</span>';
+                    result.quickbooks.realms.forEach(realm => {
+                        html += `<div class="info">Realm: ${realm.realm}</div>`;
+                        if (realm.expired) {
+                            html += '<span class="status warning">Token Expired</span>';
+                        }
+                    });
+                } else {
+                    html += '<span class="status disconnected">Not Connected</span>';
+                }
+                html += '</div>';
+                
+                statusDiv.innerHTML = html;
+            } else {
+                statusDiv.innerHTML = '<p class="error">Error loading status</p>';
+            }
+        }
+        
+        // Check scheduler status
+        async function checkSchedulerStatus() {
+            const result = await apiCall('GET', '/scheduler/status');
+            const statusDiv = document.getElementById('scheduler-status');
+            
+            if (result.success) {
+                let html = '<div class="scheduler-status">';
+                html += result.scheduler.running ? 
+                    '<span class="status connected">Running</span>' : 
+                    '<span class="status disconnected">Stopped</span>';
+                html += '</div>';
+                
+                Object.entries(result.scheduler.jobs).forEach(([job, status]) => {
+                    html += `<div class="info"><strong>${job}:</strong> `;
+                    html += status.active ? 
+                        '<span class="status connected">Active</span>' : 
+                        '<span class="status disconnected">Inactive</span>';
+                    if (status.nextRun) {
+                        html += `<br>Next run: ${new Date(status.nextRun).toLocaleString()}`;
+                    }
+                    html += '</div>';
+                });
+                
+                statusDiv.innerHTML = html;
+            } else {
+                statusDiv.innerHTML = '<p class="error">Error loading scheduler status</p>';
+            }
+        }
+        
+        // Start scheduler
+        async function startScheduler() {
+            const result = await apiCall('POST', '/scheduler/start');
+            if (result.success) {
+                alert('Scheduler started successfully');
+                checkSchedulerStatus();
+            } else {
+                alert('Error starting scheduler');
+            }
+        }
+        
+        // Stop scheduler
+        async function stopScheduler() {
+            const result = await apiCall('POST', '/scheduler/stop');
+            if (result.success) {
+                alert('Scheduler stopped successfully');
+                checkSchedulerStatus();
+            } else {
+                alert('Error stopping scheduler');
+            }
+        }
+        
+        // Run invoice creation
+        async function runInvoiceCreation() {
+            if (confirm('Run invoice creation job now?')) {
+                const result = await apiCall('POST', '/scheduler/run/invoice-creation');
+                if (result.success) {
+                    alert(`Invoice creation completed. Processed: ${result.result.processed || 0}, Successful: ${result.result.successful || 0}, Failed: ${result.result.failed || 0}`);
+                } else {
+                    alert('Error running invoice creation');
+                }
+            }
+        }
+        
+        // Run payment check
+        async function runPaymentCheck() {
+            if (confirm('Run payment check job now?')) {
+                const result = await apiCall('POST', '/scheduler/run/payment-check');
+                if (result.success) {
+                    alert(`Payment check completed. Invoices processed: ${result.result.invoicesProcessed || 0}, Paid found: ${result.result.paidInvoicesFound || 0}, Updated: ${result.result.invoicesUpdated || 0}`);
+                } else {
+                    alert('Error running payment check');
+                }
+            }
+        }
+        
+        // Get system information
+        async function getSystemInfo() {
+            const result = await apiCall('GET', '/admin/system-info');
+            const infoDiv = document.getElementById('system-info');
+            
+            if (result.success) {
+                const info = result.systemInfo;
+                let html = `
+                    <div class="info"><strong>Version:</strong> ${info.version}</div>
+                    <div class="info"><strong>Environment:</strong> ${info.environment}</div>
+                    <div class="info"><strong>Node Version:</strong> ${info.nodeVersion}</div>
+                    <div class="info"><strong>Uptime:</strong> ${Math.floor(info.uptime / 60)} minutes</div>
+                    <div class="info"><strong>Memory:</strong> ${Math.round(info.memory.used / 1024 / 1024)} MB / ${Math.round(info.memory.total / 1024 / 1024)} MB</div>
+                `;
+                infoDiv.innerHTML = html;
+            } else {
+                infoDiv.innerHTML = '<p class="error">Error loading system info</p>';
+            }
+        }
+        
+        // Load recent errors
+        async function loadRecentErrors() {
+            const result = await apiCall('GET', '/admin/errors?limit=20');
+            const logDiv = document.getElementById('activity-log');
+            
+            if (result.success) {
+                let html = '';
+                result.errors.forEach(error => {
+                    html += `<div class="log-entry error">
+                        <strong>${new Date(error.timestamp).toLocaleString()}</strong> - ${error.message}
+                    </div>`;
+                });
+                logDiv.innerHTML = html || '<p>No recent errors</p>';
+            } else {
+                logDiv.innerHTML = '<p class="error">Error loading logs</p>';
+            }
+        }
+        
+        // Load scheduler logs
+        async function loadSchedulerLogs() {
+            const result = await apiCall('GET', '/scheduler/executions?limit=20');
+            const logDiv = document.getElementById('activity-log');
+            
+            if (result.success) {
+                let html = '';
+                result.executions.forEach(execution => {
+                    const isError = execution.error;
+                    html += `<div class="log-entry ${isError ? 'error' : 'success'}">
+                        <strong>${new Date(execution.timestamp).toLocaleString()}</strong> - ${execution.job}: 
+                        ${isError ? execution.error : `Processed: ${execution.result.processed || 0}`}
+                    </div>`;
+                });
+                logDiv.innerHTML = html || '<p>No recent executions</p>';
+            } else {
+                logDiv.innerHTML = '<p class="error">Error loading logs</p>';
+            }
+        }
+        
+        // Clear logs display
+        function clearLogs() {
+            document.getElementById('activity-log').innerHTML = '<p>Logs cleared</p>';
+        }
+        
+        // Initialize dashboard
+        async function initDashboard() {
+            await checkAuthStatus();
+            await checkSchedulerStatus();
+            await getSystemInfo();
+            await loadSchedulerLogs();
+        }
+        
+        // Start initialization
+        initDashboard();
+        
+        // Auto-refresh status every 30 seconds
+        setInterval(() => {
+            checkAuthStatus();
+            checkSchedulerStatus();
+        }, 30000);
+    </script>
+</body>
+</html>

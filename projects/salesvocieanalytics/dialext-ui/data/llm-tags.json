@@ -1,0 +1,44 @@
+{
+  "tags": [
+    {
+      "priority": 1,
+      "name": "pushing",
+      "nameRu": "дожим клиента",
+      "description": "Повторный разговор с клиентом, менеджер дожимает клиента",
+      "active": true,
+      "showInStats": true
+    },
+    {
+      "priority": 2,
+      "name": "warm",
+      "nameRu": "Теплые звонки",
+      "description": "Теплые звонки (клиент оставил заявку)",
+      "active": true,
+      "showInStats": true
+    },
+    {
+      "priority": 3,
+      "name": "demo",
+      "nameRu": "Проведение демонстрации",
+      "description": "Суть звонка: проведение демонстрации продукта",
+      "active": true,
+      "showInStats": true
+    },
+    {
+      "priority": 4,
+      "name": "skip",
+      "nameRu": "Пропущенные",
+      "description": "Звонки, не являющиеся продажами",
+      "active": true,
+      "showInStats": true
+    },
+    {
+      "priority": 5,
+      "name": "cold",
+      "nameRu": "Холодные звонки",
+      "description": "холодные звонки (первичный контакт)",
+      "active": true,
+      "showInStats": true
+    }
+  ]
+}

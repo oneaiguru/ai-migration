@@ -1,0 +1,11 @@
+{
+  "managers": [
+    { "id": "mgr_1", "name": "Рената", "selected": true, "callsCount": 1, "averageScore": 100 },
+    { "id": "mgr_2", "name": "Владимир", "selected": true, "callsCount": 2, "averageScore": 76 },
+    { "id": "mgr_3", "name": "Виктор", "selected": true, "callsCount": 1, "averageScore": 69 },
+    { "id": "mgr_4", "name": "Тамара", "selected": false, "callsCount": 8, "averageScore": 60 },
+    { "id": "mgr_5", "name": "Светлана", "selected": false, "callsCount": 1, "averageScore": 57 },
+    { "id": "mgr_6", "name": "Сергей", "selected": true, "callsCount": 6, "averageScore": 57 },
+    { "id": "mgr_7", "name": "Юлия Грищенко", "selected": true, "callsCount": 9, "averageScore": 53 }
+  ]
+}

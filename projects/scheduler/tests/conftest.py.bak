@@ -1,0 +1,141 @@
+"""
+Test fixtures for DeepSeek Scheduler tests.
+"""
+import os
+import json
+import pytest
+from unittest.mock import MagicMock
+
+# Path helper
+@pytest.fixture
+def fixtures_path():
+    return os.path.join(os.path.dirname(__file__), "fixtures")
+
+# Mock API client
+@pytest.fixture
+def mock_api_client():
+    mock_client = MagicMock()
+    mock_client.call_api.return_value = json.dumps({"status": "success", "result": "test"})
+    mock_client.is_off_peak_hours.return_value = True
+    return mock_client
+
+# Sample project data
+@pytest.fixture
+def sample_projects():
+    return [
+        {
+            "id": "project-001",
+            "name": "Website Redesign",
+            "description": "Redesign client website with new branding",
+            "priority": 8,
+            "deadline": "2025-04-15T00:00:00Z",
+            "tasks": [
+                {"description": "Wireframe homepage", "status": "pending"},
+                {"description": "Design product pages", "status": "pending"}
+            ]
+        },
+        {
+            "id": "project-002",
+            "name": "Bug Fixing Sprint",
+            "description": "Fix critical bugs in the app",
+            "priority": 9,
+            "deadline": "2025-03-25T00:00:00Z",
+            "tasks": [
+                {"description": "Fix login issues", "status": "pending"},
+                {"description": "Fix checkout flow", "status": "pending"}
+            ]
+        }
+    ]
+
+# Sample bug data
+@pytest.fixture
+def sample_bug():
+    return {
+        "id": "bug-001",
+        "project": "project-002",
+        "title": "Payment processing error",
+        "description": "Users receive an error when trying to complete payment",
+        "severity": 8,
+        "reported_date": "2025-03-15T10:30:00Z",
+        "steps_to_reproduce": [
+            "Go to checkout page",
+            "Enter valid credit card details",
+            "Click Submit"
+        ],
+        "expected_behavior": "Payment processes successfully",
+        "actual_behavior": "Error message appears: 'Unable to process payment'"
+    }
+
+# Sample transcript text
+@pytest.fixture
+def sample_transcript():
+    return """Meeting notes from client call on March 15:
+- Client wants to revise the color scheme for the website
+- Need to add a new product category for summer items
+- Deadline for the first draft is April 1
+- Schedule a follow-up call next week to review progress
+- Need to optimize mobile performance
+- Remember to send design mockups by Wednesday"""
+
+# Sample communication text
+@pytest.fixture
+def sample_communication():
+    return """From: client@example.com
+Subject: Website Feedback
+Date: March 16, 2025
+
+Hi there,
+
+I reviewed the initial designs you sent over. I like the overall direction, but I have a few concerns about the mobile layout. The navigation seems crowded on smaller screens.
+
+Could we schedule a call this week to discuss some alternatives? I'm available Wednesday afternoon or Thursday morning.
+
+Also, what's the timeline for the next milestone?
+
+Thanks,
+John"""
+
+# Mock config
+@pytest.fixture
+def test_config():
+    return {
+        "api_config": {
+            "base_url": "https://api.deepseek.com",
+            "api_key": "test_key",
+            "models": {
+                "reasoning": "deepseek-reasoner",
+                "general": "deepseek-chat"
+            }
+        },
+        "scheduling": {
+            "peak_hours": {
+                "start": "00:30",
+                "end": "16:30",
+                "timezone": "UTC"
+            },
+            "off_peak_hours": {
+                "start": "16:30",
+                "end": "00:30",
+                "timezone": "UTC"
+            },
+            "task_priority": {
+                "urgent_client_work": 10,
+                "client_deadlines": 9,
+                "bug_fixes_critical": 8,
+                "proposal_deadlines": 7,
+                "communication_responses": 6,
+                "bug_fixes_normal": 5,
+                "new_proposals": 4,
+                "note_processing": 3,
+                "personal_projects": 2,
+                "exploration": 1
+            }
+        },
+        "file_paths": {
+            "project_list": "./tests/fixtures/projects.json",
+            "voice_transcripts": "./tests/fixtures/transcripts/",
+            "bug_reports": "./tests/fixtures/bugs/",
+            "communications": "./tests/fixtures/communications/",
+            "output_directory": "./tests/fixtures/outputs/"
+        }
+    }

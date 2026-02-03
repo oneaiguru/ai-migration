@@ -1,0 +1,6 @@
+{"ts":"2025-10-19T16:05:00Z","rid":"R1","lane":"baseline","model":"anthropic/haiku","status":"ok","input_tokens":1200,"output_tokens":300,"reason":"ok","latency_ms":420}
+{"ts":"2025-10-19T16:05:10Z","rid":"R1","lane":"glm","model":"z.ai/glm-4.6","status":"ok","input_tokens":1000,"output_tokens":500,"reason":"routed","latency_ms":380}
+{"ts":"2025-10-19T16:06:00Z","rid":"R2","lane":"baseline","model":"anthropic/haiku","status":"ok","input_tokens":800,"output_tokens":200,"reason":"ok","latency_ms":260}
+{"ts":"2025-10-19T16:06:20Z","rid":"R2","lane":"glm","model":"glm-4.6","status":"ok","input_tokens":900,"output_tokens":250,"reason":"routed","latency_ms":300}
+{"ts":"2025-10-19T16:07:00Z","rid":"R3","lane":"baseline","model":"anthropic/haiku","status":"error","input_tokens":500,"output_tokens":100,"reason":"fail","latency_ms":600}
+{"ts":"2025-10-19T16:07:30Z","rid":"R3","lane":"glm","model":"glm-4.6","status":"ok","input_tokens":600,"output_tokens":150,"reason":"routed","latency_ms":340}

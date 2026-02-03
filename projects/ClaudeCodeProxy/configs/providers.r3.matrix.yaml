@@ -1,0 +1,18 @@
+# Deterministic provider matrix for R3.6 tests/local proofs.
+# Point these at local mocks or httptest servers as needed.
+
+providers:
+  anth:
+    base_url: http://127.0.0.1:18080
+    header_mode: bearer
+    pass_through: true
+  zai:
+    base_url: http://127.0.0.1:18081
+    header_mode: x-api-key
+    pass_through: false
+
+routes:
+  - pattern: "claude-haiku-4.5*"
+    provider: zai
+  - pattern: "claude-sonnet-4.1*"
+    provider: anth

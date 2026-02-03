@@ -1,0 +1,73 @@
+
+# .selectignore
+__pycache__/
+.git/
+.pytest_cache/
+.vscode/
+.idea/
+*.pyc
+*.pyo
+*.pyd
+*.so
+*.dylib
+*.dll
+*.class
+node_modules/
+.venv/
+venv/
+*.egg-info/
+dist/
+build/
+.coverage
+htmlcov/
+.tox/
+.env
+*.log
+
+ tests/.mypy_cache/
+src/.fileselect/   
+
+
+
+
+# .selectignore
+.git/
+# Python compiled files
+*.pyc
+.*
+__pycache__/
+
+# select_files.py
+env.py
+concatenaed_output.txt
+tree.txt
+# folder_structure_generator.py
+Makefile
+requirements.txt
+
+# Virtual environment
+venv/
+myenv/
+alembic/
+app/
+migrations/
+initial_data/
+
+__init__.py
+*.sh
+*.mako
+*.rdb
+
+alembic_multi/
+# macOS system files
+.DS_Store
+
+# Log files
+*.log
+
+# Add any additional patterns specific to selection
+backups/
+fileselect.egg-info/
+tests-old/
+README.md
+src/fileselect.egg-info/

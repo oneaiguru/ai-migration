@@ -1,0 +1,5 @@
+id,name,parent_id,operation_type
+9001,Export Services,,Приход
+9101,Bank Service Fees,,Расход
+9102,Taxes and Government Fees,,Расход
+9103,Owner Transfers/Withdrawals,,Расход

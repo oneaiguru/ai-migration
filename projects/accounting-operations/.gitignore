@@ -1,0 +1,10 @@
+*.xlsx
+renamed-statements/
+renamed-statements-2025/
+audits/audit2023-2024/
+metadata/statements.toml
+inbox/
+missing/
+raw-consolidated/
+bank-backup.zip
+.DS_Store

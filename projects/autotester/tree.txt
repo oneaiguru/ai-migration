@@ -1,0 +1,52 @@
+autotester/
+├── autotester/
+│   ├── pyproject.toml
+│   ├── setup.py
+│   └── src/
+│       ├── automated_test_runner/
+│       │   ├── enhanced_test_execution.py
+│       │   ├── test_case_detection.py
+│       │   └── test_discovery.py
+│       ├── code_quality_checker/
+│       │   ├── checks/
+│       │   │   └── pep8_checks.py
+│       │   └── reporters/
+│       │       └── console_reporter.py
+│       ├── dependency_analysis/
+│       │   └── dependency_analysis.py
+│       ├── documentation_tool/
+│       │   └── documentation_tool.py
+│       ├── feedback/
+│       │   └── feedback_collector.py
+│       ├── main_workflow.py
+│       └── todo_comment_aggregator/
+│           └── todo_comment_aggregator.py
+├── output/
+│   └── feedback.json
+├── pyproject.toml
+├── setup.py
+├── src/
+│   ├── README.md
+│   ├── automated_test_runner/
+│   │   ├── README.md
+│   │   └── utils/
+│   ├── code_quality_checker/
+│   │   ├── README.md
+│   │   ├── checks/
+│   │   ├── main.py
+│   │   ├── reporters/
+│   │   └── utils/
+│   │       └── file_selector.py
+│   ├── dependency_analysis/
+│   │   └── README.md
+│   ├── documentation_tool/
+│   │   └── README.md
+│   ├── feedback/
+│   ├── src/
+│   │   └── common/
+│   └── todo_comment_aggregator/
+│       └── README.md
+├── tmp/
+│   ├── dependency_analysis.py
+│   └── test_dependency_analysis.py
+└── tree.txt

@@ -1,0 +1,18 @@
+capability_id,name,type,weight,acceptance_path,criticality,owner
+CAP-CLI-ALIAS,Record start/end/cross aliases,cli,3,features/tracker_aliases.feature:1,high,codex
+CAP-CLI-ALIAS-DEL,Delete/undo via alias delete,cli,2,features/tracker_aliases.feature:40,medium,codex
+CAP-PREVIEW-NOTES,Preview shows finalized window notes,cli,1,tracker/tests/test_cli_flow.py:1,low,codex
+CAP-FINALIZE,Finalize windows with quality/outcome,cli,3,features/tracker_cli.feature:1,high,codex
+CAP-CHURN,Compute and display churn,cli,3,features/tracker_cli.feature:60,high,codex
+CAP-LEDGER-EVIDENCE,Acceptance evidence ledger entries,docs,2,docs/Ledgers/Acceptance_Evidence.csv,medium,codex
+CAP-LEDGER-TOKENS,Token ledger checkpoints,docs,2,docs/Ledgers/Token_Churn_Ledger.csv,medium,codex
+CAP-RESET-BUFFER-GUARD,Reset buffer and negative-delta guard,cli,2,docs/SESSION_HANDOFF.md:1,medium,codex
+CAP-CCUSAGE-SESSION,Ingest codex ccusage session,cli,2,features/tracker_ccusage.feature:1,medium,codex
+CAP-CCUSAGE-WEEKLY,Ingest codex ccusage weekly,cli,2,features/tracker_ccusage.feature:80,medium,codex
+CAP-AUTOMATION-LEDGER,Ledger checkpoint automation script,cli,2,scripts/automation/ledger_checkpoint.sh,low,codex
+CAP-UAT-PYTEST,Run pytest UAT opener,test,1,artifacts/test_runs,low,codex
+CAP-UAT-BEHAVE,Run behave UAT opener,test,1,artifacts/test_runs,low,codex
+CAP-DECISION-CARD,Decision card GO/SOFT GO/NO-GO,cli,2,scripts/tools/decision_card.py,medium,codex
+CAP-LEDGER-CHECKPOINT-AUTO,Ledger checkpoint automation w/ decision card,cli,2,scripts/automation/ledger_checkpoint.sh,medium,codex
+CAP-FEATURE-RESERVE,Reserve feature rows in ledger,cli,1,scripts/tools/reserve_feature.py,low,codex
+CAP-KNOWLEDGE-LINK,Knowledge migration wiki pointers,docs,1,docs/System/scheduler/standing_jobs.md,low,codex

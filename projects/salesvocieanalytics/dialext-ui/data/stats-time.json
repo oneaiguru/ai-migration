@@ -1,0 +1,43 @@
+{
+  "period": {
+    "dateFrom": "2025-01-20",
+    "dateTo": "2025-01-31",
+    "workspace": "Любой"
+  },
+  "hourly": [
+    { "hour": 0, "count": 8000 },
+    { "hour": 1, "count": 5000 },
+    { "hour": 2, "count": 3000 },
+    { "hour": 3, "count": 2000 },
+    { "hour": 4, "count": 1500 },
+    { "hour": 5, "count": 1200 },
+    { "hour": 6, "count": 2000 },
+    { "hour": 7, "count": 5000 },
+    { "hour": 8, "count": 12000 },
+    { "hour": 9, "count": 10000 },
+    { "hour": 10, "count": 15000 },
+    { "hour": 11, "count": 20000 },
+    { "hour": 12, "count": 25000 },
+    { "hour": 13, "count": 30000 },
+    { "hour": 14, "count": 35000 },
+    { "hour": 15, "count": 40000 },
+    { "hour": 16, "count": 50000 },
+    { "hour": 17, "count": 60000 },
+    { "hour": 18, "count": 70000 },
+    { "hour": 19, "count": 80000 },
+    { "hour": 20, "count": 75000 },
+    { "hour": 21, "count": 65000 },
+    { "hour": 22, "count": 50000 },
+    { "hour": 23, "count": 35000 }
+  ],
+  "peak": {
+    "hour": 19,
+    "count": 80000,
+    "label": "Пиковое время: 19-20 часов (80k звонков)"
+  },
+  "minimum": {
+    "hour": 9,
+    "count": 10000,
+    "label": "Минимум: 9-10 часов (10k звонков)"
+  }
+}

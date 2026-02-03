@@ -1,0 +1,26 @@
+# Salesforce Configuration
+SF_CLIENT_ID=your_salesforce_client_id
+SF_CLIENT_SECRET=your_salesforce_client_secret
+SF_REDIRECT_URI=http://localhost:3000/auth/salesforce/callback
+SF_LOGIN_URL=https://login.salesforce.com
+
+# QuickBooks Configuration
+QB_CLIENT_ID=your_quickbooks_client_id
+QB_CLIENT_SECRET=your_quickbooks_client_secret
+QB_REDIRECT_URI=http://localhost:3000/auth/quickbooks/callback
+QB_ENVIRONMENT=sandbox
+
+# Security
+API_KEY=demo_api_key_2024
+TOKEN_ENCRYPTION_KEY=demo_encryption_key_32_chars_long
+
+# Server
+PORT=3000
+NODE_ENV=production
+MIDDLEWARE_BASE_URL=http://localhost:3000
+
+# Logging
+LOG_LEVEL=info
+
+# Demo Mode
+DEMO_MODE=false  # Set to false for real API calls during demo

@@ -1,0 +1,105 @@
+<!-- templates/dashboard.html -->
+{% extends "base.html" %}
+
+{% block title %}Dashboard - TaskFlow.ai{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header">
+                <h5>Task Statistics</h5>
+            </div>
+            <div class="card-body">
+                <p>Total Tasks: <span id="total-tasks">0</span></p>
+                <p>Pending: <span id="pending-tasks">0</span></p>
+                <p>Completed: <span id="completed-tasks">0</span></p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <h5>Recent Tasks</h5>
+                <button class="btn btn-primary btn-sm" onclick="showCreateTaskModal()">Create Task</button>
+            </div>
+            <div class="card-body">
+                <div id="tasks-list">
+                    <p>Loading tasks...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Create Task Modal -->
+<div class="modal fade" id="createTaskModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Create New Task</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="createTaskForm">
+                    <div class="mb-3">
+                        <label for="taskId" class="form-label">Task ID</label>
+                        <input type="text" class="form-control" id="taskId" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="taskTitle" class="form-label">Title</label>
+                        <input type="text" class="form-control" id="taskTitle" required>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" onclick="createTask()">Create</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+async function loadTasks() {
+    try {
+        const response = await fetch('/api/tasks');
+        const data = await response.json();
+        // Update UI with tasks
+        console.log('Tasks loaded:', data);
+    } catch (error) {
+        console.error('Error loading tasks:', error);
+    }
+}
+
+function showCreateTaskModal() {
+    new bootstrap.Modal(document.getElementById('createTaskModal')).show();
+}
+
+async function createTask() {
+    const taskId = document.getElementById('taskId').value;
+    const taskTitle = document.getElementById('taskTitle').value;
+    
+    try {
+        const response = await fetch('/api/tasks', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ id: taskId, title: taskTitle })
+        });
+        
+        if (response.ok) {
+            bootstrap.Modal.getInstance(document.getElementById('createTaskModal')).hide();
+            loadTasks();
+        }
+    } catch (error) {
+        console.error('Error creating task:', error);
+    }
+}
+
+// Load tasks on page load
+document.addEventListener('DOMContentLoaded', loadTasks);
+</script>
+{% endblock %}

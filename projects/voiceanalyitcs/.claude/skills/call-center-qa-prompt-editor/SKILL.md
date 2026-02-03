@@ -1,0 +1,262 @@
+---
+name: call-center-qa-prompt-editor
+description: Develop, iterate, and validate LLM grading prompts for call center QA evaluation. Use when working on СО_2024 evaluation system, grading prompts, call evaluations, C-code criteria (C04-C17), or comparing prompt versions. Supports Russian and English documentation.
+allowed-tools: Read, Grep, Glob, Write, Edit
+---
+
+# Call Center QA Prompt Editor
+
+## Purpose
+
+Assist in developing and refining LLM-based call center quality assurance grading prompts. The system evaluates operator calls against the СО_2024 standard (27 criteria, codes 10.1–2.2).
+
+## Key Concepts
+
+### Evaluation System Structure
+
+| Phase | Criteria | Data Required |
+|-------|----------|---------------|
+| Phase 1 | 17 criteria (15 full + 2 partial) | Transcript only |
+| Phase 2 | +5 criteria | + Audio analysis |
+| Phase 3 | +5 criteria | + Oktell/CRM data |
+
+### Critical Criteria (Most Common Violations)
+
+| Code | СО Code | Description | Threshold |
+|------|---------|-------------|-----------|
+| C04 | 9.1 | Search duration | >40 sec = violation |
+| C05 | 9.3 | Thanks after search | ANY search requires thanks |
+| C06 | 7.1 | Script compliance | Greeting + closing elements |
+| C07 | 7.2 | Echo method | Repeat + "верно?" for contacts |
+| C08 | 7.3 | Response timing | >5 sec greeting delay = violation |
+
+### Partial Assessment Criteria
+
+- **C06 (7.1)**: Script compliance — only greeting/closing visible without full script files
+- **C17 (2.2)**: Rudeness — only text profanity detectable without audio
+
+## Workflow
+
+### 1. Before Editing a Prompt
+
+```
+ALWAYS:
+1. Read the Russian source document (СО_2024_ВТМ_полная.md)
+2. Identify which criteria are affected by the change
+3. Check existing interpretation notes (Интерпретации_и_примечания.md)
+4. Review questions pending for client (Вопросы_к_автору.md)
+```
+
+### 2. Version Control Convention
+
+```
+Prompt versions: V{major}.{minor}.{patch}
+- Major: Breaking changes to grading logic
+- Minor: New criteria or significant rule changes  
+- Patch: Clarifications, examples, edge cases
+
+Example: V1.4.1 = 4th major iteration, 1st patch
+```
+
+### 3. Testing Changes
+
+```
+For any prompt change:
+1. Identify affected calls from golden dataset (20 calls)
+2. Re-run evaluation on affected calls
+3. Compare grades: original vs new
+4. Document any grade changes with rationale
+```
+
+### 4. Common Pitfalls to Avoid
+
+**DO NOT invent rules not in source:**
+- ❌ "10-second threshold for C05" (source says ANY search)
+- ❌ "Interactive dialogue exception" (no exception in source)
+- ❌ "C07 only for phone numbers" (applies to ALL contact data)
+
+**DO cross-validate against Russian source:**
+- Every rule must have a citation from СО_2024_ВТМ_полная.md
+- When in doubt, flag for client confirmation
+
+## JSON Output Schema
+
+### Call Evaluation Format
+
+```json
+{
+  "metadata": {
+    "call_id": "XX",
+    "operator": "Name",
+    "call_type": "ORDER|INQUIRY|RESERVATION|INCIDENT",
+    "duration_sec": 000,
+    "phase": "Phase 1 (Transcript)"
+  },
+  "final_grade": 10|9|8|7|6|5|4|3|2,
+  "grade_reason": "Lowest code principle: min(all violations)",
+  "violations": [
+    {
+      "code": "C0X",
+      "criterion": "X.X Description",
+      "grade": 9,
+      "status": "VIOLATION",
+      "timestamp": "MM:SS-MM:SS",
+      "evidence": "Russian text with exact quotes",
+      "confidence": 0.85
+    }
+  ],
+  "partial_assessments": [
+    {
+      "code": "C06|C17",
+      "status": "GENERIC_ONLY|TEXT_ONLY",
+      "finding": "What was observed",
+      "limitation": "Why partial"
+    }
+  ],
+  "criteria_passed": ["C01", "C02", ...],
+  "summary": {
+    "strengths": ["..."],
+    "improvements": ["..."],
+    "coaching": "Grade X. Brief coaching note."
+  }
+}
+```
+
+### call_type Classification
+
+| Type | When to Use | C07 Applies? |
+|------|-------------|--------------|
+| ORDER | Order number assigned | ✅ Yes |
+| RESERVATION | Booking number assigned | ✅ Yes |
+| INCIDENT | Incident number assigned | ✅ Yes |
+| INQUIRY | Consultation only, no transaction | ❌ No |
+
+**Edge cases:**
+- "Offered but declined" → INQUIRY
+- "I'll order online myself" → INQUIRY
+- "Data collection started, then cancelled" → INQUIRY (no number assigned)
+
+## C06 Script Compliance (Detailed)
+
+### What We CAN Evaluate (Phase 1)
+
+**Greeting elements (all required):**
+1. Company name ("74 колеса" / "Семьдесят четыре колеса")
+2. Operator name
+3. Offer to help / ask how to address customer
+
+**Closing elements (required):**
+1. "Чем ещё могу помочь?" or equivalent
+2. Thanks for call
+3. Farewell
+
+### What We CANNOT Evaluate (needs script file)
+
+- Project-specific question sequences
+- Required upsells/cross-sells
+- Specific information delivery order
+- Custom script variations per project
+
+### C06 Evaluation Logic
+
+```
+IF greeting missing company OR operator name:
+  → C06 VIOLATION (Grade 7)
+  
+IF closing missing farewell after customer says goodbye:
+  → C06 VIOLATION (Grade 7)
+  
+IF customer hangs up mid-operator-speech:
+  → NOT a violation (customer initiated)
+  
+IF all basic elements present but can't verify full script:
+  → status: "GENERIC_ONLY", no grade impact
+```
+
+## C05 Thanks After Search (Strict Rule)
+
+### What Triggers C05
+
+ANY announced search requires thanks, regardless of duration:
+- "Минуту, пожалуйста"
+- "Сейчас посмотрю"
+- "Давайте проверим"
+- "Секунду"
+
+### Valid Thanks Phrases
+
+✅ "Спасибо за ожидание"
+✅ "Благодарю за ожидание"  
+✅ "Спасибо, что подождали"
+
+### NOT Thanks (Just Transitions)
+
+❌ "Вот"
+❌ "Так"
+❌ "Нашла"
+❌ "Хорошо, смотрите"
+
+## C07 Echo Method (Detailed)
+
+### Required Steps
+
+1. Customer states data
+2. Operator REPEATS the data
+3. Operator asks "верно?" / "правильно?" OR uses question intonation
+4. Customer confirms
+
+### Applies To (when recording)
+
+- Full name (ФИО)
+- Phone number
+- Address
+- Email
+- Any contact/identification data
+
+### Does NOT Apply
+
+- INQUIRY calls where name used conversationally
+- Reusing existing data from previous orders (with customer confirmation)
+
+## File Locations (Project Convention)
+
+```
+/project/
+├── prompts/
+│   └── V1_X_X_CallCenter_Grading_Prompt_EN.md
+├── evaluations/
+│   └── call_XX_FINAL.json
+├── source_docs/
+│   ├── СО_2024_ВТМ_полная.md (Russian source - authoritative)
+│   ├── СО_2024_ВТМ_фаза1.md (Phase 1 subset)
+│   └── Интерпретации_и_примечания.md
+├── reports/
+│   ├── CONSOLIDATED_REPORT.md
+│   └── TECHNICAL_TABLE.md
+└── questions/
+    └── Вопросы_к_автору.md
+```
+
+## Changelog Format
+
+When making prompt changes, document:
+
+```markdown
+## V1.X.X → V1.X.Y Changelog
+
+| ID | Section | Change | Lines | Rationale |
+|----|---------|--------|-------|-----------|
+| 1 | C05 | Removed 10-sec threshold | 116 | Not in Russian source |
+| 2 | C07 | Added call_type check | 180-185 | Only applies to ORDER/RESERVATION |
+
+## Quality Checks Before Finalizing
+
+- [ ] All rules traceable to СО_2024_ВТМ_полная.md
+- [ ] No invented thresholds or exceptions
+- [ ] Edge cases documented with examples
+- [ ] Partial criteria clearly marked
+- [ ] JSON schema followed exactly
+- [ ] Russian evidence text preserved (not translated)
+- [ ] Confidence levels calibrated (0.85-0.95 typical)
+
+This skill captures our entire workflow. You can save it as `~/.claude/skills/call-center-qa-prompt-editor/SKILL.md` or in your project's `.claude/skills/` directory.

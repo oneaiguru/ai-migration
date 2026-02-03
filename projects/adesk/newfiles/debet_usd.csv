@@ -1,0 +1,3 @@
+id,amount,operation_date,accounts_id,target_id,contacts_id,apartment_id,comment
+2001,4975.0,2023-01-16,4068,9001,5001,,"Contract 23-1, Invoice #1, South Africa"
+2002,24967.5,2023-07-27,4068,9001,5002,,"Consulting/Software Dev, USA"

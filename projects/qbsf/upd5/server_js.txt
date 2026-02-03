@@ -1,0 +1,81 @@
+/**
+ * Main server file for Salesforce-QuickBooks Integration
+ * This is the entry point for the application
+ */
+const app = require('./app');
+const config = require('./config');
+const logger = require('./utils/logger');
+
+// Create HTTP server
+const server = app.listen(config.server.port, () => {
+  logger.info(`Server started on port ${config.server.port} in ${config.server.env} mode`);
+  
+  // Display startup banner
+  console.log('========================================');
+  console.log(`Salesforce-QuickBooks Integration Server`);
+  console.log('========================================');
+  console.log(`Environment: ${config.server.env}`);
+  console.log(`Port: ${config.server.port}`);
+  console.log(`Base URL: ${config.server.baseUrl}`);
+  console.log('========================================');
+  
+  // Display OAuth URLs for setup
+  console.log('\nOAuth Setup URLs:');
+  console.log(`Salesforce: ${config.server.baseUrl}/auth/salesforce`);
+  console.log(`QuickBooks: ${config.server.baseUrl}/auth/quickbooks`);
+  console.log('\nAPI Status: ${config.server.baseUrl}/auth/status');
+  console.log('========================================\n');
+});
+
+// Handle uncaught exceptions
+process.on('uncaughtException', (err) => {
+  logger.error('Uncaught Exception:', err);
+  // Graceful shutdown
+  server.close(() => {
+    process.exit(1);
+  });
+  
+  // Force exit after 10 seconds
+  setTimeout(() => {
+    logger.error('Forcing server shutdown');
+    process.exit(1);
+  }, 10000);
+});
+
+// Handle unhandled promise rejections
+process.on('unhandledRejection', (err) => {
+  logger.error('Unhandled Promise Rejection:', err);
+  // Don't crash on unhandled rejections, just log them
+});
+
+// Handle SIGTERM for graceful shutdown
+process.on('SIGTERM', () => {
+  logger.info('SIGTERM received, shutting down gracefully');
+  server.close(() => {
+    logger.info('Server closed');
+    process.exit(0);
+  });
+  
+  // Force exit after 10 seconds
+  setTimeout(() => {
+    logger.error('Forcing server shutdown');
+    process.exit(1);
+  }, 10000);
+});
+
+// Handle SIGINT (Ctrl+C) for graceful shutdown
+process.on('SIGINT', () => {
+  logger.info('SIGINT received, shutting down gracefully');
+  server.close(() => {
+    logger.info('Server closed');
+    process.exit(0);
+  });
+  
+  // Force exit after 10 seconds
+  setTimeout(() => {
+    logger.error('Forcing server shutdown');
+    process.exit(1);
+  }, 10000);
+});
+
+module.exports = server;

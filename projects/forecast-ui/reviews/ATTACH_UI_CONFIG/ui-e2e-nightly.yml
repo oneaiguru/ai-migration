@@ -1,0 +1,32 @@
+name: UI E2E Nightly
+
+on:
+  schedule:
+    - cron: '0 3 * * *' # daily at 03:00 UTC
+
+jobs:
+  e2e-full:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - run: npm ci
+      - name: Install Playwright browsers
+        uses: microsoft/playwright-github-action@v1
+      - name: Run Playwright (full) and capture screenshots
+        env:
+          E2E_BASE_URL: https://mytko-forecast-ui.vercel.app
+          E2E_TAKE_SHOTS: '1'
+          PW_TIMEOUT_MS: '60000'
+          E2E_ALLOW_DOWNLOAD: '1'
+        run: |
+          npx playwright test --reporter=line
+      - name: Upload screenshots artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ui-e2e-shots
+          path: tests/e2e/shots
+          if-no-files-found: ignore

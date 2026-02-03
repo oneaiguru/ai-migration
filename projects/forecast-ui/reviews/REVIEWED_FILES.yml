@@ -1,0 +1,20 @@
+# status: approved | needs-re-review | exempt
+# hash: blob hash at approval time (git hash-object)
+- path: src/components/RoutesTable.tsx
+  status: needs-re-review
+  reviewers: [UI, ORCH]
+  approved_at: 2025-11-05
+  hash: adeb34d
+  notes: "CSV a11y added; sites cohesion via optional prop"
+- path: src/components/Routes.tsx
+  status: needs-re-review
+  reviewers: [UI, ORCH]
+  approved_at: 2025-11-05
+  hash: 77dbe9d
+  notes: "Pass sites from parent using useSitesData(date)"
+- path: src/components/Sites.tsx
+  status: needs-re-review
+  reviewers: [UI, ORCH]
+  approved_at: 2025-11-05
+  hash: b5fbf2d
+  notes: "Mount SiteAccuracy tiles above summary cards"

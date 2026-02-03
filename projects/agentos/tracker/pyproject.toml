@@ -1,0 +1,25 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "subscription-tracker"
+version = "0.1.0"
+description = "Subscription usage tracker CLI for Week-0 experiments"
+requires-python = ">=3.11"
+authors = [{ name = "Subscription Optimizer Team" }]
+dependencies = []
+
+[project.scripts]
+tracker = "tracker.cli:main"
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.4",
+    "behave>=1.2.6",
+]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
+asyncio_default_fixture_loop_scope = "function"

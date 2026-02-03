@@ -1,0 +1,255 @@
+USING RUNNER: behave.runner:Runner
+Feature: Decision card evaluation # features/decision_card.feature:1
+  Operators can confirm GO/SOFT GO readiness using the decision card script.
+  Feature: Decision card evaluation  # features/decision_card.feature:1
+
+  Scenario: GO when window finalized with churn and evidence                                                                                                            # features/decision_card.feature:10
+    Given a fresh tracker data directory                                                                                                                                # features/steps/alias_steps.py:18
+    And decision card tools are staged in sandbox                                                                                                                       # features/steps/tracker_cli_steps.py:32
+    And decision card ledgers are initialized                                                                                                                           # features/steps/tracker_cli_steps.py:42
+    And a dummy artifact "artifacts/test_runs/TR-GO/pytest.txt" exists with content "ok"                                                                                # features/steps/tracker_cli_steps.py:63
+    When a finalized window "W0-GO" exists with codex features "1" outcome "pass"                                                                                       # features/steps/tracker_cli_steps.py:71
+    And a churn ledger row exists for window "W0-GO" provider "codex"                                                                                                   # features/steps/tracker_cli_steps.py:95
+    And I append acceptance evidence for window "W0-GO" capability "CAP-UAT-PYTEST" runner "pytest" result "pass" using artifact "artifacts/test_runs/TR-GO/pytest.txt" # features/steps/tracker_cli_steps.py:130
+    And I run decision card for window "W0-GO" in sandbox                                                                                                               # features/steps/tracker_cli_steps.py:174
+    Then the last command stdout should contain "Status:   GO"                                                                                                          # features/steps/tracker_cli_steps.py:404
+    And the last command stdout should contain "Anoms:    0"                                                                                                            # features/steps/tracker_cli_steps.py:404
+
+Feature: Tracker alias workflow # features/tracker_aliases.feature:1
+  Operators should be able to record snapshots with shorthand aliases.
+  Feature: Tracker alias workflow  # features/tracker_aliases.feature:1
+
+  Scenario: Record Codex start and end panes                                           # features/tracker_aliases.feature:7
+    Given a fresh tracker data directory                                               # features/steps/alias_steps.py:18
+    When I run the alias command "start codex" with fixture "codex/alt_reset_64_0.txt" # features/steps/alias_steps.py:34
+    And I run the alias command "end codex" with fixture "codex/wide_status_82_1.txt"  # features/steps/alias_steps.py:34
+    Then tracker should have a "codex" "before" snapshot for window "W0-01"            # features/steps/alias_steps.py:72
+    And tracker should have a "codex" "after" snapshot for window "W0-01"              # features/steps/alias_steps.py:72
+
+  Scenario: Cross closes the current window and seeds the next                          # features/tracker_aliases.feature:13
+    Given a fresh tracker data directory                                                # features/steps/alias_steps.py:18
+    When I run the alias command "start codex" with fixture "codex/alt_reset_64_0.txt"  # features/steps/alias_steps.py:34
+    And I run the alias command "cross codex" with fixture "codex/wide_status_82_1.txt" # features/steps/alias_steps.py:34
+    Then tracker should have a "codex" "after" snapshot for window "W0-01"              # features/steps/alias_steps.py:72
+    And tracker should have a "codex" "before" snapshot for window "W0-02"              # features/steps/alias_steps.py:72
+    And the last alias stdout should contain "seeded before snapshot for W0-02"         # features/steps/alias_steps.py:151
+
+  Scenario: Delete the latest Codex after snapshot                                     # features/tracker_aliases.feature:20
+    Given a fresh tracker data directory                                               # features/steps/alias_steps.py:18
+    When I run the alias command "start codex" with fixture "codex/alt_reset_64_0.txt" # features/steps/alias_steps.py:34
+    And I run the alias command "end codex" with fixture "codex/wide_status_82_1.txt"  # features/steps/alias_steps.py:34
+    And I run the alias delete command "codex" with options:                           # features/steps/alias_steps.py:198
+      | option | value |
+      | phase  | after |
+      | index  | 1     |
+    Then tracker should have no "codex" "after" snapshot for window "W0-01"            # features/steps/alias_steps.py:81
+    And the last alias stdout should contain "removed codex after snapshot"            # features/steps/alias_steps.py:151
+
+  Scenario: Delete the second-latest Codex after snapshot                              # features/tracker_aliases.feature:30
+    Given a fresh tracker data directory                                               # features/steps/alias_steps.py:18
+    When I run the alias command "start codex" with fixture "codex/alt_reset_64_0.txt" # features/steps/alias_steps.py:34
+    And I run the alias command "end codex" with fixture "codex/wide_status_82_1.txt"  # features/steps/alias_steps.py:34
+    And I run the alias command "start codex" with fixture "codex/alt_reset_64_0.txt"  # features/steps/alias_steps.py:34
+    And I run the alias command "end codex" with fixture "codex/wide_status_82_1.txt"  # features/steps/alias_steps.py:34
+    And I run the alias delete command "codex" with options:                           # features/steps/alias_steps.py:198
+      | option | value |
+      | phase  | after |
+      | index  | 2     |
+    Then tracker should have no "codex" "after" snapshot for window "W0-01"            # features/steps/alias_steps.py:81
+    And tracker should have a "codex" "after" snapshot for window "W0-02"              # features/steps/alias_steps.py:72
+
+  Scenario: Delete the second-latest Codex before snapshot                              # features/tracker_aliases.feature:42
+    Given a fresh tracker data directory                                                # features/steps/alias_steps.py:18
+    When I run the alias command "start codex" with fixture "codex/alt_reset_64_0.txt"  # features/steps/alias_steps.py:34
+    And I run the alias command "cross codex" with fixture "codex/wide_status_82_1.txt" # features/steps/alias_steps.py:34
+    And I run the alias delete command "codex" with options:                            # features/steps/alias_steps.py:198
+      | option | value  |
+      | phase  | before |
+      | index  | 2      |
+    Then tracker should have no "codex" "before" snapshot for window "W0-01"            # features/steps/alias_steps.py:81
+    And tracker should have a "codex" "before" snapshot for window "W0-02"              # features/steps/alias_steps.py:72
+
+  Scenario: Undo erroneous Codex window recording                                                                            # features/tracker_aliases.feature:52
+    Given a fresh tracker data directory                                                                                     # features/steps/alias_steps.py:18
+    When I run the alias command "start codex" with window "W0-19" using fixture "codex/live_cases/W0-19_before_correct.txt" # features/steps/alias_steps.py:42
+    And I run the alias command "end codex" with window "W0-19" using fixture "codex/live_cases/W0-19_after_12pct.txt"       # features/steps/alias_steps.py:42
+    And I run the alias command "start codex" with window "W0-20" using fixture "codex/live_cases/W0-20_start_0pct.txt"      # features/steps/alias_steps.py:42
+    And I run the alias delete command "codex" with options:                                                                 # features/steps/alias_steps.py:198
+      | option | value  |
+      | phase  | before |
+      | window | W0-20  |
+    Then the last alias stdout should contain "removed codex before snapshot"                                                # features/steps/alias_steps.py:151
+    And I run the alias command "start codex" with window "W0-20" using fixture "codex/live_cases/W0-20_start_0pct.txt"      # features/steps/alias_steps.py:42
+    Then tracker should have a "codex" "before" snapshot for window "W0-19"                                                  # features/steps/alias_steps.py:72
+    And tracker should have a "codex" "after" snapshot for window "W0-19"                                                    # features/steps/alias_steps.py:72
+    And tracker should have a "codex" "before" snapshot for window "W0-20"                                                   # features/steps/alias_steps.py:72
+    And tracker should have no "codex" "after" snapshot for window "W0-20"                                                   # features/steps/alias_steps.py:81
+
+  Scenario: Agent-specific alias state directories stay isolated                                     # features/tracker_aliases.feature:67
+    Given a fresh tracker data directory                                                             # features/steps/alias_steps.py:18
+    When I set alias agent "main"                                                                    # features/steps/alias_steps.py:193
+    And I run the alias command "start codex" with fixture "codex/alt_reset_64_0.txt"                # features/steps/alias_steps.py:34
+    And I set alias agent "sub1"                                                                     # features/steps/alias_steps.py:193
+    And I run the alias command "start codex" with fixture "codex/alt_reset_64_0.txt"                # features/steps/alias_steps.py:34
+    Then alias state for agent "main" provider "codex" should have window "W0-01" and phase "before" # features/steps/alias_steps.py:248
+    And alias state for agent "sub1" provider "codex" should have window "W0-01" and phase "before"  # features/steps/alias_steps.py:248
+    And tracker snapshot notes for "codex" "before" window "W0-01" should contain "AGENT_ID=main"    # features/steps/alias_steps.py:225
+    And tracker snapshot notes for "codex" "before" window "W0-01" should contain "AGENT_ID=sub1"    # features/steps/alias_steps.py:225
+    And the alias state directories should be unique per agent                                       # features/steps/alias_steps.py:271
+
+  Scenario: GLM baseline and delta capture                         # features/tracker_aliases.feature:78
+    Given a fresh tracker data directory                           # features/steps/alias_steps.py:18
+    When I run the alias command "start glm" with inline json:     # features/steps/alias_steps.py:64
+      """
+      {
+        "account": "glm",
+        "generated_at": "2025-11-05T10:00:00Z",
+        "blocks": [
+          {"window_id": "W0-01", "provider": "glm-4.6", "prompts_used": 12}
+        ]
+      }
+      """
+    And I run the alias command "end glm" with inline json:        # features/steps/alias_steps.py:64
+      """
+      {
+        "account": "glm",
+        "generated_at": "2025-11-05T15:00:00Z",
+        "blocks": [
+          {"window_id": "W0-01", "provider": "glm-4.6", "prompts_used": 30}
+        ]
+      }
+      """
+    Then tracker should record glm prompts "18" for window "W0-01" # features/steps/alias_steps.py:90
+    And the last alias stdout should contain "stored glm delta"    # features/steps/alias_steps.py:151
+
+  Scenario: Codex multi-pane status keeps the latest block                                                # features/tracker_aliases.feature:102
+    Given a fresh tracker data directory                                                                  # features/steps/alias_steps.py:18
+    When I run the alias command "start codex" with fixture "codex/alt_reset_64_0.txt"                    # features/steps/alias_steps.py:34
+    And I run the alias command "end codex" with fixture "codex/live_cases/W0-20_after_multi_status.txt"  # features/steps/alias_steps.py:34
+    Then tracker should have a "codex" "after" snapshot for window "W0-01"                                # features/steps/alias_steps.py:72
+    And tracker should record codex metrics for window "W0-01" phase "after" with 5h "0" and weekly "10"  # features/steps/alias_steps.py:102
+    And tracker should note codex errors for window "W0-01" phase "after" containing "multi-pane-trimmed" # features/steps/alias_steps.py:132
+
+Feature: Codex status automation workflow # features/tracker_automation.feature:1
+  Automate Codex /status capture via shell script and tracker aliases.
+  Feature: Codex status automation workflow  # features/tracker_automation.feature:1
+
+  @automation
+  Scenario: Capture Codex before snapshot through automation script                                                          # features/tracker_automation.feature:8
+    Given a fresh tracker data directory                                                                                     # features/steps/alias_steps.py:18
+    When I run codex status automation with fixture "automation/codex_status_before.txt" for window "W0-AUTO" phase "before" # features/steps/tracker_automation_steps.py:15
+    Then tracker should have a "codex" "before" snapshot for window "W0-AUTO"                                                # features/steps/alias_steps.py:72
+    And tracker snapshot source for "codex" phase "before" window "W0-AUTO" should be "automation"                           # features/steps/tracker_cli_steps.py:425
+    And the last alias stdout should contain "5h limit"                                                                      # features/steps/alias_steps.py:151
+
+  @automation
+  Scenario: Capture Codex after snapshot through automation script                                                           # features/tracker_automation.feature:15
+    Given a fresh tracker data directory                                                                                     # features/steps/alias_steps.py:18
+    When I run codex status automation with fixture "automation/codex_status_before.txt" for window "W0-AUTO" phase "before" # features/steps/tracker_automation_steps.py:15
+    And I run codex status automation with fixture "automation/codex_status_after.txt" for window "W0-AUTO" phase "after"    # features/steps/tracker_automation_steps.py:15
+    Then tracker should have a "codex" "after" snapshot for window "W0-AUTO"                                                 # features/steps/alias_steps.py:72
+    And tracker snapshot source for "codex" phase "after" window "W0-AUTO" should be "automation"                            # features/steps/tracker_cli_steps.py:425
+    And tracker should record codex metrics for window "W0-AUTO" phase "after" with 5h "11" and weekly "9"                   # features/steps/alias_steps.py:102
+
+  @automation
+  Scenario: Capture Claude monitor snapshot through automation script                                                                               # features/tracker_automation.feature:23
+    Given a fresh tracker data directory                                                                                                            # features/steps/alias_steps.py:18
+    When I run claude monitor automation with fixture "claude_monitor/realtime_sample.txt" for window "W0-AUTO-C" notes "automation:claude-monitor" # features/steps/tracker_automation_steps.py:74
+    Then tracker claude monitor record for window "W0-AUTO-C" should have token usage "0.0"                                                         # features/steps/tracker_cli_steps.py:502
+    And tracker claude monitor token limit for window "W0-AUTO-C" should be "153378"                                                                # features/steps/tracker_cli_steps.py:513
+
+Feature: ccusage Codex coverage # features/tracker_ccusage.feature:1
+  Validate ccusage daily, weekly, and session ingestion workflows for Codex usage tracking.
+  Feature: ccusage Codex coverage  # features/tracker_ccusage.feature:1
+
+  @session
+  Scenario: Ingest Codex ccusage session summary                                                                                                                   # features/tracker_ccusage.feature:8
+    Given a fresh tracker data directory                                                                                                                           # features/steps/alias_steps.py:18
+    When I ingest tracker codex ccusage scope "session" for window "W0-CC-SESSION" using fixture "ccusage/codex_sessions_sample.json"                              # features/steps/tracker_ccusage_steps.py:42
+    Then tracker codex ccusage record for window "W0-CC-SESSION" should have scope "session"                                                                       # features/steps/tracker_ccusage_steps.py:67
+    And tracker codex ccusage total tokens for window "W0-CC-SESSION" should be "7372723263"                                                                       # features/steps/tracker_cli_steps.py:491
+    And tracker codex ccusage latest session id for window "W0-CC-SESSION" should be "2025/10/19/rollout-2025-10-19T01-57-49-0199f878-7b4c-7423-9b83-c2bd6e6749d6" # features/steps/tracker_ccusage_steps.py:75
+
+  @daily
+  Scenario: Ingest Codex ccusage daily summary                                                                                 # features/tracker_ccusage.feature:15
+    Given a fresh tracker data directory                                                                                       # features/steps/alias_steps.py:18
+    When I ingest tracker codex ccusage scope "daily" for window "W0-CC-DAILY" using fixture "ccusage/codex_daily_sample.json" # features/steps/tracker_ccusage_steps.py:42
+    Then tracker codex ccusage record for window "W0-CC-DAILY" should have scope "daily"                                       # features/steps/tracker_ccusage_steps.py:67
+    And tracker codex ccusage daily total tokens for window "W0-CC-DAILY" date "2025-10-19" should be "123456"                 # features/steps/tracker_ccusage_steps.py:88
+    And tracker codex ccusage daily percent used for window "W0-CC-DAILY" date "2025-10-19" should be "12.5"                   # features/steps/tracker_ccusage_steps.py:107
+    And tracker codex ccusage reset at for window "W0-CC-DAILY" should be "2025-10-20T21:11:00Z"                               # features/steps/tracker_ccusage_steps.py:126
+
+  @weekly
+  Scenario: Ingest Codex ccusage weekly summary                                                                                   # features/tracker_ccusage.feature:23
+    Given a fresh tracker data directory                                                                                          # features/steps/alias_steps.py:18
+    When I ingest tracker codex ccusage scope "weekly" for window "W0-CC-WEEKLY" using fixture "ccusage/codex_weekly_sample.json" # features/steps/tracker_ccusage_steps.py:42
+    Then tracker codex ccusage record for window "W0-CC-WEEKLY" should have scope "weekly"                                        # features/steps/tracker_ccusage_steps.py:67
+    And tracker codex ccusage weekly percent used for window "W0-CC-WEEKLY" should be "9.2"                                       # features/steps/tracker_ccusage_steps.py:134
+    And tracker codex ccusage weekly total tokens for window "W0-CC-WEEKLY" should be "987654321"                                 # features/steps/tracker_ccusage_steps.py:143
+
+  @errors
+  Scenario: Handle invalid ccusage payload                                                                                         # features/tracker_ccusage.feature:30
+    Given a fresh tracker data directory                                                                                           # features/steps/alias_steps.py:18
+    When I ingest tracker codex ccusage scope "session" for window "W0-CC-ERROR" using fixture "ccusage/codex_invalid_sample.json" # features/steps/tracker_ccusage_steps.py:42
+    Then tracker codex ccusage record for window "W0-CC-ERROR" should list error "invalid-json"                                    # features/steps/tracker_ccusage_steps.py:152
+
+Feature: Tracker CLI coverage # features/tracker_cli.feature:1
+  Core tracker commands should follow the BDD workflow and remain covered end-to-end.
+  Feature: Tracker CLI coverage  # features/tracker_cli.feature:1
+
+  Scenario: Ingest snapshots and preview window summary                                                                     # features/tracker_cli.feature:7
+    Given a fresh tracker data directory                                                                                    # features/steps/alias_steps.py:18
+    When I ingest tracker snapshot for "codex" phase "before" window "W0-CLI" using fixture "codex/alt_reset_64_0.txt"      # features/steps/tracker_cli_steps.py:198
+    And I ingest tracker snapshot for "codex" phase "after" window "W0-CLI" using fixture "codex/wide_status_82_1.txt"      # features/steps/tracker_cli_steps.py:198
+    And I ingest tracker snapshot for "claude" phase "before" window "W0-CLI" using fixture "claude/usage_wide_90_1_0.txt"  # features/steps/tracker_cli_steps.py:198
+    And I ingest tracker snapshot for "claude" phase "after" window "W0-CLI" using fixture "claude/usage_narrow_90_1_0.txt" # features/steps/tracker_cli_steps.py:198
+    And I run tracker complete for window "W0-CLI" with codex "3" claude "3" quality "1.0" outcome "pass" notes "bdd"       # features/steps/tracker_cli_steps.py:250
+    And I run tracker preview for window "W0-CLI"                                                                           # features/steps/tracker_cli_steps.py:323
+    Then the last tracker stdout should contain "Windows: W0-CLI"                                                           # features/steps/tracker_cli_steps.py:399
+    And the last tracker stdout should contain "codex: features=3"                                                          # features/steps/tracker_cli_steps.py:399
+    And the last tracker stdout should contain "claude: features=3"                                                         # features/steps/tracker_cli_steps.py:399
+    And the last tracker stdout should contain "power=n/a"                                                                  # features/steps/tracker_cli_steps.py:399
+    And the last tracker stdout should contain "Outcome: quality=1.0, outcome=pass"                                         # features/steps/tracker_cli_steps.py:399
+    And tracker should record window "W0-CLI" codex delta weekly "18" fiveh "1"                                             # features/steps/tracker_cli_steps.py:409
+
+  Scenario: Compute churn and surface preview summary                                                                                                                     # features/tracker_cli.feature:21
+    Given a fresh tracker data directory                                                                                                                                  # features/steps/alias_steps.py:18
+    When I ingest tracker snapshot for "codex" phase "before" window "W0-CHN" using fixture "codex/alt_reset_64_0.txt"                                                    # features/steps/tracker_cli_steps.py:198
+    And I ingest tracker snapshot for "codex" phase "after" window "W0-CHN" using fixture "codex/wide_status_82_1.txt"                                                    # features/steps/tracker_cli_steps.py:198
+    And I run tracker complete with commits for window "W0-CHN" codex "2" claude "0" quality "1.0" outcome "pass" notes "churn-bdd" commit-start "HEAD" commit-end "HEAD" # features/steps/tracker_cli_steps.py:283
+    And I run tracker churn for window "W0-CHN" with provider "codex"                                                                                                     # features/steps/tracker_cli_steps.py:380
+    And I run tracker preview for window "W0-CHN"                                                                                                                         # features/steps/tracker_cli_steps.py:323
+    Then the last tracker stdout should contain "Churn:"                                                                                                                  # features/steps/tracker_cli_steps.py:399
+    And the last tracker stdout should contain "window=W0-CHN"                                                                                                            # features/steps/tracker_cli_steps.py:399
+    And the last tracker stdout should contain "+0/-0 (net=0)"                                                                                                            # features/steps/tracker_cli_steps.py:399
+    And the last tracker stdout should contain "per-feature=0.00"                                                                                                         # features/steps/tracker_cli_steps.py:399
+
+  Scenario: Override codex snapshot via CLI                                                                         # features/tracker_cli.feature:32
+    Given a fresh tracker data directory                                                                            # features/steps/alias_steps.py:18
+    When I run tracker override for "codex" phase "after" window "W0-OVR" with weekly "82" fiveh "1" notes "manual" # features/steps/tracker_cli_steps.py:218
+    Then tracker should have a "codex" "after" snapshot for window "W0-OVR"                                         # features/steps/alias_steps.py:72
+    And tracker snapshot source for "codex" phase "after" window "W0-OVR" should be "override"                      # features/steps/tracker_cli_steps.py:425
+    And tracker snapshot errors for "codex" phase "after" window "W0-OVR" should contain "manual-override"          # features/steps/tracker_cli_steps.py:447
+
+  Scenario: Ingest GLM counts via CLI                                                            # features/tracker_cli.feature:38
+    Given a fresh tracker data directory                                                         # features/steps/alias_steps.py:18
+    When I ingest tracker glm counts for window "W0-GLM" using fixture "glm/ccusage_sample.json" # features/steps/tracker_cli_steps.py:335
+    Then tracker should record glm prompts "118" for window "W0-GLM"                             # features/steps/alias_steps.py:90
+    And tracker glm entry for window "W0-GLM" should include provider "glm-4.6"                  # features/steps/tracker_cli_steps.py:469
+
+  Scenario: Ingest Codex ccusage JSON via CLI                                                                  # features/tracker_cli.feature:43
+    Given a fresh tracker data directory                                                                       # features/steps/alias_steps.py:18
+    When I ingest tracker codex ccusage for window "W0-CCD" using fixture "ccusage/codex_sessions_sample.json" # features/steps/tracker_cli_steps.py:350
+    Then tracker codex ccusage record for window "W0-CCD" should have session count "51"                       # features/steps/tracker_cli_steps.py:480
+    And tracker codex ccusage total tokens for window "W0-CCD" should be "7372723263"                          # features/steps/tracker_cli_steps.py:491
+
+  Scenario: Ingest Claude monitor snapshot via CLI                                                             # features/tracker_cli.feature:48
+    Given a fresh tracker data directory                                                                       # features/steps/alias_steps.py:18
+    When I ingest tracker claude monitor for window "W0-CM" using fixture "claude_monitor/realtime_sample.txt" # features/steps/tracker_cli_steps.py:365
+    Then tracker claude monitor record for window "W0-CM" should have token usage "0.0"                        # features/steps/tracker_cli_steps.py:502
+    And tracker claude monitor token limit for window "W0-CM" should be "153378"                               # features/steps/tracker_cli_steps.py:513
+
+5 features passed, 0 failed, 0 skipped
+23 scenarios passed, 0 failed, 0 skipped
+147 steps passed, 0 failed, 0 skipped
+Took 0min 1.159s

@@ -1,0 +1,1524 @@
+{
+  "call_metadata": {
+    "call_id": "05",
+    "operator": "Operator_05",
+    "total_duration_ms": 568172,
+    "date": null
+  },
+  "utterances": [
+    {
+      "start_ms": 1139,
+      "end_ms": 4919,
+      "speaker": "agent",
+      "text": "Здравствуйте, компания 74 колеса, меня зовут Анна, как можно к",
+      "confidence": null,
+      "speaker_confidence": 0.5,
+      "id": 1,
+      "duration_ms": 3780,
+      "gap_from_previous_ms": null
+    },
+    {
+      "start_ms": 5419,
+      "end_ms": 8099,
+      "speaker": "customer",
+      "text": "вам обращаться? Здравствуйте, меня зовут Настя.",
+      "confidence": null,
+      "speaker_confidence": 0.5,
+      "id": 2,
+      "duration_ms": 2680,
+      "gap_from_previous_ms": 500
+    },
+    {
+      "start_ms": 8739,
+      "end_ms": 11619,
+      "speaker": "agent",
+      "text": "Красноуфимск, чем могу помочь? Да,",
+      "confidence": 0.963,
+      "speaker_confidence": 0.963,
+      "id": 3,
+      "duration_ms": 2880,
+      "gap_from_previous_ms": 640
+    },
+    {
+      "start_ms": 11939,
+      "end_ms": 14439,
+      "speaker": "agent",
+      "text": "я хотела спросить, вот у вас диски тоже продаются?",
+      "confidence": 0.864,
+      "speaker_confidence": 0.864,
+      "id": 4,
+      "duration_ms": 2500,
+      "gap_from_previous_ms": 320
+    },
+    {
+      "start_ms": 15599,
+      "end_ms": 19019,
+      "speaker": "agent",
+      "text": "Диски в наличии, да, у нас есть, надо будет посмотреть по",
+      "confidence": 0.922,
+      "speaker_confidence": 1.0,
+      "id": 5,
+      "duration_ms": 3420,
+      "gap_from_previous_ms": 1160
+    },
+    {
+      "start_ms": 19519,
+      "end_ms": 23059,
+      "speaker": "agent",
+      "text": "городу вашему. Литые, штампованные вас интересуют?",
+      "confidence": 0.94,
+      "speaker_confidence": 0.94,
+      "id": 6,
+      "duration_ms": 3540,
+      "gap_from_previous_ms": 500
+    },
+    {
+      "start_ms": 24079,
+      "end_ms": 27059,
+      "speaker": "agent",
+      "text": "Обычные, простые, не литые точно. Хорошо,",
+      "confidence": 0.834,
+      "speaker_confidence": 0.834,
+      "id": 7,
+      "duration_ms": 2980,
+      "gap_from_previous_ms": 1020
+    },
+    {
+      "start_ms": 27159,
+      "end_ms": 30299,
+      "speaker": "agent",
+      "text": "штампованные, да? На какой модель, марка автомобиля?",
+      "confidence": 0.918,
+      "speaker_confidence": 0.918,
+      "id": 8,
+      "duration_ms": 3140,
+      "gap_from_previous_ms": 100
+    },
+    {
+      "start_ms": 31160,
+      "end_ms": 35140,
+      "speaker": "agent",
+      "text": "Renault Sandero Stepway 2016 года.",
+      "confidence": 0.76708984,
+      "speaker_confidence": 0.767,
+      "id": 9,
+      "duration_ms": 3980,
+      "gap_from_previous_ms": 861
+    },
+    {
+      "start_ms": 35720,
+      "end_ms": 36980,
+      "speaker": "agent",
+      "text": "Сейчас минуту, пожалуйста.",
+      "confidence": 0.798,
+      "speaker_confidence": 0.798,
+      "id": 10,
+      "duration_ms": 1260,
+      "gap_from_previous_ms": 580
+    },
+    {
+      "start_ms": 40980,
+      "end_ms": 43520,
+      "speaker": "agent",
+      "text": "Stepway 2016 года.",
+      "confidence": 0.91845703,
+      "speaker_confidence": 0.918,
+      "id": 11,
+      "duration_ms": 2540,
+      "gap_from_previous_ms": 4000
+    },
+    {
+      "start_ms": 44280,
+      "end_ms": 46800,
+      "speaker": "agent",
+      "text": "Двигатель 1.6, да, у вас? Да.",
+      "confidence": 0.831,
+      "speaker_confidence": 0.831,
+      "id": 12,
+      "duration_ms": 2520,
+      "gap_from_previous_ms": 760
+    },
+    {
+      "start_ms": 48400,
+      "end_ms": 50140,
+      "speaker": "agent",
+      "text": "Сейчас минуту посмотрим.",
+      "confidence": 0.9057617,
+      "speaker_confidence": 0.906,
+      "id": 13,
+      "duration_ms": 1740,
+      "gap_from_previous_ms": 1600
+    },
+    {
+      "start_ms": 53600,
+      "end_ms": 58460,
+      "speaker": "agent",
+      "text": "Спасибо за",
+      "confidence": 0.8588867,
+      "speaker_confidence": 0.859,
+      "id": 14,
+      "duration_ms": 4860,
+      "gap_from_previous_ms": 3460
+    },
+    {
+      "start_ms": 58960,
+      "end_ms": 62407,
+      "speaker": "agent",
+      "text": "ожидание. Здесь у нас имеется, да,",
+      "confidence": 0.48242188,
+      "speaker_confidence": 0.5,
+      "id": 15,
+      "duration_ms": 3447,
+      "gap_from_previous_ms": 500
+    },
+    {
+      "start_ms": 62587,
+      "end_ms": 66687,
+      "speaker": "agent",
+      "text": "завтра у нас примерно будут, на завтра штампованные",
+      "confidence": 0.71191406,
+      "speaker_confidence": 0.712,
+      "id": 16,
+      "duration_ms": 4100,
+      "gap_from_previous_ms": 180
+    },
+    {
+      "start_ms": 67187,
+      "end_ms": 69767,
+      "speaker": "agent",
+      "text": "диски серебряные есть.",
+      "confidence": 0.9123535,
+      "speaker_confidence": 0.912,
+      "id": 17,
+      "duration_ms": 2580,
+      "gap_from_previous_ms": 500
+    },
+    {
+      "start_ms": 71387,
+      "end_ms": 73167,
+      "speaker": "agent",
+      "text": "Получается ЕТ40.",
+      "confidence": 0.66,
+      "speaker_confidence": 0.66,
+      "id": 18,
+      "duration_ms": 1780,
+      "gap_from_previous_ms": 1620
+    },
+    {
+      "start_ms": 74967,
+      "end_ms": 78167,
+      "speaker": "agent",
+      "text": "Такие же у нас есть, только черные",
+      "confidence": 0.9116211,
+      "speaker_confidence": 1.0,
+      "id": 19,
+      "duration_ms": 3200,
+      "gap_from_previous_ms": 1800
+    },
+    {
+      "start_ms": 78667,
+      "end_ms": 82697,
+      "speaker": "agent",
+      "text": "диски. Но здесь немного чуть-чуть другая модель. евро диск",
+      "confidence": 0.9243164,
+      "speaker_confidence": 0.924,
+      "id": 20,
+      "duration_ms": 4030,
+      "gap_from_previous_ms": 500
+    },
+    {
+      "start_ms": 83197,
+      "end_ms": 86557,
+      "speaker": "agent",
+      "text": "стоимостью 3300, но здесь 100% предоплата нужна.",
+      "confidence": 0.508,
+      "speaker_confidence": 0.808,
+      "id": 21,
+      "duration_ms": 3360,
+      "gap_from_previous_ms": 500
+    },
+    {
+      "start_ms": 86997,
+      "end_ms": 90797,
+      "speaker": "agent",
+      "text": "Еще есть у нас на завтрашней диске штампованные",
+      "confidence": 0.6930542,
+      "speaker_confidence": 0.693,
+      "id": 22,
+      "duration_ms": 3800,
+      "gap_from_previous_ms": 440
+    },
+    {
+      "start_ms": 91297,
+      "end_ms": 93277,
+      "speaker": "agent",
+      "text": "treble черным цветом.",
+      "confidence": 0.6945801,
+      "speaker_confidence": 0.695,
+      "id": 23,
+      "duration_ms": 1980,
+      "gap_from_previous_ms": 500
+    },
+    {
+      "start_ms": 95237,
+      "end_ms": 98497,
+      "speaker": "agent",
+      "text": "Далее у нас уже летые идут, то есть у нас",
+      "confidence": 0.3947754,
+      "speaker_confidence": 0.5,
+      "id": 24,
+      "duration_ms": 3260,
+      "gap_from_previous_ms": 1960
+    },
+    {
+      "start_ms": 98997,
+      "end_ms": 101837,
+      "speaker": "agent",
+      "text": "есть и светло-серебристые,",
+      "confidence": 0.752,
+      "speaker_confidence": 0.752,
+      "id": 25,
+      "duration_ms": 2840,
+      "gap_from_previous_ms": 500
+    },
+    {
+      "start_ms": 102197,
+      "end_ms": 105837,
+      "speaker": "agent",
+      "text": "и черные у нас есть. А какие получаются",
+      "confidence": 0.858,
+      "speaker_confidence": 1.0,
+      "id": 26,
+      "duration_ms": 3640,
+      "gap_from_previous_ms": 360
+    },
+    {
+      "start_ms": 106337,
+      "end_ms": 109917,
+      "speaker": "agent",
+      "text": "дешевле? Самые дешевле идут штампованные",
+      "confidence": 0.8963623,
+      "speaker_confidence": 0.896,
+      "id": 27,
+      "duration_ms": 3580,
+      "gap_from_previous_ms": 500
+    },
+    {
+      "start_ms": 110417,
+      "end_ms": 113490,
+      "speaker": "agent",
+      "text": "Nimba. Стоимость 2 990,",
+      "confidence": 0.433,
+      "speaker_confidence": 0.8,
+      "id": 28,
+      "duration_ms": 3073,
+      "gap_from_previous_ms": 500
+    },
+    {
+      "start_ms": 113550,
+      "end_ms": 114790,
+      "speaker": "agent",
+      "text": "комплект у нас есть.",
+      "confidence": 0.94262695,
+      "speaker_confidence": 1.0,
+      "id": 29,
+      "duration_ms": 1240,
+      "gap_from_previous_ms": 60
+    },
+    {
+      "start_ms": 117370,
+      "end_ms": 119990,
+      "speaker": "agent",
+      "text": "А вот если я вот эти диски возьму,",
+      "confidence": 0.7446289,
+      "speaker_confidence": 0.745,
+      "id": 30,
+      "duration_ms": 2620,
+      "gap_from_previous_ms": 2580
+    },
+    {
+      "start_ms": 120210,
+      "end_ms": 123310,
+      "speaker": "agent",
+      "text": "их можно будет как-то померить, когда я подъеду?",
+      "confidence": 0.59814453,
+      "speaker_confidence": 0.598,
+      "id": 31,
+      "duration_ms": 3100,
+      "gap_from_previous_ms": 220
+    },
+    {
+      "start_ms": 123810,
+      "end_ms": 127390,
+      "speaker": "agent",
+      "text": "В городе Крамснау-Финск у нас",
+      "confidence": 0.328125,
+      "speaker_confidence": 0.5,
+      "id": 32,
+      "duration_ms": 3580,
+      "gap_from_previous_ms": 500
+    },
+    {
+      "start_ms": 127890,
+      "end_ms": 130810,
+      "speaker": "agent",
+      "text": "только пункт выдачи, у нас шиномонтажа даже там своего нет.",
+      "confidence": 0.8450753,
+      "speaker_confidence": 0.845,
+      "id": 33,
+      "duration_ms": 2920,
+      "gap_from_previous_ms": 500
+    },
+    {
+      "start_ms": 132170,
+      "end_ms": 135030,
+      "speaker": "agent",
+      "text": "А из пункта выдачи я могу взять, посмотреть,",
+      "confidence": 0.7558594,
+      "speaker_confidence": 0.756,
+      "id": 34,
+      "duration_ms": 2860,
+      "gap_from_previous_ms": 1360
+    },
+    {
+      "start_ms": 135890,
+      "end_ms": 139130,
+      "speaker": "agent",
+      "text": "примерить и тогда оформить или как?",
+      "confidence": 0.48120117,
+      "speaker_confidence": 0.5,
+      "id": 35,
+      "duration_ms": 3240,
+      "gap_from_previous_ms": 860
+    },
+    {
+      "start_ms": 140088,
+      "end_ms": 143228,
+      "speaker": "agent",
+      "text": "Но в любом случае их надо будет заранее оформлять.",
+      "confidence": 0.21118164,
+      "speaker_confidence": 0.5,
+      "id": 36,
+      "duration_ms": 3140,
+      "gap_from_previous_ms": 958
+    },
+    {
+      "start_ms": 143768,
+      "end_ms": 147648,
+      "speaker": "agent",
+      "text": "Сейчас я посмотрю минуту, пожалуйста, ваш город. Сейчас минуту.",
+      "confidence": 0.8540039,
+      "speaker_confidence": 0.854,
+      "id": 37,
+      "duration_ms": 3880,
+      "gap_from_previous_ms": 540
+    },
+    {
+      "start_ms": 159648,
+      "end_ms": 164868,
+      "speaker": "agent",
+      "text": "Красноуфимск у",
+      "confidence": 0.79093426,
+      "speaker_confidence": 0.791,
+      "id": 38,
+      "duration_ms": 5220,
+      "gap_from_previous_ms": 12000
+    },
+    {
+      "start_ms": 165368,
+      "end_ms": 169000,
+      "speaker": "agent",
+      "text": "нас на транспортной один. Транспортная компания Киев,",
+      "confidence": 0.82539064,
+      "speaker_confidence": 0.825,
+      "id": 39,
+      "duration_ms": 3632,
+      "gap_from_previous_ms": 500
+    },
+    {
+      "start_ms": 169060,
+      "end_ms": 172000,
+      "speaker": "agent",
+      "text": "но здесь от заказа предоплата 2000 рублей нужна.",
+      "confidence": 0.9141846,
+      "speaker_confidence": 1.0,
+      "id": 40,
+      "duration_ms": 2940,
+      "gap_from_previous_ms": 60
+    },
+    {
+      "start_ms": 173140,
+      "end_ms": 175640,
+      "speaker": "agent",
+      "text": "Мы можем фотографию вам заранее отправить.",
+      "confidence": 0.8828125,
+      "speaker_confidence": 0.883,
+      "id": 41,
+      "duration_ms": 2500,
+      "gap_from_previous_ms": 1140
+    },
+    {
+      "start_ms": 177440,
+      "end_ms": 181220,
+      "speaker": "agent",
+      "text": "Видите, я вот взяла машину, а не понимаю, какой диск",
+      "confidence": 0.843,
+      "speaker_confidence": 0.843,
+      "id": 42,
+      "duration_ms": 3780,
+      "gap_from_previous_ms": 1800
+    },
+    {
+      "start_ms": 181720,
+      "end_ms": 185800,
+      "speaker": "agent",
+      "text": "надо туда. Сейчас я посмотрю по параметрам, сейчас минуту.",
+      "confidence": 0.72,
+      "speaker_confidence": 0.72,
+      "id": 43,
+      "duration_ms": 4080,
+      "gap_from_previous_ms": 500
+    },
+    {
+      "start_ms": 187980,
+      "end_ms": 189360,
+      "speaker": "agent",
+      "text": "Сейчас минуту.",
+      "confidence": 0.5605469,
+      "speaker_confidence": 0.561,
+      "id": 44,
+      "duration_ms": 1380,
+      "gap_from_previous_ms": 2180
+    },
+    {
+      "start_ms": 203285,
+      "end_ms": 206125,
+      "speaker": "agent",
+      "text": "У меня просто сейчас в наличии стоит литьё.",
+      "confidence": 0.92252606,
+      "speaker_confidence": 0.623,
+      "id": 45,
+      "duration_ms": 2840,
+      "gap_from_previous_ms": 13925
+    },
+    {
+      "start_ms": 208665,
+      "end_ms": 209825,
+      "speaker": "agent",
+      "text": "Час-минута.",
+      "confidence": 0.643,
+      "speaker_confidence": 0.643,
+      "id": 46,
+      "duration_ms": 1160,
+      "gap_from_previous_ms": 2540
+    },
+    {
+      "start_ms": 231280,
+      "end_ms": 235000,
+      "speaker": "agent",
+      "text": "Сейчас я проверю по типоразмерам ваш автомобиль.",
+      "confidence": 0.8334961,
+      "speaker_confidence": 0.833,
+      "id": 47,
+      "duration_ms": 3720,
+      "gap_from_previous_ms": 21455
+    },
+    {
+      "start_ms": 235700,
+      "end_ms": 236440,
+      "speaker": "agent",
+      "text": "Сейчас, минуту.",
+      "confidence": 0.7,
+      "speaker_confidence": 0.7,
+      "id": 48,
+      "duration_ms": 740,
+      "gap_from_previous_ms": 700
+    },
+    {
+      "start_ms": 239420,
+      "end_ms": 242420,
+      "speaker": "agent",
+      "text": "Нет,",
+      "confidence": 0.637,
+      "speaker_confidence": 0.637,
+      "id": 49,
+      "duration_ms": 3000,
+      "gap_from_previous_ms": 2980
+    },
+    {
+      "start_ms": 244980,
+      "end_ms": 248040,
+      "speaker": "agent",
+      "text": "по параметрам. Параметры совпадают. Посадочный диаметр,",
+      "confidence": 0.612,
+      "speaker_confidence": 0.612,
+      "id": 50,
+      "duration_ms": 3060,
+      "gap_from_previous_ms": 2560
+    },
+    {
+      "start_ms": 248260,
+      "end_ms": 252400,
+      "speaker": "agent",
+      "text": "заболтовка, вылет, диаметр ступицы. Здесь заработки",
+      "confidence": 0.947,
+      "speaker_confidence": 0.947,
+      "id": 51,
+      "duration_ms": 4140,
+      "gap_from_previous_ms": 220
+    },
+    {
+      "start_ms": 252900,
+      "end_ms": 256208,
+      "speaker": "agent",
+      "text": "никакие нужные не подойдут. Точно, да? Они подойти",
+      "confidence": 0.959,
+      "speaker_confidence": 0.959,
+      "id": 52,
+      "duration_ms": 3308,
+      "gap_from_previous_ms": 500
+    },
+    {
+      "start_ms": 256708,
+      "end_ms": 260328,
+      "speaker": "agent",
+      "text": "должны? Да, они подойдут по размерам. Здесь полностью совпадают.",
+      "confidence": 0.712,
+      "speaker_confidence": 0.712,
+      "id": 53,
+      "duration_ms": 3620,
+      "gap_from_previous_ms": 500
+    },
+    {
+      "start_ms": 260448,
+      "end_ms": 263568,
+      "speaker": "agent",
+      "text": "Посадочный, диаметр, вылет, диаметр ступицы,",
+      "confidence": 0.69,
+      "speaker_confidence": 0.69,
+      "id": 54,
+      "duration_ms": 3120,
+      "gap_from_previous_ms": 120
+    },
+    {
+      "start_ms": 263608,
+      "end_ms": 266288,
+      "speaker": "agent",
+      "text": "разблоковка. Они у вас подойдут.",
+      "confidence": 0.651,
+      "speaker_confidence": 0.651,
+      "id": 55,
+      "duration_ms": 2680,
+      "gap_from_previous_ms": 40
+    },
+    {
+      "start_ms": 267528,
+      "end_ms": 270948,
+      "speaker": "agent",
+      "text": "Ну, давайте вот тогда сделаем заказ. Вот их получается",
+      "confidence": 0.7175293,
+      "speaker_confidence": 0.718,
+      "id": 56,
+      "duration_ms": 3420,
+      "gap_from_previous_ms": 1240
+    },
+    {
+      "start_ms": 271448,
+      "end_ms": 274488,
+      "speaker": "agent",
+      "text": "четыре. И мне надо еще, я заказывала шину.",
+      "confidence": 0.85546875,
+      "speaker_confidence": 0.855,
+      "id": 57,
+      "duration_ms": 3040,
+      "gap_from_previous_ms": 500
+    },
+    {
+      "start_ms": 275788,
+      "end_ms": 279408,
+      "speaker": "agent",
+      "text": "У вас еще от машины, да, заказ есть? Да,",
+      "confidence": 0.89453125,
+      "speaker_confidence": 0.895,
+      "id": 58,
+      "duration_ms": 3620,
+      "gap_from_previous_ms": 1300
+    },
+    {
+      "start_ms": 279508,
+      "end_ms": 282988,
+      "speaker": "agent",
+      "text": "но мне надо, чтобы они подошли тоже к этим дискам. Сейчас, посмотрим.",
+      "confidence": 0.94954425,
+      "speaker_confidence": 0.95,
+      "id": 59,
+      "duration_ms": 3480,
+      "gap_from_previous_ms": 100
+    },
+    {
+      "start_ms": 283028,
+      "end_ms": 286378,
+      "speaker": "agent",
+      "text": "Или они подходят? У вас",
+      "confidence": 0.816,
+      "speaker_confidence": 0.816,
+      "id": 60,
+      "duration_ms": 3350,
+      "gap_from_previous_ms": 40
+    },
+    {
+      "start_ms": 286878,
+      "end_ms": 289798,
+      "speaker": "agent",
+      "text": "шины 205, 55 на 16.",
+      "confidence": 0.574,
+      "speaker_confidence": 0.574,
+      "id": 61,
+      "duration_ms": 2920,
+      "gap_from_previous_ms": 500
+    },
+    {
+      "start_ms": 316617,
+      "end_ms": 318557,
+      "speaker": "agent",
+      "text": "Проверяем.",
+      "confidence": 0.729,
+      "speaker_confidence": 0.729,
+      "id": 62,
+      "duration_ms": 1940,
+      "gap_from_previous_ms": 26819
+    },
+    {
+      "start_ms": 340495,
+      "end_ms": 344075,
+      "speaker": "agent",
+      "text": "Да, то что шина у вас 255 на",
+      "confidence": 0.7180176,
+      "speaker_confidence": 0.718,
+      "id": 63,
+      "duration_ms": 3580,
+      "gap_from_previous_ms": 21938
+    },
+    {
+      "start_ms": 344575,
+      "end_ms": 348575,
+      "speaker": "agent",
+      "text": "эти диски без проблем, все совместимо и по безопасности они подходят.",
+      "confidence": 0.89086914,
+      "speaker_confidence": 0.891,
+      "id": 64,
+      "duration_ms": 4000,
+      "gap_from_previous_ms": 500
+    },
+    {
+      "start_ms": 348795,
+      "end_ms": 352335,
+      "speaker": "agent",
+      "text": "То есть никаких лишних доработок не нужны.",
+      "confidence": 0.50097656,
+      "speaker_confidence": 0.501,
+      "id": 65,
+      "duration_ms": 3540,
+      "gap_from_previous_ms": 220
+    },
+    {
+      "start_ms": 354195,
+      "end_ms": 357475,
+      "speaker": "agent",
+      "text": "Здесь все поднимано, все совпадает,",
+      "confidence": 0.49121094,
+      "speaker_confidence": 0.5,
+      "id": 66,
+      "duration_ms": 3280,
+      "gap_from_previous_ms": 1860
+    },
+    {
+      "start_ms": 357535,
+      "end_ms": 360815,
+      "speaker": "agent",
+      "text": "да. Тогда мне надо и",
+      "confidence": 0.90625,
+      "speaker_confidence": 0.906,
+      "id": 67,
+      "duration_ms": 3280,
+      "gap_from_previous_ms": 60
+    },
+    {
+      "start_ms": 361315,
+      "end_ms": 365315,
+      "speaker": "agent",
+      "text": "вот этот заказ и тот вместе сделать. Тот уже вы оформили,",
+      "confidence": 0.83691406,
+      "speaker_confidence": 0.837,
+      "id": 68,
+      "duration_ms": 4000,
+      "gap_from_previous_ms": 500
+    },
+    {
+      "start_ms": 365435,
+      "end_ms": 367795,
+      "speaker": "agent",
+      "text": "да, менеджер? Нет.",
+      "confidence": 0.895,
+      "speaker_confidence": 0.895,
+      "id": 69,
+      "duration_ms": 2360,
+      "gap_from_previous_ms": 120
+    },
+    {
+      "start_ms": 369267,
+      "end_ms": 372787,
+      "speaker": "agent",
+      "text": "Менеджер связывалась, я не могла с ним поговорить.",
+      "confidence": 0.9108887,
+      "speaker_confidence": 0.911,
+      "id": 70,
+      "duration_ms": 3520,
+      "gap_from_previous_ms": 1472
+    },
+    {
+      "start_ms": 373427,
+      "end_ms": 377467,
+      "speaker": "agent",
+      "text": "Сейчас тогда я оформлю и менеджерам передам. То есть номер телефона так",
+      "confidence": 0.88964844,
+      "speaker_confidence": 0.89,
+      "id": 71,
+      "duration_ms": 4040,
+      "gap_from_previous_ms": 640
+    },
+    {
+      "start_ms": 377967,
+      "end_ms": 379887,
+      "speaker": "agent",
+      "text": "же указываем, да? Да.",
+      "confidence": 0.69,
+      "speaker_confidence": 0.69,
+      "id": 72,
+      "duration_ms": 1920,
+      "gap_from_previous_ms": 500
+    },
+    {
+      "start_ms": 389298,
+      "end_ms": 393358,
+      "speaker": "agent",
+      "text": "Сейчас я тогда менеджеру также передам информацию по дискам",
+      "confidence": 0.9119873,
+      "speaker_confidence": 0.912,
+      "id": 73,
+      "duration_ms": 4060,
+      "gap_from_previous_ms": 9411
+    },
+    {
+      "start_ms": 393858,
+      "end_ms": 397498,
+      "speaker": "agent",
+      "text": "номер заказа 968076. Менеджеру передам,",
+      "confidence": 0.608,
+      "speaker_confidence": 0.608,
+      "id": 74,
+      "duration_ms": 3640,
+      "gap_from_previous_ms": 500
+    },
+    {
+      "start_ms": 397618,
+      "end_ms": 401018,
+      "speaker": "agent",
+      "text": "чтобы они также объединили. Сейчас минуту.",
+      "confidence": 0.934,
+      "speaker_confidence": 0.934,
+      "id": 75,
+      "duration_ms": 3400,
+      "gap_from_previous_ms": 120
+    },
+    {
+      "start_ms": 408038,
+      "end_ms": 411358,
+      "speaker": "agent",
+      "text": "Сейчас я менеджеру информацию передам, они завтра будут",
+      "confidence": 0.8779297,
+      "speaker_confidence": 0.878,
+      "id": 76,
+      "duration_ms": 3320,
+      "gap_from_previous_ms": 7020
+    },
+    {
+      "start_ms": 411858,
+      "end_ms": 413058,
+      "speaker": "agent",
+      "text": "перезванивать по согласованию.",
+      "confidence": 0.936,
+      "speaker_confidence": 0.936,
+      "id": 77,
+      "duration_ms": 1200,
+      "gap_from_previous_ms": 500
+    },
+    {
+      "start_ms": 414958,
+      "end_ms": 418678,
+      "speaker": "agent",
+      "text": "Хорошо. А оплату-то можно что, половину на половину, или как?",
+      "confidence": 0.762,
+      "speaker_confidence": 1.0,
+      "id": 78,
+      "duration_ms": 3720,
+      "gap_from_previous_ms": 1900
+    },
+    {
+      "start_ms": 419065,
+      "end_ms": 423165,
+      "speaker": "agent",
+      "text": "А здесь можете только от заказа. Я написала, чтобы их объединили,",
+      "confidence": 0.624,
+      "speaker_confidence": 0.624,
+      "id": 79,
+      "duration_ms": 4100,
+      "gap_from_previous_ms": 387
+    },
+    {
+      "start_ms": 423745,
+      "end_ms": 427545,
+      "speaker": "agent",
+      "text": "чтобы транспортной компании вы только 2 тысячи",
+      "confidence": 0.73046875,
+      "speaker_confidence": 0.73,
+      "id": 80,
+      "duration_ms": 3800,
+      "gap_from_previous_ms": 580
+    },
+    {
+      "start_ms": 428045,
+      "end_ms": 431545,
+      "speaker": "agent",
+      "text": "предуплату платили от стоимости всего заказа и остальное уже",
+      "confidence": 0.9716797,
+      "speaker_confidence": 1.0,
+      "id": 81,
+      "duration_ms": 3500,
+      "gap_from_previous_ms": 500
+    },
+    {
+      "start_ms": 432045,
+      "end_ms": 435125,
+      "speaker": "agent",
+      "text": "при получении. А сколько всего получилось у нас?",
+      "confidence": 0.8095703,
+      "speaker_confidence": 0.81,
+      "id": 82,
+      "duration_ms": 3080,
+      "gap_from_previous_ms": 500
+    },
+    {
+      "start_ms": 435865,
+      "end_ms": 436705,
+      "speaker": "agent",
+      "text": "Час-минуту.",
+      "confidence": 0.704,
+      "speaker_confidence": 0.704,
+      "id": 83,
+      "duration_ms": 840,
+      "gap_from_previous_ms": 740
+    },
+    {
+      "start_ms": 450503,
+      "end_ms": 454543,
+      "speaker": "agent",
+      "text": "Смотрю на шины. У вас здесь стоимость 22",
+      "confidence": 0.4625244,
+      "speaker_confidence": 0.8,
+      "id": 84,
+      "duration_ms": 4040,
+      "gap_from_previous_ms": 13798
+    },
+    {
+      "start_ms": 455043,
+      "end_ms": 456243,
+      "speaker": "agent",
+      "text": "280.",
+      "confidence": 0.544,
+      "speaker_confidence": 0.544,
+      "id": 85,
+      "duration_ms": 1200,
+      "gap_from_previous_ms": 500
+    },
+    {
+      "start_ms": 458203,
+      "end_ms": 464463,
+      "speaker": "agent",
+      "text": "И на",
+      "confidence": 0.44970703,
+      "speaker_confidence": 0.5,
+      "id": 86,
+      "duration_ms": 6260,
+      "gap_from_previous_ms": 1960
+    },
+    {
+      "start_ms": 465163,
+      "end_ms": 469123,
+      "speaker": "agent",
+      "text": "диске у вас 11 960.",
+      "confidence": 0.869,
+      "speaker_confidence": 0.869,
+      "id": 87,
+      "duration_ms": 3960,
+      "gap_from_previous_ms": 700
+    },
+    {
+      "start_ms": 471583,
+      "end_ms": 474363,
+      "speaker": "agent",
+      "text": "Это общая сумма 34 240.",
+      "confidence": 0.674,
+      "speaker_confidence": 0.974,
+      "id": 88,
+      "duration_ms": 2780,
+      "gap_from_previous_ms": 2460
+    },
+    {
+      "start_ms": 474763,
+      "end_ms": 478023,
+      "speaker": "agent",
+      "text": "Сначала менеджер сюда пусть",
+      "confidence": 0.57147217,
+      "speaker_confidence": 0.571,
+      "id": 89,
+      "duration_ms": 3260,
+      "gap_from_previous_ms": 400
+    },
+    {
+      "start_ms": 478523,
+      "end_ms": 482595,
+      "speaker": "agent",
+      "text": "объединит, завтра только От этой суммы надо будет онлайн",
+      "confidence": 0.7252197,
+      "speaker_confidence": 1.0,
+      "id": 90,
+      "duration_ms": 4072,
+      "gap_from_previous_ms": 500
+    },
+    {
+      "start_ms": 483095,
+      "end_ms": 486675,
+      "speaker": "agent",
+      "text": "оплатить, получается, 2000 рублей.",
+      "confidence": 0.838,
+      "speaker_confidence": 1.0,
+      "id": 91,
+      "duration_ms": 3580,
+      "gap_from_previous_ms": 500
+    },
+    {
+      "start_ms": 486855,
+      "end_ms": 491015,
+      "speaker": "agent",
+      "text": "Информацию направила, чтобы вам ссылку на оплату скинули",
+      "confidence": 0.90600586,
+      "speaker_confidence": 1.0,
+      "id": 92,
+      "duration_ms": 4160,
+      "gap_from_previous_ms": 180
+    },
+    {
+      "start_ms": 491515,
+      "end_ms": 495055,
+      "speaker": "agent",
+      "text": "для предоплаты в",
+      "confidence": 0.87390137,
+      "speaker_confidence": 1.0,
+      "id": 93,
+      "duration_ms": 3540,
+      "gap_from_previous_ms": 500
+    },
+    {
+      "start_ms": 495555,
+      "end_ms": 499075,
+      "speaker": "agent",
+      "text": "2000 рублей, а остальную же сумму в транспортной компании надо",
+      "confidence": 0.8835449,
+      "speaker_confidence": 1.0,
+      "id": 94,
+      "duration_ms": 3520,
+      "gap_from_previous_ms": 500
+    },
+    {
+      "start_ms": 499575,
+      "end_ms": 503095,
+      "speaker": "agent",
+      "text": "будет оплатить. То есть у вас транспортная компания хит наличными, либо по",
+      "confidence": 0.88427734,
+      "speaker_confidence": 1.0,
+      "id": 95,
+      "duration_ms": 3520,
+      "gap_from_previous_ms": 500
+    },
+    {
+      "start_ms": 503595,
+      "end_ms": 505075,
+      "speaker": "agent",
+      "text": "банковской карте при получении.",
+      "confidence": 0.561,
+      "speaker_confidence": 0.561,
+      "id": 96,
+      "duration_ms": 1480,
+      "gap_from_previous_ms": 500
+    },
+    {
+      "start_ms": 507625,
+      "end_ms": 511125,
+      "speaker": "agent",
+      "text": "Сейчас информацию придула, просто надо будет ожидать звонка менеджера",
+      "confidence": 0.91845703,
+      "speaker_confidence": 0.918,
+      "id": 97,
+      "duration_ms": 3500,
+      "gap_from_previous_ms": 2550
+    },
+    {
+      "start_ms": 511625,
+      "end_ms": 514945,
+      "speaker": "agent",
+      "text": "для согласования. Угу. А такси вот",
+      "confidence": 0.832,
+      "speaker_confidence": 0.832,
+      "id": 98,
+      "duration_ms": 3320,
+      "gap_from_previous_ms": 500
+    },
+    {
+      "start_ms": 515445,
+      "end_ms": 518745,
+      "speaker": "agent",
+      "text": "эти вот шину-то хорошо берут или нет? Как они? По качеству-то хорошие?",
+      "confidence": 0.853,
+      "speaker_confidence": 0.853,
+      "id": 99,
+      "duration_ms": 3300,
+      "gap_from_previous_ms": 500
+    },
+    {
+      "start_ms": 518985,
+      "end_ms": 522405,
+      "speaker": "agent",
+      "text": "По качеству, да. Здесь у вас последняя модель идёт, есть ещё",
+      "confidence": 0.613,
+      "speaker_confidence": 0.613,
+      "id": 100,
+      "duration_ms": 3420,
+      "gap_from_previous_ms": 240
+    },
+    {
+      "start_ms": 522905,
+      "end_ms": 526845,
+      "speaker": "agent",
+      "text": "другие, но это последняя модель, они по качеству хорошие. Угу.",
+      "confidence": 0.94921875,
+      "speaker_confidence": 0.949,
+      "id": 101,
+      "duration_ms": 3940,
+      "gap_from_previous_ms": 500
+    },
+    {
+      "start_ms": 528205,
+      "end_ms": 531765,
+      "speaker": "agent",
+      "text": "Ну всё хорошо, это значит мне сейчас ожидать, когда менеджер позвонит завтра? Да,",
+      "confidence": 0.693,
+      "speaker_confidence": 0.693,
+      "id": 102,
+      "duration_ms": 3560,
+      "gap_from_previous_ms": 1360
+    },
+    {
+      "start_ms": 531925,
+      "end_ms": 534425,
+      "speaker": "agent",
+      "text": "завтра они вам перезвонят для согласования.",
+      "confidence": 0.889,
+      "speaker_confidence": 0.889,
+      "id": 103,
+      "duration_ms": 2500,
+      "gap_from_previous_ms": 160
+    },
+    {
+      "start_ms": 535345,
+      "end_ms": 538303,
+      "speaker": "agent",
+      "text": "Угу. Всё хорошо, спасибо большое.",
+      "confidence": 0.17712402,
+      "speaker_confidence": 0.5,
+      "id": 104,
+      "duration_ms": 2958,
+      "gap_from_previous_ms": 920
+    },
+    {
+      "start_ms": 539723,
+      "end_ms": 542663,
+      "speaker": "agent",
+      "text": "Да нет, вроде бы всё поняла, они же подошли. Нет,",
+      "confidence": 0.683,
+      "speaker_confidence": 0.683,
+      "id": 105,
+      "duration_ms": 2940,
+      "gap_from_previous_ms": 1420
+    },
+    {
+      "start_ms": 542703,
+      "end_ms": 544003,
+      "speaker": "agent",
+      "text": "они подойдут по размерам.",
+      "confidence": 0.9433594,
+      "speaker_confidence": 0.943,
+      "id": 106,
+      "duration_ms": 1300,
+      "gap_from_previous_ms": 40
+    },
+    {
+      "start_ms": 545923,
+      "end_ms": 548223,
+      "speaker": "agent",
+      "text": "А если в случае не подойдут, что делать тогда?",
+      "confidence": 0.934,
+      "speaker_confidence": 0.934,
+      "id": 107,
+      "duration_ms": 2300,
+      "gap_from_previous_ms": 1920
+    },
+    {
+      "start_ms": 549243,
+      "end_ms": 552403,
+      "speaker": "agent",
+      "text": "Нет, они по размерам, они подходят. Да?",
+      "confidence": 0.911,
+      "speaker_confidence": 0.911,
+      "id": 108,
+      "duration_ms": 3160,
+      "gap_from_previous_ms": 1020
+    },
+    {
+      "start_ms": 552563,
+      "end_ms": 555303,
+      "speaker": "agent",
+      "text": "И шины на диски подходят, и на автомобиль.",
+      "confidence": 0.803,
+      "speaker_confidence": 0.803,
+      "id": 109,
+      "duration_ms": 2740,
+      "gap_from_previous_ms": 160
+    },
+    {
+      "start_ms": 556623,
+      "end_ms": 559783,
+      "speaker": "agent",
+      "text": "Главное, чтобы подошли. Они подойдут, да,",
+      "confidence": 0.93,
+      "speaker_confidence": 0.93,
+      "id": 110,
+      "duration_ms": 3160,
+      "gap_from_previous_ms": 1320
+    },
+    {
+      "start_ms": 559863,
+      "end_ms": 563123,
+      "speaker": "agent",
+      "text": "можете не переживать. Ну ладно, всё хорошо,",
+      "confidence": 0.914,
+      "speaker_confidence": 0.914,
+      "id": 111,
+      "duration_ms": 3260,
+      "gap_from_previous_ms": 80
+    },
+    {
+      "start_ms": 563243,
+      "end_ms": 566312,
+      "speaker": "agent",
+      "text": "спасибо. Хорошо. Спасибо за звонок. Всего доброго.",
+      "confidence": 0.896,
+      "speaker_confidence": 0.896,
+      "id": 112,
+      "duration_ms": 3069,
+      "gap_from_previous_ms": 120
+    },
+    {
+      "start_ms": 566452,
+      "end_ms": 568172,
+      "speaker": "agent",
+      "text": "До свидания. До свидания.",
+      "confidence": 0.87646484,
+      "speaker_confidence": 0.876,
+      "id": 113,
+      "duration_ms": 1720,
+      "gap_from_previous_ms": 140
+    }
+  ],
+  "pre_calculated": {
+    "searches": [
+      {
+        "announced_at_ms": 35720,
+        "ended_at_ms": 53600,
+        "duration_sec": 17.88,
+        "thanks_given": true,
+        "customer_interactive": false,
+        "announcement_text": "Сейчас минуту, пожалуйста."
+      },
+      {
+        "announced_at_ms": 143768,
+        "ended_at_ms": 165368,
+        "duration_sec": 21.6,
+        "thanks_given": false,
+        "customer_interactive": false,
+        "announcement_text": "Сейчас я посмотрю минуту, пожалуйста, ваш город. Сейчас минуту."
+      },
+      {
+        "announced_at_ms": 181720,
+        "ended_at_ms": 244980,
+        "duration_sec": 63.26,
+        "thanks_given": false,
+        "customer_interactive": false,
+        "announcement_text": "надо туда. Сейчас я посмотрю по параметрам, сейчас минуту."
+      },
+      {
+        "announced_at_ms": 279508,
+        "ended_at_ms": 286878,
+        "duration_sec": 7.37,
+        "thanks_given": false,
+        "customer_interactive": false,
+        "announcement_text": "но мне надо, чтобы они подошли тоже к этим дискам. Сейчас, посмотрим."
+      },
+      {
+        "announced_at_ms": 397618,
+        "ended_at_ms": 408038,
+        "duration_sec": 10.42,
+        "thanks_given": false,
+        "customer_interactive": false,
+        "announcement_text": "чтобы они также объединили. Сейчас минуту."
+      },
+      {
+        "announced_at_ms": 435865,
+        "ended_at_ms": 450503,
+        "duration_sec": 14.64,
+        "thanks_given": false,
+        "customer_interactive": false,
+        "announcement_text": "Час-минуту."
+      }
+    ],
+    "greeting_delay_ms": 1139,
+    "closing_delay_ms": 0,
+    "echo_method_instances": [
+      {
+        "data_type": "phone",
+        "timestamp_ms": 373427,
+        "pattern": "echo_with_confirmation",
+        "operator_text": "Сейчас тогда я оформлю и менеджерам передам. То есть номер телефона так",
+        "customer_response": "же указываем, да? Да."
+      }
+    ]
+  },
+  "preprocessor_signals": {
+    "_meta": {
+      "version": "3.2.3",
+      "note": "Signals are regex-based hints; the agent should verify against utterances."
+    },
+    "call_context": {
+      "call_type": "ORDER",
+      "is_tire_call": false,
+      "is_wheel_call": true,
+      "has_repeat_customer": false
+    },
+    "extracted_data": {
+      "car_models": [
+        "Renault Sandero"
+      ],
+      "tire_sizes": [
+        "205/55 R16"
+      ],
+      "rim_sizes": [],
+      "bolt_patterns": [],
+      "quantities": [
+        4
+      ],
+      "quantity_matches": [
+        "четыре"
+      ],
+      "seasons": [],
+      "order_numbers": [
+        "968076"
+      ],
+      "disk_diameter": 16,
+      "legal_entity_markers": [],
+      "marketplace_platform": null
+    },
+    "checkpoint_signals": {
+      "greeting": {
+        "company_said": true,
+        "name_said": true,
+        "address_question": false,
+        "first_agent_company": true,
+        "first_agent_name": true,
+        "first_agent_greeting": true,
+        "asked_how_to_address": true,
+        "matched_utterance_ids": [
+          1,
+          68,
+          70,
+          88,
+          90,
+          101,
+          102
+        ],
+        "matched_texts": [
+          "Менеджер связывалась, я не могла с ним поговорить.",
+          "другие, но это последняя модель, они по качеству хорошие. Угу.",
+          "Это общая сумма 34 240.",
+          "вот этот заказ и тот вместе сделать. Тот уже вы оформили,",
+          "Ну всё хорошо, это значит мне сейчас ожидать, когда менеджер позвонит завтра? Да,",
+          "Здравствуйте, компания 74 колеса, меня зовут Анна, как можно к",
+          "объединит, завтра только От этой суммы надо будет онлайн"
+        ]
+      },
+      "city": {
+        "asked_city": false,
+        "matched_utterance_ids": [],
+        "matched_texts": [],
+        "within_first_five": false
+      },
+      "needs": {
+        "quantity_asked": true,
+        "season_asked": false,
+        "parameters_asked": true,
+        "brand_asked": true,
+        "price_range_asked": false,
+        "delivery_preference_asked": false,
+        "wheel_type_asked": true,
+        "matched_utterance_ids": [
+          1,
+          6,
+          8,
+          27,
+          53,
+          82,
+          108
+        ],
+        "matched_texts": [
+          "дешевле? Самые дешевле идут штампованные",
+          "штампованные, да? На какой модель, марка автомобиля?",
+          "Нет, они по размерам, они подходят. Да?",
+          "должны? Да, они подойдут по размерам. Здесь полностью совпадают.",
+          "Здравствуйте, компания 74 колеса, меня зовут Анна, как можно к",
+          "городу вашему. Литые, штампованные вас интересуют?",
+          "при получении. А сколько всего получилось у нас?"
+        ]
+      },
+      "three_options": {
+        "offered_three_plus": false,
+        "matched_utterance_ids": [],
+        "matched_texts": []
+      },
+      "advantages_used": {
+        "count": 4,
+        "matched_utterance_ids": [
+          33,
+          99,
+          100,
+          101
+        ],
+        "matched_texts": [
+          "По качеству, да. Здесь у вас последняя модель идёт, есть ещё",
+          "другие, но это последняя модель, они по качеству хорошие. Угу.",
+          "эти вот шину-то хорошо берут или нет? Как они? По качеству-то хорошие?",
+          "только пункт выдачи, у нас шиномонтажа даже там своего нет."
+        ]
+      },
+      "objection_handled": {
+        "handled": true,
+        "matched_utterance_ids": [
+          27
+        ],
+        "matched_texts": [
+          "дешевле? Самые дешевле идут штампованные"
+        ]
+      },
+      "reservation_offered": {
+        "offered": false,
+        "matched_utterance_ids": [],
+        "matched_texts": []
+      },
+      "upsell_offer": {
+        "sekretki_mentioned": false,
+        "datchiki_mentioned": false,
+        "krepezh_mentioned": true,
+        "offered": true,
+        "matched_utterance_ids": [
+          51
+        ],
+        "matched_texts": [
+          "заболтовка, вылет, диаметр ступицы. Здесь заработки"
+        ]
+      },
+      "order_status": {
+        "order_or_phone_requested": false,
+        "status_communicated": true,
+        "next_steps_explained": true,
+        "storage_time_asked": false,
+        "matched_utterance_ids": [
+          74,
+          91,
+          92,
+          95
+        ],
+        "matched_texts": [
+          "будет оплатить. То есть у вас транспортная компания хит наличными, либо по",
+          "Информацию направила, чтобы вам ссылку на оплату скинули",
+          "оплатить, получается, 2000 рублей.",
+          "номер заказа 968076. Менеджеру передам,"
+        ]
+      },
+      "tire_service": {
+        "booking_confirmed": false,
+        "sms_mentioned": false,
+        "arrival_time_stated": false,
+        "vehicle_restriction_stated": false,
+        "empty_vehicle_stated": true,
+        "mount_discount_mentioned": false,
+        "free_mount_mentioned": false,
+        "matched_utterance_ids": [
+          33
+        ],
+        "matched_texts": [
+          "только пункт выдачи, у нас шиномонтажа даже там своего нет."
+        ]
+      },
+      "conditional_triggers": {
+        "callback_phone_asked": false,
+        "legal_entity_detected": true,
+        "tire_service_requested": true,
+        "third_party_pickup_asked": false,
+        "matched_utterance_ids": [
+          33,
+          47
+        ],
+        "matched_texts": [
+          "Сейчас я проверю по типоразмерам ваш автомобиль.",
+          "только пункт выдачи, у нас шиномонтажа даже там своего нет."
+        ]
+      },
+      "closing": {
+        "thanks": true,
+        "goodbye": true,
+        "thanks_in_last_block": true,
+        "goodbye_in_last_block": true,
+        "matched_utterance_ids": [
+          14,
+          104,
+          112,
+          113
+        ],
+        "matched_texts": [
+          "До свидания. До свидания.",
+          "Спасибо за",
+          "спасибо. Хорошо. Спасибо за звонок. Всего доброго.",
+          "Угу. Всё хорошо, спасибо большое."
+        ]
+      }
+    }
+  }
+}

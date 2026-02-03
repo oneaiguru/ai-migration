@@ -1,0 +1,26 @@
+# Minimal multi-provider catalog for R3 routing/fallback work.
+# Matches ProviderCatalog/Entry/Route schema loaded by the shim (YAML → map[string]ProviderEntry + []ProviderRoute).
+# Save as configs/providers.yaml or ~/.config/ccp/providers.yaml
+
+providers:
+  anthropic:
+    base_url: https://api.anthropic.com
+    header_mode: bearer           # pass Authorization through when available
+    pass_through: true            # keep incoming Authorization header
+    fallback_env: ANTHROPIC_AUTH_TOKEN
+  zai:
+    base_url: https://api.z.ai/api/anthropic
+    header_mode: x-api-key        # set X-API-Key from ZAI_API_KEY
+    pass_through: false           # strip incoming Authorization on this lane
+    fallback_env: ZAI_API_KEY     # required when pass_through is false
+
+routes:
+  # Primary: Sonnet/Opus stay on Anthropic
+  - pattern: "claude-3.5-sonnet*"
+    provider: anthropic
+  - pattern: "claude-4-opus*"
+    provider: anthropic
+
+  # Subagent: Haiku via Z.AI
+  - pattern: "claude-haiku-*"
+    provider: zai

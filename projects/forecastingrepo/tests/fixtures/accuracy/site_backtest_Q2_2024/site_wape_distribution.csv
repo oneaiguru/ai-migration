@@ -1,0 +1,3 @@
+wape_bucket,site_count,percent
+<=8%,1,50
+>12%,1,50

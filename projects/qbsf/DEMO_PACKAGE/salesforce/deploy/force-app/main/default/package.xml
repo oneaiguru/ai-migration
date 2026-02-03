@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Package xmlns="http://soap.sforce.com/2006/04/metadata">
+    <types>
+        <members>QuickBooksInvoiceController</members>
+        <members>QuickBooksAPIService</members>
+        <members>QuickBooksInvoiceControllerTest</members>
+        <name>ApexClass</name>
+    </types>
+    <types>
+        <members>quickBooksInvoice</members>
+        <name>LightningComponentBundle</name>
+    </types>
+    <version>57.0</version>
+</Package>

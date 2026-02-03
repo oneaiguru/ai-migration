@@ -1,0 +1,10 @@
+{
+  "repo": "projects/agentos",
+  "pr_index": 5,
+  "total_prs": 5,
+  "branch": "agentos/usage_ingest-tests",
+  "base_sha": "f87962c3b24e2d67f9aa76f1b97f2cbf79ae2f4b",
+  "state": "open",
+  "last_codex_check": "add parser tests and type hints for usage_ingest; no behavior changes",
+  "requires_rebase": false
+}

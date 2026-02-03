@@ -1,0 +1,15 @@
+{
+  "DEV-TRIAL-7D": {
+    "plan": "trial",
+    "features": ["zai_offload"],
+    "ttl_days": 7,
+    "max_redemptions": 500
+  },
+  "HN-TRIAL-3D": {
+    "plan": "trial",
+    "features": ["zai_offload"],
+    "ttl_days": 3,
+    "max_redemptions": 200,
+    "expires_at": "2025-11-01T00:00:00Z"
+  }
+}

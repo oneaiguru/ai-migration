@@ -134,7 +134,7 @@ Display:        Make clickable link in Opportunity (users click → QB payment w
 ```
 Server:          pve.atocomm.eu (Proxmox)
 SSH:             ssh roman@pve.atocomm.eu -p2323
-Password:        3Sd5R069jvuy[3u6yj
+Password:        $SSH_PASS
 Middleware:      https://sqint.atocomm.eu
 Path:            /opt/qb-integration/
 ```
@@ -143,7 +143,7 @@ Path:            /opt/qb-integration/
 ```bash
 # 1. SSH to server
 ssh roman@pve.atocomm.eu -p2323
-# Password: 3Sd5R069jvuy[3u6yj
+# Password: $SSH_PASS
 
 # 2. Edit configuration
 nano /opt/qb-integration/.env

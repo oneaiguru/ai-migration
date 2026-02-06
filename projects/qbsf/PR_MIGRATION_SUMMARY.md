@@ -150,7 +150,7 @@ Final comprehensive import of QB-SF integration project including:
 ## 🔧 Configuration & Validation
 
 ### Working Configuration (Preserved)
-- ✅ **API Key**: `UPCzgiXsPuXB4GiLuuzjqtXY4+4mGt+vXOmU4gaNCvM=`
+- ✅ **API Key**: `$API_KEY`
 - ✅ **Middleware URL**: `https://sqint.atocomm.eu`
 - ✅ **SF Org**: `olga.rybak@atocomm2023.eu.sanboxsf`
 - ✅ **OAuth State Validation**: Working

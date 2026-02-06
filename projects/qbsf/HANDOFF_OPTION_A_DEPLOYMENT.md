@@ -53,7 +53,7 @@ scp -r -P 2323 deployment/sf-qb-integration-final/* roman@pve.atocomm.eu:/opt/qb
 ssh roman@pve.atocomm.eu -p2323 "rm -rf /opt/qb-integration/tests && cd /opt/qb-integration && npm install && pkill -f 'node src/server.js'; nohup node src/server.js &"
 
 # Verify
-curl -H "X-API-Key: UPCzgiXsPuXB4GiLuuzjqtXY4+4mGt+vXOmU4gaNCvM=" https://sqint.atocomm.eu/api/health
+curl -H "X-API-Key: $API_KEY" https://sqint.atocomm.eu/api/health
 ```
 
 ## Verification Criteria

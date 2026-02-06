@@ -20,7 +20,7 @@ from datetime import date
 from pathlib import Path
 import json
 import pandas as pd
-from .rolling_types import CacheMetadata
+from .rolling_types import CacheMetadata, DEFAULT_MIN_OBS, DEFAULT_WINDOW_DAYS
 
 CACHE_DIR = Path(__file__).parent.parent.parent / "data" / "cache" / "forecasts"
 
@@ -30,9 +30,14 @@ def cache_key(
     start: date,
     end: date,
     cache_suffix: str | None = None,
+    window_days: int = DEFAULT_WINDOW_DAYS,
+    min_obs: int = DEFAULT_MIN_OBS,
 ) -> str:
     """Generate cache filename from parameters (optional suffix for filters)."""
-    base_key = f"forecast_{cutoff.isoformat()}_{start.isoformat()}_{end.isoformat()}"
+    base_key = (
+        f"forecast_{cutoff.isoformat()}_{start.isoformat()}_{end.isoformat()}"
+        f"_w{int(window_days)}_m{int(min_obs)}"
+    )
     return f"{base_key}_{cache_suffix}" if cache_suffix else base_key
 
 
@@ -41,9 +46,11 @@ def cache_path(
     start: date,
     end: date,
     cache_suffix: str | None = None,
+    window_days: int = DEFAULT_WINDOW_DAYS,
+    min_obs: int = DEFAULT_MIN_OBS,
 ) -> Path:
     """Full path to cache parquet file."""
-    return CACHE_DIR / f"{cache_key(cutoff, start, end, cache_suffix)}.parquet"
+    return CACHE_DIR / f"{cache_key(cutoff, start, end, cache_suffix, window_days, min_obs)}.parquet"
 
 
 def metadata_path(
@@ -51,9 +58,11 @@ def metadata_path(
     start: date,
     end: date,
     cache_suffix: str | None = None,
+    window_days: int = DEFAULT_WINDOW_DAYS,
+    min_obs: int = DEFAULT_MIN_OBS,
 ) -> Path:
     """Full path to cache metadata JSON file."""
-    return CACHE_DIR / f"{cache_key(cutoff, start, end, cache_suffix)}.meta.json"
+    return CACHE_DIR / f"{cache_key(cutoff, start, end, cache_suffix, window_days, min_obs)}.meta.json"
 
 
 def cache_exists(
@@ -61,9 +70,11 @@ def cache_exists(
     start: date,
     end: date,
     cache_suffix: str | None = None,
+    window_days: int = DEFAULT_WINDOW_DAYS,
+    min_obs: int = DEFAULT_MIN_OBS,
 ) -> bool:
     """Check if cached forecast exists."""
-    return cache_path(cutoff, start, end, cache_suffix).exists()
+    return cache_path(cutoff, start, end, cache_suffix, window_days, min_obs).exists()
 
 
 def save_to_cache(
@@ -73,6 +84,8 @@ def save_to_cache(
     end: date,
     site_count: int,
     cache_suffix: str | None = None,
+    window_days: int = DEFAULT_WINDOW_DAYS,
+    min_obs: int = DEFAULT_MIN_OBS,
 ) -> Path:
     """
     Save forecast DataFrame to cache.
@@ -91,6 +104,8 @@ def load_from_cache(
     start: date,
     end: date,
     cache_suffix: str | None = None,
+    window_days: int = DEFAULT_WINDOW_DAYS,
+    min_obs: int = DEFAULT_MIN_OBS,
 ) -> pd.DataFrame | None:
     """
     Load cached forecast if exists.
@@ -105,6 +120,8 @@ def get_cache_metadata(
     start: date,
     end: date,
     cache_suffix: str | None = None,
+    window_days: int = DEFAULT_WINDOW_DAYS,
+    min_obs: int = DEFAULT_MIN_OBS,
 ) -> CacheMetadata | None:
     """Load metadata for cached forecast."""
     # TODO: Implement
@@ -139,7 +156,7 @@ from src.sites.forecast_cache import (
 
 def test_cache_key_format():
     key = cache_key(date(2025, 3, 15), date(2025, 3, 16), date(2025, 4, 15))
-    assert key == "forecast_2025-03-15_2025-03-16_2025-04-15"
+    assert key == "forecast_2025-03-15_2025-03-16_2025-04-15_w84_m4"
 
     key_with_suffix = cache_key(
         date(2025, 3, 15),
@@ -147,7 +164,7 @@ def test_cache_key_format():
         date(2025, 4, 15),
         cache_suffix="fabc1234def0",
     )
-    assert key_with_suffix == "forecast_2025-03-15_2025-03-16_2025-04-15_fabc1234def0"
+    assert key_with_suffix == "forecast_2025-03-15_2025-03-16_2025-04-15_w84_m4_fabc1234def0"
 
 
 def test_save_and_load_cache(tmp_path, monkeypatch):

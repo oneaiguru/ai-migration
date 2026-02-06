@@ -122,7 +122,7 @@ The codebase already contains the payment‑link fix and has been deployed to pr
 - `/deployment/sf-qb-integration-final/src/routes/api.js` (lines 113-117)
 
 ### **Working Configuration (DO NOT CHANGE):**
-- **API Key**: `UPCzgiXsPuXB4GiLuuzjqtXY4+4mGt+vXOmU4gaNCvM=` ✅ WORKING
+- **API Key**: See `SECRETS.local.md` ✅ WORKING
 - **Middleware**: `https://sqint.atocomm.eu` ✅ HEALTHY
 - **SF Org (primary)**: Production org `customer-inspiration-2543` (`myorg`) – ~88% coverage, tests passing
 - **SF Org (sandbox)**: `sanboxsf` exists but token may be expired; not required for current production‑focused work
@@ -131,14 +131,14 @@ The codebase already contains the payment‑link fix and has been deployed to pr
 
 ### Production Server (Roman's)
 - **SSH:** `ssh roman@pve.atocomm.eu -p2323`
-- **Password:** `3Sd5R069jvuy[3u6yj`
+- **Password:** See `SECRETS.local.md`
 - **Path:** `/opt/qb-integration/`
 - **Domain:** `https://sqint.atocomm.eu`
 - **Current Status:** Running with latest P1 bug fix deployed (see `NEXT_AGENT_HANDOFF_COMPLETE.md` for the last verified deployment). Only re-run the steps below if middleware code changes again.
 
 ### 🚀 **MIDDLEWARE DEPLOYMENT STEPS (P1 Bug Fix)**
 
-**Prerequisites**: SSH access to `roman@pve.atocomm.eu -p2323` (password: `3Sd5R069jvuy[3u6yj`)
+**Prerequisites**: SSH access to `roman@pve.atocomm.eu -p2323` (password in `SECRETS.local.md`)
 
 **Step 1: Backup current deployment**
 ```bash
@@ -167,16 +167,30 @@ node src/server.js &
 **Step 4: Verify deployment**
 ```bash
 # Test health endpoint
-curl -H "X-API-Key: UPCzgiXsPuXB4GiLuuzjqtXY4+4mGt+vXOmU4gaNCvM=" https://sqint.atocomm.eu/api/health
+curl -H "X-API-Key: $API_KEY" https://sqint.atocomm.eu/api/health  # API_KEY from SECRETS.local.md
 # Should return: {"success":true}
 ```
+
+### ⚡ **QUICK DEPLOY COMMAND (One-liner)**
+
+For simple middleware code changes (copy-paste from repo):
+```bash
+# From monorepo root, deploy api.js to production and restart
+# Replace $SSH_PASS and $API_KEY with values from SECRETS.local.md
+cd /Users/m/ai/projects/qbsf && sshpass -p "$SSH_PASS" scp -P 2323 -o StrictHostKeyChecking=no deployment/sf-qb-integration-final/src/routes/api.js roman@pve.atocomm.eu:/opt/qb-integration/src/routes/ && sshpass -p "$SSH_PASS" ssh -p 2323 -o StrictHostKeyChecking=no roman@pve.atocomm.eu "cd /opt/qb-integration && pkill -f 'node src/server.js' || true && nohup node src/server.js > server.log 2>&1 &" && sleep 3 && curl -s -H "X-API-Key: $API_KEY" https://sqint.atocomm.eu/api/health
+```
+
+**Credentials Reference** (stored in git-ignored files):
+- SSH password: See `SECRETS.local.md` (NOT tracked in git)
+- API Key: See `SECRETS.local.md` (NOT tracked in git)
+- **Note**: Requires `sshpass` installed (`brew install hudochenkov/sshpass/sshpass` on macOS)
 
 > **Rollback for middleware**: If a new deployment causes issues, follow the rollback plan in `specs/deployment-specification.md` (stop Node process, restore previous `/opt/qb-integration` backup or code snapshot, restart, and re-check health).
 
 ### Salesforce Org
 - **URL:** `https://customer-inspiration-2543.my.salesforce.com`
 - **User:** `olga.rybak@atocomm2023.eu`
-- **Password:** `0mj3DqPv28Dp2`
+- **Password:** See `SECRETS.local.md`
 
 ### Local Development
 - **Monorepo Root:** `/Users/m/ai`

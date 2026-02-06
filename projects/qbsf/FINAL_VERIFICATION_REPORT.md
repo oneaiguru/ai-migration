@@ -127,7 +127,7 @@ The technical work is complete. The remaining items are deployment/authorization
 
 ### API Health Check
 ```bash
-$ curl -H "X-API-Key: UPCzgiXsPuXB4GiLuuzjqtXY4+4mGt+vXOmU4gaNCvM=" https://sqint.atocomm.eu/api/health
+$ curl -H "X-API-Key: $API_KEY" https://sqint.atocomm.eu/api/health
 
 Response: {"success":true,"status":"healthy","timestamp":"2025-08-22T14:35:12.718Z"}
 Status: ✅ HEALTHY

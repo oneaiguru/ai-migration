@@ -24,13 +24,20 @@ from .data_loader import load_data_bundle
 from .baseline import estimate_weekday_rates
 from .simulator import simulate_fill
 from .forecast_cache import cache_exists, load_from_cache, save_to_cache
-from .rolling_types import ForecastRequest, ForecastResult, MAX_CUTOFF_DATE
+from .rolling_types import (
+    DEFAULT_MIN_OBS,
+    DEFAULT_WINDOW_DAYS,
+    ForecastRequest,
+    ForecastResult,
+    MAX_CUTOFF_DATE,
+)
 
 
 def generate_rolling_forecast(
     request: ForecastRequest,
     use_cache: bool = True,
-    window_days: int = 56,
+    window_days: int = DEFAULT_WINDOW_DAYS,
+    min_obs: int = DEFAULT_MIN_OBS,
     district_filter: str | None = None,
     search_term: str | None = None,
     apply_holiday_adjustments: bool = False,
@@ -42,7 +49,7 @@ def generate_rolling_forecast(
 
     Steps:
     1. Validate request (cutoff <= MAX_CUTOFF_DATE, horizon in range)
-    2. Build cache suffix (site_ids + district + search)
+    2. Build cache suffix (window_days + min_obs + filters)
     3. Check cache; return cached if exists and use_cache=True
     3. Load service data up to cutoff
     4. Compute weekday rates via baseline.estimate_weekday_rates(cutoff=cutoff)
@@ -54,7 +61,8 @@ def generate_rolling_forecast(
     Args:
         request: ForecastRequest with cutoff_date, horizon_days, optional site_ids
         use_cache: If True, check/use cache
-        window_days: Training window for rate estimation (default 56)
+        window_days: Training window for rate estimation (default DEFAULT_WINDOW_DAYS)
+        min_obs: Minimum observations per weekday before smoothing
         district_filter: Optional district name (case-insensitive prefix)
         search_term: Optional site ID/address search term
         apply_holiday_adjustments: When True, adjust weekday rates on holidays
@@ -112,11 +120,11 @@ forecast = simulate_fill(
 
 ```
 1. Parse request → cutoff, start=cutoff+1, end=start+horizon-1
-2. cache_suffix = build_cache_suffix(site_ids, district_filter, search_term)
+2. cache_suffix = build_cache_suffix(site_ids, district_filter, search_term, window_days, min_obs)
 3. If use_cache and cache_exists(cutoff, start, end, cache_suffix=cache_suffix):
      return load_from_cache(..., cache_suffix=cache_suffix)
 3. bundle = load_data_bundle(end_date=cutoff)  # Only data up to cutoff
-4. rates = estimate_weekday_rates(bundle.service_df, cutoff, window_days)
+4. rates = estimate_weekday_rates(bundle.service_df, cutoff, window_days, min_obs=min_obs)
 5. If apply_holiday_adjustments: adjust_baseline_for_holidays(...)
 5. forecast_df = simulate_fill(bundle.registry_df, rates, start, end)
 6. If site_ids filter: forecast_df = forecast_df[forecast_df.site_id.isin(site_ids)]

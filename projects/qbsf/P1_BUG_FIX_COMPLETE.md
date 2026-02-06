@@ -184,14 +184,14 @@ All credentials documented in `/Users/m/ai/projects/qbsf/CLAUDE.md`:
 
 ### Production Server
 - **SSH**: `roman@pve.atocomm.eu -p2323`
-- **Password**: `3Sd5R069jvuy[3u6yj`
+- **Password**: `$SSH_PASS`
 - **Path**: `/opt/qb-integration/`
 - **Domain**: `https://sqint.atocomm.eu`
 
 ### Salesforce Production
 - **Org**: `olga.rybak@atocomm2023.eu`
 - **URL**: `https://customer-inspiration-2543.my.salesforce.com`
-- **API Key**: `UPCzgiXsPuXB4GiLuuzjqtXY4+4mGt+vXOmU4gaNCvM=`
+- **API Key**: `$API_KEY`
 
 ---
 

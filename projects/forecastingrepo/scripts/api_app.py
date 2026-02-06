@@ -39,15 +39,22 @@ except Exception:  # pragma: no cover
     Request = None  # type: ignore
 
 from src.accuracy import load_region_accuracy, load_district_accuracy, load_site_accuracy
+from src.sites.forecast_cache import cache_key as build_cache_key
 from src.sites.rolling_forecast import build_cache_suffix, generate_rolling_forecast
-from src.sites.rolling_types import ForecastRequest, MAX_CUTOFF_DATE
+from src.sites.rolling_types import (
+    DEFAULT_MIN_OBS,
+    DEFAULT_WINDOW_DAYS,
+    ForecastRequest,
+    MAX_CUTOFF_DATE,
+)
 
 
 BASE_REPORTS_DIR = Path(os.getenv("REPORTS_DIR", "reports/backtest_consolidated_auto"))
 SITES_DATA_DIR = Path(os.getenv("SITES_DATA_DIR", "reports/sites_demo"))
 DELIVERIES_DIR = Path(os.getenv("DELIVERIES_DIR", "deliveries"))
 ROLLING_FORECAST_KEY_RE = re.compile(
-    r"^forecast_\d{4}-\d{2}-\d{2}_\d{4}-\d{2}-\d{2}_\d{4}-\d{2}-\d{2}(?:_[a-z0-9]+)?$"
+    r"^forecast_\d{4}-\d{2}-\d{2}_\d{4}-\d{2}-\d{2}_\d{4}-\d{2}-\d{2}_w\d+_m\d+"
+    r"(?:_[a-z0-9]+)?$"
 )
 
 
@@ -1213,13 +1220,24 @@ def create_app():
                 "generated_at": result.generated_at,
                 "download_url": None,
             }
-            cache_key = f"forecast_{cutoff.isoformat()}_{result.start_date.isoformat()}_{result.end_date.isoformat()}"
             # Use site_id query param (None for all-sites), not request object
-            cache_suffix = build_cache_suffix([site_id] if site_id else None, district, search)
-            if cache_suffix:
-                cache_key = f"{cache_key}_{cache_suffix}"
+            cache_suffix = build_cache_suffix(
+                [site_id] if site_id else None,
+                district,
+                search,
+                DEFAULT_WINDOW_DAYS,
+                DEFAULT_MIN_OBS,
+            )
+            cache_key_value = build_cache_key(
+                cutoff,
+                result.start_date,
+                result.end_date,
+                cache_suffix=cache_suffix,
+                window_days=DEFAULT_WINDOW_DAYS,
+                min_obs=DEFAULT_MIN_OBS,
+            )
             response_payload["download_url"] = (
-                f"/api/mytko/rolling_forecast/download?key={cache_key}"
+                f"/api/mytko/rolling_forecast/download?key={cache_key_value}"
             )
             if accuracy_summary is not None:
                 response_payload.update(accuracy_summary)
@@ -1376,8 +1394,8 @@ def create_app():
         """
         Download cached forecast as CSV.
 
-        Key format: forecast_{cutoff}_{start}_{end}[_suffix]
-        Example: forecast_2025-03-15_2025-03-16_2025-03-22
+        Key format: forecast_{cutoff}_{start}_{end}_w{window_days}_m{min_obs}[_suffix]
+        Example: forecast_2025-03-15_2025-03-16_2025-03-22_w84_m4_f1a2b3c4d5e6
         """
         from src.sites.forecast_cache import load_from_cache
 
@@ -1390,15 +1408,28 @@ def create_app():
             cutoff = date_cls.fromisoformat(parts[1])
             start = date_cls.fromisoformat(parts[2])
             end = date_cls.fromisoformat(parts[3])
+            window_part = parts[4]
+            min_part = parts[5]
+            if not window_part.startswith("w") or not min_part.startswith("m"):
+                raise ValueError("Invalid key format")
+            window_days = int(window_part[1:])
+            min_obs = int(min_part[1:])
         except (IndexError, ValueError):
             raise HTTPException(status_code=400, detail="Invalid key format")
 
-        cache_suffix = "_".join(parts[4:]) if len(parts) > 4 else None
+        cache_suffix = "_".join(parts[6:]) if len(parts) > 6 else None
         if cache_suffix == "":
             cache_suffix = None
 
         # Load from cache
-        df = load_from_cache(cutoff, start, end, cache_suffix=cache_suffix)
+        df = load_from_cache(
+            cutoff,
+            start,
+            end,
+            cache_suffix=cache_suffix,
+            window_days=window_days,
+            min_obs=min_obs,
+        )
         if df is None:
             raise HTTPException(status_code=404, detail="Forecast not found in cache")
 

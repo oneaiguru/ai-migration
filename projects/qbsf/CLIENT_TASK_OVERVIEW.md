@@ -41,7 +41,7 @@
 
 ### API & Authentication
 ```
-API Key:          UPCzgiXsPuXB4GiLuuzjqtXY4+4mGt+vXOmU4gaNCvM=
+API Key:          $API_KEY
 Middleware URL:   https://sqint.atocomm.eu
 Health Endpoint:  https://sqint.atocomm.eu/api/health
 API Status:       ✅ WORKING (nginx proxy fixed)
@@ -60,7 +60,7 @@ Pass Rate:        100%
 ### Production Server (Roman's)
 ```
 SSH:              ssh roman@pve.atocomm.eu -p2323
-Password:         3Sd5R069jvuy[3u6yj
+Password:         $SSH_PASS
 Path:             /opt/qb-integration/
 Domain:           https://sqint.atocomm.eu
 Status:           Running but needs E2E validation
@@ -182,7 +182,7 @@ Status:           Ready for testing
 **Test Command** (when endpoint is identified):
 ```bash
 curl -X POST https://sqint.atocomm.eu/api/[CORRECT_ENDPOINT] \
-  -H "X-API-Key: UPCzgiXsPuXB4GiLuuzjqtXY4+4mGt+vXOmU4gaNCvM=" \
+  -H "X-API-Key: $API_KEY" \
   -H "Content-Type: application/json" \
   -d '{"opportunityId":"test123","name":"Test Opportunity","amount":1000}'
 ```
@@ -252,7 +252,7 @@ curl https://sqint.atocomm.eu/api/health
 
 ### Test API Key
 ```bash
-curl -H "X-API-Key: UPCzgiXsPuXB4GiLuuzjqtXY4+4mGt+vXOmU4gaNCvM=" \
+curl -H "X-API-Key: $API_KEY" \
   https://sqint.atocomm.eu/api/health
 ```
 
@@ -265,7 +265,7 @@ tail -f /opt/qb-integration/server.log
 ### Check Payment Sync Status
 ```bash
 curl -X POST https://sqint.atocomm.eu/api/check-payment-status \
-  -H "X-API-Key: UPCzgiXsPuXB4GiLuuzjqtXY4+4mGt+vXOmU4gaNCvM=" \
+  -H "X-API-Key: $API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
     "salesforceInstance":"https://customer-inspiration-2543.my.salesforce.com",
@@ -297,7 +297,7 @@ curl -X POST https://sqint.atocomm.eu/api/check-payment-status \
 ### ✅ MILE 1: API Authentication
 - **What**: Fixed API key issue in nginx proxy
 - **Status**: COMPLETE
-- **Evidence**: API key `UPCzgiXsPuXB4GiLuuzjqtXY4+4mGt+vXOmU4gaNCvM=` working
+- **Evidence**: API key `$API_KEY` working
 
 ### ✅ MILE 2: Test Coverage
 - **What**: Achieved 75% test coverage (requirement met)

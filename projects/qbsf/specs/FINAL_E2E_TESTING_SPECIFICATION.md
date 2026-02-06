@@ -23,9 +23,9 @@ Complete the final 10% of Roman's QB Integration project:
 1. **Investigate Middleware API Structure**
    ```bash
    # Test different endpoint patterns
-   curl -H "X-API-Key: UPCzgiXsPuXB4GiLuuzjqtXY4+4mGt+vXOmU4gaNCvM=" https://sqint.atocomm.eu/api/invoices
-   curl -H "X-API-Key: UPCzgiXsPuXB4GiLuuzjqtXY4+4mGt+vXOmU4gaNCvM=" https://sqint.atocomm.eu/create-invoice
-   curl -H "X-API-Key: UPCzgiXsPuXB4GiLuuzjqtXY4+4mGt+vXOmU4gaNCvM=" https://sqint.atocomm.eu/invoice
+   curl -H "X-API-Key: $API_KEY" https://sqint.atocomm.eu/api/invoices
+   curl -H "X-API-Key: $API_KEY" https://sqint.atocomm.eu/create-invoice
+   curl -H "X-API-Key: $API_KEY" https://sqint.atocomm.eu/invoice
    ```
 
 2. **Check Documentation** 
@@ -82,7 +82,7 @@ sf data create record -s Opportunity -v "Name='E2E Trigger Test' Amount=1000 Sta
 
 3. **Server Access** 
    - [ ] SSH access to Roman's server: `ssh roman@pve.atocomm.eu -p2323`
-   - [ ] Server password: `3Sd5R069jvuy[3u6yj` (confirm if still valid)
+   - [ ] Server password: `$SSH_PASS` (confirm if still valid)
 
 #### **🚨 AGENT INSTRUCTION: ASK USER FOR MISSING CREDENTIALS**
 

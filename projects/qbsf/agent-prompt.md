@@ -20,7 +20,7 @@ sf org display --target-org sanboxsf
 
 ### 0.2 Test Middleware
 ```bash
-curl -H "X-API-Key: UPCzgiXsPuXB4GiLuuzjqtXY4+4mGt+vXOmU4gaNCvM=" https://sqint.atocomm.eu/api/health
+curl -H "X-API-Key: $API_KEY" https://sqint.atocomm.eu/api/health
 ```
 
 ### 0.3 Get Baseline Coverage
@@ -58,8 +58,8 @@ sf data query --query "SELECT QualifiedApiName, DataType, Label FROM FieldDefini
 ## Credentials
 - **SF Sandbox**: `sanboxsf` alias
 - **Middleware**: https://sqint.atocomm.eu
-- **API Key**: `UPCzgiXsPuXB4GiLuuzjqtXY4+4mGt+vXOmU4gaNCvM=`
-- **SSH**: `ssh roman@pve.atocomm.eu -p2323` (pw: `3Sd5R069jvuy[3u6yj`)
+- **API Key**: `$API_KEY`
+- **SSH**: `ssh roman@pve.atocomm.eu -p2323` (pw: `$SSH_PASS`)
 
 ## Rules
 1. **Update PROGRESS.md** after EVERY completed task

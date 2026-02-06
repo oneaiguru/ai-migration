@@ -21,7 +21,7 @@ You are working on an urgent Salesforce-QuickBooks integration project for Roman
 - **deployment/sf-qb-integration-final/** - Production-ready code
 
 ## Critical Information
-- Server: roman@pve.atocomm.eu -p2323 (password: 3Sd5R069jvuy[3u6yj)
+- Server: roman@pve.atocomm.eu -p2323 (password: $SSH_PASS)
 - Salesforce: customer-inspiration-2543.my.salesforce.com
 - Path: /opt/qb-integration/
 - API Key: qb-sf-integration-api-key-2024

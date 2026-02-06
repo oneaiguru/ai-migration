@@ -1,6 +1,6 @@
 # 1. Connect to server
 ssh roman@pve.atocomm.eu -p2323
-# Password: 3Sd5R069jvuy[3u6yj
+# Password: $SSH_PASS
 
 # 2. Create public directory
 mkdir -p /opt/qb-integration/public

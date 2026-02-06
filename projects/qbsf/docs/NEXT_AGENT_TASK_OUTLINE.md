@@ -144,7 +144,7 @@ sf project deploy start --source-dir deploy_temp --target-org myorg --test-level
 ```
   QB_Integration_Settings__c:
   Middleware_Endpoint__c = https://sqint.atocomm.eu
-  API_Key__c = UPCzgiXsPuXB4GiLuuzjqtXY4+4mGt+vXOmU4gaNCvM=
+  API_Key__c = $API_KEY
   QB_Realm_ID__c = 9130354519120066
 ```
 
@@ -156,7 +156,7 @@ sf project deploy start --source-dir deploy_temp --target-org myorg --test-level
 - **Host**: pve.atocomm.eu
 - **Port**: 2323
 - **User**: roman
-- **Password**: 3Sd5R069jvuy[3u6yj
+- **Password**: $SSH_PASS
 - **Path**: /opt/qb-integration/
 
 ### Source Directory
@@ -180,7 +180,7 @@ ssh roman@pve.atocomm.eu -p2323 "cd /opt/qb-integration && npm install && pkill 
 
 ### Health Check
 ```bash
-curl -H "X-API-Key: UPCzgiXsPuXB4GiLuuzjqtXY4+4mGt+vXOmU4gaNCvM=" https://sqint.atocomm.eu/api/health
+curl -H "X-API-Key: $API_KEY" https://sqint.atocomm.eu/api/health
 # Expected: {"success":true,"status":"healthy",...}
 ```
 
@@ -241,7 +241,7 @@ Even though Roman rejected "observability", the diagnostic fields (QB_Sync_Statu
 **If not deployed**: Deployment fails with "Field does not exist" errors.
 
 ### Gotcha 6: API Key
-**Working key**: `UPCzgiXsPuXB4GiLuuzjqtXY4+4mGt+vXOmU4gaNCvM=`
+**Working key**: `$API_KEY`
 **DO NOT CHANGE** - this is confirmed working with middleware.
 
 ---
@@ -255,7 +255,7 @@ Even though Roman rejected "observability", the diagnostic fields (QB_Sync_Statu
 
 ### After Middleware Deployment
 ```bash
-curl -H "X-API-Key: UPCzgiXsPuXB4GiLuuzjqtXY4+4mGt+vXOmU4gaNCvM=" https://sqint.atocomm.eu/api/health
+curl -H "X-API-Key: $API_KEY" https://sqint.atocomm.eu/api/health
 ```
 
 ### End-to-End Test

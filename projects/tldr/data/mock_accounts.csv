@@ -1,0 +1,199 @@
+account_id,company,tier,industry,arr,renewal_date,contact_email
+acme-aws-001,Amazon Web Services,enterprise,Cloud Infrastructure,2500000,2025-06-15,procurement@aws.amazon.com
+google-cloud-002,Google Cloud Platform,enterprise,Cloud Infrastructure,2000000,2025-07-01,sales@google.com
+anthropic-001,Anthropic,enterprise,AI/ML,800000,2025-05-20,partnerships@anthropic.com
+slack-001,Slack Technologies,enterprise,Collaboration,600000,2025-04-30,enterprise-sales@slack.com
+notion-001,Notion Labs,mid-market,Productivity,180000,2025-05-15,sales@notion.so
+github-001,GitHub (Microsoft),enterprise,Developer Tools,950000,2025-06-01,enterprise@github.com
+openai-001,OpenAI,enterprise,AI/ML,1200000,2025-07-15,sales@openai.com
+databricks-001,Databricks,enterprise,Data & AI,450000,2025-04-20,sales@databricks.com
+stripe-001,Stripe,enterprise,Payments,380000,2025-05-10,partnerships@stripe.com
+twilio-001,Twilio,enterprise,Communications,220000,2025-04-15,sales@twilio.com
+figma-001,Figma,mid-market,Design Tools,150000,2025-06-10,partnerships@figma.com
+asana-001,Asana,mid-market,Project Management,120000,2025-05-01,sales@asana.com
+vercel-001,Vercel,mid-market,DevOps,95000,2025-04-25,sales@vercel.com
+supabase-001,Supabase,startup,Database,45000,2025-03-30,partnerships@supabase.io
+retool-001,Retool,startup,Low-Code,52000,2025-05-05,sales@retool.com
+replit-001,Replit,startup,Developer Platform,38000,2025-04-10,partnerships@replit.com
+hugging-face-001,Hugging Face,startup,AI/ML,65000,2025-06-20,business@huggingface.co
+modal-001,Modal Labs,startup,Infrastructure,41000,2025-05-30,sales@modal.com
+railway-001,Railway,startup,DevOps,35000,2025-04-05,partnerships@railway.app
+render-001,Render,startup,Cloud Platform,32000,2025-03-25,sales@render.com
+elastic-001,Elastic,enterprise,Search & Analytics,320000,2025-06-05,sales@elastic.co
+mongodb-001,MongoDB,enterprise,Database,380000,2025-05-25,enterprise@mongodb.com
+postgresql-001,PostgreSQL (EDB),mid-market,Database,110000,2025-04-30,sales@enterprisedb.com
+redis-001,Redis,enterprise,Caching,210000,2025-06-15,sales@redis.com
+cassandra-001,DataStax (Cassandra),mid-market,Database,95000,2025-05-20,sales@datastax.com
+snowflake-001,Snowflake,enterprise,Data Warehouse,1100000,2025-07-10,enterprise@snowflake.com
+bigquery-001,Google BigQuery,enterprise,Data Warehouse,580000,2025-06-30,sales@google.com
+redshift-001,AWS Redshift,enterprise,Data Warehouse,420000,2025-06-15,sales@aws.amazon.com
+dbt-001,dbt Labs,mid-market,Data Engineering,98000,2025-05-15,partnerships@dbtlabs.com
+airbyte-001,Airbyte,startup,Data Integration,67000,2025-04-20,sales@airbyte.io
+kafka-001,Confluent (Kafka),enterprise,Event Streaming,280000,2025-06-10,sales@confluent.io
+rabbitmq-001,VMware (RabbitMQ),mid-market,Messaging,75000,2025-05-25,sales@vmware.com
+nats-001,NATS,startup,Messaging,28000,2025-03-15,partnerships@nats.io
+docker-001,Docker,enterprise,Containers,195000,2025-06-01,sales@docker.com
+kubernetes-001,Linux Foundation (K8s),enterprise,Orchestration,150000,2025-05-30,partnerships@linuxfoundation.org
+istio-001,Google (Istio),mid-market,Service Mesh,68000,2025-04-10,sales@google.com
+vault-001,HashiCorp (Vault),enterprise,Security,185000,2025-05-20,enterprise@hashicorp.com
+consul-001,HashiCorp (Consul),mid-market,Service Discovery,92000,2025-04-15,sales@hashicorp.com
+terraform-001,HashiCorp (Terraform),enterprise,IaC,220000,2025-06-05,enterprise@hashicorp.com
+pulumi-001,Pulumi,mid-market,IaC,85000,2025-05-10,sales@pulumi.com
+ansible-001,Red Hat (Ansible),enterprise,Automation,165000,2025-06-20,sales@redhat.com
+puppet-001,Puppet,mid-market,Configuration,78000,2025-04-30,sales@puppet.com
+chef-001,Progress (Chef),mid-market,Automation,82000,2025-05-15,sales@progress.com
+jenkins-001,Jenkins,mid-market,CI/CD,55000,2025-04-25,partnerships@jenkins.io
+github-actions-001,GitHub Actions,enterprise,CI/CD,125000,2025-06-01,enterprise@github.com
+gitlab-001,GitLab,enterprise,DevOps Platform,310000,2025-07-05,sales@gitlab.com
+circleci-001,CircleCI,mid-market,CI/CD,98000,2025-05-20,sales@circleci.com
+travis-ci-001,Travis CI,startup,CI/CD,31000,2025-04-10,partnerships@travis-ci.com
+argo-001,Intuit (Argo),startup,GitOps,42000,2025-03-30,sales@argoproj.io
+flux-001,Flux,startup,GitOps,35000,2025-04-20,partnerships@fluxcd.io
+helm-001,CNCF (Helm),startup,Package Manager,24000,2025-03-20,sales@helm.sh
+prometheus-001,Prometheus,startup,Monitoring,38000,2025-04-15,partnerships@prometheus.io
+grafana-001,Grafana Labs,enterprise,Observability,420000,2025-06-30,sales@grafana.com
+datadog-001,Datadog,enterprise,Monitoring,650000,2025-07-20,enterprise@datadoghq.com
+new-relic-001,New Relic,enterprise,APM,380000,2025-06-10,sales@newrelic.com
+splunk-001,Splunk,enterprise,Logging,520000,2025-07-01,enterprise@splunk.com
+elastic-stack-001,Elastic Stack,enterprise,Search & Analytics,320000,2025-06-15,sales@elastic.co
+logz-io-001,Logz.io (Dynatrace),mid-market,Logging,112000,2025-05-25,sales@logz.io
+sumo-logic-001,Sumo Logic,enterprise,Cloud Monitoring,245000,2025-06-05,sales@sumologic.com
+dynatrace-001,Dynatrace,enterprise,Application Monitoring,480000,2025-07-10,enterprise@dynatrace.com
+honeycomb-001,Honeycomb,mid-market,Observability,125000,2025-05-30,sales@honeycomb.io
+lightstep-001,Lightstep (ServiceTitan),startup,Observability,58000,2025-04-20,partnerships@lightstep.com
+jaeger-001,Cloud Native Computing Foundation (Jaeger),startup,Tracing,31000,2025-03-25,sales@jaegertracing.io
+zipkin-001,Zipkin,startup,Tracing,22000,2025-03-15,partnerships@zipkin.io
+tempo-001,Grafana (Tempo),startup,Tracing,42000,2025-04-25,sales@grafana.com
+python-001,Python Software Foundation,startup,Languages,18000,2025-02-28,partnerships@python.org
+nodejs-001,OpenJS Foundation (Node.js),startup,Runtime,25000,2025-03-20,sales@nodejs.org
+java-001,Eclipse Foundation (Java),enterprise,Language,85000,2025-05-15,sales@eclipse.org
+golang-001,Go Foundation,startup,Language,28000,2025-03-30,partnerships@golang.org
+rust-001,Rust Foundation,startup,Language,35000,2025-04-15,sales@rustfoundation.org
+typescript-001,Microsoft (TypeScript),startup,Language,32000,2025-04-10,sales@microsoft.com
+kotlin-001,JetBrains (Kotlin),mid-market,Language,78000,2025-05-20,sales@jetbrains.com
+scala-001,Lightbend (Scala),startup,Language,41000,2025-04-20,partnerships@scala-lang.org
+clojure-001,Clojure Foundation,startup,Language,19000,2025-02-25,sales@clojure.org
+elixir-001,Elixir,startup,Language,37000,2025-04-15,partnerships@elixir-lang.org
+ruby-001,Ruby Community,startup,Language,24000,2025-03-20,sales@ruby-lang.org
+php-001,PHP Foundation,startup,Language,22000,2025-03-10,partnerships@php.net
+perl-001,Perl Foundation,startup,Language,15000,2025-02-15,sales@perl.org
+c-sharp-001,Microsoft (C#),enterprise,Language,145000,2025-06-01,sales@microsoft.com
+cpp-001,ISO C++ Committee,startup,Language,28000,2025-04-05,partnerships@cplusplus.com
+c-001,C Standard Committee,startup,Language,18000,2025-03-10,sales@iso.org
+swift-001,Apple (Swift),enterprise,Language,110000,2025-05-30,partnerships@swift.org
+objective-c-001,Apple,mid-market,Language,65000,2025-05-10,sales@apple.com
+kotlin-multiplatform-001,JetBrains,startup,Cross-Platform,45000,2025-04-20,sales@jetbrains.com
+flutter-001,Google (Flutter),enterprise,Mobile Framework,185000,2025-06-10,partnerships@google.com
+react-native-001,Meta (React Native),enterprise,Mobile Framework,165000,2025-05-25,sales@meta.com
+xamarin-001,Microsoft (Xamarin),mid-market,Mobile Framework,78000,2025-05-15,sales@microsoft.com
+ionic-001,Ionic,mid-market,Mobile Framework,82000,2025-05-20,sales@ionicframework.com
+react-001,Meta (React),enterprise,UI Framework,220000,2025-06-15,sales@meta.com
+vue-001,Vue Community,startup,UI Framework,35000,2025-04-10,partnerships@vuejs.org
+angular-001,Google (Angular),enterprise,UI Framework,175000,2025-06-05,sales@google.com
+svelte-001,Svelte Foundation,startup,UI Framework,42000,2025-04-25,partnerships@sveltejs.com
+next-js-001,Vercel (Next.js),enterprise,Frontend Framework,165000,2025-06-01,sales@vercel.com
+nuxt-001,Nuxt Community,startup,Frontend Framework,38000,2025-04-15,partnerships@nuxtjs.org
+remix-001,Shopify (Remix),mid-market,Web Framework,92000,2025-05-20,sales@shopify.com
+astro-001,Astro,startup,Static Site Generator,44000,2025-04-20,partnerships@astro.build
+gatsby-001,Netlify (Gatsby),mid-market,Static Site Generator,85000,2025-05-15,sales@netlify.com
+hugo-001,Hugo Project,startup,Static Site Generator,28000,2025-03-30,sales@gohugo.io
+jekyll-001,Jekyll,startup,Static Site Generator,22000,2025-03-15,partnerships@jekyllrb.com
+express-001,Node.js Foundation (Express),startup,Web Framework,31000,2025-04-10,sales@expressjs.com
+fastapi-001,FastAPI,startup,Python Framework,42000,2025-04-25,partnerships@fastapi.tiangolo.com
+django-001,Django Software Foundation,enterprise,Python Framework,125000,2025-05-30,sales@djangoproject.com
+flask-001,Flask,startup,Python Framework,28000,2025-04-05,partnerships@flask.palletsprojects.com
+spring-001,VMware (Spring),enterprise,Java Framework,185000,2025-06-10,sales@spring.io
+rails-001,Ruby on Rails,mid-market,Web Framework,95000,2025-05-25,sales@rubyonrails.org
+laravel-001,Laravel,mid-market,PHP Framework,88000,2025-05-20,partnerships@laravel.com
+symfony-001,Symfony,startup,PHP Framework,48000,2025-04-30,sales@symfony.com
+fastify-001,Fastify,startup,Node.js Framework,35000,2025-04-15,partnerships@fastify.io
+nestjs-001,NestJS,startup,Node.js Framework,52000,2025-05-05,sales@nestjs.com
+quarkus-001,Red Hat (Quarkus),mid-market,Java Framework,78000,2025-05-10,sales@quarkus.io
+micronaut-001,Micronaut Foundation,startup,Java Framework,55000,2025-04-20,partnerships@micronaut.io
+helidon-001,Oracle (Helidon),startup,Java Framework,38000,2025-04-10,sales@oracle.com
+grpc-001,Cloud Native Computing Foundation (gRPC),startup,RPC Framework,42000,2025-04-25,sales@grpc.io
+graphql-001,GraphQL Foundation,startup,API Query Language,48000,2025-05-10,partnerships@graphql.org
+rest-001,REST Advocate Community,startup,API Style,18000,2025-02-28,sales@restfulapi.net
+soap-001,W3C (SOAP),startup,API Protocol,15000,2025-02-15,partnerships@w3.org
+corba-001,Object Management Group (CORBA),startup,Middleware,12000,2025-02-10,sales@omg.org
+dcom-001,Microsoft (DCOM),startup,Component Model,18000,2025-03-05,sales@microsoft.com
+rmi-001,Oracle (Java RMI),startup,Remote Method Invocation,22000,2025-03-20,partnerships@oracle.com
+jms-001,Eclipse Foundation (JMS),startup,Messaging Service,28000,2025-04-15,sales@eclipse.org
+mqtt-001,MQTT Community,startup,IoT Protocol,35000,2025-04-20,partnerships@mqtt.org
+amqp-001,AMQP Standards,startup,Message Protocol,31000,2025-04-10,sales@amqp.org
+stomp-001,STOMP Protocol,startup,Messaging,24000,2025-03-25,partnerships@stomp.github.io
+websocket-001,IETF (WebSocket),startup,Web Protocol,32000,2025-04-15,sales@ietf.org
+webrtc-001,Google (WebRTC),mid-market,Real-Time Communication,88000,2025-05-20,partnerships@webrtc.org
+mqtt-aws-001,AWS IoT,enterprise,IoT Platform,245000,2025-06-10,sales@aws.amazon.com
+azure-iot-001,Microsoft Azure IoT,enterprise,IoT Platform,220000,2025-06-05,sales@microsoft.com
+gcp-iot-001,Google Cloud IoT,enterprise,IoT Platform,195000,2025-05-30,sales@google.com
+ibm-iot-001,IBM IoT,enterprise,IoT Platform,185000,2025-06-15,sales@ibm.com
+aws-lambda-001,AWS Lambda,enterprise,Serverless,320000,2025-06-20,sales@aws.amazon.com
+azure-functions-001,Microsoft Functions,enterprise,Serverless,280000,2025-06-15,sales@microsoft.com
+gcp-functions-001,Google Cloud Functions,enterprise,Serverless,260000,2025-06-10,sales@google.com
+ibm-functions-001,IBM Cloud Functions,mid-market,Serverless,125000,2025-05-20,sales@ibm.com
+openfaas-001,OpenFaaS,startup,Serverless Framework,48000,2025-04-30,partnerships@openfaas.com
+knative-001,Google (Knative),mid-market,Serverless Platform,92000,2025-05-15,sales@google.com
+nuclio-001,Iguazio (Nuclio),startup,Serverless,52000,2025-05-05,partnerships@iguazio.com
+kubeless-001,Kubeless,startup,Serverless,38000,2025-04-20,sales@kubeless.io
+fission-001,Platform.sh (Fission),startup,Serverless,42000,2025-04-25,partnerships@fission.io
+openwhisk-001,Apache OpenWhisk,startup,Serverless,35000,2025-04-15,sales@openwhisk.apache.org
+stackstorm-001,StackStorm,startup,Event-Driven Automation,48000,2025-05-10,partnerships@stackstorm.com
+temporal-001,Temporal Technologies,startup,Workflow Engine,55000,2025-05-15,sales@temporal.io
+cadence-001,Uber (Cadence),startup,Workflow,42000,2025-04-25,partnerships@uber.com
+prefect-001,Prefect,startup,Workflow Orchestration,58000,2025-05-20,sales@prefect.io
+airflow-001,Apache Airflow,enterprise,Data Orchestration,185000,2025-06-05,partnerships@apache.org
+dagster-001,Dagster Labs,startup,Data Orchestration,65000,2025-05-25,sales@dagster.io
+dbt-cloud-001,dbt Labs,mid-market,Data Transformation,145000,2025-06-01,partnerships@dbtlabs.com
+great-expectations-001,Great Expectations,startup,Data Quality,52000,2025-05-10,sales@greatexpectations.io
+monte-carlo-001,Monte Carlo Data,startup,Data Observability,62000,2025-05-20,partnerships@montecarlodata.com
+bigeye-001,Bigeye,startup,Data Quality,48000,2025-05-15,sales@bigeye.com
+soda-001,Soda,startup,Data Quality,45000,2025-05-10,partnerships@soda.sql
+atlan-001,Atlan,startup,Data Governance,68000,2025-05-25,sales@atlan.com
+collibra-001,Collibra,enterprise,Data Governance,520000,2025-07-10,enterprise@collibra.com
+informatica-001,Informatica,enterprise,Data Integration,420000,2025-06-30,sales@informatica.com
+talend-001,Talend,enterprise,Data Integration,380000,2025-06-20,sales@talend.com
+denodo-001,Denodo,enterprise,Data Virtualization,280000,2025-06-10,partnerships@denodo.com
+trifacta-001,Alteryx (Trifacta),enterprise,Data Preparation,245000,2025-06-05,sales@alteryx.com
+alteryx-001,Alteryx,enterprise,Analytics Platform,520000,2025-07-15,enterprise@alteryx.com
+tableau-001,Salesforce (Tableau),enterprise,BI & Analytics,650000,2025-07-30,sales@salesforce.com
+power-bi-001,Microsoft Power BI,enterprise,BI Platform,580000,2025-07-20,sales@microsoft.com
+looker-001,Google Looker,enterprise,Business Intelligence,480000,2025-07-05,sales@google.com
+qlik-001,Qlik,enterprise,Analytics Platform,420000,2025-06-30,sales@qlik.com
+microstrategy-001,Micro Strategy,enterprise,Analytics,360000,2025-06-20,enterprise@microstrategy.com
+sisense-001,Sisense,mid-market,Analytics,185000,2025-06-10,sales@sisense.com
+perforce-helix-001,Perforce (Helix),enterprise,Version Control,185000,2025-06-05,sales@perforce.com
+bitbucket-001,Atlassian (Bitbucket),enterprise,Git Hosting,220000,2025-06-15,sales@atlassian.com
+sourcetree-001,Atlassian SourceTree,mid-market,Git Client,78000,2025-05-20,sales@atlassian.com
+gitea-001,Gitea,startup,Git Service,31000,2025-04-10,partnerships@gitea.io
+gitlab-runner-001,GitLab Runners,enterprise,CI/CD Executor,125000,2025-05-25,sales@gitlab.com
+github-copilot-001,GitHub Copilot,enterprise,AI Assistant,185000,2025-06-10,sales@github.com
+tabnine-001,Tabnine,mid-market,Code Completion,98000,2025-05-20,partnerships@tabnine.com
+codeium-001,Codeium,startup,Code Completion,65000,2025-05-15,sales@codeium.com
+copilot-x-001,OpenAI Copilot X,enterprise,AI Coding,195000,2025-06-20,partnerships@openai.com
+cursor-001,Cursor,startup,AI IDE,52000,2025-05-10,sales@cursor.sh
+zed-001,Zed Industries,startup,Code Editor,42000,2025-04-25,partnerships@zed.dev
+jetbrains-ide-001,JetBrains IDEs,enterprise,Development Tools,280000,2025-06-30,enterprise@jetbrains.com
+visual-studio-001,Microsoft Visual Studio,enterprise,IDE,320000,2025-07-05,sales@microsoft.com
+vscode-001,Microsoft VS Code,enterprise,Code Editor,185000,2025-06-15,sales@microsoft.com
+sublime-text-001,Sublime HQ,startup,Text Editor,38000,2025-04-20,partnerships@sublimetext.com
+neovim-001,Neovim Project,startup,Text Editor,28000,2025-04-10,sales@neovim.io
+emacs-001,GNU Project (Emacs),startup,Text Editor,21000,2025-03-20,partnerships@gnu.org
+vim-001,Vim Project,startup,Text Editor,18000,2025-03-15,sales@vim.org
+nano-001,GNU Nano,startup,Text Editor,12000,2025-02-28,partnerships@gnu.org
+posit-rstudio-001,Posit (RStudio),enterprise,Data Science IDE,245000,2025-06-20,sales@posit.co
+jupyter-001,Project Jupyter,startup,Notebook,48000,2025-05-10,partnerships@jupyter.org
+colab-001,Google Colab,enterprise,Notebooks,185000,2025-06-05,sales@google.com
+databricks-notebooks-001,Databricks Notebooks,enterprise,ML Notebooks,220000,2025-06-15,sales@databricks.com
+paperspace-001,Paperspace,startup,ML Infrastructure,65000,2025-05-20,partnerships@paperspace.com
+lambda-labs-001,Lambda Labs,startup,GPU Cloud,52000,2025-05-15,sales@lambdalabs.com
+vast-ai-001,Vast AI,startup,GPU Marketplace,48000,2025-05-10,partnerships@vast.ai
+runwayml-001,Runway ML,startup,Creative AI,62000,2025-05-25,sales@runwayml.com
+huggingface-spaces-001,Hugging Face Spaces,startup,ML Deployment,52000,2025-05-15,partnerships@huggingface.co
+modal-gpu-001,Modal,startup,GPU Computing,51000,2025-05-12,sales@modal.com
+together-ai-001,Together AI,startup,Model Platform,58000,2025-05-20,partnerships@together.ai
+anyscale-001,Anyscale,startup,Ray Platform,55000,2025-05-15,sales@anyscale.com
+ray-001,Ray Project,startup,Distributed Computing,42000,2025-04-25,partnerships@ray.io
+dask-001,Dask,startup,Parallel Computing,38000,2025-04-20,sales@dask.org
+modin-001,Modin Project,startup,DataFrame,35000,2025-04-15,partnerships@modin.org
+polars-001,Polars,startup,DataFrame,52000,2025-05-10,sales@pola.rs

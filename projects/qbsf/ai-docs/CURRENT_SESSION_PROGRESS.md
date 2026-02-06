@@ -5,9 +5,9 @@
 ### ✅ PRIORITY 1: API Key Authentication - **COMPLETED**
 - **Issue**: Middleware returning 401 Unauthorized errors
 - **Root Cause**: API key mismatch between Salesforce and middleware
-- **Solution**: Found correct API key in Russian instructions file: `UPCzgiXsPuXB4GiLuuzjqtXY4+4mGt+vXOmU4gaNCvM=`
+- **Solution**: Found correct API key in Russian instructions file: `$API_KEY`
 - **Action**: Updated both QB_Integration_Settings__c and QuickBooks_Settings__c records
-- **Verification**: ✅ `curl -H "X-API-Key: UPCzgiXsPuXB4GiLuuzjqtXY4+4mGt+vXOmU4gaNCvM=" https://sqint.atocomm.eu/api/health` returns `{"success":true}`
+- **Verification**: ✅ `curl -H "X-API-Key: $API_KEY" https://sqint.atocomm.eu/api/health` returns `{"success":true}`
 
 ### ✅ Test Coverage Improvement: 52% → 54%
 - **Enhanced QBInvoiceIntegrationQueueableTest**: Added 6 new test methods for HTTP scenarios

@@ -394,7 +394,7 @@ sf sobject describe Account --target-org sanboxsf 2>/dev/null | grep -i "supplie
 
 2. **Check QB OAuth status**
 ```bash
-curl -H "X-API-Key: UPCzgiXsPuXB4GiLuuzjqtXY4+4mGt+vXOmU4gaNCvM=" https://sqint.atocomm.eu/api/health
+curl -H "X-API-Key: $API_KEY" https://sqint.atocomm.eu/api/health
 ```
 
 3. **Get baseline test coverage**

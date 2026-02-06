@@ -1,0 +1,199 @@
+account_id,company,tier,arr,renewal_date
+acme-aws-001,Amazon Web Services,enterprise,2500000,2025-06-15
+google-cloud-002,Google Cloud Platform,enterprise,2000000,2025-07-01
+anthropic-001,Anthropic,enterprise,800000,2025-05-20
+slack-001,Slack Technologies,enterprise,600000,2025-04-30
+notion-001,Notion Labs,mid-market,180000,2025-05-15
+github-001,GitHub (Microsoft),enterprise,950000,2025-06-01
+openai-001,OpenAI,enterprise,1200000,2025-07-15
+databricks-001,Databricks,enterprise,450000,2025-04-20
+stripe-001,Stripe,enterprise,380000,2025-05-10
+twilio-001,Twilio,enterprise,220000,2025-04-15
+figma-001,Figma,mid-market,150000,2025-06-10
+asana-001,Asana,mid-market,120000,2025-05-01
+vercel-001,Vercel,mid-market,95000,2025-04-25
+supabase-001,Supabase,startup,45000,2025-03-30
+retool-001,Retool,startup,52000,2025-05-05
+replit-001,Replit,startup,38000,2025-04-10
+hugging-face-001,Hugging Face,startup,65000,2025-06-20
+modal-001,Modal Labs,startup,41000,2025-05-30
+railway-001,Railway,startup,35000,2025-04-05
+render-001,Render,startup,32000,2025-03-25
+elastic-001,Elastic,enterprise,320000,2025-06-05
+mongodb-001,MongoDB,enterprise,380000,2025-05-25
+postgresql-001,PostgreSQL (EDB),mid-market,110000,2025-04-30
+redis-001,Redis,enterprise,210000,2025-06-15
+cassandra-001,DataStax (Cassandra),mid-market,95000,2025-05-20
+snowflake-001,Snowflake,enterprise,1100000,2025-07-10
+bigquery-001,Google BigQuery,enterprise,580000,2025-06-30
+redshift-001,AWS Redshift,enterprise,420000,2025-06-15
+dbt-001,dbt Labs,mid-market,98000,2025-05-15
+airbyte-001,Airbyte,startup,67000,2025-04-20
+kafka-001,Confluent (Kafka),enterprise,280000,2025-06-10
+rabbitmq-001,VMware (RabbitMQ),mid-market,75000,2025-05-25
+nats-001,NATS,startup,28000,2025-03-15
+docker-001,Docker,enterprise,195000,2025-06-01
+kubernetes-001,Linux Foundation (K8s),enterprise,150000,2025-05-30
+istio-001,Google (Istio),mid-market,68000,2025-04-10
+vault-001,HashiCorp (Vault),enterprise,185000,2025-05-20
+consul-001,HashiCorp (Consul),mid-market,92000,2025-04-15
+terraform-001,HashiCorp (Terraform),enterprise,220000,2025-06-05
+pulumi-001,Pulumi,mid-market,85000,2025-05-10
+ansible-001,Red Hat (Ansible),enterprise,165000,2025-06-20
+puppet-001,Puppet,mid-market,78000,2025-04-30
+chef-001,Progress (Chef),mid-market,82000,2025-05-15
+jenkins-001,Jenkins,mid-market,55000,2025-04-25
+github-actions-001,GitHub Actions,enterprise,125000,2025-06-01
+gitlab-001,GitLab,enterprise,310000,2025-07-05
+circleci-001,CircleCI,mid-market,98000,2025-05-20
+travis-ci-001,Travis CI,startup,31000,2025-04-10
+argo-001,Intuit (Argo),startup,42000,2025-03-30
+flux-001,Flux,startup,35000,2025-04-20
+helm-001,CNCF (Helm),startup,24000,2025-03-20
+prometheus-001,Prometheus,startup,38000,2025-04-15
+grafana-001,Grafana Labs,enterprise,420000,2025-06-30
+datadog-001,Datadog,enterprise,650000,2025-07-20
+new-relic-001,New Relic,enterprise,380000,2025-06-10
+splunk-001,Splunk,enterprise,520000,2025-07-01
+elastic-stack-001,Elastic Stack,enterprise,320000,2025-06-15
+logz-io-001,Logz.io (Dynatrace),mid-market,112000,2025-05-25
+sumo-logic-001,Sumo Logic,enterprise,245000,2025-06-05
+dynatrace-001,Dynatrace,enterprise,480000,2025-07-10
+honeycomb-001,Honeycomb,mid-market,125000,2025-05-30
+lightstep-001,Lightstep (ServiceTitan),startup,58000,2025-04-20
+jaeger-001,Cloud Native Computing Foundation (Jaeger),startup,31000,2025-03-25
+zipkin-001,Zipkin,startup,22000,2025-03-15
+tempo-001,Grafana (Tempo),startup,42000,2025-04-25
+python-001,Python Software Foundation,startup,18000,2025-02-28
+nodejs-001,OpenJS Foundation (Node.js),startup,25000,2025-03-20
+java-001,Eclipse Foundation (Java),enterprise,85000,2025-05-15
+golang-001,Go Foundation,startup,28000,2025-03-30
+rust-001,Rust Foundation,startup,35000,2025-04-15
+typescript-001,Microsoft (TypeScript),startup,32000,2025-04-10
+kotlin-001,JetBrains (Kotlin),mid-market,78000,2025-05-20
+scala-001,Lightbend (Scala),startup,41000,2025-04-20
+clojure-001,Clojure Foundation,startup,19000,2025-02-25
+elixir-001,Elixir,startup,37000,2025-04-15
+ruby-001,Ruby Community,startup,24000,2025-03-20
+php-001,PHP Foundation,startup,22000,2025-03-10
+perl-001,Perl Foundation,startup,15000,2025-02-15
+c-sharp-001,Microsoft (C#),enterprise,145000,2025-06-01
+cpp-001,ISO C++ Committee,startup,28000,2025-04-05
+c-001,C Standard Committee,startup,18000,2025-03-10
+swift-001,Apple (Swift),enterprise,110000,2025-05-30
+objective-c-001,Apple,mid-market,65000,2025-05-10
+kotlin-multiplatform-001,JetBrains,startup,45000,2025-04-20
+flutter-001,Google (Flutter),enterprise,185000,2025-06-10
+react-native-001,Meta (React Native),enterprise,165000,2025-05-25
+xamarin-001,Microsoft (Xamarin),mid-market,78000,2025-05-15
+ionic-001,Ionic,mid-market,82000,2025-05-20
+react-001,Meta (React),enterprise,220000,2025-06-15
+vue-001,Vue Community,startup,35000,2025-04-10
+angular-001,Google (Angular),enterprise,175000,2025-06-05
+svelte-001,Svelte Foundation,startup,42000,2025-04-25
+next-js-001,Vercel (Next.js),enterprise,165000,2025-06-01
+nuxt-001,Nuxt Community,startup,38000,2025-04-15
+remix-001,Shopify (Remix),mid-market,92000,2025-05-20
+astro-001,Astro,startup,44000,2025-04-20
+gatsby-001,Netlify (Gatsby),mid-market,85000,2025-05-15
+hugo-001,Hugo Project,startup,28000,2025-03-30
+jekyll-001,Jekyll,startup,22000,2025-03-15
+express-001,Node.js Foundation (Express),startup,31000,2025-04-10
+fastapi-001,FastAPI,startup,42000,2025-04-25
+django-001,Django Software Foundation,enterprise,125000,2025-05-30
+flask-001,Flask,startup,28000,2025-04-05
+spring-001,VMware (Spring),enterprise,185000,2025-06-10
+rails-001,Ruby on Rails,mid-market,95000,2025-05-25
+laravel-001,Laravel,mid-market,88000,2025-05-20
+symfony-001,Symfony,startup,48000,2025-04-30
+fastify-001,Fastify,startup,35000,2025-04-15
+nestjs-001,NestJS,startup,52000,2025-05-05
+quarkus-001,Red Hat (Quarkus),mid-market,78000,2025-05-10
+micronaut-001,Micronaut Foundation,startup,55000,2025-04-20
+helidon-001,Oracle (Helidon),startup,38000,2025-04-10
+grpc-001,Cloud Native Computing Foundation (gRPC),startup,42000,2025-04-25
+graphql-001,GraphQL Foundation,startup,48000,2025-05-10
+rest-001,REST Advocate Community,startup,18000,2025-02-28
+soap-001,W3C (SOAP),startup,15000,2025-02-15
+corba-001,Object Management Group (CORBA),startup,12000,2025-02-10
+dcom-001,Microsoft (DCOM),startup,18000,2025-03-05
+rmi-001,Oracle (Java RMI),startup,22000,2025-03-20
+jms-001,Eclipse Foundation (JMS),startup,28000,2025-04-15
+mqtt-001,MQTT Community,startup,35000,2025-04-20
+amqp-001,AMQP Standards,startup,31000,2025-04-10
+stomp-001,STOMP Protocol,startup,24000,2025-03-25
+websocket-001,IETF (WebSocket),startup,32000,2025-04-15
+webrtc-001,Google (WebRTC),mid-market,88000,2025-05-20
+mqtt-aws-001,AWS IoT,enterprise,245000,2025-06-10
+azure-iot-001,Microsoft Azure IoT,enterprise,220000,2025-06-05
+gcp-iot-001,Google Cloud IoT,enterprise,195000,2025-05-30
+ibm-iot-001,IBM IoT,enterprise,185000,2025-06-15
+aws-lambda-001,AWS Lambda,enterprise,320000,2025-06-20
+azure-functions-001,Microsoft Functions,enterprise,280000,2025-06-15
+gcp-functions-001,Google Cloud Functions,enterprise,260000,2025-06-10
+ibm-functions-001,IBM Cloud Functions,mid-market,125000,2025-05-20
+openfaas-001,OpenFaaS,startup,48000,2025-04-30
+knative-001,Google (Knative),mid-market,92000,2025-05-15
+nuclio-001,Iguazio (Nuclio),startup,52000,2025-05-05
+kubeless-001,Kubeless,startup,38000,2025-04-20
+fission-001,Platform.sh (Fission),startup,42000,2025-04-25
+openwhisk-001,Apache OpenWhisk,startup,35000,2025-04-15
+stackstorm-001,StackStorm,startup,48000,2025-05-10
+temporal-001,Temporal Technologies,startup,55000,2025-05-15
+cadence-001,Uber (Cadence),startup,42000,2025-04-25
+prefect-001,Prefect,startup,58000,2025-05-20
+airflow-001,Apache Airflow,enterprise,185000,2025-06-05
+dagster-001,Dagster Labs,startup,65000,2025-05-25
+dbt-cloud-001,dbt Labs,mid-market,145000,2025-06-01
+great-expectations-001,Great Expectations,startup,52000,2025-05-10
+monte-carlo-001,Monte Carlo Data,startup,62000,2025-05-20
+bigeye-001,Bigeye,startup,48000,2025-05-15
+soda-001,Soda,startup,45000,2025-05-10
+atlan-001,Atlan,startup,68000,2025-05-25
+collibra-001,Collibra,enterprise,520000,2025-07-10
+informatica-001,Informatica,enterprise,420000,2025-06-30
+talend-001,Talend,enterprise,380000,2025-06-20
+denodo-001,Denodo,enterprise,280000,2025-06-10
+trifacta-001,Alteryx (Trifacta),enterprise,245000,2025-06-05
+alteryx-001,Alteryx,enterprise,520000,2025-07-15
+tableau-001,Salesforce (Tableau),enterprise,650000,2025-07-30
+power-bi-001,Microsoft Power BI,enterprise,580000,2025-07-20
+looker-001,Google Looker,enterprise,480000,2025-07-05
+qlik-001,Qlik,enterprise,420000,2025-06-30
+microstrategy-001,Micro Strategy,enterprise,360000,2025-06-20
+sisense-001,Sisense,mid-market,185000,2025-06-10
+perforce-helix-001,Perforce (Helix),enterprise,185000,2025-06-05
+bitbucket-001,Atlassian (Bitbucket),enterprise,220000,2025-06-15
+sourcetree-001,Atlassian SourceTree,mid-market,78000,2025-05-20
+gitea-001,Gitea,startup,31000,2025-04-10
+gitlab-runner-001,GitLab Runners,enterprise,125000,2025-05-25
+github-copilot-001,GitHub Copilot,enterprise,185000,2025-06-10
+tabnine-001,Tabnine,mid-market,98000,2025-05-20
+codeium-001,Codeium,startup,65000,2025-05-15
+copilot-x-001,OpenAI Copilot X,enterprise,195000,2025-06-20
+cursor-001,Cursor,startup,52000,2025-05-10
+zed-001,Zed Industries,startup,42000,2025-04-25
+jetbrains-ide-001,JetBrains IDEs,enterprise,280000,2025-06-30
+visual-studio-001,Microsoft Visual Studio,enterprise,320000,2025-07-05
+vscode-001,Microsoft VS Code,enterprise,185000,2025-06-15
+sublime-text-001,Sublime HQ,startup,38000,2025-04-20
+neovim-001,Neovim Project,startup,28000,2025-04-10
+emacs-001,GNU Project (Emacs),startup,21000,2025-03-20
+vim-001,Vim Project,startup,18000,2025-03-15
+nano-001,GNU Nano,startup,12000,2025-02-28
+posit-rstudio-001,Posit (RStudio),enterprise,245000,2025-06-20
+jupyter-001,Project Jupyter,startup,48000,2025-05-10
+colab-001,Google Colab,enterprise,185000,2025-06-05
+databricks-notebooks-001,Databricks Notebooks,enterprise,220000,2025-06-15
+paperspace-001,Paperspace,startup,65000,2025-05-20
+lambda-labs-001,Lambda Labs,startup,52000,2025-05-15
+vast-ai-001,Vast AI,startup,48000,2025-05-10
+runwayml-001,Runway ML,startup,62000,2025-05-25
+huggingface-spaces-001,Hugging Face Spaces,startup,52000,2025-05-15
+modal-gpu-001,Modal,startup,51000,2025-05-12
+together-ai-001,Together AI,startup,58000,2025-05-20
+anyscale-001,Anyscale,startup,55000,2025-05-15
+ray-001,Ray Project,startup,42000,2025-04-25
+dask-001,Dask,startup,38000,2025-04-20
+modin-001,Modin Project,startup,35000,2025-04-15
+polars-001,Polars,startup,52000,2025-05-10

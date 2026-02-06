@@ -1,0 +1,107 @@
+.app-shell {
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  min-height: 100vh;
+  background-color: #f8fafc;
+  color: #0f172a;
+}
+
+.sidebar {
+  padding: 32px 24px;
+  border-right: 1px solid #e2e8f0;
+  background-color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.sidebar h1 {
+  font-size: 24px;
+  font-weight: 700;
+  margin: 0;
+}
+
+.sidebar-description {
+  font-size: 14px;
+  color: #475569;
+  margin: 0;
+}
+
+.sidebar nav ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 12px;
+}
+
+.nav-button {
+  width: 100%;
+  text-align: left;
+  border: 1px solid transparent;
+  background: transparent;
+  border-radius: 12px;
+  padding: 12px 14px;
+  display: grid;
+  gap: 4px;
+  cursor: pointer;
+  color: inherit;
+}
+
+.nav-button:hover,
+.nav-button:focus-visible {
+  border-color: #93c5fd;
+  outline: none;
+}
+
+.nav-button.active {
+  background: #eff6ff;
+  border-color: #60a5fa;
+}
+
+.nav-title {
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.nav-desc {
+  font-size: 13px;
+  color: #475569;
+}
+
+.demo-area {
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.demo-area header h2 {
+  font-size: 22px;
+  margin: 0 0 8px;
+}
+
+.demo-area header p {
+  margin: 0;
+  color: #475569;
+}
+
+.demo-content {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 32px;
+  box-shadow: 0 20px 45px rgba(15, 23, 42, 0.08);
+  display: grid;
+  place-items: start;
+}
+
+@media (max-width: 960px) {
+  .app-shell {
+    grid-template-columns: 1fr;
+  }
+
+  .sidebar {
+    border-right: none;
+    border-bottom: 1px solid #e2e8f0;
+  }
+}

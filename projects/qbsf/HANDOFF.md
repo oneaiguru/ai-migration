@@ -6,8 +6,15 @@
     - Removed unsupported `CurrencyRef` usage in Item/Customer queries.
     - Added FX fallback: if rate is missing, retry the prior day (applies both when `asOfDate` is provided and when it is omitted).
     - Cleaned item selection to avoid schema errors; duplicate-customer flow now resolves cleanly.
+    - Added cross-entity name-conflict detection (Vendor/Employee/OtherName), inactive exact-match lookup for Customers, and optional auto-suffix creation when conflicts exist.
+    - New error code for conflicts when auto-suffix is disabled: `QB_NAME_CONFLICT` (HTTP 422).
+    - Removed `CurrencyRef` from Customer lookup queries to satisfy QBO lint rules; currency is resolved via follow-up customer fetch when needed.
   - `projects/qbsf/deployment/sf-qb-integration-final/src/routes/api.js`
     - Uses `TxnDate` when present to drive FX lookup (falls back to today/yesterday logic in `quickbooks-api.js`).
+  - `projects/qbsf/deployment/sf-qb-integration-final/src/config/index.js`
+    - Added `QB_DUPLICATE_NAME_AUTOSUFFIX` (default false) and `QB_DUPLICATE_NAME_SUFFIX` (default ` (SF)`) under QuickBooks config.
+  - `projects/qbsf/deployment/sf-qb-integration-final/tests/quickbooks-customer-duplicate-name.test.js`
+    - Added inactive-match, vendor-conflict, and auto-suffix coverage.
   - `projects/qbsf/PROGRESS.md` updated with deploy/test notes.
 - Uncommitted changes: handoff + progress updates + new lint script + updated tests.
 - Tests/lint added: QBO query denylist lint (`scripts/lint_qbo_queries.js`, `npm run lint:qbo`), new Jest cases for FX fallback and duplicate resolution.
@@ -16,16 +23,19 @@
 - Deployed files (from `projects/qbsf/deployment/sf-qb-integration-final`):
   - `/opt/qb-integration/src/services/quickbooks-api.js`
   - `/opt/qb-integration/src/routes/api.js`
-  - Deployed after backup `20260110-074625` (latest).
+  - `/opt/qb-integration/src/config/index.js` (added duplicate-name autosuffix config flags)
+- Deployed after backup `20260114-010358` (latest).
 - Process: pm2 absent. Running via nohup: `node src/server.js` (last seen PID 125269) from `/opt/qb-integration`.
-- Restart method used: `pkill -f 'node .*server.js' || true; cd /opt/qb-integration && nohup node src/server.js >> /opt/qb-integration/server.log 2>&1 &`
+- Restart method used: `pkill -f '[n]ode .*server.js' || true; cd /opt/qb-integration && nohup node src/server.js >> /opt/qb-integration/server.log 2>&1 &`
 - Health: `curl -s -o /dev/null -w "%{http_code}\\n" https://sqint.atocomm.eu/api/health` → `401` (expected without API key).
+ - 2026-01-14 deploy: backup `20260114-010358`, copied `services/quickbooks-api.js` + `config/index.js`, restarted via pkill+nohup, health 401.
 
 ## Backups on host
 - `20260110-074625`: full `src`, `package.json`, `package-lock.json`, `.env`, manifest.
 - `20260110-020102`: full `src`, `package.json`, `package-lock.json`, `.env`, manifest (sha256 of api.js and quickbooks-api.js).
 - Earlier backups (still present): `20260110-073745`, `20260110-013512`.
   - Paths: `/opt/qb-integration/backups/<timestamp>/`
+ - `20260114-010358`: full `src`, `package.json`, `package-lock.json`, `.env`, manifest (sha256 of quickbooks-api.js and config/index.js).
 
 ## Tests/executions (manual)
 - USD duplicate test (post-fix): Opp `006So00000Y4ZDKIA3` → `QB_Sync_Status__c=Success`, `QB_Invoice_ID__c=2604`, no errors; log shows `Found existing customer in QuickBooks by exact name match` (e.g., lines ~2480+ in server.log).
@@ -34,6 +44,10 @@
   - Prior EUR: `006So00000Y4PnSIAV` similar FX_RATE_MISSING.
 - FX fallback verified via direct call: no rate for 2026-01-10; yesterday (2026-01-09) returns 1.163467. Fallback now returns prior-day rate when today is absent (even when `asOfDate` is provided).
 - 2026-01-10: `npm run lint:qbo` pass; `npm test` 13/13 suites (61 tests) passing (added asOfDate-aware FX fallback coverage).
+- 2026-01-13: `npm run lint:qbo` pass; `npm test` 13/13 suites (64 tests) passing (added duplicate-name conflict coverage).
+- 2026-01-14: Host `npm test` failed in `/opt/qb-integration` because `/opt/qb-integration/backups` contains duplicate `package.json` names (jest-haste-map collision) and no tests are present on the host.
+- 2026-01-14: Host tests run from `/tmp/qb-integration-test` (copied `src/` + `tests/`, symlinked `node_modules` from `/opt/qb-integration`): `npm test` 13/13 suites, 64 tests passing.
+- 2026-01-13: `npm run lint:qbo` pass; `npm test` 13/13 suites (64 tests) passing (added duplicate-name conflict coverage).
 - 2026-01-10: Health check `curl -s -o /dev/null -w "%{http_code}\\n" https://sqint.atocomm.eu/api/health` → `401` (expected without API key) after deploy.
 - 2026-01-10: USD duplicate runtime re-check — Opp `006So00000Y534vIAB` (Account=testiruem, Currency=USD, Email_for_invoice__c set, Stage=Proposal and Agreement, OLI qty=1 TotalPrice=100, PricebookEntryId=01uSo000006KfunIAC) → `QB_Sync_Status__c=Success`, `QB_Invoice_ID__c=2605`, payment link populated.
 - 2026-01-10: EUR runtime re-check with TxnDate=today using fallback — Opp `006So00000Y57LRIAZ` (Account=testiruem, Currency=EUR, Email_for_invoice__c set, Stage=Proposal and Agreement, OLI qty=1 TotalPrice=100, PricebookEntryId=01u0600000beGIoAAM) → `QB_Sync_Status__c=Success`, `QB_Invoice_ID__c=2606`, payment link populated; prior-day (2026-01-09) rate used automatically because today’s rate missing.

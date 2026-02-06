@@ -12,7 +12,7 @@
 
 ```bash
 ssh roman@pve.atocomm.eu -p2323
-# Пароль: 3Sd5R069jvuy[3u6yj
+# Пароль: $SSH_PASS
 ```
 
 ### 2. Откройте файл конфигурации:

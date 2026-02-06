@@ -47,7 +47,7 @@ sf project deploy start \
 
 **1.1 Verify Middleware is Healthy**
 ```bash
-curl -H "X-API-Key: UPCzgiXsPuXB4GiLuuzjqtXY4+4mGt+vXOmU4gaNCvM=" \
+curl -H "X-API-Key: $API_KEY" \
   https://sqint.atocomm.eu/api/health
 # Expected response: {"success":true,"status":"healthy"}
 ```
@@ -127,7 +127,7 @@ sf data query \
 ```bash
 # SSH to middleware server
 ssh -p 2323 roman@pve.atocomm.eu
-# When prompted for password: 3Sd5R069jvuy[3u6yj
+# When prompted for password: $SSH_PASS
 
 # Once connected, check recent logs
 tail -200 /tmp/server.log | grep -i "payment\|link\|obtained\|invoice"
@@ -328,7 +328,7 @@ CLI Alias: myorg
 Host: pve.atocomm.eu
 Port: 2323
 User: roman
-Password: 3Sd5R069jvuy[3u6yj
+Password: $SSH_PASS
 Path: /opt/qb-integration/
 Log file: /tmp/server.log
 ```
@@ -336,7 +336,7 @@ Log file: /tmp/server.log
 ### Middleware API
 ```
 URL: https://sqint.atocomm.eu
-API Key: UPCzgiXsPuXB4GiLuuzjqtXY4+4mGt+vXOmU4gaNCvM=
+API Key: $API_KEY
 Health endpoint: /api/health
 ```
 

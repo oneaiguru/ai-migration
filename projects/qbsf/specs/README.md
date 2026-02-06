@@ -1,5 +1,8 @@
 # 📋 Specs - AI Coding Plans
 
+## SyncFlow (Ralph Loop)
+Primary product spec: `~/Downloads/qbsfsaas.md` (referenced, not copied). Use it as the source of truth for the SyncFlow micro-SaaS. Existing files in this folder are legacy integration specs and should be referenced only when explicitly needed.
+
 This folder contains **detailed specifications and plans** for the Salesforce-QuickBooks integration project. These are the blueprints that enable AI coding tools to execute massive amounts of work in single focused sessions.
 
 ## 🎯 Core Principle

@@ -1,0 +1,17 @@
+{
+  "name": "tgorgbot-backend",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "start": "node dist/backend/src/index.js"
+  },
+  "dependencies": {
+    "better-sqlite3": "^9.4.0",
+    "gramio": "^0.4.7"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.30",
+    "typescript": "^5.4.5"
+  }
+}

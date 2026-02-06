@@ -82,7 +82,7 @@ Welcome! The QB-SF Integration project is 95% complete. This file tells you wher
 cat NEXT_SESSION_ACTION_PLAN.md
 
 # 2. Follow Phase 1: Verification (30 minutes)
-curl -H "X-API-Key: UPCzgiXsPuXB4GiLuuzjqtXY4+4mGt+vXOmU4gaNCvM=" \
+curl -H "X-API-Key: $API_KEY" \
   https://sqint.atocomm.eu/api/health
 # Should return: {"success":true,"status":"healthy"}
 
@@ -110,8 +110,8 @@ In all cases, you'll have clear, documented next steps.
 
 ```
 Salesforce: olga.rybak@atocomm2023.eu / 0mj3DqPv28Dp2
-Middleware API Key: UPCzgiXsPuXB4GiLuuzjqtXY4+4mGt+vXOmU4gaNCvM=
-Server SSH: roman@pve.atocomm.eu:2323 / password: 3Sd5R069jvuy[3u6yj
+Middleware API Key: $API_KEY
+Server SSH: roman@pve.atocomm.eu:2323 / password: $SSH_PASS
 ```
 
 See `COMPLETE_HANDOFF_FOR_NEXT_AGENT.md` section 6 for all credentials.

@@ -9,7 +9,7 @@ Context:
 
 Steps (run in order):
 1) Verify deployed code
-   - `sshpass -p '3Sd5R069jvuy[3u6yj' ssh -p 2323 roman@pve.atocomm.eu "grep -n 'CurrencyRef' /opt/qb-integration/src/routes/api.js && grep -n 'currency' /opt/qb-integration/src/transforms/opportunity-to-invoice.js && grep -n 'CurrencyIsoCode' /opt/qb-integration/src/services/salesforce-api.js"`
+   - `sshpass -p '$SSH_PASS' ssh -p 2323 roman@pve.atocomm.eu "grep -n 'CurrencyRef' /opt/qb-integration/src/routes/api.js && grep -n 'currency' /opt/qb-integration/src/transforms/opportunity-to-invoice.js && grep -n 'CurrencyIsoCode' /opt/qb-integration/src/services/salesforce-api.js"`
    - If missing, scp the three files from `deployment/sf-qb-integration-final/src/...` and restart: `cd /opt/qb-integration && pkill -f node && nohup node src/server.js > /tmp/server.log 2>&1 &`
 
 2) Ensure live logging
@@ -27,7 +27,7 @@ Steps (run in order):
 
 5) Confirm integration settings
    - `sf data query -q "SELECT Middleware_Endpoint__c, API_Key__c, QB_Realm_ID__c FROM QB_Integration_Settings__c" -o myorg`
-   - Must point to `https://sqint.atocomm.eu/api` with the correct API key (`UPCzgiXsPuXB4GiLuuzjqtXY4+4mGt+vXOmU4gaNCvM=`) and the right Realm ID.
+   - Must point to `https://sqint.atocomm.eu/api` with the correct API key (`$API_KEY`) and the right Realm ID.
 
 6) If callout reaches middleware but fails
    - Inspect `/tmp/server.log` for 400s from QuickBooks. Common fix: ensure Contact email exists (needed for payment link).

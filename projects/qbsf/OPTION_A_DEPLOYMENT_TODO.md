@@ -14,7 +14,7 @@
 ## 2) Post-deploy Salesforce config
 - [x] Create/update `QB_Integration_Settings__c` org default record:
   - [x] `Middleware_Endpoint__c = https://sqint.atocomm.eu`
-  - [x] `API_Key__c = UPCzgiXsPuXB4GiLuuzjqtXY4+4mGt+vXOmU4gaNCvM=`
+  - [x] `API_Key__c = $API_KEY`
   - [x] `QB_Realm_ID__c = 9130354519120066`
 - [ ] Verify Remote Site Setting `QuickBooksMiddleware` → `https://sqint.atocomm.eu` (should be deployed by `deploy_temp/`).
 
@@ -23,7 +23,7 @@
 - [x] Copy `deployment/sf-qb-integration-final/src` + `package.json` to `/opt/qb-integration/` (exclude/remove `tests/`).
 - [x] Restart `node src/server.js`, confirm process is running (skipped `npm install` due to root-owned `node_modules/`).
 - [ ] Health check:
-  - [x] `curl -H "X-API-Key: UPCzgiXsPuXB4GiLuuzjqtXY4+4mGt+vXOmU4gaNCvM=" https://sqint.atocomm.eu/api/health`
+  - [x] `curl -H "X-API-Key: $API_KEY" https://sqint.atocomm.eu/api/health`
 
 ## 0) One-shot helper (safety gate)
 - [ ] `CONFIRM_DEPLOY=YES ./scripts/option_a_after_payment_deploy.sh`

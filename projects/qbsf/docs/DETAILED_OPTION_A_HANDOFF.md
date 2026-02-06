@@ -408,7 +408,7 @@ Fix and retry.
 4. Fill in:
    - **Name**: (can be anything, e.g., "Production")
    - **Middleware_Endpoint__c**: `https://sqint.atocomm.eu`
-   - **API_Key__c**: `UPCzgiXsPuXB4GiLuuzjqtXY4+4mGt+vXOmU4gaNCvM=`
+   - **API_Key__c**: `$API_KEY`
    - **QB_Realm_ID__c**: `9130354519120066`
 5. Save
 
@@ -444,7 +444,7 @@ Http h = new Http();
 HttpRequest req = new HttpRequest();
 req.setEndpoint('https://sqint.atocomm.eu/api/health');
 req.setMethod('GET');
-req.setHeader('X-API-Key', 'UPCzgiXsPuXB4GiLuuzjqtXY4+4mGt+vXOmU4gaNCvM=');
+req.setHeader('X-API-Key', '$API_KEY');
 try {
     HttpResponse res = h.send(req);
     System.debug('Status: ' + res.getStatus());
@@ -482,7 +482,7 @@ grep -n "opportunity-to-invoice" deployment/sf-qb-integration-final/src/routes/a
 ```bash
 # Connect to server
 ssh roman@pve.atocomm.eu -p2323
-# You'll be prompted for password: 3Sd5R069jvuy[3u6yj
+# You'll be prompted for password: $SSH_PASS
 
 # Inside server, check current state
 cd /opt/qb-integration
@@ -564,7 +564,7 @@ head -20 server.log
 
 ```bash
 # Test the health endpoint
-curl -H "X-API-Key: UPCzgiXsPuXB4GiLuuzjqtXY4+4mGt+vXOmU4gaNCvM=" \
+curl -H "X-API-Key: $API_KEY" \
   https://sqint.atocomm.eu/api/health
 
 # Expected output:
@@ -826,7 +826,7 @@ nohup node src/server.js > server.log 2>&1 &
 
 **Step 3**: Test health check
 ```bash
-curl -H "X-API-Key: UPCzgiXsPuXB4GiLuuzjqtXY4+4mGt+vXOmU4gaNCvM=" https://sqint.atocomm.eu/api/health
+curl -H "X-API-Key: $API_KEY" https://sqint.atocomm.eu/api/health
 # Should return success
 ```
 

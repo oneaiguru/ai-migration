@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Редактор промптов</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <style>
+        .editor-container {
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        .preview-container {
+            border: 1px solid #eee;
+            border-radius: 5px;
+            padding: 20px;
+            background-color: #f8f9fa;
+            margin-bottom: 20px;
+        }
+        .template-item {
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .template-item:hover {
+            background-color: #e9ecef;
+        }
+        .card-header {
+            background-color: #f8f9fa;
+        }
+        #prompt-editor {
+            min-height: 400px;
+            font-family: monospace;
+            resize: vertical;
+        }
+        .sidebar {
+            background-color: #f8f9fa;
+            border-right: 1px solid #dee2e6;
+            padding: 15px;
+        }
+        .help-icon {
+            cursor: pointer;
+            color: #6c757d;
+        }
+        .help-icon:hover {
+            color: #007bff;
+        }
+        .template-tags {
+            display: inline-block;
+            background-color: #e2f0ff;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-family: monospace;
+            margin: 2px;
+            cursor: pointer;
+            border: 1px solid #b8daff;
+        }
+        .template-tags:hover {
+            background-color: #cce5ff;
+        }
+        .test-result {
+            max-height: 300px;
+            overflow-y: auto;
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            border: 1px solid #eee;
+        }
+        .nav-pills .nav-link.active {
+            background-color: #007bff;
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid py-4">
+        <h2 class="mb-4">Редактор промптов для генерации описаний товаров</h2>
+        
+        <div class="row">
+            <!-- Левая колонка - Редактор промптов -->
+            <div class="col-md-8">
+                <div class="card mb-4">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0">Редактор промптов</h5>
+                        <div>
+                            <button id="test-prompt-btn" class="btn btn-primary btn-sm">
+                                <i class="bi bi-play-fill"></i> Тестировать
+                            </button>
+                            <button id="save-prompt-btn" class="btn btn-success btn-sm ms-2">
+                                <i class="bi bi-save"></i> Сохранить
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <textarea id="prompt-editor" class="form-control" spellcheck="false">Ты - эксперт по написанию продающих описаний товаров для интернет-магазина технических приборов и оборудования.
+
+<инструкции>
+1. Перепиши описание товара, сделав его уникальным (не менее 70% уникальности).
+2. Сохрани ВСЕ технические характеристики товара и их значения.
+3. Структурируй текст для удобочитаемости (используй подзаголовки, маркированные списки).
+4. Добавь 1-2 преимущества использования товара, которые логически следуют из его характеристик.
+5. Избегай фраз: "данный товар", "данное устройство", "данный прибор".
+6. Не добавляй информацию, которой нет в исходном описании.
+7. Объем текста: примерно такой же как в оригинале или до 20% больше.
+8. Не используй слова и фразы из исходного текста там, где их можно заменить синонимами.
+9. Следуй принципам SEO-оптимизированного текста.
+</инструкции>
+
+<исходное_описание>
+{ORIGINAL_DESCRIPTION}
+</исходное_описание>
+
+<технические_характеристики>
+{TECHNICAL_SPECS}
+</технические_характеристики>
+
+<ключевые_слова>
+{KEYWORDS}
+</ключевые_слова>
+
+Создай уникальное, информативное и продающее описание товара:</textarea>
+                    </div>
+                </div>
+                
+                <!-- Тест промпта -->
+                <div class="card mb-4" id="test-result-container" style="display: none;">
+                    <div class="card-header">
+                        <h5 class="mb-0">Результат тестирования</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <h6>Исходный текст:</h6>
+                                <div id="original-text" class="test-result"></div>
+                            </div>
+                            <div class="col-md-6">
+                                <h6>Сгенерированный текст:</h6>
+                                <div id="generated-text" class="test-result"></div>
+                            </div>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <div>
+                                <span class="badge bg-info" id="uniqueness-badge">Уникальность: 85%</span>
+                                <span class="badge bg-success" id="status-badge">Статус: Успешно</span>
+                            </div>
+                            <button id="close-test-btn" class="btn btn-sm btn-outline-secondary">Закрыть</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Правая колонка - Справка и шаблоны -->
+            <div class="col-md-4">
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <ul class="nav nav-pills card-header-pills" id="sidebar-tabs" role="tablist">
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link active" id="templates-tab" data-bs-toggle="tab" data-bs-target="#templates" type="button" role="tab" aria-selected="true">Шаблоны</button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="help-tab" data-bs-toggle="tab" data-bs-target="#help" type="button" role="tab" aria-selected="false">Справка</button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="examples-tab" data-bs-toggle="tab" data-bs-target="#examples" type="button" role="tab" aria-selected="false">Примеры</button>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="card-body">
+                        <div class="tab-content" id="sidebar-tabContent">
+                            <!-- Шаблоны -->
+                            <div class="tab-pane fade show active" id="templates" role="tabpanel" aria-labelledby="templates-tab">
+                                <h6>Добавить элементы в промпт:</h6>
+                                <div class="mb-3">
+                                    <span class="template-tags" data-tag="{ORIGINAL_DESCRIPTION}">{ORIGINAL_DESCRIPTION}</span>
+                                    <span class="template-tags" data-tag="{TECHNICAL_SPECS}">{TECHNICAL_SPECS}</span>
+                                    <span class="template-tags" data-tag="{KEYWORDS}">{KEYWORDS}</span>
+                                    <span class="template-tags" data-tag="{PRODUCT_NAME}">{PRODUCT_NAME}</span>
+                                    <span class="template-tags" data-tag="{CATEGORY}">{CATEGORY}</span>
+                                </div>
+                                
+                                <h6 class="mt-4">Готовые шаблоны блоков:</h6>
+                                <div class="list-group">
+                                    <div class="list-group-item list-group-item-action template-item" data-template="<инструкции>\n1. Перепиши описание товара, сделав его уникальным (не менее 70% уникальности).\n2. Сохрани ВСЕ технические характеристики товара и их значения.\n3. Структурируй текст для удобочитаемости (используй подзаголовки, маркированные списки).\n4. Добавь 1-2 преимущества использования товара, которые логически следуют из его характеристик.\n</инструкции>">
+                                        <div class="d-flex w-100 justify-content-between">
+                                            <h6 class="mb-1">Основные инструкции</h6>
+                                            <small>4 пункта</small>
+                                        </div>
+                                        <small class="text-muted">Базовые инструкции для переписывания</small>
+                                    </div>
+                                    <div class="list-group-item list-group-item-action template-item" data-template="<дополнительные_инструкции>\n1. Используй технический стиль, подходящий для профессиональной аудитории.\n2. Включи упоминание о сферах применения этого оборудования.\n3. Добавь 1-2 преимущества по сравнению с аналогами той же категории.\n4. Упомяни о совместимости с другим оборудованием, если это применимо.\n</дополнительные_инструкции>">
+                                        <div class="d-flex w-100 justify-content-between">
+                                            <h6 class="mb-1">Технический стиль</h6>
+                                            <small>4 пункта</small>
+                                        </div>
+                                        <small class="text-muted">Инструкции для технической аудитории</small>
+                                    </div>
+                                    <div class="list-group-item list-group-item-action template-item" data-template="<преимущества>\nДобавь раздел 'Преимущества' или 'Ключевые особенности', включающий 3-5 пунктов, которые выделяют данный товар среди других.\n</преимущества>">
+                                        <div class="d-flex w-100 justify-content-between">
+                                            <h6 class="mb-1">Блок преимуществ</h6>
+                                            <small>1 блок</small>
+                                        </div>
+                                        <small class="text-muted">Добавляет раздел с преимуществами</small>
+                                    </div>
+                                    <div class="list-group-item list-group-item-action template-item" data-template="<структура>\nСоздай структурированное описание со следующими разделами:\n1. Краткое введение (1-2 предложения)\n2. Общее описание и назначение товара (1-2 абзаца)\n3. Технические характеристики (маркированный список)\n4. Преимущества использования (3-5 пунктов)\n5. Заключение с призывом к действию (1 абзац)\n</структура>">
+                                        <div class="d-flex w-100 justify-content-between">
+                                            <h6 class="mb-1">Полная структура текста</h6>
+                                            <small>5 разделов</small>
+                                        </div>
+                                        <small class="text-muted">Задает четкую структуру описания</small>
+                                    </div>
+                                    <div class="list-group-item list-group-item-action template-item" data-template="<пример_похожего_товара>\nТовар: Осциллограф цифровой АКТАКОМ ADS-4572\nОписание: Современный 2-канальный цифровой осциллограф АКТАКОМ ADS-4572 обеспечивает высокоточный анализ электронных схем с полосой пропускания 70 МГц. Этот высокопроизводительный прибор предоставляет возможность визуализации и измерения параметров разнообразных сигналов. Функционал устройства включает автоматическое измерение 32 параметров сигналов, встроенный цифровой частотомер, режим X-Y и множество вариантов синхронизации.\n</пример_похожего_товара>">
+                                        <div class="d-flex w-100 justify-content-between">
+                                            <h6 class="mb-1">Пример товара</h6>
+                                            <small>Осциллограф</small>
+                                        </div>
+                                        <small class="text-muted">Добавляет пример описания похожего товара</small>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Справка -->
+                            <div class="tab-pane fade" id="help" role="tabpanel" aria-labelledby="help-tab">
+                                <h6>Переменные промпта:</h6>
+                                <ul class="list-group list-group-flush mb-3">
+                                    <li class="list-group-item"><code>{ORIGINAL_DESCRIPTION}</code> - Исходное описание товара</li>
+                                    <li class="list-group-item"><code>{TECHNICAL_SPECS}</code> - Технические характеристики товара</li>
+                                    <li class="list-group-item"><code>{KEYWORDS}</code> - Ключевые слова для SEO</li>
+                                    <li class="list-group-item"><code>{PRODUCT_NAME}</code> - Название товара</li>
+                                    <li class="list-group-item"><code>{CATEGORY}</code> - Категория товара</li>
+                                </ul>
+                                
+                                <h6>Рекомендации по составлению промптов:</h6>
+                                <ol class="small">
+                                    <li>Начинайте с четкой роли для AI ("Ты - эксперт по...").</li>
+                                    <li>Разделяйте инструкции по тематическим блокам.</li>
+                                    <li>Используйте нумерованные списки для последовательных инструкций.</li>
+                                    <li>Указывайте конкретные требования вместо общих пожеланий.</li>
+                                    <li>Если нужен определенный формат, предоставьте пример.</li>
+                                    <li>Указывайте желаемый тон и стиль текста.</li>
+                                    <li>Определите, что должно быть включено, а что исключено из ответа.</li>
+                                </ol>
+                            </div>
+                            
+                            <!-- Примеры -->
+                            <div class="tab-pane fade" id="examples" role="tabpanel" aria-labelledby="examples-tab">
+                                <h6>Примеры до и после:</h6>
+                                
+                                <div class="card mb-3">
+                                    <div class="card-header py-2">
+                                        <h6 class="mb-0">Пример 1: Осциллограф</h6>
+                                    </div>
+                                    <div class="card-body">
+                                        <p class="small mb-2"><strong>До:</strong></p>
+                                        <p class="small text-muted">Осциллограф цифровой АКТАКОМ ADS-4572 – это 2-канальный прибор с полосой пропускания 70 МГц, предназначенный для исследования электронных схем.</p>
+                                        <p class="small mb-2 mt-3"><strong>После:</strong></p>
+                                        <p class="small text-muted">Современный 2-канальный цифровой осциллограф АКТАКОМ ADS-4572 обеспечивает высокоточный анализ электронных схем с полосой пропускания 70 МГц, что делает его незаменимым инструментом для инженеров-электронщиков.</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="card mb-3">
+                                    <div class="card-header py-2">
+                                        <h6 class="mb-0">Пример 2: Мультиметр</h6>
+                                    </div>
+                                    <div class="card-body">
+                                        <p class="small mb-2"><strong>До:</strong></p>
+                                        <p class="small text-muted">Мультиметр АКТАКОМ АМ-1109 – это цифровой мультиметр с автоматическим выбором пределов измерения.</p>
+                                        <p class="small mb-2 mt-3"><strong>После:</strong></p>
+                                        <p class="small text-muted">Цифровой мультиметр АКТАКОМ АМ-1109 с автоматическим выбором пределов измерения представляет собой многофункциональный измерительный прибор профессионального уровня.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Модальное окно для тестирования промпта -->
+    <div class="modal fade" id="test-prompt-modal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Тестирование промпта</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="test-product-id" class="form-label">ID товара для тестирования</label>
+                        <input type="text" class="form-control" id="test-product-id" placeholder="Введите ID товара">
+                    </div>
+                    <p class="small text-muted">Система получит информацию о товаре и применит ваш промпт для генерации текста.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
+                    <button type="button" class="btn btn-primary" id="run-test-btn">Запустить тест</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Модальное окно для сохранения промпта -->
+    <div class="modal fade" id="save-prompt-modal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Сохранение промпта</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="prompt-name" class="form-label">Название промпта</label>
+                        <input type="text" class="form-control" id="prompt-name" placeholder="Например: Основной промпт для технических товаров">
+                    </div>
+                    <div class="form-check mb-3">
+                        <input class="form-check-input" type="checkbox" id="set-as-default">
+                        <label class="form-check-label" for="set-as-default">
+                            Установить как промпт по умолчанию
+                        </label>
+                    </div>
+                    <p class="small text-muted">Промпт будет сохранен и доступен для использования при генерации текстов.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
+                    <button type="button" class="btn btn-success" id="confirm-save-btn">Сохранить</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Обработка добавления переменных промпта
+            document.querySelectorAll('.template-tags').forEach(tag => {
+                tag.addEventListener('click', function() {
+                    const editor = document.getElementById('prompt-editor');
+                    const tagText = this.getAttribute('data-tag');
+                    
+                    // Получаем текущую позицию курсора
+                    const cursorPos = editor.selectionStart;
+                    
+                    // Вставляем тег в текущую позицию
+                    const textBefore = editor.value.substring(0, cursorPos);
+                    const textAfter = editor.value.substring(cursorPos, editor.value.length);
+                    editor.value = textBefore + tagText + textAfter;
+                    
+                    // Устанавливаем курсор после вставленного тега
+                    editor.selectionStart = cursorPos + tagText.length;
+                    editor.selectionEnd = cursorPos + tagText.length;
+                    editor.focus();
+                });
+            });
+            
+            // Обработка добавления шаблонов
+            document.querySelectorAll('.template-item').forEach(item => {
+                item.addEventListener('click', function() {
+                    const editor = document.getElementById('prompt-editor');
+                    const templateText = this.getAttribute('data-template');
+                    
+                    // Получаем текущую позицию курсора
+                    const cursorPos = editor.selectionStart;
+                    
+                    // Вставляем шаблон в текущую позицию
+                    const textBefore = editor.value.substring(0, cursorPos);
+                    const textAfter = editor.value.substring(cursorPos, editor.value.length);
+                    editor.value = textBefore + templateText + textAfter;
+                    
+                    // Устанавливаем курсор после вставленного шаблона
+                    editor.selectionStart = cursorPos + templateText.length;
+                    editor.selectionEnd = cursorPos + templateText.length;
+                    editor.focus();
+                });
+            });
+            
+            // Тестирование промпта
+            document.getElementById('test-prompt-btn').addEventListener('click', function() {
+                const testModal = new bootstrap.Modal(document.getElementById('test-prompt-modal'));
+                testModal.show();
+            });
+            
+            // Запуск теста
+            document.getElementById('run-test-btn').addEventListener('click', function() {
+                const productId = document.getElementById('test-product-id').value.trim();
+                if (!productId) {
+                    alert('Пожалуйста, введите ID товара для тестирования');
+                    return;
+                }
+                
+                // Здесь должен быть AJAX-запрос к API для тестирования промпта
+                // Имитация загрузки
+                const modal = bootstrap.Modal.getInstance(document.getElementById('test-prompt-modal'));
+                modal.hide();
+                
+                // Показываем заглушку результата
+                document.getElementById('test-result-container').style.display = 'block';
+                document.getElementById('original-text').innerText = 'Осциллограф цифровой АКТАКОМ ADS-4572 – это 2-канальный прибор с полосой пропускания 70 МГц, предназначенный для исследования электронных схем. Данный прибор позволяет наблюдать и измерять формы различных сигналов. В устройстве реализованы функции автоматического измерения 32 параметров сигналов, встроенного цифрового частотомера, режим X-Y и различные виды синхронизации.';
+                document.getElementById('generated-text').innerText = 'Современный 2-канальный цифровой осциллограф АКТАКОМ ADS-4572 обеспечивает высокоточный анализ электронных схем с полосой пропускания 70 МГц, что делает его незаменимым инструментом для инженеров-электронщиков. Этот высокопроизводительный прибор предоставляет возможность визуализации и измерения параметров разнообразных сигналов. Функционал устройства включает автоматическое измерение 32 параметров сигналов, встроенный цифровой частотомер, режим X-Y и множество вариантов синхронизации.';
+                document.getElementById('uniqueness-badge').innerText = 'Уникальность: 85%';
+                document.getElementById('status-badge').innerText = 'Статус: Успешно';
+                
+                // Прокрутка к результатам
+                document.getElementById('test-result-container').scrollIntoView({behavior: 'smooth'});
+            });
+            
+            // Закрытие результатов теста
+            document.getElementById('close-test-btn').addEventListener('click', function() {
+                document.getElementById('test-result-container').style.display = 'none';
+            });
+            
+            // Сохранение промпта
+            document.getElementById('save-prompt-btn').addEventListener('click', function() {
+                const saveModal = new bootstrap.Modal(document.getElementById('save-prompt-modal'));
+                saveModal.show();
+            });
+            
+            // Подтверждение сохранения
+            document.getElementById('confirm-save-btn').addEventListener('click', function() {
+                const promptName = document.getElementById('prompt-name').value.trim();
+                const setAsDefault = document.getElementById('set-as-default').checked;
+                
+                if (!promptName) {
+                    alert('Пожалуйста, введите название промпта');
+                    return;
+                }
+                
+                // Здесь должен быть AJAX-запрос к API для сохранения промпта
+                // Имитация сохранения
+                setTimeout(() => {
+                    const modal = bootstrap.Modal.getInstance(document.getElementById('save-prompt-modal'));
+                    modal.hide();
+                    
+                    // Показываем уведомление об успешном сохранении
+                    alert('Промпт успешно сохранен!');
+                }, 500);
+            });
+        });
+    </script>
+</body>
+</html>

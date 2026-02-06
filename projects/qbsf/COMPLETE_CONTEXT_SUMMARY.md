@@ -169,11 +169,11 @@ Pass `currency` as 6th parameter to mapOpportunityToInvoice()
 
 **Middleware Server**: Roman's VPS
 - SSH: `ssh roman@pve.atocomm.eu -p2323`
-- Password: `3Sd5R069jvuy[3u6yj`
+- Password: `$SSH_PASS`
 - Path: `/opt/qb-integration/`
 - URL: `https://sqint.atocomm.eu`
 
-**API Key**: `UPCzgiXsPuXB4GiLuuzjqtXY4+4mGt+vXOmU4gaNCvM=` (WORKING)
+**API Key**: `$API_KEY` (WORKING)
 
 ### Middleware Files
 
@@ -276,7 +276,7 @@ node src/server.js > /tmp/server.log 2>&1 &
 
 **Step 8**: Verify health:
 ```bash
-curl -H "X-API-Key: UPCzgiXsPuXB4GiLuuzjqtXY4+4mGt+vXOmU4gaNCvM=" https://sqint.atocomm.eu/api/health
+curl -H "X-API-Key: $API_KEY" https://sqint.atocomm.eu/api/health
 ```
 
 **Step 9**: Test with Roman:

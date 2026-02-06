@@ -1,0 +1,7 @@
+webvtt-py
+argparse
+openai
+av
+requests
+retry
+moviepy

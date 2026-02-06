@@ -20,6 +20,9 @@ import sys
 import pandas as pd
 import pytest
 
+from src.sites.forecast_cache import cache_key as build_cache_key
+from src.sites.rolling_forecast import build_cache_suffix
+from src.sites.rolling_types import DEFAULT_MIN_OBS, DEFAULT_WINDOW_DAYS
 
 pytestmark = pytest.mark.skipif(
     os.getenv("RUN_SLOW_TESTS", "").lower() not in {"1", "true", "yes"},
@@ -725,8 +728,26 @@ class TestRollingForecastDownload:
         })
 
         # Then download via key
+        cutoff = date(2025, 3, 15)
+        start = date(2025, 3, 16)
+        end = date(2025, 3, 22)
+        cache_suffix = build_cache_suffix(
+            None,
+            None,
+            None,
+            DEFAULT_WINDOW_DAYS,
+            DEFAULT_MIN_OBS,
+        )
+        cache_key = build_cache_key(
+            cutoff,
+            start,
+            end,
+            cache_suffix=cache_suffix,
+            window_days=DEFAULT_WINDOW_DAYS,
+            min_obs=DEFAULT_MIN_OBS,
+        )
         resp = client.get("/api/mytko/rolling_forecast/download", params={
-            "key": "forecast_2025-03-15_2025-03-16_2025-03-22",
+            "key": cache_key,
         })
         assert resp.status_code == 200
         assert "text/csv" in resp.headers["content-type"]
@@ -741,7 +762,12 @@ class TestRollingForecastDownload:
 
     def test_download_cache_miss(self, client):
         """404 for non-existent cache."""
+        cache_key = build_cache_key(
+            date(2099, 1, 1),
+            date(2099, 1, 2),
+            date(2099, 1, 8),
+        )
         resp = client.get("/api/mytko/rolling_forecast/download", params={
-            "key": "forecast_2099-01-01_2099-01-02_2099-01-08",
+            "key": cache_key,
         })
         assert resp.status_code == 404

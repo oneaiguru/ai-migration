@@ -29,7 +29,7 @@ projects/qbsf/deployment/sf-qb-integration-final/src/
 
 ```bash
 ssh roman@pve.atocomm.eu -p2323
-# Пароль: 3Sd5R069jvuy[3u6yj
+# Пароль: $SSH_PASS
 ```
 
 ### Шаг 3: Остановка старого сервера
@@ -77,7 +77,7 @@ sleep 3
 
 ```bash
 # На локальной машине (новый терминал):
-curl -H "X-API-Key: UPCzgiXsPuXB4GiLuuzjqtXY4+4mGt+vXOmU4gaNCvM=" \
+curl -H "X-API-Key: $API_KEY" \
   https://sqint.atocomm.eu/api/health
 
 # Ответ должен быть:
@@ -94,7 +94,7 @@ curl -H "X-API-Key: UPCzgiXsPuXB4GiLuuzjqtXY4+4mGt+vXOmU4gaNCvM=" \
 
 ```bash
 curl -X POST https://sqint.atocomm.eu/api/opportunity-to-invoice \
-  -H "X-API-Key: UPCzgiXsPuXB4GiLuuzjqtXY4+4mGt+vXOmU4gaNCvM=" \
+  -H "X-API-Key: $API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
     "opportunityId":"001xx000003DHP",
@@ -109,7 +109,7 @@ curl -X POST https://sqint.atocomm.eu/api/opportunity-to-invoice \
 
 ```bash
 curl -X POST https://sqint.atocomm.eu/api/update-invoice \
-  -H "X-API-Key: UPCzgiXsPuXB4GiLuuzjqtXY4+4mGt+vXOmU4gaNCvM=" \
+  -H "X-API-Key: $API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
     "opportunityId":"001xx000003DHP",

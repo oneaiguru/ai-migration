@@ -19,7 +19,7 @@
 - ✅ **Salesforce URL already correct** - customer-inspiration-2543
 - ✅ **Instance URL present** - SF_INSTANCE_URL configured
 - ✅ **Scheduler configured** - Running every 5 minutes
-- ✅ **API Key configured** - UPCzgiXsPuXB4GiLuuzjqtXY4+4mGt+vXOmU4gaNCvM=
+- ✅ **API Key configured** - $API_KEY
 
 ### 3. Access - VERIFIED ✅
 - ✅ **Internal access working**: http://localhost:3000/api/health
@@ -35,7 +35,7 @@
 root  88760  node src/server.js  # ✅ Running
 
 # API Health Check
-curl -H 'X-API-Key: UPCzgiXsPuXB4GiLuuzjqtXY4+4mGt+vXOmU4gaNCvM=' \
+curl -H 'X-API-Key: $API_KEY' \
      https://sqint.atocomm.eu/api/health
 
 Response: {"success":true,"status":"healthy","timestamp":"2025-08-12T11:01:04.192Z"}
@@ -90,7 +90,7 @@ https://sqint.atocomm.eu/auth/quickbooks
 ### API Key for Salesforce
 Update in Salesforce Custom Settings:
 ```
-API_Key__c = UPCzgiXsPuXB4GiLuuzjqtXY4+4mGt+vXOmU4gaNCvM=
+API_Key__c = $API_KEY
 Middleware_URL__c = https://sqint.atocomm.eu
 ```
 
@@ -144,7 +144,7 @@ nohup sudo node src/server.js > server.log 2>&1 &
 ### Support:
 - Check logs: `tail -f /opt/qb-integration/server.log`
 - API status: https://sqint.atocomm.eu/api/health
-- Use API key: `UPCzgiXsPuXB4GiLuuzjqtXY4+4mGt+vXOmU4gaNCvM=`
+- Use API key: `$API_KEY`
 
 ---
 

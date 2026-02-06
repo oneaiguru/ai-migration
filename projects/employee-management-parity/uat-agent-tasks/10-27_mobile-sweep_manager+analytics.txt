@@ -1,0 +1,43 @@
+Mobile UAT – Manager Portal + Analytics (2025-10-27)
+
+Context
+- Behaviour parity is green. This pass verifies responsive/mobile UX for Manager Portal and Analytics on production builds. Visual pixel-tweaks are out of scope; focus on usability, layout integrity, and RU copy not breaking layouts.
+
+Targets (Production)
+- Manager Portal: https://manager-portal-demo-46qb9mity-granins-projects.vercel.app
+- Analytics Dashboard: https://analytics-dashboard-demo-d60586nei-granins-projects.vercel.app
+
+Devices/Breakpoints (use browser devtools responsive mode)
+- iPhone 12/14 (390×844 @3x)
+- Android Pixel 5 (393×851 @2.75x)
+- iPad (768×1024)
+- Small laptop (1280×720) for narrow desktop sanity
+
+Checklist (run on both targets)
+1) Global/nav
+   - Header collapses properly; hamburger opens/closes drawer; focus trap works; ESC closes.
+   - No layout shifts on open; body scroll locks while drawer/modal open.
+   - No horizontal page scroll at rest (except data tables with intended overflow).
+2) Charts (Line/Bar)
+   - Canvas resizes without clipping; legends wrap; long RU labels don’t overlap.
+   - Toggles/buttons reachable and tappable; tooltips visible and not off‑screen.
+   - No console errors while interacting.
+3) KPI tiles/cards
+   - Wrap to 1–2 per row; numbers readable; RU units/labels not truncated.
+4) Tables/dialogs
+   - Tables allow horizontal scroll; headers remain visible; filter chips wrap and are tappable.
+   - Dialogs (approvals/details) fit viewport height; content scrolls inside; close button works.
+5) Forms/filters
+   - Date/number pickers usable by tap; no cut‑off popovers; Russian locale preserved.
+
+Reporting – paste in consolidated table
+| App | Device | Page/Area | Pass/Fail | Notes | Screenshot |
+| --- | --- | --- | --- | --- | --- |
+
+Add 2–3 screenshots per app covering: nav closed/open, chart view, table/dialog. Name files per docs/SCREENSHOT_INDEX.md (e.g., mp-mobile-nav.png, mp-mobile-chart.png, ad-mobile-chart.png).
+
+Acceptance
+- All checklist items Pass on both apps across listed devices OR failures noted with screenshots and short notes.
+- No console errors during interactions.
+- If any Fail: paste a one‑line proposed fix in Notes (e.g., reduce gap, enable table overflow-x, wrap legend).
+

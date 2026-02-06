@@ -1,0 +1,42 @@
+Forecasting & Analytics — Naumen Parity UAT (2025-10-29)
+
+Hi! Please run the checks below on both the real Naumen portal and the new forecasting demo. All reference screenshots are attached in this message.
+
+=== Login (Real System) ===
+1. Press Ctrl+0 → Ctrl+L, paste the OIDC URL, press Enter:
+   https://kc.dc.oswfm.ru/realms/os_practice51/protocol/openid-connect/auth?client_id=wfm-frontend&redirect_uri=https%3A%2F%2Fwfm-practice51.dc.oswfm.ru&state=0e91ff11-af12-40f0-bd78-13d17f293aea&response_mode=fragment&response_type=code&scope=openid&nonce=5c1a0726-a17f-4227-8fa9-781109a5771c&code_challenge=tyu4i8fC68DDYnOmtqh5y4DD-YiF8qzipnS9bo3nwuA&code_challenge_method=S256
+2. Enter credentials: user20082025 / user20082025.
+3. You should land on https://wfm-practice51.dc.oswfm.ru/schedule/graph. If the redirect stalls >15 s, click once and re-enter credentials.
+
+=== Demo Under Test ===
+- Forecasting & Analytics demo (React 18.3.1 deploy): https://forecasting-analytics-p6z0l224h-granins-projects.vercel.app
+
+=== References ===
+- Manual crosswalk: uat-agent-tasks/manual_forecasting-analytics-crosswalk.md (maps each demo route to CH4 images)
+- Behaviour packs: docs/Tasks/uat-packs/parity_static.md and docs/Tasks/uat-packs/chart_visual_spec.md
+- Attached screenshots (manual_* and playwright_* files) show the expected production behaviours for quick comparison.
+
+=== Focus Checks (delta) ===
+1. FA‑1 — Trends: confidence band + secondary axis legend
+   - Demo page: /trends (Strategic/Tactical/Operational)
+   - Compare with real system (manual images `image27.png`, `image28.png`).
+   - Expect shaded confidence band around the forecast series, legend labels for secondary-axis series, no console errors.
+2. FA‑2 — Manual Adjustments: inline status badges + undo/redo
+   - Demo page: /adjustments
+   - Compare with the production forecast table (manual image `image80.png`).
+   - Expect bulk +10 to show “Сохранено/OK” badges, undo restores baseline, redo re-applies; console clean.
+3. Accuracy dashboard overview
+   - Demo page: /accuracy
+   - Compare with the production forecast analysis view (manual image `image60.png`).
+   - Expect KPI deck + error analysis toggles with RU formatting (comma separators); console clean.
+
+=== Reply Format ===
+| Check | Pass/Fail | Notes | Screenshot |
+| --- | --- | --- | --- |
+| FA‑1 trends confidence band + legend |  |  |  |
+| FA‑2 adjustments badges + undo/redo |  |  |  |
+| Accuracy KPI + error analysis |  |  |  |
+
+Please note any extra findings (e.g., RU localisation, missing import/export flows) under “Notes.” Attach new screenshots only for failures; otherwise the baseline images suffice.
+
+Thanks!

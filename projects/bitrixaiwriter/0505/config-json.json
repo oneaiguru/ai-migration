@@ -1,0 +1,29 @@
+{
+    "bitrix": {
+        "endpoint": "https://www.souz-pribor.ru/rest",
+        "login": "admin",
+        "password": "your_password_here",
+        "timeout": 30
+    },
+    "claude": {
+        "api_key": "sk-ant-api03-your-api-key-here",
+        "model": "claude-3-sonnet-20240229",
+        "temperature": 0.7,
+        "max_tokens": 1000,
+        "top_p": 0.9
+    },
+    "text_ru": {
+        "api_key": "your_text_ru_api_key_here"
+    },
+    "uniqueness": {
+        "threshold": 70,
+        "use_external_api": true,
+        "text_database": "output/text_database.txt",
+        "retry_attempts": 3
+    },
+    "batch_size": 10,
+    "log_file": "logs/rewrite.log",
+    "save_history": true,
+    "output_dir": "output",
+    "debug": false
+}

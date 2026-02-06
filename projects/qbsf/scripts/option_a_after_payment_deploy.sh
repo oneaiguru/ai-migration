@@ -29,7 +29,7 @@ Options:
 
   --settings-name <name>         Default: Default
   --middleware-endpoint <url>    Default: https://sqint.atocomm.eu
-  --middleware-api-key <key>     Default: (Option A key from docs)
+  --middleware-api-key <key>     Default: $API_KEY (env var)
   --qb-realm-id <id>             Default: 9130354519120066
 
   --ssh-host <host>              Default: pve.atocomm.eu
@@ -66,7 +66,7 @@ SKIP_MIDDLEWARE="false"
 
 SETTINGS_NAME="Default"
 MIDDLEWARE_ENDPOINT="https://sqint.atocomm.eu"
-MIDDLEWARE_API_KEY_DEFAULT="UPCzgiXsPuXB4GiLuuzjqtXY4+4mGt+vXOmU4gaNCvM="
+MIDDLEWARE_API_KEY_DEFAULT="${API_KEY:-}"
 MIDDLEWARE_API_KEY="${MIDDLEWARE_API_KEY_DEFAULT}"
 QB_REALM_ID="9130354519120066"
 
@@ -102,6 +102,20 @@ if [[ "${confirm_gate}" != "YES" ]]; then
   echo "Refusing to run: safety gate is enabled." >&2
   echo "Set CONFIRM_DEPLOY=YES to proceed." >&2
   exit 1
+fi
+
+api_key_required="false"
+if [[ "${SKIP_SETTINGS}" != "true" ]]; then
+  api_key_required="true"
+fi
+if [[ "${SKIP_MIDDLEWARE}" != "true" && "${DRY_RUN}" != "true" ]]; then
+  api_key_required="true"
+fi
+
+if [[ "${api_key_required}" == "true" && -z "${MIDDLEWARE_API_KEY}" ]]; then
+  echo "Missing middleware API key." >&2
+  echo "Pass --middleware-api-key <key> or export API_KEY before running." >&2
+  exit 2
 fi
 
 require_cmd sf

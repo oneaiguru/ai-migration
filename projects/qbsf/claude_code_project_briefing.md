@@ -31,7 +31,7 @@ From Roman's latest screenshots (July 10, 2025):
 
 ### 🎯 DEPLOYMENT TARGET
 - **Server:** roman@pve.atocomm.eu -p2323
-- **Password:** 3Sd5R069jvuy[3u6yj  
+- **Password:** $SSH_PASS  
 - **Path:** /opt/qb-integration/
 - **Domain:** https://sqint.atocomm.eu
 

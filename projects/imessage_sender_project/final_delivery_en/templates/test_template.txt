@@ -1,0 +1,6 @@
+Hello, {{ name }}!
+
+We would like to remind you about the {{ event }} scheduled for {{ date }}.
+
+Best regards,
+{{ company }}

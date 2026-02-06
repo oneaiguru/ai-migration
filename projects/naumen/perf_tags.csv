@@ -1,0 +1,10 @@
+file,perf_scenarios
+admin/employee-management.feature,20
+admin/reports-management.feature,36
+admin/schedule-management.feature,31
+admin/shift-management.feature,15
+admin/trend-analysis.feature,27
+admin/schema-management.feature,14
+admin/request-management.feature,29
+user/schedule-management.feature,6
+shared/data-grid.feature,11

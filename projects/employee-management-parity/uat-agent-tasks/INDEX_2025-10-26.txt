@@ -1,0 +1,16 @@
+UAT Outbound Package – 2025-10-26
+
+Included in this package
+- UAT_PROMPT_2025-10-26.txt — single message to paste in UAT chat
+- test-results/portal-requests-after-fix.png — EP proof image (attach in chat)
+- test-results/portal-uat-results-2025-10-26.json — EP prior UAT JSON (optional attachment)
+
+Deploy URLs
+- Employee Portal: https://wfm-employee-portal.vercel.app
+- Manager Portal: https://manager-portal-demo-46qb9mity-granins-projects.vercel.app
+- Analytics Dashboard: https://analytics-dashboard-demo-d60586nei-granins-projects.vercel.app
+
+Reference packs (not attached; link in prompt)
+- docs/Tasks/uat-packs/parity_static.md
+- docs/Tasks/uat-packs/trimmed_smoke.md
+- docs/Tasks/uat-packs/chart_visual_spec.md

@@ -1,0 +1,303 @@
+groups:
+- name: node_alerts
+  rules:
+  - alert: InstanceDown
+    expr: up == 0
+    for: 5m
+    labels:
+      severity: critical
+      category: availability
+    annotations:
+      summary: "Instance {{ $labels.instance }} down"
+      description: "{{ $labels.instance }} of job {{ $labels.job }} has been down for more than 5 minutes."
+      dashboard_url: "https://grafana.example.org/d/rYdddlPWk/node-exporter-full?var-instance={{ $labels.instance }}"
+
+  - alert: HostHighCpuLoad
+    expr: 100 - (avg by(instance) (rate(node_cpu_seconds_total{mode="idle"}[5m])) * 100) > 80
+    for: 10m
+    labels:
+      severity: warning
+      category: resource
+    annotations:
+      summary: "High CPU load on {{ $labels.instance }}"
+      description: "CPU load is above 80% on {{ $labels.instance }} for the last 10 minutes."
+      dashboard_url: "https://grafana.example.org/d/rYdddlPWk/node-exporter-full?var-instance={{ $labels.instance }}"
+
+  - alert: HostHighMemoryUsage
+    expr: (node_memory_MemTotal_bytes - node_memory_MemAvailable_bytes) / node_memory_MemTotal_bytes * 100 > 85
+    for: 10m
+    labels:
+      severity: warning
+      category: resource
+    annotations:
+      summary: "High memory usage on {{ $labels.instance }}"
+      description: "Memory usage is above 85% on {{ $labels.instance }} for the last 10 minutes."
+      dashboard_url: "https://grafana.example.org/d/rYdddlPWk/node-exporter-full?var-instance={{ $labels.instance }}"
+
+  - alert: HostLowDiskSpace
+    expr: (node_filesystem_avail_bytes / node_filesystem_size_bytes) * 100 < 10 and node_filesystem_readonly == 0
+    for: 5m
+    labels:
+      severity: warning
+      category: resource
+    annotations:
+      summary: "Low disk space on {{ $labels.instance }} ({{ $labels.mountpoint }})"
+      description: "Disk space is below 10% on {{ $labels.instance }} at {{ $labels.mountpoint }}."
+      dashboard_url: "https://grafana.example.org/d/rYdddlPWk/node-exporter-full?var-instance={{ $labels.instance }}"
+
+  - alert: HostOutOfDiskSpace
+    expr: (node_filesystem_avail_bytes / node_filesystem_size_bytes) * 100 < 5 and node_filesystem_readonly == 0
+    for: 5m
+    labels:
+      severity: critical
+      category: resource
+    annotations:
+      summary: "Out of disk space on {{ $labels.instance }} ({{ $labels.mountpoint }})"
+      description: "Disk space is below 5% on {{ $labels.instance }} at {{ $labels.mountpoint }}."
+      dashboard_url: "https://grafana.example.org/d/rYdddlPWk/node-exporter-full?var-instance={{ $labels.instance }}"
+
+  - alert: HostUnusualDiskReadLatency
+    expr: rate(node_disk_read_time_seconds_total[1m]) / rate(node_disk_reads_completed_total[1m]) > 0.1 and rate(node_disk_reads_completed_total[1m]) > 0
+    for: 5m
+    labels:
+      severity: warning
+      category: performance
+    annotations:
+      summary: "Unusual disk read latency on {{ $labels.instance }} ({{ $labels.device }})"
+      description: "Disk read latency is above 100ms on {{ $labels.instance }} for device {{ $labels.device }}."
+      dashboard_url: "https://grafana.example.org/d/rYdddlPWk/node-exporter-full?var-instance={{ $labels.instance }}"
+
+  - alert: HostUnusualDiskWriteLatency
+    expr: rate(node_disk_write_time_seconds_total[1m]) / rate(node_disk_writes_completed_total[1m]) > 0.1 and rate(node_disk_writes_completed_total[1m]) > 0
+    for: 5m
+    labels:
+      severity: warning
+      category: performance
+    annotations:
+      summary: "Unusual disk write latency on {{ $labels.instance }} ({{ $labels.device }})"
+      description: "Disk write latency is above 100ms on {{ $labels.instance }} for device {{ $labels.device }}."
+      dashboard_url: "https://grafana.example.org/d/rYdddlPWk/node-exporter-full?var-instance={{ $labels.instance }}"
+
+  - alert: HostHighNetworkTrafficIn
+    expr: sum by (instance) (rate(node_network_receive_bytes_total[5m])) / 1024 / 1024 > 100
+    for: 5m
+    labels:
+      severity: warning
+      category: network
+    annotations:
+      summary: "High network traffic in on {{ $labels.instance }}"
+      description: "Network traffic in is above 100 MB/s on {{ $labels.instance }} for the last 5 minutes."
+      dashboard_url: "https://grafana.example.org/d/rYdddlPWk/node-exporter-full?var-instance={{ $labels.instance }}"
+
+  - alert: HostHighNetworkTrafficOut
+    expr: sum by (instance) (rate(node_network_transmit_bytes_total[5m])) / 1024 / 1024 > 100
+    for: 5m
+    labels:
+      severity: warning
+      category: network
+    annotations:
+      summary: "High network traffic out on {{ $labels.instance }}"
+      description: "Network traffic out is above 100 MB/s on {{ $labels.instance }} for the last 5 minutes."
+      dashboard_url: "https://grafana.example.org/d/rYdddlPWk/node-exporter-full?var-instance={{ $labels.instance }}"
+
+- name: windows_alerts
+  rules:
+  - alert: WindowsInstanceDown
+    expr: up{job="windows"} == 0
+    for: 5m
+    labels:
+      severity: critical
+      category: availability
+    annotations:
+      summary: "Windows instance {{ $labels.instance }} down"
+      description: "{{ $labels.instance }} of job {{ $labels.job }} has been down for more than 5 minutes."
+      dashboard_url: "https://grafana.example.org/d/windows/windows-exporter?var-instance={{ $labels.instance }}"
+
+  - alert: WindowsHighCpuLoad
+    expr: 100 - (avg by(instance) (rate(windows_cpu_time_total{mode="idle"}[5m])) * 100) > 80
+    for: 10m
+    labels:
+      severity: warning
+      category: resource
+    annotations:
+      summary: "High CPU load on Windows {{ $labels.instance }}"
+      description: "CPU load is above 80% on Windows {{ $labels.instance }} for the last 10 minutes."
+      dashboard_url: "https://grafana.example.org/d/windows/windows-exporter?var-instance={{ $labels.instance }}"
+
+  - alert: WindowsHighMemoryUsage
+    expr: 100 - ((windows_os_physical_memory_free_bytes / windows_cs_physical_memory_bytes) * 100) > 85
+    for: 10m
+    labels:
+      severity: warning
+      category: resource
+    annotations:
+      summary: "High memory usage on Windows {{ $labels.instance }}"
+      description: "Memory usage is above 85% on Windows {{ $labels.instance }} for the last 10 minutes."
+      dashboard_url: "https://grafana.example.org/d/windows/windows-exporter?var-instance={{ $labels.instance }}"
+
+  - alert: WindowsLowDiskSpace
+    expr: 100.0 - windows_logical_disk_free_bytes / windows_logical_disk_size_bytes * 100.0 > 90
+    for: 5m
+    labels:
+      severity: warning
+      category: resource
+    annotations:
+      summary: "Low disk space on Windows {{ $labels.instance }} ({{ $labels.volume }})"
+      description: "Disk space usage is above 90% on Windows {{ $labels.instance }} on volume {{ $labels.volume }}."
+      dashboard_url: "https://grafana.example.org/d/windows/windows-exporter?var-instance={{ $labels.instance }}"
+
+- name: prometheus_alerts
+  rules:
+  - alert: PrometheusTargetMissing
+    expr: up == 0
+    for: 15m
+    labels:
+      severity: critical
+      service: prometheus
+    annotations:
+      summary: "Prometheus target missing ({{ $labels.instance }})"
+      description: "A Prometheus target has been missing for more than 15 minutes."
+
+  - alert: PrometheusTooManyRestarts
+    expr: changes(process_start_time_seconds{job=~"prometheus|cortex.*"}[15m]) > 2
+    for: 5m
+    labels:
+      severity: warning
+      service: prometheus
+    annotations:
+      summary: "Prometheus too many restarts ({{ $labels.instance }})"
+      description: "Prometheus has restarted more than twice in the last 15 minutes."
+
+  - alert: PrometheusHighScrapeLatency
+    expr: scrape_duration_seconds > 10
+    for: 5m
+    labels:
+      severity: warning
+      service: prometheus
+    annotations:
+      summary: "Prometheus high scrape latency ({{ $labels.instance }})"
+      description: "Prometheus scrape latency is above 10 seconds."
+
+  - alert: PrometheusRemoteWritePendingSamples
+    expr: prometheus_remote_storage_samples_pending > 100000
+    for: 15m
+    labels:
+      severity: warning
+      service: prometheus
+    annotations:
+      summary: "Prometheus remote write pending samples ({{ $labels.instance }})"
+      description: "Prometheus remote write has more than 100,000 pending samples."
+
+  - alert: PrometheusRemoteWriteStorageFailures
+    expr: rate(prometheus_remote_storage_failed_samples_total[5m]) > 0
+    for: 15m
+    labels:
+      severity: critical
+      service: prometheus
+    annotations:
+      summary: "Prometheus remote write storage failures ({{ $labels.instance }})"
+      description: "Prometheus remote write is experiencing storage failures."
+
+- name: cortex_alerts
+  rules:
+  - alert: CortexIngesterUnhealthy
+    expr: cortex_ring_members{state="Unhealthy", name="ingester"} > 0
+    for: 5m
+    labels:
+      severity: critical
+      service: cortex
+    annotations:
+      summary: "Cortex ingester unhealthy"
+      description: "Cortex ingester is marked as unhealthy for more than 5 minutes."
+
+  - alert: CortexDistributorHighErrorRate
+    expr: sum(rate(cortex_distributor_errors_total[5m])) / sum(rate(cortex_distributor_received_samples_total[5m])) > 0.05
+    for: 5m
+    labels:
+      severity: warning
+      service: cortex
+    annotations:
+      summary: "Cortex distributor high error rate"
+      description: "Cortex distributor error rate is higher than 5% for more than 5 minutes."
+
+  - alert: CortexLowIngesterHeadroom
+    expr: cortex_ingester_memory_series / cortex_ingester_memory_series_limit > 0.8
+    for: 15m
+    labels:
+      severity: warning
+      service: cortex
+    annotations:
+      summary: "Cortex low ingester headroom"
+      description: "Cortex ingester is using more than 80% of its series limit for more than 15 minutes."
+
+  - alert: CortexQuerierHighLatency
+    expr: histogram_quantile(0.99, sum(rate(cortex_query_frontend_query_range_duration_seconds_bucket[5m])) by (le)) > 40
+    for: 5m
+    labels:
+      severity: warning
+      service: cortex
+    annotations:
+      summary: "Cortex querier high latency"
+      description: "Cortex querier has a 99th percentile latency of more than 40 seconds for range queries over the last 5 minutes."
+
+  - alert: CortexStoreGatewayNoSyncedBlocks
+    expr: cortex_blocks_meta_synced != 1
+    for: 5m
+    labels:
+      severity: critical
+      service: cortex
+    annotations:
+      summary: "Cortex store gateway not syncing blocks"
+      description: "Cortex store gateway is not syncing blocks for more than 5 minutes."
+
+  - alert: CortexCompactorFailure
+    expr: rate(cortex_compactor_blocks_cleaning_failures_total[1h]) > 0
+    labels:
+      severity: warning
+      service: cortex
+    annotations:
+      summary: "Cortex compactor failure"
+      description: "Cortex compactor has failures cleaning blocks in the last hour."
+
+- name: alertmanager_alerts
+  rules:
+  - alert: AlertmanagerFailedReload
+    expr: alertmanager_config_last_reload_successful == 0
+    for: 5m
+    labels:
+      severity: critical
+      service: alertmanager
+    annotations:
+      summary: "Alertmanager failed to reload configuration"
+      description: "Alertmanager has failed to reload its configuration."
+
+  - alert: AlertmanagerClusterDown
+    expr: avg_over_time(alertmanager_cluster_health_score[5m]) > 1
+    labels:
+      severity: critical
+      service: alertmanager
+    annotations:
+      summary: "Alertmanager cluster health is degraded"
+      description: "Alertmanager cluster health score is degraded."
+
+- name: grafana_alerts
+  rules:
+  - alert: GrafanaDown
+    expr: absent(up{job="grafana"}) == 1
+    for: 5m
+    labels:
+      severity: critical
+      service: grafana
+    annotations:
+      summary: "Grafana is down"
+      description: "Grafana has been down for more than 5 minutes."
+
+  - alert: GrafanaInstanceHighResponseTime
+    expr: histogram_quantile(0.99, sum(rate(grafana_http_request_duration_seconds_bucket[1m])) by (le)) > 1
+    for: 5m
+    labels:
+      severity: warning
+      service: grafana
+    annotations:
+      summary: "Grafana high response time"
+      description: "Grafana is experiencing high HTTP response times."

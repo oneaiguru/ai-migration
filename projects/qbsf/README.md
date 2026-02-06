@@ -48,6 +48,12 @@ For commands and responses: `.claude/` folder
 - Client communication templates in Russian
 - Troubleshooting procedures
 
+## Ralph Loop Quick Start
+1. Read `PROJECT_BRIEF.md`, `PROMPT_plan.md`, and `PROMPT_build.md`.
+2. Plan loop: `./loop.sh plan 1`
+3. Build loop: `./loop.sh 1`
+4. Follow `docs/SOP/loop_start.md` and `docs/Tasks/README.md` for role flow.
+
 ## 🚀 Current Project Status
 
 **Phase:** Ready for Production Deployment

@@ -1,0 +1,129 @@
+{
+"status": "ok",
+"license_pack": "{"license":{"plan":"trial","features":["zai_offload"],"kid":"TEST","device":"local-demo","exp":4102444800},"signature":"PLACEHOLDER_BASE64"}"
+}
+
+---
+
+# scripts/dev/gen-golden-metrics.sh
+
+#!/usr/bin/env bash
+set -euo pipefail
+PORT="${1:-8082}"
+OUT="services/go-anth-shim/testdata/metrics"
+mkdir -p "$OUT"
+curl -s "[http://127.0.0.1:${PORT}/metrics](http://127.0.0.1:${PORT}/metrics)" > "$OUT/snapshot.prom"
+echo "[gen] wrote $OUT/snapshot.prom"
+echo "[gen] verify contains: expected_contains_happy.txt / expected_contains_fallback.txt"
+
+---
+
+# scripts/dev/check-fixtures.sh
+
+#!/usr/bin/env bash
+set -euo pipefail
+PORT="${1:-8082}"
+TMP="$(mktemp)"
+curl -s "[http://127.0.0.1:${PORT}/metrics](http://127.0.0.1:${PORT}/metrics)" > "$TMP"
+echo "[check] scraped /metrics to $TMP"
+fail=0
+while read -r needle; do
+[[ -z "$needle" ]] && continue
+if ! grep -Fq "$needle" "$TMP"; then
+echo "[check] MISSING: $needle"
+fail=1
+fi
+done < services/go-anth-shim/testdata/metrics/expected_contains_happy.txt
+exit "$fail"
+
+---
+
+# services/go-anth-shim/cmd/ccp/metrics_test.go
+
+package main
+
+import (
+"net/http"
+"os"
+"path/filepath"
+"strings"
+"testing"
+)
+
+func TestMetrics_ContainsGoldenLines(t *testing.T) {
+shim := startShimBasic(t) // uses mock upstreams; already present in your tests
+resp, err := http.Get(shim.URL + "/metrics")
+if err != nil { t.Fatalf("GET /metrics: %v", err) }
+defer resp.Body.Close()
+b, _ := io.ReadAll(resp.Body)
+want := filepath.Join("testdata", "metrics", "expected_contains_happy.txt")
+lines, _ := os.ReadFile(want)
+for _, n := range strings.Split(string(lines), "\n") {
+if n == "" { continue }
+if !strings.Contains(string(b), n) {
+t.Fatalf("missing expected line in /metrics: %q", n)
+}
+}
+}
+
+---
+
+# services/go-anth-shim/cmd/ccp/readyz_test.go
+
+package main
+
+import (
+"encoding/json"
+"net/http"
+"testing"
+)
+
+func TestReadyz_Shape(t *testing.T) {
+shim := startShimBasic(t)
+resp, err := http.Get(shim.URL + "/readyz")
+if err != nil { t.Fatalf("GET /readyz: %v", err) }
+defer resp.Body.Close()
+var got struct {
+Providers []struct {
+Name   string `json:"name"`
+Ok     bool   `json:"ok"`
+Reason string `json:"reason"`
+} `json:"providers"`
+}
+_ = json.NewDecoder(resp.Body).Decode(&got)
+if len(got.Providers) < 1 { t.Fatalf("expected at least one provider") }
+}
+
+---
+
+# services/go-anth-shim/cmd/ccp/usage_fixtures_test.go
+
+package main
+
+import (
+"encoding/json"
+"net/http"
+"testing"
+)
+
+func TestUsage_WarnAndBlockFixtures(t *testing.T) {
+t.Setenv("CCP_DEV_ENABLE", "1")
+shim := startShimBasic(t)
+
+// warm path: simulate ~50%
+http.Post(shim.URL+"/v1/dev/sim-usage", "application/json",
+strings.NewReader(`{"model":"claude-haiku-4.5","in":200,"out":300,"repeat":1,"seconds":60}`))
+
+var usage struct{ Models map[string]struct{
+RollingPct float64 `json:"rolling_pct"`
+WeeklyPct  float64 `json:"weekly_pct"`
+Warn       bool    `json:"warn"`
+Block      bool    `json:"block"`
+} `json:"models"` }
+
+r1, _ := http.Get(shim.URL + "/v1/usage")
+_ = json.NewDecoder(r1.Body).Decode(&usage); r1.Body.Close()
+if usage.Models["claude-haiku-4.5"].Block { t.Fatalf("unexpected block at ~50%") }
+}
+
+---

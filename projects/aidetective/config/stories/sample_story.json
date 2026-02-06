@@ -1,0 +1,178 @@
+{
+  "title": "The Missing Necklace",
+  "description": "A valuable family heirloom has disappeared from a locked room. Can you find the culprit?",
+  "difficulty": "easy",
+  "author": "Sherlock AI",
+  "version": "1.0",
+  "nodes": [
+    {
+      "node_id": "start",
+      "type": "introduction",
+      "content": "You've been called to the Blackwood Manor to investigate the disappearance of a valuable diamond necklace. Lady Eleanor Blackwood reports that her family heirloom was stolen from her bedroom safe last night.",
+      "image": "blackwood_manor.jpg",
+      "transitions": {
+        "Examine the safe": "examine_safe",
+        "Interview Lady Eleanor": "interview_eleanor",
+        "Speak with the butler": "interview_butler"
+      }
+    },
+    {
+      "node_id": "examine_safe",
+      "type": "evidence",
+      "content": "You examine the safe carefully. It appears undamaged, with no signs of forced entry. The safe requires both a key and a combination to open.",
+      "image": "safe.jpg",
+      "evidence": "The safe shows no signs of forced entry, suggesting either the combination was known or a key was used.",
+      "transitions": {
+        "Return to the beginning": "start",
+        "Interview Lady Eleanor": "interview_eleanor",
+        "Speak with the butler": "interview_butler"
+      }
+    },
+    {
+      "node_id": "interview_eleanor",
+      "type": "dialogue",
+      "character": "Lady Eleanor",
+      "content": "Lady Eleanor is visibly upset. 'The necklace has been in my family for generations! I wore it at the dinner party last night, then placed it in the safe before going to bed. When I checked this morning, it was gone!'",
+      "image": "lady_eleanor.jpg",
+      "transitions": {
+        "Ask about the dinner party guests": "dinner_party_guests",
+        "Ask about the safe combination": "safe_combination",
+        "Return to the beginning": "start"
+      }
+    },
+    {
+      "node_id": "interview_butler",
+      "type": "dialogue",
+      "character": "James the Butler",
+      "content": "The butler, James, appears nervous. 'I was serving at the dinner party last night, and then retired to my quarters at 11 PM. I didn't hear anything unusual during the night.'",
+      "image": "butler.jpg",
+      "transitions": {
+        "Ask if he saw anything suspicious": "butler_suspicions",
+        "Ask about his relationship with Lady Eleanor": "butler_relationship",
+        "Return to the beginning": "start"
+      }
+    },
+    {
+      "node_id": "dinner_party_guests",
+      "type": "dialogue",
+      "character": "Lady Eleanor",
+      "content": "'We had four guests last night - my nephew Thomas, my friend Victoria, the local doctor, and Thomas's fiancée Rebecca. They all left around 10 PM.'",
+      "transitions": {
+        "Ask about relationships between the guests": "guest_relationships",
+        "Return to previous questions": "interview_eleanor"
+      }
+    },
+    {
+      "node_id": "safe_combination",
+      "type": "dialogue",
+      "character": "Lady Eleanor",
+      "content": "'Only I know the combination. The safe requires both the combination and a key, which I keep on my nightstand.'",
+      "evidence": "Lady Eleanor keeps the safe key on her nightstand overnight.",
+      "transitions": {
+        "Ask if anyone could have seen the combination": "combination_visibility",
+        "Return to previous questions": "interview_eleanor"
+      }
+    },
+    {
+      "node_id": "combination_visibility",
+      "type": "dialogue",
+      "character": "Lady Eleanor",
+      "content": "'I suppose someone could have watched me open it. I did open the safe to put away some jewelry before the dinner party while my maid was helping me dress.'",
+      "evidence": "Lady Eleanor opened the safe before the dinner party while her maid was present.",
+      "transitions": {
+        "Ask about the maid": "about_maid",
+        "Return to the beginning": "start"
+      }
+    },
+    {
+      "node_id": "about_maid",
+      "type": "dialogue",
+      "character": "Lady Eleanor",
+      "content": "'Martha has been with me for years! I trust her completely. Although... she did recently mention needing money for her mother's medical treatments.'",
+      "evidence": "The maid, Martha, needs money for family medical expenses.",
+      "transitions": {
+        "Interview the maid": "interview_maid",
+        "Return to the beginning": "start"
+      }
+    },
+    {
+      "node_id": "interview_maid",
+      "type": "dialogue",
+      "character": "Martha the Maid",
+      "content": "Martha appears nervous when questioned. 'Yes, I was helping Lady Eleanor before the party. I would never take the necklace! I've been loyal to this family for 15 years!'",
+      "image": "maid.jpg",
+      "transitions": {
+        "Ask about her mother's illness": "mother_illness",
+        "Ask about her whereabouts last night": "maid_whereabouts"
+      }
+    },
+    {
+      "node_id": "mother_illness",
+      "type": "dialogue",
+      "character": "Martha the Maid",
+      "content": "'Yes, my mother needs an expensive operation. But I would never steal! Lady Eleanor has been very generous with advances on my salary.'",
+      "transitions": {
+        "Ask about her whereabouts last night": "maid_whereabouts",
+        "Return to the beginning": "start"
+      }
+    },
+    {
+      "node_id": "maid_whereabouts",
+      "type": "dialogue",
+      "character": "Martha the Maid",
+      "content": "Martha hesitates. 'I was in my room all night after helping Lady Eleanor to bed at 11 PM.' Her eyes dart to the side as she speaks.",
+      "evidence": "Martha seems to be lying about her whereabouts last night.",
+      "transitions": {
+        "Press her on her suspicious behavior": "confront_maid",
+        "Return to the beginning": "start"
+      }
+    },
+    {
+      "node_id": "butler_suspicions",
+      "type": "dialogue",
+      "character": "James the Butler",
+      "content": "'Nothing specific, sir. Although... I did see Martha, the maid, walking in the gardens very late. Must have been around midnight. She normally never leaves the house at night.'",
+      "evidence": "The butler saw Martha walking outside at midnight, contradicting her statement.",
+      "transitions": {
+        "Confront the maid with this information": "confront_maid",
+        "Return to the beginning": "start"
+      }
+    },
+    {
+      "node_id": "butler_relationship",
+      "type": "dialogue",
+      "character": "James the Butler",
+      "content": "'I've served the family for twenty years. Lady Eleanor has always treated me fairly.'",
+      "transitions": {
+        "Ask if he saw anything suspicious": "butler_suspicions",
+        "Return to the beginning": "start"
+      }
+    },
+    {
+      "node_id": "confront_maid",
+      "type": "dialogue",
+      "character": "Martha the Maid",
+      "content": "When confronted with the butler's testimony, Martha breaks down. 'Fine! I took it! My mother will die without that operation, and I was desperate! The necklace is hidden in a hollow book in the library.'",
+      "image": "maid_confession.jpg",
+      "transitions": {
+        "Retrieve the necklace and solve the case": "case_solved"
+      }
+    },
+    {
+      "node_id": "case_solved",
+      "type": "conclusion",
+      "content": "You recover the necklace from the library and return it to Lady Eleanor. Martha confesses to the theft but explains her desperate circumstances. Lady Eleanor, moved by Martha's plight, decides not to press charges and instead offers to pay for her mother's medical treatment.",
+      "image": "case_solved.jpg",
+      "success": true,
+      "transitions": {
+        "Start a new investigation": "end"
+      }
+    },
+    {
+      "node_id": "end",
+      "type": "end",
+      "content": "This investigation is complete. Would you like to try another case?",
+      "transitions": {}
+    }
+  ]
+}

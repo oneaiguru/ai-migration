@@ -1,0 +1,13 @@
+{
+  "device": "",
+  "exp": 1761707395,
+  "features": [
+    "zai_offload"
+  ],
+  "iat": 1761102738,
+  "kid": "2025-10-22-a",
+  "nonce": "dev-trial",
+  "plan": "trial",
+  "schema": "ccp.license.v1",
+  "sub": "local_dev_trial"
+}

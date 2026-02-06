@@ -201,13 +201,13 @@ tail -f /opt/qb-integration/server.log
 
 # Test invoice creation
 curl -X POST https://sqint.atocomm.eu/api/create-invoices \
-  -H "X-API-Key: UPCzgiXsPuXB4GiLuuzjqtXY4+4mGt+vXOmU4gaNCvM=" \
+  -H "X-API-Key: $API_KEY" \
   -H "Content-Type: application/json" \
   -d '{"salesforceInstance":"https://customer-inspiration-2543.my.salesforce.com"}'
 
 # Test payment sync
 curl -X POST https://sqint.atocomm.eu/api/check-payment-status \
-  -H "X-API-Key: UPCzgiXsPuXB4GiLuuzjqtXY4+4mGt+vXOmU4gaNCvM=" \
+  -H "X-API-Key: $API_KEY" \
   -H "Content-Type: application/json" \
   -d '{"salesforceInstance":"https://customer-inspiration-2543.my.salesforce.com","quickbooksRealm":"9130354519120066"}'
 

@@ -2,13 +2,13 @@
 
 ## 🔐 WORKING API KEY (DO NOT CHANGE)
 ```
-UPCzgiXsPuXB4GiLuuzjqtXY4+4mGt+vXOmU4gaNCvM=
+$API_KEY
 ```
 
 ## 🌐 WORKING ENDPOINTS
 ```
 Middleware: https://sqint.atocomm.eu
-Health Check: curl -H "X-API-Key: UPCzgiXsPuXB4GiLuuzjqtXY4+4mGt+vXOmU4gaNCvM=" https://sqint.atocomm.eu/api/health
+Health Check: curl -H "X-API-Key: $API_KEY" https://sqint.atocomm.eu/api/health
 Expected Response: {"success":true,"status":"healthy","timestamp":"..."}
 ```
 
@@ -16,14 +16,14 @@ Expected Response: {"success":true,"status":"healthy","timestamp":"..."}
 ```sql
 -- QB_Integration_Settings__c record ID: a0nSo000002xKO9IAM
 UPDATE QB_Integration_Settings__c 
-SET API_Key__c = 'UPCzgiXsPuXB4GiLuuzjqtXY4+4mGt+vXOmU4gaNCvM=',
+SET API_Key__c = '$API_KEY',
     Middleware_Endpoint__c = 'https://sqint.atocomm.eu',
     QB_Realm_ID__c = '9341454378379755'
 WHERE Id = 'a0nSo000002xKO9IAM';
 
 -- QuickBooks_Settings__c record ID: a0oSo00000DvP8gIAF  
 UPDATE QuickBooks_Settings__c
-SET API_Key__c = 'UPCzgiXsPuXB4GiLuuzjqtXY4+4mGt+vXOmU4gaNCvM=',
+SET API_Key__c = '$API_KEY',
     Middleware_URL__c = 'https://sqint.atocomm.eu'
 WHERE Id = 'a0oSo00000DvP8gIAF';
 ```

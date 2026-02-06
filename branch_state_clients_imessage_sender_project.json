@@ -1,0 +1,10 @@
+{
+  "repo": "projects/imessage_sender_project",
+  "pr_index": 1,
+  "total_prs": 1,
+  "branch": "import-imessage-sender-project-01-all",
+  "base_sha": "c866b500f1b735aba72ad5d4576fab69f85d8e15",
+  "state": "open",
+  "last_codex_check": "",
+  "requires_rebase": false
+}

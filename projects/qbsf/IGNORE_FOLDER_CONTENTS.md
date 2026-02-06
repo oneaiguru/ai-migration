@@ -27,7 +27,7 @@ This folder was provided by the user and contains:
 
 **Critical Info**:
 - Server SSH: `ssh roman@pve.atocomm.eu -p2323`
-- Password: `3Sd5R069jvuy[3u6yj`
+- Password: `$SSH_PASS`
 - QB credentials needed in: `/opt/qb-integration/.env`
 
 ### 2. qb-sf-shareable-package/

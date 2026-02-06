@@ -1,0 +1,35 @@
+Forecasting & Analytics — Live UAT
+
+Instructions
+
+- Behaviour-only UAT (no pixel checks). Use the URL below; report console errors.
+- Paste back the Pass/Fail table (one row per check). Attach a screenshot only for any Fail.
+
+Target
+
+- Forecasting & Analytics: https://forecasting-analytics-4pfj6jygr-granins-projects.vercel.app
+
+Packs to use
+
+- parity_static.md + chart_visual_spec.md (behaviour focus)
+
+Focus checks (delta)
+
+1. FA‑1 — Trends: confidence band + secondary axis legend
+    - Page: /trends
+    - Expect: shaded confidence band visible; legend and labels align to primary/secondary axes
+2. FA‑2 — Manual Adjustments: inline status badges + undo/redo
+    - Page: /adjustments
+    - Expect: apply bulk change → badges appear; undo restores previous state; no console errors
+3. Accuracy dashboard
+    - Page: /accuracy
+    - Check: KPI deck and error analysis toggles render; RU formatting OK; no console errors
+
+Reply format
+| Check | Pass/Fail | Notes | Screenshot |
+| --- | --- | --- | --- |
+| FA‑1 trends confidence band + legend |  |  |  |
+| FA‑2 adjustments badges + undo/redo |  |  |  |
+| Accuracy KPI + error analysis |  |  |  |
+
+Thanks.

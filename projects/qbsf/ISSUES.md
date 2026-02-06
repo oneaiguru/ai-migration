@@ -20,7 +20,7 @@ roman@pve.atocomm.eu: Permission denied (publickey,password).
 ### Attempted Connection
 ```bash
 ssh roman@pve.atocomm.eu -p2323
-Password: 3Sd5R069jvuy[3u6yj
+Password: $SSH_PASS
 ```
 
 ### Impact
@@ -36,7 +36,7 @@ Password: 3Sd5R069jvuy[3u6yj
 5. Special characters in password need escaping
 
 ### Attempted Solutions
-1. ✅ Direct SSH with password `3Sd5R069jvuy[3u6yj` - FAILED
+1. ✅ Direct SSH with password `$SSH_PASS` - FAILED
 2. ✅ Direct SSH with password `ctqxfс` - FAILED
 3. ⏳ Waiting for correct credentials
 
@@ -121,7 +121,7 @@ echo "==================================="
 Roman,
 
 We need to verify server access credentials:
-1. Has the password changed since July? (was: 3Sd5R069jvuy[3u6yj)
+1. Has the password changed since July? (was: $SSH_PASS)
 2. Is SSH key authentication required?
 3. Can your admin run the fix script above?
 

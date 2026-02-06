@@ -1,0 +1,12 @@
+tunnel:
+  name: XrayVPN
+  mtu: 1500
+
+socks5:
+  address: 127.0.0.1
+  port: 10808
+  udp: udp
+  
+# If authentication is enabled, uncomment these lines and set credentials
+#  username: username
+#  password: password

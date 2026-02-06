@@ -17,8 +17,8 @@ Currently the API returns `download_url` but the endpoint doesn't exist!
 GET /api/mytko/rolling_forecast/download
 
 Query Parameters:
-  key  (required) Cache key: "forecast_{cutoff}_{start}_{end}" format
-               (optional filter suffix: "forecast_{cutoff}_{start}_{end}_{suffix}")
+  key  (required) Cache key: "forecast_{cutoff}_{start}_{end}_w{window_days}_m{min_obs}[_suffix]"
+               (_suffix is a hash of filters via build_cache_suffix)
 
 Responses:
   200 OK - CSV file stream
@@ -34,14 +34,17 @@ Responses:
 def rolling_forecast_download(
     key: str = Query(
         ...,
-        pattern=r"^forecast_\\d{4}-\\d{2}-\\d{2}_\\d{4}-\\d{2}-\\d{2}_\\d{4}-\\d{2}-\\d{2}(?:_f[0-9a-f]{12})?$",
+        pattern=(
+            r"^forecast_\\d{4}-\\d{2}-\\d{2}_\\d{4}-\\d{2}-\\d{2}_\\d{4}-\\d{2}-\\d{2}"
+            r"_w\\d+_m\\d+(?:_f[0-9a-f]{12})?$"
+        ),
     ),
 ):
     """
     Download cached forecast as CSV.
 
-    Key format: forecast_{cutoff}_{start}_{end}[_suffix]
-    Example: forecast_2025-03-15_2025-03-16_2025-03-22
+    Key format: forecast_{cutoff}_{start}_{end}_w{window_days}_m{min_obs}[_suffix]
+    Example: forecast_2025-03-15_2025-03-16_2025-03-22_w84_m4_f1a2b3c4d5e6
     """
     from src.sites.forecast_cache import CACHE_DIR, load_from_cache
 
@@ -51,12 +54,26 @@ def rolling_forecast_download(
         cutoff = date_cls.fromisoformat(parts[1])
         start = date_cls.fromisoformat(parts[2])
         end = date_cls.fromisoformat(parts[3])
-        cache_suffix = parts[4] if len(parts) > 4 else None
+        window_part = parts[4]
+        min_part = parts[5]
+        if not window_part.startswith("w") or not min_part.startswith("m"):
+            raise ValueError("Invalid key format")
+        window_days = int(window_part[1:])
+        min_obs = int(min_part[1:])
     except (IndexError, ValueError):
         raise HTTPException(status_code=400, detail="Invalid key format")
 
+    cache_suffix = "_".join(parts[6:]) if len(parts) > 6 else None
+
     # Load from cache
-    df = load_from_cache(cutoff, start, end, cache_suffix=cache_suffix)
+    df = load_from_cache(
+        cutoff,
+        start,
+        end,
+        cache_suffix=cache_suffix,
+        window_days=window_days,
+        min_obs=min_obs,
+    )
     if df is None:
         raise HTTPException(status_code=404, detail="Forecast not found in cache")
 
@@ -101,7 +118,7 @@ class TestRollingForecastDownload:
 
         # Then download via key
         resp = client.get("/api/mytko/rolling_forecast/download", params={
-            "key": "forecast_2025-03-15_2025-03-16_2025-03-22",
+            "key": "forecast_2025-03-15_2025-03-16_2025-03-22_w84_m4_f1a2b3c4d5e6",
         })
         assert resp.status_code == 200
         assert "text/csv" in resp.headers["content-type"]
@@ -117,14 +134,14 @@ class TestRollingForecastDownload:
     def test_download_key_with_suffix(self, client):
         """Download works for cache keys with filter suffix."""
         resp = client.get("/api/mytko/rolling_forecast/download", params={
-            "key": "forecast_2025-03-15_2025-03-16_2025-03-22_fabc1234def0",
+            "key": "forecast_2025-03-15_2025-03-16_2025-03-22_w84_m4_fabc1234def0",
         })
         assert resp.status_code in (200, 404)
 
     def test_download_cache_miss(self, client):
         """404 for non-existent cache."""
         resp = client.get("/api/mytko/rolling_forecast/download", params={
-            "key": "forecast_2099-01-01_2099-01-02_2099-01-08",
+            "key": "forecast_2099-01-01_2099-01-02_2099-01-08_w84_m4_f1a2b3c4d5e6",
         })
         assert resp.status_code == 404
 ```

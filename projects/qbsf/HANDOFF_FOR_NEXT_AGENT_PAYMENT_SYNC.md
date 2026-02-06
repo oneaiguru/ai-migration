@@ -134,7 +134,7 @@ for(CronTrigger job : jobs) {
 ### Step 2: Test Payment Check Manually
 ```bash
 curl -X POST https://sqint.atocomm.eu/api/check-payment-status \
-  -H "X-API-Key: UPCzgiXsPuXB4GiLuuzjqtXY4+4mGt+vXOmU4gaNCvM=" \
+  -H "X-API-Key: $API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
     "salesforceInstance": "https://customer-inspiration-2543.my.salesforce.com",
@@ -144,7 +144,7 @@ curl -X POST https://sqint.atocomm.eu/api/check-payment-status \
 
 ### Step 3: Check Server Logs for Errors
 ```bash
-sshpass -p '3Sd5R069jvuy[3u6yj' ssh -p2323 roman@pve.atocomm.eu \
+sshpass -p '$SSH_PASS' ssh -p2323 roman@pve.atocomm.eu \
   'tail -100 /opt/qb-integration/server.log | grep -i payment'
 ```
 
@@ -168,7 +168,7 @@ sshpass -p '3Sd5R069jvuy[3u6yj' ssh -p2323 roman@pve.atocomm.eu \
 - **Salesforce Org**: https://customer-inspiration-2543.my.salesforce.com
 - **QuickBooks Realm**: 9130354519120066
 - **Middleware**: https://sqint.atocomm.eu (running)
-- **API Key**: UPCzgiXsPuXB4GiLuuzjqtXY4+4mGt+vXOmU4gaNCvM=
+- **API Key**: $API_KEY
 
 ---
 
@@ -224,7 +224,7 @@ sequenceDiagram
 - **Password**: 0mj3DqPv28Dp2
 
 ### Server SSH:
-- **Command**: `sshpass -p '3Sd5R069jvuy[3u6yj' ssh -p2323 roman@pve.atocomm.eu`
+- **Command**: `sshpass -p '$SSH_PASS' ssh -p2323 roman@pve.atocomm.eu`
 - **Middleware Path**: `/opt/qb-integration/`
 
 ### QuickBooks:

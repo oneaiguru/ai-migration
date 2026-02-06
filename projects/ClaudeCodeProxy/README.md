@@ -50,16 +50,12 @@ A proxy server that allows Claude Code to be used in restricted environments, wi
 
 ### Using Docker (Recommended)
 
-> Docker assets (Dockerfile/compose) are not included in this scaffold slice; they will arrive in a later PR. Use the manual setup once the Node server lands or wait for the docker bundle.
-
 1. Clone this repository
 2. Configure your API key: `export DEFAULT_ANTHROPIC_API_KEY=your_api_key`
 3. Start the server: `docker-compose up -d`
 4. Note the admin token from the logs: `docker-compose logs`
 
 ### Manual Setup
-
-> Manual Node setup is not runnable in this slice: the Node entrypoint (package.json/server) is deferred to a later PR. Keep these steps for when the server files are imported.
 
 1. Clone this repository
 2. Install dependencies: `npm install`
@@ -94,8 +90,6 @@ Use the included admin script to manage users and balances:
 ## Client Setup
 
 Users need to configure their environment to use the proxy:
-
-> Client helper scripts (e.g., `client-setup.sh`) are not included in this scaffold slice; they will land with the CLI tooling. Use manual configuration once those scripts arrive.
 
 1. Download the client setup script
 2. Run the script: `./client-setup.sh -u https://your-proxy-server.com -t your_token`
@@ -140,4 +134,4 @@ The system implements a simple prepaid balance model:
 
 ## License
 
-Licensed under the Apache License, Version 2.0. See `LICENSE` and `NOTICE` for details.
+This project is proprietary and confidential.

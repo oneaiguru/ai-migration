@@ -17,7 +17,13 @@ from .data_loader import load_data_bundle
 from .baseline import estimate_weekday_rates
 from .simulator import simulate_fill
 from .forecast_cache import cache_exists, load_from_cache, save_to_cache
-from .rolling_types import ForecastRequest, ForecastResult, MAX_CUTOFF_DATE
+from .rolling_types import (
+    DEFAULT_MIN_OBS,
+    DEFAULT_WINDOW_DAYS,
+    ForecastRequest,
+    ForecastResult,
+    MAX_CUTOFF_DATE,
+)
 
 
 def validate_request(request: ForecastRequest) -> None:
@@ -110,8 +116,13 @@ def build_cache_suffix(
     site_ids: Optional[list[str]],
     district_filter: str | None,
     search_term: str | None,
-) -> str | None:
-    filters: dict[str, object] = {}
+    window_days: int,
+    min_obs: int,
+) -> str:
+    filters: dict[str, object] = {
+        "window_days": int(window_days),
+        "min_obs": int(min_obs),
+    }
     if site_ids:
         filters["site_ids"] = sorted({str(site_id) for site_id in site_ids})
     if district_filter:
@@ -122,8 +133,6 @@ def build_cache_suffix(
         search_value = search_term.strip().lower()
         if search_value:
             filters["search"] = search_value
-    if not filters:
-        return None
     payload = json.dumps(filters, sort_keys=True, separators=(",", ":"))
     digest = hashlib.sha256(payload.encode("utf-8")).hexdigest()[:12]
     return f"f{digest}"
@@ -132,7 +141,8 @@ def build_cache_suffix(
 def generate_rolling_forecast(
     request: ForecastRequest,
     use_cache: bool = True,
-    window_days: int = 56,
+    window_days: int = DEFAULT_WINDOW_DAYS,
+    min_obs: int = DEFAULT_MIN_OBS,
     district_filter: str | None = None,
     search_term: str | None = None,
     apply_holiday_adjustments: bool = False,
@@ -157,7 +167,8 @@ def generate_rolling_forecast(
     Args:
         request: ForecastRequest with cutoff_date, horizon_days, optional site_ids
         use_cache: If True, check/use cache
-        window_days: Training window for rate estimation (default 56)
+        window_days: Training window for rate estimation (default DEFAULT_WINDOW_DAYS)
+        min_obs: Minimum observations per weekday before smoothing
         district_filter: Optional district name (case-insensitive, startswith match)
         search_term: Optional search term (case-insensitive, contains match)
         apply_holiday_adjustments: When True, adjust weekday rates on holidays
@@ -174,11 +185,32 @@ def generate_rolling_forecast(
     cutoff = request.cutoff_date
     start = cutoff + timedelta(days=1)
     end = start + timedelta(days=request.horizon_days - 1)
-    cache_suffix = build_cache_suffix(request.site_ids, district_filter, search_term)
+    cache_suffix = build_cache_suffix(
+        request.site_ids,
+        district_filter,
+        search_term,
+        window_days,
+        min_obs,
+    )
+    cache_enabled = use_cache and not apply_holiday_adjustments
 
     # 2. Check cache
-    if use_cache and cache_exists(cutoff, start, end, cache_suffix=cache_suffix):
-        cached_df = load_from_cache(cutoff, start, end, cache_suffix=cache_suffix)
+    if cache_enabled and cache_exists(
+        cutoff,
+        start,
+        end,
+        cache_suffix=cache_suffix,
+        window_days=window_days,
+        min_obs=min_obs,
+    ):
+        cached_df = load_from_cache(
+            cutoff,
+            start,
+            end,
+            cache_suffix=cache_suffix,
+            window_days=window_days,
+            min_obs=min_obs,
+        )
         if cached_df is not None:
             # Filter by site_ids if provided
             if request.site_ids is not None:
@@ -249,7 +281,7 @@ def generate_rolling_forecast(
         service_df,
         cutoff=cutoff,
         window_days=window_days,
-        min_obs=4,
+        min_obs=min_obs,
     )
 
     if apply_holiday_adjustments:
@@ -272,6 +304,24 @@ def generate_rolling_forecast(
         capacity_liters=1100,
         overflow_threshold=0.8,
     )
+
+    # Add low-confidence flag for reporting (small volume or shallow history)
+    if not service_df.empty and not forecast_df.empty:
+        svc = service_df.copy()
+        svc["service_dt"] = pd.to_datetime(svc["service_dt"])
+        window_start = pd.Timestamp(cutoff - timedelta(days=window_days - 1))
+        window_mask = (svc["service_dt"] >= window_start) & (svc["service_dt"] <= pd.Timestamp(cutoff))
+        window_events = svc.loc[window_mask].groupby("site_id")["service_dt"].count()
+        history = svc.groupby("site_id")["service_dt"].agg(first_service="min", last_service="max")
+        history["history_days"] = (history["last_service"] - history["first_service"]).dt.days
+        stats = history.join(window_events.rename("window_event_count"), how="outer")
+        stats["window_event_count"] = stats["window_event_count"].fillna(0)
+        stats["events_per_week"] = stats["window_event_count"] / (window_days / 7.0)
+        stats["history_days"] = stats["history_days"].fillna(0)
+        low_conf_sites = ((stats["events_per_week"] < 1.0) | (stats["history_days"] < 365)).rename("low_confidence")
+        low_conf_sites.index = low_conf_sites.index.astype(str)
+        forecast_df["site_id"] = forecast_df["site_id"].astype(str)
+        forecast_df["low_confidence"] = forecast_df["site_id"].map(low_conf_sites).fillna(True)
 
     # 6. Filter by site_ids if provided (in case load_data_bundle didn't do full filtering)
     if request.site_ids is not None and not forecast_df.empty:
@@ -297,7 +347,7 @@ def generate_rolling_forecast(
 
     # 9. Cache result
     site_count = forecast_df["site_id"].nunique() if not forecast_df.empty else 0
-    if not forecast_df.empty:
+    if cache_enabled and not forecast_df.empty:
         save_to_cache(
             forecast_df,
             cutoff=cutoff,
@@ -305,6 +355,8 @@ def generate_rolling_forecast(
             end=end,
             site_count=site_count,
             cache_suffix=cache_suffix,
+            window_days=window_days,
+            min_obs=min_obs,
         )
 
     # 10. Return result

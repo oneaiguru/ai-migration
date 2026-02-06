@@ -21,7 +21,7 @@
 ```
 
 ### **Working Configuration**
-- **API Key**: `UPCzgiXsPuXB4GiLuuzjqtXY4+4mGt+vXOmU4gaNCvM=` (DO NOT CHANGE)
+- **API Key**: `$API_KEY` (DO NOT CHANGE)
 - **Middleware**: `https://sqint.atocomm.eu`
 - **SF Org**: `olga.rybak@atocomm2023.eu.sanboxsf`
 

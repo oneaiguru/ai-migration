@@ -99,14 +99,14 @@ sf org login web --alias sanboxsf --instance-url https://customer-inspiration-25
 
 **Command**:
 ```bash
-curl -H "X-API-Key: UPCzgiXsPuXB4GiLuuzjqtXY4+4mGt+vXOmU4gaNCvM=" https://sqint.atocomm.eu/api/health
+curl -H "X-API-Key: $API_KEY" https://sqint.atocomm.eu/api/health
 ```
 
 **Done when**:
 - Returns `{"success":true,"status":"healthy",...}`
 
 **If fails**:
-- SSH to server: `ssh roman@pve.atocomm.eu -p2323` (password: `3Sd5R069jvuy[3u6yj`)
+- SSH to server: `ssh roman@pve.atocomm.eu -p2323` (password: `$SSH_PASS`)
 - Check if server running: `ps aux | grep node`
 - Start if needed: `cd /opt/qb-integration && node src/server.js`
 
@@ -233,10 +233,10 @@ cd /opt/qb-integration
 npm test
 
 # OR test API endpoints manually
-curl -H "X-API-Key: UPCzgiXsPuXB4GiLuuzjqtXY4+4mGt+vXOmU4gaNCvM=" http://localhost:3000/api/health
+curl -H "X-API-Key: $API_KEY" http://localhost:3000/api/health
 curl -X POST http://localhost:3000/api/opportunity-to-invoice \
   -H "Content-Type: application/json" \
-  -H "X-API-Key: UPCzgiXsPuXB4GiLuuzjqtXY4+4mGt+vXOmU4gaNCvM=" \
+  -H "X-API-Key: $API_KEY" \
   -d '{"opportunityId":"test","name":"Test","amount":1000}'
 ```
 

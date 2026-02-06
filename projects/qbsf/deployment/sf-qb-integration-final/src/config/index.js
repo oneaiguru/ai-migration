@@ -17,6 +17,8 @@ module.exports = {
     clientSecret: process.env.QB_CLIENT_SECRET,
     redirectUri: process.env.QB_REDIRECT_URI,
     environment: process.env.QB_ENVIRONMENT || 'sandbox',
+    duplicateNameAutoSuffix: process.env.QB_DUPLICATE_NAME_AUTOSUFFIX === 'true',
+    duplicateNameSuffix: process.env.QB_DUPLICATE_NAME_SUFFIX || ' (SF)',
   },
   security: {
     apiKey: process.env.API_KEY,

@@ -1,0 +1,8 @@
+{
+"providers": [
+{"name":"anthropic","ok":true,"reason":"200"},
+{"name":"zai","ok":false,"reason":"401"}
+]
+}
+
+---

@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(//Users/m/Documents/wfm/main/intelligence/naumen/analytics-dashboard-demo/**)",
+      "Read(//Users/m/Desktop/**)",
+      "Bash(npm run build:*)",
+      "Bash(npm run typecheck:*)",
+      "Bash(find:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

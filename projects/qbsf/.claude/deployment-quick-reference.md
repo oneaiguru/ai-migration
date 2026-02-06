@@ -5,7 +5,7 @@
 ### Connect and Assess
 ```bash
 ssh roman@pve.atocomm.eu -p2323
-# Password: 3Sd5R069jvuy[3u6yj
+# Password: $SSH_PASS
 cd /opt/qb-integration
 cat .env | grep -E "SF_|QB_"
 ps aux | grep node

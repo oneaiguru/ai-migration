@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block title %}{{ 'Add' if request.endpoint == 'prompts.add_prompt' else 'Edit' }} Prompt{% endblock %}
+
+{% block content %}
+<h2>{{ 'Add' if request.endpoint == 'prompts.add_prompt' else 'Edit' }} Prompt</h2>
+<form method="POST">
+    {{ form.hidden_tag() }}
+    <div class="mb-3">
+        {{ form.key.label(class="form-label") }}
+        {{ form.key(class="form-control") }}
+    </div>
+    <div class="mb-3">
+        {{ form.gender.label(class="form-label") }}
+        {{ form.gender(class="form-select") }}
+    </div>
+    <div class="mb-3">
+        {{ form.variant.label(class="form-label") }}
+        {{ form.variant(class="form-select") }}
+    </div>
+    <div class="mb-3">
+        {{ form.content.label(class="form-label") }}
+        {{ form.content(class="form-control", rows=5) }}
+    </div>
+    {{ form.submit(class="btn btn-primary") }}
+</form>
+{% endblock %}

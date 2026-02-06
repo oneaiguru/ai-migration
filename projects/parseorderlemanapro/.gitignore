@@ -1,0 +1,14 @@
+__pycache__/
+.pycache/
+*.pyc
+*.log
+*.png
+*.html
+results/
+lemana_results_*.xlsx
+intermediate_*.xlsx
+checkpoint_*.xlsx
+auth_page_screenshot_*.png
+page_screenshot_*.png
+login_verification_*.png
+page_source_*.html

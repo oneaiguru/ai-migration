@@ -182,14 +182,14 @@ sf project deploy start \
 
 ### Middleware
 - URL: `https://sqint.atocomm.eu`
-- API Key: `UPCzgiXsPuXB4GiLuuzjqtXY4+4mGt+vXOmU4gaNCvM=`
+- API Key: `$API_KEY`
 - Health: `curl -H "X-API-Key: [KEY]" https://sqint.atocomm.eu/api/health`
 
 ### Middleware Server (SSH)
 - Host: `pve.atocomm.eu`
 - Port: `2323`
 - User: `roman`
-- Password: `3Sd5R069jvuy[3u6yj`
+- Password: `$SSH_PASS`
 - Path: `/opt/qb-integration/`
 - Logs: `/tmp/server.log`
 

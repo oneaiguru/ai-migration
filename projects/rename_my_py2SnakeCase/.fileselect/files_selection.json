@@ -1,0 +1,8 @@
+[
+  "plist",
+  "readme.py",
+  "test_watch_downloads.py",
+  "test_watchdog_manager.py",
+  "watch_downloads.py",
+  "watchdog_manager.py"
+]

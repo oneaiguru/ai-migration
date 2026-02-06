@@ -1,0 +1,14 @@
+.DS_Store
+*.zip
+composer.lock
+.phpunit.result.cache
+config/config.json
+data/
+logs/
+output/
+vendor/
+demo-claude 2/Archive/uploads/
+demo-claude 2/Archive/results/
+code/logs/
+code/output/
+0505/stealthtest/__pycache__/

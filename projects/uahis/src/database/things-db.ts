@@ -1,4 +1,4 @@
-import { execSync } from 'child_process';
+import { execFileSync } from 'child_process';
 import type { Task, Tag, DatabaseConnection, TaskWithTags } from './types.js';
 
 export class ThingsDatabase {
@@ -9,7 +9,7 @@ export class ThingsDatabase {
   constructor() {
     // Verify things.py is available
     try {
-      execSync('python3 -c "import things; print(\'OK\')"', { stdio: 'pipe' });
+      this.runPython("import things\nprint('OK')");
       this.loadTagsCache();
     } catch (error) {
       console.error('[DB] things.py not installed or Python not available');
@@ -31,6 +31,44 @@ export class ThingsDatabase {
     } catch (error) {
       console.error('[DB] Error caching tags:', error);
     }
+  }
+
+  private mapTagsToIds(raw: string[] | undefined): string[] {
+    if (!raw || raw.length === 0) return [];
+    if (this.tagsCache.length === 0) {
+      this.loadTagsCache();
+    }
+    const byId = new Set(this.tagsCache.map(t => t.id).filter(Boolean));
+    const titleCounts = new Map<string, number>();
+    for (const t of this.tagsCache) {
+      if (t.title) {
+        titleCounts.set(t.title, (titleCounts.get(t.title) || 0) + 1);
+      }
+    }
+    // Only map unique titles to avoid collapsing duplicate titles across parents.
+    const uniqueTitleToId = new Map(
+      this.tagsCache
+        .filter(t => t.title && t.id && titleCounts.get(t.title) === 1)
+        .map(t => [t.title as string, t.id as string]),
+    );
+    const normalized: string[] = [];
+    for (const tag of raw) {
+      if (!tag) continue;
+      if (byId.has(tag)) {
+        normalized.push(tag);
+        continue;
+      }
+      const mapped = uniqueTitleToId.get(tag);
+      normalized.push(mapped ?? tag);
+    }
+    return normalized;
+  }
+
+  private runPython(script: string): string {
+    return execFileSync('python3', ['-c', script], {
+      encoding: 'utf-8',
+      stdio: ['pipe', 'pipe', 'pipe']
+    });
   }
 
   private runPythonQuery(listType: 'today' | 'upcoming' | 'anytime' | 'someday'): Task[] {
@@ -65,7 +103,7 @@ def get_list(list_type):
             'index': 0,
             'list': '${listType}',
             'status': 0,
-            'tags': []
+            'tags': todo.get('tags', [])
         })
     return result
 
@@ -73,12 +111,13 @@ todos = get_list('${listType}')
 print(json.dumps(todos))
 `;
 
-      const output = execSync(`python3 -c "${script.replace(/"/g, '\\"')}"`, { 
-        encoding: 'utf-8',
-        stdio: ['pipe', 'pipe', 'pipe']
-      });
+      const output = this.runPython(script);
       
-      return JSON.parse(output) as Task[];
+      const tasks = JSON.parse(output) as Task[];
+      return tasks.map(task => ({
+        ...task,
+        tags: this.mapTagsToIds(task.tags)
+      }));
     } catch (error) {
       console.error(`[DB] Error fetching ${listType} tasks:`, error);
       return [];
@@ -119,10 +158,7 @@ for tag in tags:
 print(json.dumps(result))
 `;
 
-      const output = execSync(`python3 -c "${script.replace(/"/g, '\\"')}"`, { 
-        encoding: 'utf-8',
-        stdio: ['pipe', 'pipe', 'pipe']
-      });
+      const output = this.runPython(script);
       
       return JSON.parse(output) as Tag[];
     } catch (error) {
@@ -170,18 +206,19 @@ for todo in all_todos:
             'index': 0,
             'list': todo.get('list', 'anytime'),
             'status': 0,
-            'tags': []
+            'tags': todo.get('tags', [])
         })
 
 print(json.dumps(results))
 `;
 
-      const output = execSync(`python3 -c "${script.replace(/"/g, '\\"')}"`, { 
-        encoding: 'utf-8',
-        stdio: ['pipe', 'pipe', 'pipe']
-      });
+      const output = this.runPython(script);
       
-      return JSON.parse(output) as Task[];
+      const tasks = JSON.parse(output) as Task[];
+      return tasks.map(task => ({
+        ...task,
+        tags: this.mapTagsToIds(task.tags)
+      }));
     } catch (error) {
       console.error('[DB] Error searching tasks:', error);
       return [];

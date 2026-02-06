@@ -1,0 +1,11 @@
+# Template stub. Customize before enabling Mergify.
+
+pull_request_rules:
+  - name: auto-merge codex-approved
+    conditions:
+      - base=main
+      - label=codex-approved
+      # - check-success=<CI_NAME>
+    actions:
+      merge:
+        method: squash

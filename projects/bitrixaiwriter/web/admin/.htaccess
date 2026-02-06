@@ -1,0 +1,88 @@
+# Apache конфигурация для веб-интерфейса администратора
+
+# Включение модуля перезаписи URL
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteBase /admin/
+    
+    # Направление всех API-запросов на api.php
+    RewriteRule ^api(/.*)?$ api.php$1 [QSA,L]
+    
+    # Перенаправление несуществующих файлов на index.html для SPA
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule ^(.*)$ index.html [QSA,L]
+</IfModule>
+
+# Защита доступа к директории admin
+<IfModule mod_authz_core.c>
+    # Включите эти строки и создайте файл .htpasswd для защиты доступа
+    # AuthType Basic
+    # AuthName "Административный раздел"
+    # AuthUserFile /path/to/.htpasswd
+    # Require valid-user
+</IfModule>
+
+# Установка индексного файла
+DirectoryIndex index.html
+
+# Отключение листинга директории
+Options -Indexes
+
+# Кеширование статических ресурсов
+<IfModule mod_expires.c>
+    ExpiresActive On
+    
+    # Изображения
+    ExpiresByType image/jpeg "access plus 1 month"
+    ExpiresByType image/png "access plus 1 month"
+    ExpiresByType image/gif "access plus 1 month"
+    ExpiresByType image/svg+xml "access plus 1 month"
+    
+    # CSS и JavaScript
+    ExpiresByType text/css "access plus 1 week"
+    ExpiresByType text/javascript "access plus 1 week"
+    ExpiresByType application/javascript "access plus 1 week"
+    
+    # HTML документы
+    ExpiresByType text/html "access plus 0 seconds"
+</IfModule>
+
+# Компрессия содержимого
+<IfModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE text/plain
+    AddOutputFilterByType DEFLATE text/html
+    AddOutputFilterByType DEFLATE text/xml
+    AddOutputFilterByType DEFLATE text/css
+    AddOutputFilterByType DEFLATE text/javascript
+    AddOutputFilterByType DEFLATE application/xml
+    AddOutputFilterByType DEFLATE application/xhtml+xml
+    AddOutputFilterByType DEFLATE application/rss+xml
+    AddOutputFilterByType DEFLATE application/javascript
+    AddOutputFilterByType DEFLATE application/x-javascript
+    AddOutputFilterByType DEFLATE application/json
+</IfModule>
+
+# Установка временной зоны по умолчанию
+<IfModule mod_php7.c>
+    php_value date.timezone "Europe/Moscow"
+</IfModule>
+
+# Увеличение лимита памяти для PHP
+<IfModule mod_php7.c>
+    php_value memory_limit 256M
+    php_value max_execution_time 300
+    php_value upload_max_filesize 20M
+    php_value post_max_size 20M
+</IfModule>
+
+# Запрет доступа к конфигурационным файлам
+<FilesMatch "^\.ht|^config\.json|\.log$">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+
+# Запрет доступа к системным директориям
+<IfModule mod_rewrite.c>
+    RewriteRule ^(logs|config|output)/ - [F,L]
+</IfModule>

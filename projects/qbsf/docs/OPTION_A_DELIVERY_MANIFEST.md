@@ -86,7 +86,7 @@
 **QB_Integration_Settings__c:**
 ```
 Middleware_Endpoint__c = https://sqint.atocomm.eu
-API_Key__c = UPCzgiXsPuXB4GiLuuzjqtXY4+4mGt+vXOmU4gaNCvM=
+API_Key__c = $API_KEY
 QB_Realm_ID__c = 9130354519120066
 ```
 

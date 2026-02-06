@@ -1,0 +1,26 @@
+graph TB
+    subgraph "Production Environment"
+        TG[Telegram API] --> LB[Load Balancer]
+        LB --> APP1[App Server 1]
+        LB --> APP2[App Server 2]
+        APP1 --> CACHE[Redis Cache]
+        APP2 --> CACHE
+        APP1 --> DB[(Primary DB)]
+        APP2 --> DB
+        DB --> BACKUP[(Backup DB)]
+        APP1 --> MEDIA[Media Storage]
+        APP2 --> MEDIA
+    end
+    
+    subgraph "External Services"
+        APP1 --> OPENAI[OpenAI API]
+        APP2 --> OPENAI
+        APP1 --> PAY[YooMoney API]
+        APP2 --> PAY
+    end
+    
+    subgraph "Monitoring"
+        APP1 --> MON[Monitoring System]
+        APP2 --> MON
+        MON --> ALERT[Alert System]
+    end

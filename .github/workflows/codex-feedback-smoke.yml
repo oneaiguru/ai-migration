@@ -1,0 +1,34 @@
+name: Codex Feedback Smoke
+
+on:
+  pull_request:
+    paths:
+      - "scripts/dev/fetch_codex_feedback.sh"
+      - "scripts/dev/watch_codex_feedback.sh"
+      - ".github/workflows/codex-feedback-smoke.yml"
+  push:
+    branches: [main]
+    paths:
+      - "scripts/dev/fetch_codex_feedback.sh"
+      - "scripts/dev/watch_codex_feedback.sh"
+      - ".github/workflows/codex-feedback-smoke.yml"
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Shellcheck syntax (bash -n)
+        run: |
+          if [[ -f scripts/dev/fetch_codex_feedback.sh ]]; then bash -n scripts/dev/fetch_codex_feedback.sh; else echo "skip: fetch helper missing"; fi
+          if [[ -f scripts/dev/watch_codex_feedback.sh ]]; then bash -n scripts/dev/watch_codex_feedback.sh; else echo "skip: watcher missing"; fi
+
+      - name: Exercise watcher (best-effort)
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO: ${{ github.repository }}
+        run: |
+          # Should exit cleanly even with no open PRs; writes feedback files only if Codex commented/reacted.
+          if [[ -f scripts/dev/watch_codex_feedback.sh ]]; then scripts/dev/watch_codex_feedback.sh || true; else echo "skip: watcher missing"; fi

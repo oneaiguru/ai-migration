@@ -1,0 +1,14 @@
+From: client@example.com
+Subject: Website Feedback
+Date: March 16, 2025
+
+Hi there,
+
+I reviewed the initial designs you sent over. I like the overall direction, but I have a few concerns about the mobile layout. The navigation seems crowded on smaller screens.
+
+Could we schedule a call this week to discuss some alternatives? I'm available Wednesday afternoon or Thursday morning.
+
+Also, what's the timeline for the next milestone?
+
+Thanks,
+John

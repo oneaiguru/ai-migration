@@ -1,0 +1,51 @@
+Hi! Please run a parity-first UAT pass comparing the real Naumen employee portal with our latest WFM Employee Portal demo.
+
+=== Targets ===
+1. Real system (reference):
+   ACCESS OIDC URL (paste exactly): https://kc.dc.oswfm.ru/realms/os_practice51/protocol/openid-connect/auth?client_id=wfm-frontend&redirect_uri=https%3A%2F%2Fwfm-practice51.dc.oswfm.ru&state=0e91ff11-af12-40f0-bd78-13d17f293aea&response_mode=fragment&response_type=code&scope=openid&nonce=5c1a0726-a17f-4227-8fa9-781109a5771c&code_challenge=tyu4i8fC68DDYnOmtqh5y4DD-YiF8qzipnS9bo3nwuA&code_challenge_method=S256
+   App URL (post-login): https://wfm-practice51.dc.oswfm.ru/ (should land on /schedule/graph)
+   USERNAME: user20082025
+   PASSWORD: user20082025
+   LOGIN MACRO: Ctrl+0 → Ctrl+L → paste OIDC URL → Enter → enter creds on Keycloak → Enter. If redirect stalls >15 s, click the page once and re‑enter credentials. Still blocked? report LOGIN_FAIL with the URL shown.
+
+2. Demo under test:
+   Employee Portal (prod): https://wfm-employee-portal-jf96k5u9o-granins-projects.vercel.app  
+   (Canonical alias: https://wfm-employee-portal.vercel.app)
+
+=== Reference bundle (attached) ===
+Available at `~/Desktop/tmp-employee-portal-uat/`:
+- `manual_employee-portal-navigation-crosswalk.md`
+- `parity_static.md`
+- `trimmed_smoke.md`
+- `CH2_Login_System.md`
+- `CH3_Employees.md`
+- `CH5_Schedule_Advanced.md`
+- `CH7_Appendices.md`
+
+Read the crosswalk plus parity pack before starting, then keep them open while you test.
+
+=== What to do ===
+• Execute every step in `parity_static.md`, then run `trimmed_smoke.md` on the demo. After each major checkpoint, visit the matching screen in the real Naumen portal and note behavioural/copy differences.
+• Focus specifically on:
+  - Header navigation (primary + secondary tabs) and the “Рабочая структура” drawer.
+  - Dashboard cards, quick actions, and vacation balance vs production values.
+  - Vacation Requests page: filter tabs, date range, search, CSV export toast, New Request dialog (validation + emergency flag), history dialog.
+  - Profile tabs: personal/contact/work/address/emergency sections, validation/save toast.
+• Record any RU localisation issues (English text, mismatched phrases) you see in the demo.
+• Surface any console errors or broken interactions encountered.
+
+=== Evidence to return (plain text only) ===
+1. Pass/Fail table covering every checklist item you executed (both parity_static and trimmed_smoke). Include concise evidence per row.
+2. Narrative “screenshots” describing:
+   - `portal-work-structure` — what’s visible when the Work Structure drawer is open (path, manager, phones, emergency contact).
+   - `portal-vacation-export` — what you see immediately after triggering the CSV export (toast text, filename, table state).
+3. Bullet comparison summary listing all demo vs production gaps/extras (reference the Naumen UI so we can double-check).
+4. List of RU localisation issues (if none, state “None observed”).
+5. Note any blockers that would require us to redeploy.
+
+=== Guardrails ===
+• Observation only—do not modify either system.
+• Keep notes in your reply; you don’t have write access to the repo.
+• If real-system login fails after retrying, stop and report the failure with details.
+
+Thank you! Reply in English so we can paste your findings directly into our coordinator docs.

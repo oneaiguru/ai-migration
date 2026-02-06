@@ -1,0 +1,21 @@
+date,session_id,task,tokens_planned,tokens_actual,delta,commits,lines_added,lines_deleted,features_added,tests_added,notes
+2025-10-19,0199f878-7b4c-7423-9b83-c2bd6e6749d6,session_documentation,0,240000,240000,0,0,0,0,0,"Documented SOPs, backlog, ledgers"
+2025-10-20,0199f878-7b4c-7423-9b83-c2bd6e6749d6,experiment_001_codex_window,190000,240000,50000,0,0,0,0,0,"Codex window (W0-21) simulated via fixtures; automation+ccusage coverage validated"
+2025-10-20,n/a,experiment_001_claude_window,0,0,0,0,0,0,0,0,"Claude window (W0-21C) simulated via fixtures; claude monitor ingestion validated"
+2025-10-20,0199f878-7b4c-7423-9b83-c2bd6e6749d6,session_documentation_wrap,200000,270000,70000,0,0,0,0,0,"Full session context usage ~270k tokens; doc/roadmap updates"
+2025-10-20,0199f878-7b4c-7423-9b83-c2bd6e6749d6,session_documentation_wrap,200000,164000,-36000,0,0,0,0,0,"CORRECTION: supersedes prior 270k entry; recalculated actual=164k; reason: session scope recheck"
+2025-10-19,0199f878-7b4c-7423-9b83-c2bd6e6749d6,session_usage_snapshot,0,237000,237000,0,0,0,0,0,"Status snapshot: Codex showing 237k tokens used; informational entry"
+2025-10-19,0199f878-7b4c-7423-9b83-c2bd6e6749d6,session_status_snapshot,0,168000,168000,0,0,0,0,0,Status snapshot: Codex showing 168k tokens used; informational entry
+2025-10-19,planned-001-churn,next_session_planning,200000,,,0,0,0,0,0,Planned token budget for next churn instrumentation session (~70% window)
+2025-10-19,0199f878-7b4c-7423-9b83-c2bd6e6749d6,session_status_snapshot,0,117000,,0,0,0,0,0,Status snapshot: Codex showing 117k tokens used; informational entry
+2025-10-19,planned-002-ledger-automation,next_session_planning,200000,,,0,0,0,0,0,Planned token budget for ledger automation session (churn automation follow-up)
+2025-10-19,subagent-W0-CHN,other_agent_feature,,,,0,0,0,1,0,"Other agent (W0-CHN): recorded 1 feature; telemetry TODO open"
+2025-10-19,n/a,end_of_session,200000,168000,-32000,0,0,0,3,0,window=W0-20; provider=codex; session002 close
+2025-10-19,n/a,end_of_session,200000,174000,-26000,0,0,0,2,0,window=W0-CHP; provider=codex; long session close
+2025-10-20,planned-005-long-session,next_session_planning,180000,,,0,0,0,0,0,"Plan for 005 long session (codex). Current card: 5h=7%, weekly=22%; expect 3-4 micro tasks"
+2025-10-20,n/a,automation_decision,180000,176000,-4000,0,0,0,2,0,window=W0-CHP; provider=codex; session005 automation test; decision=  GO
+2025-10-20,n/a,automation_decision_v2,180000,175500,-4500,0,0,0,2,0,window=W0-CHP; provider=codex; session005 automation retest; decision=GO
+2025-10-20,n/a,end_of_session,180000,175000,-5000,0,0,0,2,0,window=W0-CHP-1; provider=codex; W0-CHP-1 close; decision=GO
+2025-10-20,n/a,end_of_session_v2,180000,174500,-5500,0,0,0,2,0,window=W0-CHP-1; provider=codex; W0-CHP-1 close commit; decision=GO
+2025-10-20,planned-006-polishing,next_session_planning,210000,,,0,0,0,0,0,"Plan for Brief 006 polishing session; target 70-80% of context"
+2025-10-20,n/a,end_of_session,200000,195000,-5000,0,0,0,2,0,window=W0-CHP-2; provider=codex; week0 codex window; decision=GO

@@ -1,0 +1,7 @@
+{
+  "workspaces": [
+    { "id": "ws_001", "name": "Любой", "isDefault": true },
+    { "id": "ws_002", "name": "ПСМ3", "isDefault": false },
+    { "id": "ws_003", "name": "Водители 2", "isDefault": false }
+  ]
+}

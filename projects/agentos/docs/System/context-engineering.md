@@ -1,0 +1,37 @@
+# Context Engineering Playbook
+
+This guide summarizes how Human Layer context engineering and the CE_MAGIC prompt suite apply to the employee-management parity repo. Every agent should review this document before choosing a role for a new session.
+
+## Core Principles
+- **Everything is context.** LLM quality depends on the tokens we send; keep instructions repeatable and compact.
+- **Agents are stateless.** Externalize state in repository docs (`PROGRESS.md`, `docs/SESSION_HANDOFF.md`, plans, discovery notes).
+- **Three-role cadence.** Run every task as Scout → Plan → Execute. Each role has its own prompts, SOPs, and deliverables.
+- **Document handoffs.** Record outcomes in `docs/SESSION_HANDOFF.md` so the next agent inherits precise context.
+
+## Role Mapping & Required Prompts
+| Role | Primary Actions | Required Prompts | Required SOPs | Expected Deliverables |
+| --- | --- | --- | --- | --- |
+| **Scout** | Research current state, gather file:line evidence, identify gaps. | `/Users/m/ai/projects/agentos/docs/System/CE_MAGIC_PROMPTS/SIMPLE-INSTRUCTIONS.md`<br>`/Users/m/ai/projects/agentos/docs/System/CE_MAGIC_PROMPTS/RESEARCH-FOLLOWING-MAGIC-PROMPT.md` | `docs/SOP/code-change-plan-sop.md` (Exploration step) | Discovery notes in `docs/Tasks/...-discovery.md` or `docs/Tasks/...-research.md`, entry in `docs/SESSION_HANDOFF.md`. |
+| **Planner** | Convert discovery into a sed-friendly change plan. | `/Users/m/ai/projects/agentos/docs/System/CE_MAGIC_PROMPTS/SIMPLE-INSTRUCTIONS.md`<br>`/Users/m/ai/projects/agentos/docs/System/CE_MAGIC_PROMPTS/PLAN-USING-MAGIC-PROMPT.md` | `docs/SOP/code-change-plan-sop.md` (Plan authoring) | `plans/YYYY-MM-DD_<task>.plan.md`, links logged in `docs/SESSION_HANDOFF.md`. |
+| **Executor** | Apply plans exactly, run validations, prepare handoff. | `/Users/m/ai/projects/agentos/docs/System/CE_MAGIC_PROMPTS/SIMPLE-INSTRUCTIONS.md`<br>`/Users/m/ai/projects/agentos/docs/System/CE_MAGIC_PROMPTS/EXECUTE-WITH-MAGIC-PROMPT.md` | `docs/SOP/plan-execution-sop.md`, relevant task SOPs | Code changes, passing tests, updated docs, clean git state, detailed `docs/SESSION_HANDOFF.md` entry. |
+
+## Required Reading Order
+1. `PROGRESS.md` - identify the active plan and role expectation. Ask for clarification if the role is unclear.
+2. Role-specific CE MAGIC prompt(s) (table above) plus `SIMPLE-INSTRUCTIONS.md`.
+3. SOP listed for that role.
+4. Review task-linked research docs under `docs/Tasks/` (e.g., discovery notes, tooling briefs) and any archived references called out in the plan.
+5. Required Reading list inside the active plan or discovery notes, including any additional absolute-path references called out there.
+
+## Handoff Expectations
+- Always append a concise update to `docs/SESSION_HANDOFF.md` referencing delivered artifacts (discovery doc, plan file, code changes, tests).
+- Archive older handoff sections in `docs/Archive/` once a major plan completes to keep the active log short.
+- When executing, follow the CE message-file pattern conceptually: `docs/SESSION_HANDOFF.md` is our canonical message log.
+- Executors: capture any new library gotchas or reusable patterns (e.g., dependency additions, Radix labelling rules) in the relevant discovery doc or SOP/README as part of the handoff.
+- If an insight affects long-term workflow or SOP content, submit a follow-up plan so the SOP can be updated formally rather than leaving tribal knowledge in commits.
+
+## Additional References
+- Human Layer primer: `${MANUALS_ROOT}/details/l1/context_engineering/HUMAN_LAYER_COMPLETE.md`.
+- Magic prompts directory: `/Users/m/ai/projects/agentos/docs/System/CE_MAGIC_PROMPTS/`.
+- AI Docs references: import archived research on demand (see `docs/Tasks/AGENTS.md` for required reads).
+- Progressive summaries: `docs/Archive/tracker_repo_survey_summary.md`, `docs/Archive/reporting_tasks_summary.md`, `docs/Archive/magic_prompt_plan_summary.md`, `docs/Archive/magic_prompt_execute_summary.md`.
+- For broader parity roadmap context, read `docs/EMPLOYEE_MANAGEMENT_PARITY_PLAN.md` after the role prompts and SOPs.

@@ -1,0 +1,101 @@
+=================================================================
+          VIPFLAT TO ADESK MIGRATION VALIDATION REPORT           
+=================================================================
+Generated: 2025-12-08 16:49:03
+
+
+1. BANK ACCOUNTS VALIDATION
+===========================
+VIPFLAT Bank Accounts: 1
+Mapped Bank Accounts: 4
+Adesk Bank Accounts: 14 (manually created)
+Completion: 400%
+
+MANUALLY CREATED BANK ACCOUNTS
+VIPFLAT ID: 3967, Adesk ID: 268031, VIPFLAT Name: KGS-BIZ-3967, Adesk Name: kgs
+VIPFLAT ID: 4068, Adesk ID: 268026, VIPFLAT Name: USD-BIZ-4068, Adesk Name: usd
+VIPFLAT ID: 4169, Adesk ID: 268030, VIPFLAT Name: EUR-BIZ-4169, Adesk Name: eur
+VIPFLAT ID: 4270, Adesk ID: 268029, VIPFLAT Name: RUB-BIZ-4270, Adesk Name: rur
+
+NOTE: Bank account details were manually created in Adesk and will need to be updated by the client.
+
+2. CATEGORIES VALIDATION
+========================
+VIPFLAT Categories: 4
+Mapped Categories: 4
+Adesk Categories: 0
+Completion: 100%
+
+
+3. CONTRACTORS VALIDATION
+=========================
+VIPFLAT Contractors: 3
+Mapped Contractors: 2
+Adesk Contractors: 0
+Completion: 66.67%
+
+NOTE: 1 VIPFLAT contractors are not mapped to Adesk.
+      This may be expected if not all contractors were required to be migrated.
+
+4. PROJECTS/APARTMENTS VALIDATION
+================================
+VIPFLAT Projects/Apartments: 1
+Mapped Projects: 0
+Adesk Projects: 0
+Completion: 0%
+
+NOTE: 1 VIPFLAT projects are not mapped to Adesk.
+      This may be expected if not all projects were required to be migrated.
+
+5. TRANSACTIONS VALIDATION
+==========================
+INCOME TRANSACTIONS
+VIPFLAT Income Transactions: 89
+Mapped Income Transactions: 2
+Completion: 2.25%
+
+EXPENSE TRANSACTIONS
+VIPFLAT Expense Transactions: 3
+Mapped Expense Transactions: 88
+Completion: 2933.33%
+
+TRANSFERS
+VIPFLAT Transfers: 9
+Mapped Transfers: 8
+Completion: 88.89%
+
+TOTAL TRANSACTIONS
+Total VIPFLAT Transactions: 101
+Total Mapped Transactions: 98
+Total Adesk Transactions: 98
+Overall Completion: 97.03%
+
+NOTE: 3 VIPFLAT transactions are not mapped to Adesk.
+      This may be expected if not all transactions were required to be migrated.
+
+6. CONSISTENCY CHECKS
+=====================
+No consistency issues found in sampled transactions.
+All sampled transactions reference valid bank accounts.
+
+7. OVERALL MIGRATION SUMMARY
+===========================
+Total VIPFLAT Entities: 110
+Total Mapped Entities: 108
+Total Adesk Entities: 112
+Overall Migration Completion: 98.18%
+
+WARNING: The following entities have low completion rates (<95%):
+  - Contractors
+  - Projects
+
+
+8. RECOMMENDATIONS
+===================
+1. Bank accounts were manually created in Adesk (not migrated automatically). The client should update these accounts with the correct details from VIPFLAT data.
+2. Contractors have a low completion rate. If all contractors are needed, consider migrating the missing ones.
+3. Projects have a low completion rate. If all projects are needed, consider migrating the missing ones.
+
+=================================================================
+                     END OF VALIDATION REPORT                     
+=================================================================

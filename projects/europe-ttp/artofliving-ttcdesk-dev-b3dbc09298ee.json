@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "artofliving-ttcdesk-dev",
+  "private_key_id": "b3dbc09298ee45c7dc990d360a1da427f9d21363",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQDkCaXYGQyP6XAZ\nktwdBzw6d7fzuDIZvOfwHSKeQwrvZENC1RaXppRkrjgQEoDjSzWHBFXMGMoZL0J6\nwGeeS6UT40SMKT91V2g6CQtleixtQcXuaeVdmkHntpSwtBUJaiYihO6QuL9uFQQo\nvB/1IV0kQPHs360Ud7KVqae+HuC7Ci14+8zBqCbbvXItTMXVu2S0IjNN4sMxcUH/\n5fzlXA5hjufFQhU/hHKmaAKj8wQR/G91FYzqGHIBPxAJ/Qv5o4L03LsS1inuKNuE\nWs2rOfn3XD/nCPQIHZklsTyAtNfJzEnm5oH5IlgPm6PhqipQqHhSWjQsvjSpu88A\nlMtk2u91AgMBAAECggEAE8P0UIlHSfgJY+YTVx7H7SdwVdsq2IlDr0/PLtmPypUt\nsU7IAQgKx7lEGbyI2Gqt7pCFIUYqykkK4ZnowVM8MT+bMuzmV7TmT1V2W+rdi/DO\nB669F0JmIP/13mUVh7XgLVDJXtjsms2OiTtZJ8WnDZvlfEsc9O+1FnzYkcWaZAvB\nZs6kaOJj3HXQigu4sxfRCrk59hFfR1DS8aLkSHGjZNQrX9B/X6/BcKaSD9wrcyXo\nRV+ODG5GnenaIgeKGssTI/UZVgSrxyouVtMCjzUnuGipiUou+CASZtG3KnyRt144\n859Odkt3MWwi8OEwZcFVAk2q61GI1RS4HEnJKJCUZwKBgQD0rzdHhYHlEOLoZRFo\nGs0l+0OzevQFcio2yzHMGy8DUG79+vsUae9zSk+6zDWdsgrvek1/wsyRLmVuRgGE\nhFqDnURf9BxDDOErepPuimSO8CKu/JmzKHnUYX1CWWIDQglQOzCLkx6McW9UGgs9\n51jwghNgpAXt2kp+V6A8MChJgwKBgQDulVp4JFdBdg2e/gHIXaRxTrP4hW0Adagm\neQ33czlJPNBRFUvW5ESSGbBezqYE2/M9Fp4qZvuz7c0ftYfteT4vOUy4oKzL9c9F\nGGKanhBM90yWKwzLSAMD7pUvqTHJjzkOuUlkwv18k4uLEF/uPTPqWGRVtYpen2wI\nnvSKDW8ppwKBgB7Yr/leRV/hXxm5FBaxukcdhA1uZLEDEXtS5nY6vxSF4Vg3ecu7\nByrbpW2BLQkyVtqV6os+vZdX6AWc4bgZD2gkPWhzV9TEHObkTx31aHP0pgq1YZMK\neUFjAO2KYybR/maU76vI4kMGUeiiV+R38+huHY9DXlP7/wQqe9Lap1mNAoGBANeq\nts8nuqB4ALQaVK40x/OM+27J3dCuisPMZe2rgLtNd9nz8ExeqAWRpzbsgnKeCPDN\nw0f9M8ZgTi49wJPQJ4A0wb+brtfoaebBtlCiVYXdfqO4YqZXgDJLtxwQS+sxxpgi\nsc+d29qC3X9l2/HV7VoHcRtxMZV7cwMP/WnV3wi9AoGBAMfHLQWhUba9ohOLzP9/\nzSjmZo5lTKgy607xTXZV7ZPLktOs70YKfSzC8mwnQ9xjTYRrogQ89y6JzSyyJvyX\n6a0B4AdNw8Zs9vNu3DCyWVZgv+odQ6Dn7ha2Q+M/oGG3pnq6iUJNqDvreJjBRhs+\nbQdgGTvQb/CnGoHe5YJYN7M2\n-----END PRIVATE KEY-----\n",
+  "client_email": "gcs-upload@artofliving-ttcdesk-dev.iam.gserviceaccount.com",
+  "client_id": "105635864226627589957",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://accounts.google.com/o/oauth2/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/gcs-upload%40artofliving-ttcdesk-dev.iam.gserviceaccount.com"
+}

@@ -1,0 +1,49 @@
+{
+  "name": "things-mcp",
+  "version": "0.1.0",
+  "description": "A Model Context Protocol (MCP) server that provides seamless integration with the Things productivity app.",
+  "main": "dist/src/index.js",
+  "type": "module",
+  "private": false,
+  "bin": {
+    "things-mcp": "dist/src/index.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/src/index.js",
+    "test:bdd": "cucumber-js",
+    "test:bdd:watch": "nodemon --exec npm run test:bdd",
+    "test:coverage": "c8 npm run test:bdd",
+    "test:uat": "node dist/src/cli/test-runner.js",
+    "test:uat:scenario": "node dist/src/cli/test-runner.js"
+  },
+  "keywords": [
+    "mcp",
+    "things",
+    "culturedcode",
+    "culturedcode.com",
+    "culturedcode.com/things",
+    "culturedcode.com/things/mcp"
+  ],
+  "author": "Dimitrios Filippou <info@jimfilippou.com>",
+  "license": "ISC",
+  "packageManager": "pnpm@10.11.1",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.12.1",
+    "better-sqlite3": "^12.4.6",
+    "blessed": "^0.1.81",
+    "glob": "^13.0.0",
+    "zod": "^3.25.56"
+  },
+  "devDependencies": {
+    "@cucumber/cucumber": "^10.0.0",
+    "@types/better-sqlite3": "^7.6.13",
+    "@types/blessed": "^0.1.26",
+    "@types/chai": "^5.2.3",
+    "@types/glob": "^8.1.0",
+    "@types/node": "^22.15.30",
+    "c8": "^10.1.3",
+    "chai": "^4.4.0",
+    "typescript": "^5.8.3"
+  }
+}

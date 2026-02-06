@@ -1,0 +1,63 @@
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+  external_labels:
+    cluster: 'prometheus-cluster'
+    __replica__: '$(POD_NAME)'
+
+remote_write:
+  - url: "http://cortex-distributor:9009/api/v1/push"
+    basic_auth:
+      username_file: /run/secrets/cortex_user
+      password_file: /run/secrets/cortex_password
+    headers:
+      X-Scope-OrgID: "tenant"
+    queue_config:
+      max_samples_per_send: 10000
+      capacity: 500000
+      max_shards: 250
+    retry_on_http_429: true
+
+scrape_configs:
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: ['localhost:9090']
+
+  - job_name: 'linux'
+    file_sd_configs:
+      - files:
+        - '/etc/prometheus/targets/linux/*.yml'
+        refresh_interval: 5m
+
+  - job_name: 'windows'
+    file_sd_configs:
+      - files:
+        - '/etc/prometheus/targets/windows/*.yml'
+        refresh_interval: 5m
+    metrics_path: /metrics
+
+  - job_name: 'cortex'
+    static_configs:
+      - targets:
+        - 'cortex-distributor-1:9009'
+        - 'cortex-distributor-2:9009'
+        - 'cortex-distributor-3:9009'
+        - 'cortex-ingester-1:9009'
+        - 'cortex-ingester-2:9009'
+        - 'cortex-ingester-3:9009'
+        - 'cortex-query-frontend:9010'
+        - 'cortex-querier-1:9009'
+        - 'cortex-querier-2:9009'
+        - 'cortex-store-gateway-1:9009'
+        - 'cortex-store-gateway-2:9009'
+        - 'cortex-compactor:9009'
+        - 'cortex-ruler:9009'
+
+alerting:
+  alertmanagers:
+  - static_configs:
+    - targets:
+      - 'alertmanager:9093'
+
+rule_files:
+  - '/etc/prometheus/rules/*.yml'

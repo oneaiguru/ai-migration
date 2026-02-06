@@ -1,0 +1,128 @@
+# Data Strategy & Business Case (06:41–20:05)
+
+## Section 1: Current Product Positioning (06:41–12:14)
+
+you'll give me 25 years, we'll do it... I mean, you kind of have to... Because I was thinking, how do I do this? Maybe you need to open some kind of description or upload data so that it works on your frontend when they fly. In short, we don't bother with anything, you give me the data and we finish it normally. That's all right.  Actually... no, wait, you don't need them.  If your income from work is this table, but the forecast is for 25 years, you have 23 years, you have 24 years.
+
+07:09
+Yes, yes, yes, I can give you data to build such a 25-th forecast. Yes, yes, but I'm telling you again, I think it makes a lot more sense to do more than just forecast.  if we take the system at the moment of December 21 and we build for the whole year, it will most likely not be ideal, because it is the New Year, kapets, with a bunch of all sorts of anomalies. What would the New Year have to do with it? No, I'm saying, if you can make a forecast for the entire year 25,
+
+07:40
+as you argued yes but I say again here is your case itself yes what do you do every day will build a new forecast practically yes so it's right to make a system that can build a forecast for the rest of the year or for the next whole year for each day I want to make just such a system conditionally we say ok December 31 the forecast is so-so, crooked, but if we take
+
+08:07
+For example, on January 25, when the holidays have already passed, everything is quite stable. Oh, we can see that the normal system generally has a super-good forecast. And we begin to understand where the anomalies are that we need. Why do we need this? Because this is what will give us an understanding of what we need from the data. Weather affects, holidays affect, something else affects. You got January 23, huh? You have January 24. For what? Well, I did this kind of thing. I can now, I just...
+
+08:37
+the fact that if you give me 25 years here are a lot of different forecasts to build in the 25 year on different dates not only on December 31 24 years will be more correct question question can this table be what I'll give you 20 30 to 4 years to make yourself that is the volume for each day is 25 I can do it for a year but it would be more interesting for me to do it not only for 25 years for example for
+
+09:03
+all days starting from January 2, 25, which is January 1 I already know.  days starting from January 3, because 1 and 2 I already tell you about it for the whole 25 year. And I want... Well, look, Yura, I'll do it. For every day of 25 years. Yes, yes. If that's what you mean.  I say again that there is...
+
+09:25
+your task is to build a forecast every day, knowing everything that you had before that day. Yes, we assume that we will make this forecast on December 31, the 24th year.  So I tell you that you tell me one case, and I would like to make you 365 forecasts, and that would be better than 34. I'm not right now... yes, you're talking about something like ... 300 approximately, because the 25th year has not yet ended.  Like a forecast for...
+
+09:52
+first, on the second of June, then you do it based on the data for the first of June.  exactly. then it will be useful, for example, because we will also see in real life, yes, that is, I am making a forecast for you, knowing all the data until today. Okay, fair enough, that's what they call it. Yes, this will be fun, because my task, understand, is to make this thing for you and bring it to Dem Artem Nikolaevich, it's not difficult.
+
+10:18
+make these tams here, beautiful forecasts and wrap it all up, make you dry up in your interface already somehow worked. What is really difficult and unrealistically interesting is to think further about what kind of data strategy in general. Because it is absolutely correct that you say, for example, in dumb real estate, which objects are built, it is not very unnecessary. But, for example, if we can get, for example, advice
+
+10:46
+data on sales, then we will see that this house is under construction, generally illegal construction, no one buys apartments there, checkpoints have been installed, but they will be empty for 5 years and then it will be demolished. But this residential complex, Akademik, where people moved in even before the builders came out and everything started working right away. That is, it will definitely have an impact. That is, these nuances, what data will really affect us, we will begin to understand them only when we...
+
+11:16
+let's get more or less close to how the forecasting system is used in reality. are there, for example, weather anomalies that really affect you? Or we just need to understand that here is a flat climate, and here is a mountain climate, and this is enough for us, we took two slightly different models and that's it.  And these things are what I see as my long-term role and task. — What data does it use now? Only on historical sites? — In general, there is nothing but this data, yes. And I didn't connect anything by year. So I say it's still a pretty crooked fake.
+
+11:45
+it is very important not to get hung up on it, it is very important that it is very flexible and allows you to spin it in any way you want, so that we can then connect data modules to it, because if we talk globally, I looked at your business, I realized that you have a very stupid problem, you can't sell the product, it is everyone needs it, there are 250 operators there, how many operators there are, and you have sold less than 10% of these operators there in a few years, right?
+
+## Section 2: Operational Efficiency Opportunity (12:14–12:58)
+
+12:14
+You need to
+
+12:32
+there are so many employees, drivers, dispatchers, and so on, because our system forecasting shows quite well how much staff you need. You save on fuel not much, but on extra vehicles, don't start these extra trucks, so much, on satisfaction, the number of complaints and all sorts of different emergency situations, so much. And this is all the savings, it absolutely beats off the cost of investments.
+
+## Section 3: Current Offer Gap (12:58–13:25)
+
+12:58
+you do not have such an offer now while you were collecting debts there, there were a trillion rubles of debts yes, it was a very cool thing let's quickly roll out this collection and that's all and now this killer feature to quickly sell to all rekoperatoram is not present and what I just figured out since I have this whole experience with VFM systems there is that is there is exactly the same mathematics in fact it turned out to be in terms of savings it is predictive mathematics that is generally different
+
+## Section 4: Market Model & Methodology (13:25–14:53)
+
+13:25
+That is, the models still did not work, but the methodology itself—how software is sold, how WFM is sold—is 15% savings in the payroll fund. It's the same here. If I understood, for example, this thing is then converted to savings, I would not really... I understand that. That is, I kind of took the time before I started writing something, just to figure it out, because... Okay, what does this chain look like? The chain looks very simple.
+
+13:54
+see how everything works for you now that there is something in between the fact that your resources vehicles staff and so on should cover a certain peak load and average and average between this certain peak load and some estimated there approximately people
+
+14:24
+those who have been working in the company for a long time, that we will be fine about this, we understand that we definitely don't have enough here, we should add it here, everyone is leaving the villages here, it's okay, you can keep less here, and we estimated this here, it replaces the system here forecasting methods. And it does not scales to large regions, first of all, that is, people simply do not fit data in their heads, and secondly, it does not work at the current rate, that is, this knowledge that people leave you together.
+
+## Section 5: Operational Challenges & Solutions (14:53–16:00)
+
+14:53
+Thirdly, it's just that everything is really Russian razdolbaystvo in fact. Then, okay, the topic should be brought further to the organization of technical needs.  Yes, yes. This is not an obvious thing, that is, knowing just the amount of waste generation, you will not do it directly, because then you need, to be honest, to calculate all this, you need to conditionally build a task plan for each car for each day.
+
+15:23
+and understand how this graphic will be, the volume of which also jumps, and it is superimposed on many things, graphs, conclusions.
+
+15:33
+how all this will result in a load of machines and already this load of machines gives you the number of machines you need to display this load.  Well there is actually a slightly more subtle economy in the wage fund because there is all sorts of processing you need to ask this driver there to go there again and weekends and so on here there is a more subtle parameter because they work
+
+## Section 6: Load Planning & Machine Requirements (16:00–16:29)
+
+16:00
+Well, yes, rather, yes, this is how I would estimate from callsenders by the ears, the point is that if you can tell people exactly in employment contracts how much time they will need, then they will kick the fool less, it turns out that this salary and work more, and you will be less in the future. don't pay. And here's this thing, sort of... Yes, well, yes, the idea is clear, in general, a save speech, if you want it, can be made.
+
+## Section 7: Cost-Benefit Framework (16:29–17:20)
+
+16:29
+What else do you need besides that?" Well, look, of course, as I told you, the most important thing is to understand what data is available inside the company, because my approach is that I will come... Well, of course, I'm more interested in everything that you pulled out of the Rufriestra, because most likely there is a lot of everything there. I just know there's a lot of data out there.
+
+16:54
+I understand that you've been doing some good weather videos, I've been doing some even better weather videos, and I can tell you about that too.  This is not the data that we have, this is the data that we can find, I found it, registered on all sorts of foreign databases with tricky VPNs. In principle, we can find very good weather data that we need.
+
+## Section 8: Data Inventory & Availability (17:20–19:11)
+
+17:20
+Well, this is not enough, that is, there is a little more you need to know.
+
+17:26
+but come on I'm not going to load you with this basically fine come on so this is very good data that you found this is not a fact in fact this is a large archive of data from which I pulled out only the temperature if you need something else I'll remind you later I'll throw off the link to it well look in general all the data that may be useful I will tell you this is a very large list it is very interesting
+
+17:53
+my task now is not to say here I am so smart so I know this data is exactly needed my task is to make a system in which we can very quickly just understand what data can affect in principle strongly somewhere by modeling, somewhere by the fact that we took a little bit of such data somewhere for example we we took your weather data we already have a much more accurate weather forecast more precisely it makes sense to collect it better we can find it better there more
+
+18:21
+more weather stations, more weather parameters, break down into whether there's landscape-climate there in different places, not just actual weather data, and so on. Then we understand these things, okay, we need to dig there. Because the whole point, as I see it in general, of your company's strategy is that if you properly build a strategy based on data,
+
+18:45
+then no one will even consider building their own system or competitors.  Because if your data together with the product is cheaper than they just go to take this data, well, because the same data is there for real estate and so on, expensive data, over time you will have to pay for some data. And my task, this flywheel of the fact that we get data, greatly increases the swarm.
+
+## Section 9: Competitive Moat via Data (19:11–20:05)
+
+19:11
+launch it and promote it to such an extent that we understood, okay, it makes sense to buy some data.  To do this, you first need to prove that using this data in a predictive algorithm makes sense, that is, it actually improves. Naturally, yes, well, I understand, so I think that this is a big task, it needs to start solving it in small pieces where data is cheap and easily accessible and those that are expensive and not easily accessible should be approached gradually, but if this is done...
+
+19:38
+then you have no competitors because you can take exclusive data somewhere just take expensive data somewhere finish something there with your own predictive algorithms that's where I am now there in fact with very simple things I help here because here is a very simple mod what is called how I can't find it in Russian
+
+20:05
+
+## Follow-up (Dec 2025): 2025 Volumes Export Issue
+
+> Jury Gerasimov, [2025-12-03 18:05]  
+> "All good."
+>
+> Jury Gerasimov, [2025-12-04 21:45]  
+> "Hi. Exporting volumes for all of 2025 fails with an error. I was able to export January through May (inclusive)."
+>
+> Note: This implies we still need the rest of 2025 for testing to validate forecasts beyond the shared window.
+
+---
+## Raw Timestamps
+Original timestamps: 06:41–20:05
+Source: jury-en-EDITED-3-FIXED.txt lines 50-142

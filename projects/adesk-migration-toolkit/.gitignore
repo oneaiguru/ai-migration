@@ -1,0 +1,14 @@
+.env
+.env.*
+!.env.example
+
+logs/*
+!logs/.gitkeep
+
+data/mappings/*
+!data/mappings/.gitkeep
+
+newfiles/*
+!newfiles/.gitkeep
+
+*.log

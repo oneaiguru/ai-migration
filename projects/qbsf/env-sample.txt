@@ -1,0 +1,24 @@
+# Server Configuration
+PORT=3000
+NODE_ENV=development
+MIDDLEWARE_BASE_URL=http://localhost:3000
+
+# Salesforce Configuration
+SF_CLIENT_ID=your_salesforce_client_id
+SF_CLIENT_SECRET=your_salesforce_client_secret
+SF_REDIRECT_URI=http://localhost:3000/auth/salesforce/callback
+SF_LOGIN_URL=https://login.salesforce.com
+
+# QuickBooks Configuration
+QB_CLIENT_ID=your_quickbooks_client_id
+QB_CLIENT_SECRET=your_quickbooks_client_secret
+QB_REDIRECT_URI=http://localhost:3000/auth/quickbooks/callback
+QB_ENVIRONMENT=sandbox
+
+# Security
+API_KEY=test_api_key_123
+TOKEN_ENCRYPTION_KEY=your_encryption_key_at_least_32_characters_long
+
+# Scheduler Configuration
+INVOICE_CREATION_CRON=0 */2 * * *
+PAYMENT_CHECK_CRON=0 1 * * *

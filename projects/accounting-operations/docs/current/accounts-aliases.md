@@ -1,0 +1,6 @@
+# Account aliases (currency + type)
+
+- KGS-BIZ-3967 → 1280026055073967 (KGS business)
+- USD-BIZ-4068 → 1280026055074068 (USD business)
+- EUR-BIZ-4169 → 1280026055074169 (EUR business)
+- RUB-BIZ-4270 → 1280026055074270 (RUB business)

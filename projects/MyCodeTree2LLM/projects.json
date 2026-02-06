@@ -1,0 +1,30 @@
+[
+	{
+		"name": "fast whisper",
+		"rootPath": "/Users/m/git/personal/fastwhisper",
+		"paths": [],
+		"tags": [],
+		"enabled": true
+	},
+	{
+		"name": "lubot",
+		"rootPath": "/Users/m/git/personal/lubot",
+		"paths": [],
+		"tags": [],
+		"enabled": true
+	},
+	{
+		"name": "active_project_manager",
+		"rootPath": "/Users/m/git/personal/active_project_manager/active_project_manager",
+		"paths": [],
+		"tags": [],
+		"enabled": true
+	},
+	{
+		"name": "GenAICodeUpdater",
+		"rootPath": "/Users/m/git/personal/GenAICodeUpdater",
+		"paths": [],
+		"tags": [],
+		"enabled": true
+	}
+]

@@ -1,0 +1,55 @@
+{
+  "window": "W0-CHP-3",
+  "snapshots": [
+    {
+      "provider": "codex",
+      "phase": "after",
+      "entries": 2,
+      "duplicates": 1,
+      "canonical_captured_at": "2025-10-20T16:08:25.250438+00:00",
+      "source": "alias",
+      "notes": "AGENT_ID=main"
+    },
+    {
+      "provider": "codex",
+      "phase": "before",
+      "entries": 1,
+      "duplicates": 0,
+      "canonical_captured_at": "2025-10-20T05:20:14.819516+00:00",
+      "source": "alias",
+      "notes": "AGENT_ID=main"
+    }
+  ],
+  "finalize": {
+    "entries": 2,
+    "duplicates": 1,
+    "canonical_finalized_at": "2025-10-20T16:08:30.929024+00:00",
+    "methodology": "week0"
+  },
+  "anomalies": {
+    "count": 0
+  },
+  "churn": {
+    "count": 1,
+    "records": [
+      {
+        "window": "W0-CHP-3",
+        "provider": "codex",
+        "methodology": "week0",
+        "commit_start": "8afc41de41f2f23ff5bc73932ac47c41e2dc1ff1",
+        "commit_end": "8afc41de41f2f23ff5bc73932ac47c41e2dc1ff1",
+        "files_changed": 0,
+        "insertions": 0,
+        "deletions": 0,
+        "net": 0,
+        "features": 2,
+        "normalized_churn": 0.0,
+        "captured_at": "2025-10-20T15:34:05.169744+00:00",
+        "notes": "",
+        "source": "churn",
+        "schema_version": "1.0.0",
+        "tool_version": "0.1.0"
+      }
+    ]
+  }
+}

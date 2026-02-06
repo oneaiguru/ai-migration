@@ -1,0 +1,71 @@
+{
+  "call_metadata": {
+    "call_id": "05",
+    "operator": "Анна",
+    "total_duration_ms": 568000,
+    "date": "2025-11-19"
+  },
+  "pre_calculated": {
+    "greeting_delay_ms": 1139,
+    "closing_delay_ms": 0,
+    "searches": [
+      {
+        "announced_at_ms": 35720,
+        "ended_at_ms": 62587,
+        "duration_sec": 26.87,
+        "thanks_given": false,
+        "customer_interactive": true,
+        "announcement_text": "Сейчас минуту, пожалуйста."
+      },
+      {
+        "announced_at_ms": 143768,
+        "ended_at_ms": 165368,
+        "duration_sec": 21.6,
+        "thanks_given": false,
+        "customer_interactive": true,
+        "announcement_text": "Сейчас я посмотрю минуту, пожалуйста, ваш город. Сейчас минуту."
+      },
+      {
+        "announced_at_ms": 181720,
+        "ended_at_ms": 244980,
+        "duration_sec": 63.26,
+        "thanks_given": false,
+        "customer_interactive": true,
+        "announcement_text": "надо туда. Сейчас я посмотрю по параметрам, сейчас минуту."
+      },
+      {
+        "announced_at_ms": 279508,
+        "ended_at_ms": 286878,
+        "duration_sec": 7.37,
+        "thanks_given": false,
+        "customer_interactive": true,
+        "announcement_text": "но мне надо, чтобы они подошли тоже к этим дискам. Сейчас, посмотрим."
+      },
+      {
+        "announced_at_ms": 397618,
+        "ended_at_ms": 423745,
+        "duration_sec": 26.13,
+        "thanks_given": false,
+        "customer_interactive": true,
+        "announcement_text": "чтобы они также объединили. Сейчас минуту."
+      },
+      {
+        "announced_at_ms": 435865,
+        "ended_at_ms": 450503,
+        "duration_sec": 14.64,
+        "thanks_given": false,
+        "customer_interactive": false,
+        "announcement_text": "Час-минуту."
+      }
+    ],
+    "echo_method_instances": [
+      {
+        "data_type": "phone",
+        "timestamp_ms": 373427,
+        "pattern": "echo_with_confirmation",
+        "operator_text": "Сейчас тогда я оформлю и менеджерам передам. То есть номер телефона так",
+        "customer_response": "же указываем, да? Да."
+      }
+    ]
+  }
+}

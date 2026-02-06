@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">XrayAndroid</string>
+    
+    <!-- App selection activity -->
+    <string name="app_selection_title">VPN App Selection</string>
+    <string name="loading_apps">Loading apps…</string>
+    <string name="app_icon_description">App icon</string>
+    <string name="select_apps_to_exclude">Select apps to exclude from VPN</string>
+    <string name="vpn_stop">Stop VPN</string>
+    <string name="vpnStop">Stop VPN</string>
+    <string name="vpn_settings">VPN Settings</string>
+    <string name="vpn_app_selection">App Selection</string>
+    <string name="appName">XrayVPN</string>
+    
+    <!-- Navigation drawer -->
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="menu_home">Home</string>
+</resources>

@@ -1,0 +1,1166 @@
+{
+  "sessions": [
+    {
+      "sessionId": "2025/10/06/rollout-2025-10-06T10-44-32-0199b768-0941-7cc2-953d-bae367c67141",
+      "lastActivity": "2025-10-06T08:02:24.975Z",
+      "sessionFile": "rollout-2025-10-06T10-44-32-0199b768-0941-7cc2-953d-bae367c67141",
+      "directory": "2025/10/06",
+      "inputTokens": 116673214,
+      "cachedInputTokens": 113065984,
+      "outputTokens": 292878,
+      "reasoningOutputTokens": 170240,
+      "totalTokens": 116966092,
+      "costUSD": 21.5710655,
+      "models": {
+        "gpt-5-codex": {
+          "inputTokens": 116673214,
+          "cachedInputTokens": 113065984,
+          "outputTokens": 292878,
+          "reasoningOutputTokens": 170240,
+          "totalTokens": 116966092,
+          "isFallback": false
+        }
+      }
+    },
+    {
+      "sessionId": "2025/10/05/rollout-2025-10-05T21-30-09-0199b490-c06c-7d12-b134-018d7e69a91c",
+      "lastActivity": "2025-10-06T09:08:59.226Z",
+      "sessionFile": "rollout-2025-10-05T21-30-09-0199b490-c06c-7d12-b134-018d7e69a91c",
+      "directory": "2025/10/05",
+      "inputTokens": 165748952,
+      "cachedInputTokens": 163270784,
+      "outputTokens": 526014,
+      "reasoningOutputTokens": 187840,
+      "totalTokens": 166274966,
+      "costUSD": 28.766697999999998,
+      "models": {
+        "gpt-5-codex": {
+          "inputTokens": 165748952,
+          "cachedInputTokens": 163270784,
+          "outputTokens": 526014,
+          "reasoningOutputTokens": 187840,
+          "totalTokens": 166274966,
+          "isFallback": false
+        }
+      }
+    },
+    {
+      "sessionId": "2025/10/06/rollout-2025-10-06T14-35-20-0199b83b-5824-74a0-8fb3-ba27767281b5",
+      "lastActivity": "2025-10-06T09:15:21.830Z",
+      "sessionFile": "rollout-2025-10-06T14-35-20-0199b83b-5824-74a0-8fb3-ba27767281b5",
+      "directory": "2025/10/06",
+      "inputTokens": 147887270,
+      "cachedInputTokens": 146592768,
+      "outputTokens": 246617,
+      "reasoningOutputTokens": 132160,
+      "totalTokens": 148133887,
+      "costUSD": 22.408393500000003,
+      "models": {
+        "gpt-5-codex": {
+          "inputTokens": 147887270,
+          "cachedInputTokens": 146592768,
+          "outputTokens": 246617,
+          "reasoningOutputTokens": 132160,
+          "totalTokens": 148133887,
+          "isFallback": false
+        }
+      }
+    },
+    {
+      "sessionId": "2025/10/06/rollout-2025-10-06T21-20-37-0199b9ae-632f-7e10-a4d1-0aa71b9a1ece",
+      "lastActivity": "2025-10-06T22:39:03.071Z",
+      "sessionFile": "rollout-2025-10-06T21-20-37-0199b9ae-632f-7e10-a4d1-0aa71b9a1ece",
+      "directory": "2025/10/06",
+      "inputTokens": 193260336,
+      "cachedInputTokens": 187933056,
+      "outputTokens": 569318,
+      "reasoningOutputTokens": 320576,
+      "totalTokens": 193829654,
+      "costUSD": 35.843911999999996,
+      "models": {
+        "gpt-5-codex": {
+          "inputTokens": 193260336,
+          "cachedInputTokens": 187933056,
+          "outputTokens": 569318,
+          "reasoningOutputTokens": 320576,
+          "totalTokens": 193829654,
+          "isFallback": false
+        }
+      }
+    },
+    {
+      "sessionId": "2025/10/07/rollout-2025-10-07T06-39-24-0199bbad-f67b-7793-9f92-0851a60aa4b7",
+      "lastActivity": "2025-10-07T00:10:21.692Z",
+      "sessionFile": "rollout-2025-10-07T06-39-24-0199bbad-f67b-7793-9f92-0851a60aa4b7",
+      "directory": "2025/10/07",
+      "inputTokens": 210190830,
+      "cachedInputTokens": 204041600,
+      "outputTokens": 591847,
+      "reasoningOutputTokens": 326848,
+      "totalTokens": 210782677,
+      "costUSD": 39.1102075,
+      "models": {
+        "gpt-5-codex": {
+          "inputTokens": 210190830,
+          "cachedInputTokens": 204041600,
+          "outputTokens": 591847,
+          "reasoningOutputTokens": 326848,
+          "totalTokens": 210782677,
+          "isFallback": false
+        }
+      }
+    },
+    {
+      "sessionId": "2025/10/07/rollout-2025-10-07T09-09-20-0199bc37-3c02-7482-bf2a-02d10d47958e",
+      "lastActivity": "2025-10-07T04:55:56.292Z",
+      "sessionFile": "rollout-2025-10-07T09-09-20-0199bc37-3c02-7482-bf2a-02d10d47958e",
+      "directory": "2025/10/07",
+      "inputTokens": 90958077,
+      "cachedInputTokens": 89429248,
+      "outputTokens": 192718,
+      "reasoningOutputTokens": 65728,
+      "totalTokens": 91150795,
+      "costUSD": 15.01687225,
+      "models": {
+        "gpt-5-codex": {
+          "inputTokens": 90958077,
+          "cachedInputTokens": 89429248,
+          "outputTokens": 192718,
+          "reasoningOutputTokens": 65728,
+          "totalTokens": 91150795,
+          "isFallback": false
+        }
+      }
+    },
+    {
+      "sessionId": "2025/10/07/rollout-2025-10-07T12-50-48-0199bd01-fffe-7d30-8122-349a37ecf258",
+      "lastActivity": "2025-10-07T08:21:21.840Z",
+      "sessionFile": "rollout-2025-10-07T12-50-48-0199bd01-fffe-7d30-8122-349a37ecf258",
+      "directory": "2025/10/07",
+      "inputTokens": 58716329,
+      "cachedInputTokens": 56064000,
+      "outputTokens": 235507,
+      "reasoningOutputTokens": 98112,
+      "totalTokens": 58951836,
+      "costUSD": 12.678481249999999,
+      "models": {
+        "gpt-5-codex": {
+          "inputTokens": 58716329,
+          "cachedInputTokens": 56064000,
+          "outputTokens": 235507,
+          "reasoningOutputTokens": 98112,
+          "totalTokens": 58951836,
+          "isFallback": false
+        }
+      }
+    },
+    {
+      "sessionId": "2025/10/07/rollout-2025-10-07T07-26-19-0199bbd8-ebe7-7f81-85ed-c1c471d4fc95",
+      "lastActivity": "2025-10-07T08:22:44.447Z",
+      "sessionFile": "rollout-2025-10-07T07-26-19-0199bbd8-ebe7-7f81-85ed-c1c471d4fc95",
+      "directory": "2025/10/07",
+      "inputTokens": 197935562,
+      "cachedInputTokens": 191052416,
+      "outputTokens": 611135,
+      "reasoningOutputTokens": 328832,
+      "totalTokens": 198546697,
+      "costUSD": 38.5968345,
+      "models": {
+        "gpt-5-codex": {
+          "inputTokens": 197935562,
+          "cachedInputTokens": 191052416,
+          "outputTokens": 611135,
+          "reasoningOutputTokens": 328832,
+          "totalTokens": 198546697,
+          "isFallback": false
+        }
+      }
+    },
+    {
+      "sessionId": "2025/10/07/rollout-2025-10-07T13-03-21-0199bd0d-7d58-70b0-807b-23634b0ffdaa",
+      "lastActivity": "2025-10-07T15:32:16.742Z",
+      "sessionFile": "rollout-2025-10-07T13-03-21-0199bd0d-7d58-70b0-807b-23634b0ffdaa",
+      "directory": "2025/10/07",
+      "inputTokens": 23234030,
+      "cachedInputTokens": 22667648,
+      "outputTokens": 135714,
+      "reasoningOutputTokens": 73280,
+      "totalTokens": 23369744,
+      "costUSD": 4.8985735,
+      "models": {
+        "gpt-5-codex": {
+          "inputTokens": 23234030,
+          "cachedInputTokens": 22667648,
+          "outputTokens": 135714,
+          "reasoningOutputTokens": 73280,
+          "totalTokens": 23369744,
+          "isFallback": false
+        }
+      }
+    },
+    {
+      "sessionId": "2025/10/08/rollout-2025-10-08T10-11-56-0199c196-e5e8-7c40-b77c-94b82f04d8a0",
+      "lastActivity": "2025-10-08T03:54:54.502Z",
+      "sessionFile": "rollout-2025-10-08T10-11-56-0199c196-e5e8-7c40-b77c-94b82f04d8a0",
+      "directory": "2025/10/08",
+      "inputTokens": 75106444,
+      "cachedInputTokens": 73828736,
+      "outputTokens": 92637,
+      "reasoningOutputTokens": 40768,
+      "totalTokens": 75199081,
+      "costUSD": 11.752097000000001,
+      "models": {
+        "gpt-5-codex": {
+          "inputTokens": 75106444,
+          "cachedInputTokens": 73828736,
+          "outputTokens": 92637,
+          "reasoningOutputTokens": 40768,
+          "totalTokens": 75199081,
+          "isFallback": false
+        }
+      }
+    },
+    {
+      "sessionId": "2025/10/08/rollout-2025-10-08T23-17-20-0199c465-f59c-7fc2-bd21-7cfd72cd924f",
+      "lastActivity": "2025-10-08T15:28:09.790Z",
+      "sessionFile": "rollout-2025-10-08T23-17-20-0199c465-f59c-7fc2-bd21-7cfd72cd924f",
+      "directory": "2025/10/08",
+      "inputTokens": 1375711,
+      "cachedInputTokens": 1288576,
+      "outputTokens": 16236,
+      "reasoningOutputTokens": 12864,
+      "totalTokens": 1391947,
+      "costUSD": 0.43235075,
+      "models": {
+        "gpt-5-codex": {
+          "inputTokens": 1375711,
+          "cachedInputTokens": 1288576,
+          "outputTokens": 16236,
+          "reasoningOutputTokens": 12864,
+          "totalTokens": 1391947,
+          "isFallback": false
+        }
+      }
+    },
+    {
+      "sessionId": "2025/10/09/rollout-2025-10-09T07-00-43-0199c60e-332a-7ef0-88e5-6812fa67281a",
+      "lastActivity": "2025-10-08T23:26:34.307Z",
+      "sessionFile": "rollout-2025-10-09T07-00-43-0199c60e-332a-7ef0-88e5-6812fa67281a",
+      "directory": "2025/10/09",
+      "inputTokens": 8399965,
+      "cachedInputTokens": 7990528,
+      "outputTokens": 57041,
+      "reasoningOutputTokens": 38208,
+      "totalTokens": 8457006,
+      "costUSD": 2.0810222499999997,
+      "models": {
+        "gpt-5-codex": {
+          "inputTokens": 8399965,
+          "cachedInputTokens": 7990528,
+          "outputTokens": 57041,
+          "reasoningOutputTokens": 38208,
+          "totalTokens": 8457006,
+          "isFallback": false
+        }
+      }
+    },
+    {
+      "sessionId": "2025/10/07/rollout-2025-10-07T16-30-10-0199bdca-d471-7d11-862c-6ed989b375a1",
+      "lastActivity": "2025-10-09T00:22:07.979Z",
+      "sessionFile": "rollout-2025-10-07T16-30-10-0199bdca-d471-7d11-862c-6ed989b375a1",
+      "directory": "2025/10/07",
+      "inputTokens": 498962261,
+      "cachedInputTokens": 475421056,
+      "outputTokens": 1551276,
+      "reasoningOutputTokens": 715392,
+      "totalTokens": 500513537,
+      "costUSD": 104.36689825,
+      "models": {
+        "gpt-5-codex": {
+          "inputTokens": 498962261,
+          "cachedInputTokens": 475421056,
+          "outputTokens": 1551276,
+          "reasoningOutputTokens": 715392,
+          "totalTokens": 500513537,
+          "isFallback": false
+        }
+      }
+    },
+    {
+      "sessionId": "2025/10/09/rollout-2025-10-09T09-32-23-0199c699-0d7b-7c33-9ed8-e19eddf5369c",
+      "lastActivity": "2025-10-09T01:41:41.827Z",
+      "sessionFile": "rollout-2025-10-09T09-32-23-0199c699-0d7b-7c33-9ed8-e19eddf5369c",
+      "directory": "2025/10/09",
+      "inputTokens": 1091246,
+      "cachedInputTokens": 970112,
+      "outputTokens": 27654,
+      "reasoningOutputTokens": 19072,
+      "totalTokens": 1118900,
+      "costUSD": 0.5492215,
+      "models": {
+        "gpt-5-codex": {
+          "inputTokens": 1091246,
+          "cachedInputTokens": 970112,
+          "outputTokens": 27654,
+          "reasoningOutputTokens": 19072,
+          "totalTokens": 1118900,
+          "isFallback": false
+        }
+      }
+    },
+    {
+      "sessionId": "2025/10/09/rollout-2025-10-09T10-20-06-0199c6c4-bcef-78f0-b530-2a8217e99ca9",
+      "lastActivity": "2025-10-09T02:23:48.325Z",
+      "sessionFile": "rollout-2025-10-09T10-20-06-0199c6c4-bcef-78f0-b530-2a8217e99ca9",
+      "directory": "2025/10/09",
+      "inputTokens": 8118,
+      "cachedInputTokens": 5760,
+      "outputTokens": 556,
+      "reasoningOutputTokens": 256,
+      "totalTokens": 8674,
+      "costUSD": 0.0092275,
+      "models": {
+        "gpt-5-codex": {
+          "inputTokens": 8118,
+          "cachedInputTokens": 5760,
+          "outputTokens": 556,
+          "reasoningOutputTokens": 256,
+          "totalTokens": 8674,
+          "isFallback": false
+        }
+      }
+    },
+    {
+      "sessionId": "2025/10/09/rollout-2025-10-09T17-03-06-0199c835-b458-7f52-8615-874ab819bf9e",
+      "lastActivity": "2025-10-09T09:05:21.966Z",
+      "sessionFile": "rollout-2025-10-09T17-03-06-0199c835-b458-7f52-8615-874ab819bf9e",
+      "directory": "2025/10/09",
+      "inputTokens": 170447,
+      "cachedInputTokens": 129152,
+      "outputTokens": 5136,
+      "reasoningOutputTokens": 2752,
+      "totalTokens": 175583,
+      "costUSD": 0.11912275,
+      "models": {
+        "gpt-5-codex": {
+          "inputTokens": 170447,
+          "cachedInputTokens": 129152,
+          "outputTokens": 5136,
+          "reasoningOutputTokens": 2752,
+          "totalTokens": 175583,
+          "isFallback": false
+        }
+      }
+    },
+    {
+      "sessionId": "2025/10/09/rollout-2025-10-09T10-25-52-0199c6ca-04b8-7f02-ac69-3836127d9714",
+      "lastActivity": "2025-10-09T10:41:53.545Z",
+      "sessionFile": "rollout-2025-10-09T10-25-52-0199c6ca-04b8-7f02-ac69-3836127d9714",
+      "directory": "2025/10/09",
+      "inputTokens": 49712450,
+      "cachedInputTokens": 48265984,
+      "outputTokens": 129492,
+      "reasoningOutputTokens": 56448,
+      "totalTokens": 49841942,
+      "costUSD": 9.136250500000001,
+      "models": {
+        "gpt-5-codex": {
+          "inputTokens": 49712450,
+          "cachedInputTokens": 48265984,
+          "outputTokens": 129492,
+          "reasoningOutputTokens": 56448,
+          "totalTokens": 49841942,
+          "isFallback": false
+        }
+      }
+    },
+    {
+      "sessionId": "2025/10/08/rollout-2025-10-08T23-29-43-0199c471-4bc2-7a73-8c8a-6155da759490",
+      "lastActivity": "2025-10-09T11:29:39.729Z",
+      "sessionFile": "rollout-2025-10-08T23-29-43-0199c471-4bc2-7a73-8c8a-6155da759490",
+      "directory": "2025/10/08",
+      "inputTokens": 152123336,
+      "cachedInputTokens": 147474304,
+      "outputTokens": 251247,
+      "reasoningOutputTokens": 112192,
+      "totalTokens": 152374583,
+      "costUSD": 26.758048,
+      "models": {
+        "gpt-5-codex": {
+          "inputTokens": 152123336,
+          "cachedInputTokens": 147474304,
+          "outputTokens": 251247,
+          "reasoningOutputTokens": 112192,
+          "totalTokens": 152374583,
+          "isFallback": false
+        }
+      }
+    },
+    {
+      "sessionId": "2025/10/09/rollout-2025-10-09T10-45-01-0199c6db-8e49-7692-957e-8292c85abf63",
+      "lastActivity": "2025-10-09T11:43:30.356Z",
+      "sessionFile": "rollout-2025-10-09T10-45-01-0199c6db-8e49-7692-957e-8292c85abf63",
+      "directory": "2025/10/09",
+      "inputTokens": 108206093,
+      "cachedInputTokens": 104870784,
+      "outputTokens": 409448,
+      "reasoningOutputTokens": 264192,
+      "totalTokens": 108615541,
+      "costUSD": 21.37246425,
+      "models": {
+        "gpt-5-codex": {
+          "inputTokens": 108206093,
+          "cachedInputTokens": 104870784,
+          "outputTokens": 409448,
+          "reasoningOutputTokens": 264192,
+          "totalTokens": 108615541,
+          "isFallback": false
+        }
+      }
+    },
+    {
+      "sessionId": "2025/10/06/rollout-2025-10-06T16-09-46-0199b891-ca3e-75e0-81e4-1e3af6f5b6d0",
+      "lastActivity": "2025-10-10T03:34:36.676Z",
+      "sessionFile": "rollout-2025-10-06T16-09-46-0199b891-ca3e-75e0-81e4-1e3af6f5b6d0",
+      "directory": "2025/10/06",
+      "inputTokens": 332624299,
+      "cachedInputTokens": 322543872,
+      "outputTokens": 898056,
+      "reasoningOutputTokens": 446784,
+      "totalTokens": 333522355,
+      "costUSD": 61.899077750000004,
+      "models": {
+        "gpt-5-codex": {
+          "inputTokens": 332624299,
+          "cachedInputTokens": 322543872,
+          "outputTokens": 898056,
+          "reasoningOutputTokens": 446784,
+          "totalTokens": 333522355,
+          "isFallback": false
+        }
+      }
+    },
+    {
+      "sessionId": "2025/10/10/rollout-2025-10-10T11-41-29-0199cc35-9d28-7e82-9afb-d1d9ce6a4a46",
+      "lastActivity": "2025-10-10T08:31:46.198Z",
+      "sessionFile": "rollout-2025-10-10T11-41-29-0199cc35-9d28-7e82-9afb-d1d9ce6a4a46",
+      "directory": "2025/10/10",
+      "inputTokens": 166953187,
+      "cachedInputTokens": 162283008,
+      "outputTokens": 397394,
+      "reasoningOutputTokens": 175808,
+      "totalTokens": 167350581,
+      "costUSD": 30.09703975,
+      "models": {
+        "gpt-5-codex": {
+          "inputTokens": 166953187,
+          "cachedInputTokens": 162283008,
+          "outputTokens": 397394,
+          "reasoningOutputTokens": 175808,
+          "totalTokens": 167350581,
+          "isFallback": false
+        }
+      }
+    },
+    {
+      "sessionId": "2025/10/10/rollout-2025-10-10T16-35-10-0199cd42-7dfd-78b0-a936-4867b24aa0b7",
+      "lastActivity": "2025-10-10T08:35:20.880Z",
+      "sessionFile": "rollout-2025-10-10T16-35-10-0199cd42-7dfd-78b0-a936-4867b24aa0b7",
+      "directory": "2025/10/10",
+      "inputTokens": 3147,
+      "cachedInputTokens": 1920,
+      "outputTokens": 146,
+      "reasoningOutputTokens": 128,
+      "totalTokens": 3293,
+      "costUSD": 0.0032337499999999996,
+      "models": {
+        "gpt-5-codex": {
+          "inputTokens": 3147,
+          "cachedInputTokens": 1920,
+          "outputTokens": 146,
+          "reasoningOutputTokens": 128,
+          "totalTokens": 3293,
+          "isFallback": false
+        }
+      }
+    },
+    {
+      "sessionId": "2025/10/10/rollout-2025-10-10T16-37-00-0199cd44-287e-7d83-81f3-2f740df2e67f",
+      "lastActivity": "2025-10-10T08:44:43.900Z",
+      "sessionFile": "rollout-2025-10-10T16-37-00-0199cd44-287e-7d83-81f3-2f740df2e67f",
+      "directory": "2025/10/10",
+      "inputTokens": 611597,
+      "cachedInputTokens": 512000,
+      "outputTokens": 13313,
+      "reasoningOutputTokens": 10112,
+      "totalTokens": 624910,
+      "costUSD": 0.32162625,
+      "models": {
+        "gpt-5-codex": {
+          "inputTokens": 611597,
+          "cachedInputTokens": 512000,
+          "outputTokens": 13313,
+          "reasoningOutputTokens": 10112,
+          "totalTokens": 624910,
+          "isFallback": false
+        }
+      }
+    },
+    {
+      "sessionId": "2025/10/10/rollout-2025-10-10T16-58-05-0199cd57-75f0-7983-9179-fe5bafe62f85",
+      "lastActivity": "2025-10-10T09:00:26.987Z",
+      "sessionFile": "rollout-2025-10-10T16-58-05-0199cd57-75f0-7983-9179-fe5bafe62f85",
+      "directory": "2025/10/10",
+      "inputTokens": 139691,
+      "cachedInputTokens": 106368,
+      "outputTokens": 5083,
+      "reasoningOutputTokens": 3584,
+      "totalTokens": 144774,
+      "costUSD": 0.10577975,
+      "models": {
+        "gpt-5-codex": {
+          "inputTokens": 139691,
+          "cachedInputTokens": 106368,
+          "outputTokens": 5083,
+          "reasoningOutputTokens": 3584,
+          "totalTokens": 144774,
+          "isFallback": false
+        }
+      }
+    },
+    {
+      "sessionId": "2025/10/09/rollout-2025-10-09T19-59-06-0199c8d6-d6e6-7400-bcbe-038019b56c76",
+      "lastActivity": "2025-10-10T14:18:13.976Z",
+      "sessionFile": "rollout-2025-10-09T19-59-06-0199c8d6-d6e6-7400-bcbe-038019b56c76",
+      "directory": "2025/10/09",
+      "inputTokens": 99710278,
+      "cachedInputTokens": 97143936,
+      "outputTokens": 266354,
+      "reasoningOutputTokens": 89792,
+      "totalTokens": 99976632,
+      "costUSD": 18.0144595,
+      "models": {
+        "gpt-5-codex": {
+          "inputTokens": 99710278,
+          "cachedInputTokens": 97143936,
+          "outputTokens": 266354,
+          "reasoningOutputTokens": 89792,
+          "totalTokens": 99976632,
+          "isFallback": false
+        }
+      }
+    },
+    {
+      "sessionId": "2025/10/10/rollout-2025-10-10T11-35-24-0199cc30-0b7d-7ef2-834d-7a14eea30c65",
+      "lastActivity": "2025-10-11T03:16:10.662Z",
+      "sessionFile": "rollout-2025-10-10T11-35-24-0199cc30-0b7d-7ef2-834d-7a14eea30c65",
+      "directory": "2025/10/10",
+      "inputTokens": 613151302,
+      "cachedInputTokens": 589486848,
+      "outputTokens": 2492648,
+      "reasoningOutputTokens": 1372736,
+      "totalTokens": 615643950,
+      "costUSD": 128.1929035,
+      "models": {
+        "gpt-5-codex": {
+          "inputTokens": 613151302,
+          "cachedInputTokens": 589486848,
+          "outputTokens": 2492648,
+          "reasoningOutputTokens": 1372736,
+          "totalTokens": 615643950,
+          "isFallback": false
+        }
+      }
+    },
+    {
+      "sessionId": "2025/10/11/rollout-2025-10-11T13-38-02-0199d1c6-adc1-7060-adae-82705f304ee3",
+      "lastActivity": "2025-10-11T11:09:04.085Z",
+      "sessionFile": "rollout-2025-10-11T13-38-02-0199d1c6-adc1-7060-adae-82705f304ee3",
+      "directory": "2025/10/11",
+      "inputTokens": 39774629,
+      "cachedInputTokens": 37586816,
+      "outputTokens": 274311,
+      "reasoningOutputTokens": 173888,
+      "totalTokens": 40048940,
+      "costUSD": 10.17622825,
+      "models": {
+        "gpt-5-codex": {
+          "inputTokens": 39774629,
+          "cachedInputTokens": 37586816,
+          "outputTokens": 274311,
+          "reasoningOutputTokens": 173888,
+          "totalTokens": 40048940,
+          "isFallback": false
+        }
+      }
+    },
+    {
+      "sessionId": "2025/10/12/rollout-2025-10-12T16-08-21-0199d776-a783-7e42-8d98-d27a5e6dd306",
+      "lastActivity": "2025-10-12T08:10:35.372Z",
+      "sessionFile": "rollout-2025-10-12T16-08-21-0199d776-a783-7e42-8d98-d27a5e6dd306",
+      "directory": "2025/10/12",
+      "inputTokens": 29292,
+      "cachedInputTokens": 19328,
+      "outputTokens": 4090,
+      "reasoningOutputTokens": 3584,
+      "totalTokens": 33382,
+      "costUSD": 0.055771,
+      "models": {
+        "gpt-5-codex": {
+          "inputTokens": 29292,
+          "cachedInputTokens": 19328,
+          "outputTokens": 4090,
+          "reasoningOutputTokens": 3584,
+          "totalTokens": 33382,
+          "isFallback": false
+        }
+      }
+    },
+    {
+      "sessionId": "2025/10/12/rollout-2025-10-12T16-11-04-0199d779-21cc-7173-b639-b24a80ea5034",
+      "lastActivity": "2025-10-12T08:15:08.031Z",
+      "sessionFile": "rollout-2025-10-12T16-11-04-0199d779-21cc-7173-b639-b24a80ea5034",
+      "directory": "2025/10/12",
+      "inputTokens": 1121364,
+      "cachedInputTokens": 927488,
+      "outputTokens": 8543,
+      "reasoningOutputTokens": 4416,
+      "totalTokens": 1129907,
+      "costUSD": 0.4437110000000001,
+      "models": {
+        "gpt-5-codex": {
+          "inputTokens": 1055876,
+          "cachedInputTokens": 890880,
+          "outputTokens": 5519,
+          "reasoningOutputTokens": 2176,
+          "totalTokens": 1061395,
+          "isFallback": false
+        },
+        "gpt-5": {
+          "inputTokens": 65488,
+          "cachedInputTokens": 36608,
+          "outputTokens": 3024,
+          "reasoningOutputTokens": 2240,
+          "totalTokens": 68512,
+          "isFallback": false
+        }
+      }
+    },
+    {
+      "sessionId": "2025/10/11/rollout-2025-10-11T20-13-18-0199d330-8dfd-7d62-b4be-0bb65fe7c667",
+      "lastActivity": "2025-10-12T13:29:07.102Z",
+      "sessionFile": "rollout-2025-10-11T20-13-18-0199d330-8dfd-7d62-b4be-0bb65fe7c667",
+      "directory": "2025/10/11",
+      "inputTokens": 128490544,
+      "cachedInputTokens": 126342784,
+      "outputTokens": 379718,
+      "reasoningOutputTokens": 158016,
+      "totalTokens": 128870262,
+      "costUSD": 22.274728000000003,
+      "models": {
+        "gpt-5-codex": {
+          "inputTokens": 33265657,
+          "cachedInputTokens": 32382720,
+          "outputTokens": 100480,
+          "reasoningOutputTokens": 45824,
+          "totalTokens": 33366137,
+          "isFallback": false
+        },
+        "gpt-5": {
+          "inputTokens": 95224887,
+          "cachedInputTokens": 93960064,
+          "outputTokens": 279238,
+          "reasoningOutputTokens": 112192,
+          "totalTokens": 95504125,
+          "isFallback": false
+        }
+      }
+    },
+    {
+      "sessionId": "2025/10/12/rollout-2025-10-12T22-23-20-0199d8cd-f619-7680-aa37-587a4d8d8b9b",
+      "lastActivity": "2025-10-12T14:25:50.910Z",
+      "sessionFile": "rollout-2025-10-12T22-23-20-0199d8cd-f619-7680-aa37-587a4d8d8b9b",
+      "directory": "2025/10/12",
+      "inputTokens": 462567,
+      "cachedInputTokens": 427904,
+      "outputTokens": 9949,
+      "reasoningOutputTokens": 7808,
+      "totalTokens": 472516,
+      "costUSD": 0.19630675,
+      "models": {
+        "gpt-5": {
+          "inputTokens": 462567,
+          "cachedInputTokens": 427904,
+          "outputTokens": 9949,
+          "reasoningOutputTokens": 7808,
+          "totalTokens": 472516,
+          "isFallback": false
+        }
+      }
+    },
+    {
+      "sessionId": "2025/10/11/rollout-2025-10-11T11-16-17-0199d144-e600-7003-929d-30dd60b92f30",
+      "lastActivity": "2025-10-12T14:42:18.624Z",
+      "sessionFile": "rollout-2025-10-11T11-16-17-0199d144-e600-7003-929d-30dd60b92f30",
+      "directory": "2025/10/11",
+      "inputTokens": 110850623,
+      "cachedInputTokens": 107532160,
+      "outputTokens": 205655,
+      "reasoningOutputTokens": 81088,
+      "totalTokens": 111056278,
+      "costUSD": 19.64614875,
+      "models": {
+        "gpt-5-codex": {
+          "inputTokens": 80420101,
+          "cachedInputTokens": 77617280,
+          "outputTokens": 146758,
+          "reasoningOutputTokens": 64064,
+          "totalTokens": 80566859,
+          "isFallback": false
+        },
+        "gpt-5": {
+          "inputTokens": 30430522,
+          "cachedInputTokens": 29914880,
+          "outputTokens": 58897,
+          "reasoningOutputTokens": 17024,
+          "totalTokens": 30489419,
+          "isFallback": false
+        }
+      }
+    },
+    {
+      "sessionId": "2025/10/12/rollout-2025-10-12T20-18-50-0199d85b-f815-7d63-b344-97257ab00872",
+      "lastActivity": "2025-10-12T14:47:21.508Z",
+      "sessionFile": "rollout-2025-10-12T20-18-50-0199d85b-f815-7d63-b344-97257ab00872",
+      "directory": "2025/10/12",
+      "inputTokens": 34417699,
+      "cachedInputTokens": 33147776,
+      "outputTokens": 161602,
+      "reasoningOutputTokens": 78208,
+      "totalTokens": 34579301,
+      "costUSD": 7.34689575,
+      "models": {
+        "gpt-5": {
+          "inputTokens": 34417699,
+          "cachedInputTokens": 33147776,
+          "outputTokens": 161602,
+          "reasoningOutputTokens": 78208,
+          "totalTokens": 34579301,
+          "isFallback": false
+        }
+      }
+    },
+    {
+      "sessionId": "2025/10/12/rollout-2025-10-12T23-10-57-0199d8f9-8e8f-71a2-a32f-d2ca9566c4e5",
+      "lastActivity": "2025-10-12T15:11:37.311Z",
+      "sessionFile": "rollout-2025-10-12T23-10-57-0199d8f9-8e8f-71a2-a32f-d2ca9566c4e5",
+      "directory": "2025/10/12",
+      "inputTokens": 11945,
+      "cachedInputTokens": 1024,
+      "outputTokens": 375,
+      "reasoningOutputTokens": 256,
+      "totalTokens": 12320,
+      "costUSD": 0.01752925,
+      "models": {
+        "gpt-5-codex": {
+          "inputTokens": 11945,
+          "cachedInputTokens": 1024,
+          "outputTokens": 375,
+          "reasoningOutputTokens": 256,
+          "totalTokens": 12320,
+          "isFallback": false
+        }
+      }
+    },
+    {
+      "sessionId": "2025/10/12/rollout-2025-10-12T22-42-53-0199d8df-dd66-7e61-9996-c8110dca5df6",
+      "lastActivity": "2025-10-12T18:05:26.392Z",
+      "sessionFile": "rollout-2025-10-12T22-42-53-0199d8df-dd66-7e61-9996-c8110dca5df6",
+      "directory": "2025/10/12",
+      "inputTokens": 13734337,
+      "cachedInputTokens": 13325568,
+      "outputTokens": 71150,
+      "reasoningOutputTokens": 30208,
+      "totalTokens": 13805487,
+      "costUSD": 2.88815725,
+      "models": {
+        "gpt-5-codex": {
+          "inputTokens": 13734337,
+          "cachedInputTokens": 13325568,
+          "outputTokens": 71150,
+          "reasoningOutputTokens": 30208,
+          "totalTokens": 13805487,
+          "isFallback": false
+        }
+      }
+    },
+    {
+      "sessionId": "2025/10/10/rollout-2025-10-10T16-31-56-0199cd3f-879b-7200-ab72-a2f22046f523",
+      "lastActivity": "2025-10-14T02:48:53.609Z",
+      "sessionFile": "rollout-2025-10-10T16-31-56-0199cd3f-879b-7200-ab72-a2f22046f523",
+      "directory": "2025/10/10",
+      "inputTokens": 504779046,
+      "cachedInputTokens": 485646592,
+      "outputTokens": 1984525,
+      "reasoningOutputTokens": 912000,
+      "totalTokens": 506763571,
+      "costUSD": 104.4666415,
+      "models": {
+        "gpt-5-codex": {
+          "inputTokens": 411636403,
+          "cachedInputTokens": 397449600,
+          "outputTokens": 1491156,
+          "reasoningOutputTokens": 705664,
+          "totalTokens": 413127559,
+          "isFallback": false
+        },
+        "gpt-5": {
+          "inputTokens": 93142643,
+          "cachedInputTokens": 88196992,
+          "outputTokens": 493369,
+          "reasoningOutputTokens": 206336,
+          "totalTokens": 93636012,
+          "isFallback": false
+        }
+      }
+    },
+    {
+      "sessionId": "2025/10/13/rollout-2025-10-13T21-18-40-0199ddb9-1b89-7a52-bce6-1a2bb6f272aa",
+      "lastActivity": "2025-10-14T03:18:01.926Z",
+      "sessionFile": "rollout-2025-10-13T21-18-40-0199ddb9-1b89-7a52-bce6-1a2bb6f272aa",
+      "directory": "2025/10/13",
+      "inputTokens": 26568050,
+      "cachedInputTokens": 25782528,
+      "outputTokens": 82341,
+      "reasoningOutputTokens": 46656,
+      "totalTokens": 26650391,
+      "costUSD": 5.0281285,
+      "models": {
+        "gpt-5-codex": {
+          "inputTokens": 26568050,
+          "cachedInputTokens": 25782528,
+          "outputTokens": 82341,
+          "reasoningOutputTokens": 46656,
+          "totalTokens": 26650391,
+          "isFallback": false
+        }
+      }
+    },
+    {
+      "sessionId": "2025/10/13/rollout-2025-10-13T21-18-42-0199ddb9-2699-7b63-9972-9ea6c170bf1f",
+      "lastActivity": "2025-10-14T03:52:10.435Z",
+      "sessionFile": "rollout-2025-10-13T21-18-42-0199ddb9-2699-7b63-9972-9ea6c170bf1f",
+      "directory": "2025/10/13",
+      "inputTokens": 10043740,
+      "cachedInputTokens": 9666176,
+      "outputTokens": 58177,
+      "reasoningOutputTokens": 37888,
+      "totalTokens": 10101917,
+      "costUSD": 2.261997,
+      "models": {
+        "gpt-5-codex": {
+          "inputTokens": 10043740,
+          "cachedInputTokens": 9666176,
+          "outputTokens": 58177,
+          "reasoningOutputTokens": 37888,
+          "totalTokens": 10101917,
+          "isFallback": false
+        }
+      }
+    },
+    {
+      "sessionId": "2025/10/12/rollout-2025-10-12T21-29-44-0199d89c-e49e-71f1-aa23-f7d7444b74e7",
+      "lastActivity": "2025-10-14T16:01:48.900Z",
+      "sessionFile": "rollout-2025-10-12T21-29-44-0199d89c-e49e-71f1-aa23-f7d7444b74e7",
+      "directory": "2025/10/12",
+      "inputTokens": 154153323,
+      "cachedInputTokens": 149159680,
+      "outputTokens": 762788,
+      "reasoningOutputTokens": 365184,
+      "totalTokens": 154916111,
+      "costUSD": 32.51489375,
+      "models": {
+        "gpt-5": {
+          "inputTokens": 154153323,
+          "cachedInputTokens": 149159680,
+          "outputTokens": 762788,
+          "reasoningOutputTokens": 365184,
+          "totalTokens": 154916111,
+          "isFallback": false
+        }
+      }
+    },
+    {
+      "sessionId": "2025/10/13/rollout-2025-10-13T21-38-03-0199ddca-dd63-7a23-9d99-5f5adb7e3e07",
+      "lastActivity": "2025-10-15T01:48:45.267Z",
+      "sessionFile": "rollout-2025-10-13T21-38-03-0199ddca-dd63-7a23-9d99-5f5adb7e3e07",
+      "directory": "2025/10/13",
+      "inputTokens": 94459384,
+      "cachedInputTokens": 90577408,
+      "outputTokens": 413016,
+      "reasoningOutputTokens": 209920,
+      "totalTokens": 94872400,
+      "costUSD": 20.304806000000003,
+      "models": {
+        "gpt-5-codex": {
+          "inputTokens": 94459384,
+          "cachedInputTokens": 90577408,
+          "outputTokens": 413016,
+          "reasoningOutputTokens": 209920,
+          "totalTokens": 94872400,
+          "isFallback": false
+        }
+      }
+    },
+    {
+      "sessionId": "2025/10/14/rollout-2025-10-14T23-23-56-0199e352-279c-7b72-bcf2-cfd34d9dbeea",
+      "lastActivity": "2025-10-15T13:17:48.038Z",
+      "sessionFile": "rollout-2025-10-14T23-23-56-0199e352-279c-7b72-bcf2-cfd34d9dbeea",
+      "directory": "2025/10/14",
+      "inputTokens": 17305004,
+      "cachedInputTokens": 15462656,
+      "outputTokens": 55859,
+      "reasoningOutputTokens": 32896,
+      "totalTokens": 17360863,
+      "costUSD": 4.794357,
+      "models": {
+        "gpt-5-codex": {
+          "inputTokens": 17305004,
+          "cachedInputTokens": 15462656,
+          "outputTokens": 55859,
+          "reasoningOutputTokens": 32896,
+          "totalTokens": 17360863,
+          "isFallback": false
+        }
+      }
+    },
+    {
+      "sessionId": "2025/10/17/rollout-2025-10-17T09-26-14-0199efc6-4d1b-7f00-a12f-9645e51e29cc",
+      "lastActivity": "2025-10-17T23:21:38.139Z",
+      "sessionFile": "rollout-2025-10-17T09-26-14-0199efc6-4d1b-7f00-a12f-9645e51e29cc",
+      "directory": "2025/10/17",
+      "inputTokens": 7934,
+      "cachedInputTokens": 0,
+      "outputTokens": 39,
+      "reasoningOutputTokens": 0,
+      "totalTokens": 7973,
+      "costUSD": 0.010307499999999999,
+      "models": {
+        "gpt-5-codex": {
+          "inputTokens": 7934,
+          "cachedInputTokens": 0,
+          "outputTokens": 39,
+          "reasoningOutputTokens": 0,
+          "totalTokens": 7973,
+          "isFallback": false
+        }
+      }
+    },
+    {
+      "sessionId": "2025/10/13/rollout-2025-10-13T02-23-18-0199d9a9-a9cb-7613-a41e-b3d69f507f43",
+      "lastActivity": "2025-10-18T13:29:54.249Z",
+      "sessionFile": "rollout-2025-10-13T02-23-18-0199d9a9-a9cb-7613-a41e-b3d69f507f43",
+      "directory": "2025/10/13",
+      "inputTokens": 503742721,
+      "cachedInputTokens": 479108608,
+      "outputTokens": 1654315,
+      "reasoningOutputTokens": 646848,
+      "totalTokens": 505397036,
+      "costUSD": 107.22436725,
+      "models": {
+        "gpt-5-codex": {
+          "inputTokens": 503742721,
+          "cachedInputTokens": 479108608,
+          "outputTokens": 1654315,
+          "reasoningOutputTokens": 646848,
+          "totalTokens": 505397036,
+          "isFallback": false
+        }
+      }
+    },
+    {
+      "sessionId": "2025/10/18/rollout-2025-10-18T21-34-50-0199f787-b70d-7232-b245-b62d7045815d",
+      "lastActivity": "2025-10-18T13:44:09.885Z",
+      "sessionFile": "rollout-2025-10-18T21-34-50-0199f787-b70d-7232-b245-b62d7045815d",
+      "directory": "2025/10/18",
+      "inputTokens": 4633173,
+      "cachedInputTokens": 4364288,
+      "outputTokens": 36592,
+      "reasoningOutputTokens": 16960,
+      "totalTokens": 4669765,
+      "costUSD": 1.24756225,
+      "models": {
+        "gpt-5-codex": {
+          "inputTokens": 4633173,
+          "cachedInputTokens": 4364288,
+          "outputTokens": 36592,
+          "reasoningOutputTokens": 16960,
+          "totalTokens": 4669765,
+          "isFallback": false
+        }
+      }
+    },
+    {
+      "sessionId": "2025/10/13/rollout-2025-10-13T02-23-35-0199d9a9-eb78-74d2-b8e9-bd90132e77b2",
+      "lastActivity": "2025-10-18T15:22:35.397Z",
+      "sessionFile": "rollout-2025-10-13T02-23-35-0199d9a9-eb78-74d2-b8e9-bd90132e77b2",
+      "directory": "2025/10/13",
+      "inputTokens": 617510183,
+      "cachedInputTokens": 587790208,
+      "outputTokens": 1801686,
+      "reasoningOutputTokens": 835456,
+      "totalTokens": 619311869,
+      "costUSD": 128.64060475,
+      "models": {
+        "gpt-5-codex": {
+          "inputTokens": 617510183,
+          "cachedInputTokens": 587790208,
+          "outputTokens": 1801686,
+          "reasoningOutputTokens": 835456,
+          "totalTokens": 619311869,
+          "isFallback": false
+        }
+      }
+    },
+    {
+      "sessionId": "2025/10/18/rollout-2025-10-18T22-58-27-0199f7d4-45e3-7480-877e-d204548bfca6",
+      "lastActivity": "2025-10-18T17:56:02.965Z",
+      "sessionFile": "rollout-2025-10-18T22-58-27-0199f7d4-45e3-7480-877e-d204548bfca6",
+      "directory": "2025/10/18",
+      "inputTokens": 171515133,
+      "cachedInputTokens": 169755520,
+      "outputTokens": 172474,
+      "reasoningOutputTokens": 49664,
+      "totalTokens": 171687607,
+      "costUSD": 25.14369625,
+      "models": {
+        "gpt-5-codex": {
+          "inputTokens": 171515133,
+          "cachedInputTokens": 169755520,
+          "outputTokens": 172474,
+          "reasoningOutputTokens": 49664,
+          "totalTokens": 171687607,
+          "isFallback": false
+        }
+      }
+    },
+    {
+      "sessionId": "2025/10/19/rollout-2025-10-19T01-56-49-0199f877-9275-7291-96b7-539ff80586c2",
+      "lastActivity": "2025-10-18T17:57:21.674Z",
+      "sessionFile": "rollout-2025-10-19T01-56-49-0199f877-9275-7291-96b7-539ff80586c2",
+      "directory": "2025/10/19",
+      "inputTokens": 8131,
+      "cachedInputTokens": 6144,
+      "outputTokens": 487,
+      "reasoningOutputTokens": 384,
+      "totalTokens": 8618,
+      "costUSD": 0.00812175,
+      "models": {
+        "gpt-5-codex": {
+          "inputTokens": 8131,
+          "cachedInputTokens": 6144,
+          "outputTokens": 487,
+          "reasoningOutputTokens": 384,
+          "totalTokens": 8618,
+          "isFallback": false
+        }
+      }
+    },
+    {
+      "sessionId": "2025/10/18/rollout-2025-10-18T21-12-03-0199f772-d9c8-7e52-8ef8-f9202d7de09e",
+      "lastActivity": "2025-10-18T19:10:59.077Z",
+      "sessionFile": "rollout-2025-10-18T21-12-03-0199f772-d9c8-7e52-8ef8-f9202d7de09e",
+      "directory": "2025/10/18",
+      "inputTokens": 13151421,
+      "cachedInputTokens": 12652672,
+      "outputTokens": 66279,
+      "reasoningOutputTokens": 41600,
+      "totalTokens": 13217700,
+      "costUSD": 2.86781025,
+      "models": {
+        "gpt-5-codex": {
+          "inputTokens": 13151421,
+          "cachedInputTokens": 12652672,
+          "outputTokens": 66279,
+          "reasoningOutputTokens": 41600,
+          "totalTokens": 13217700,
+          "isFallback": false
+        }
+      }
+    },
+    {
+      "sessionId": "2025/10/13/rollout-2025-10-13T02-23-27-0199d9a9-cad6-71d2-8261-1c745934b60a",
+      "lastActivity": "2025-10-18T19:19:42.547Z",
+      "sessionFile": "rollout-2025-10-13T02-23-27-0199d9a9-cad6-71d2-8261-1c745934b60a",
+      "directory": "2025/10/13",
+      "inputTokens": 721874023,
+      "cachedInputTokens": 691489536,
+      "outputTokens": 2059556,
+      "reasoningOutputTokens": 894400,
+      "totalTokens": 723933579,
+      "costUSD": 145.01236075,
+      "models": {
+        "gpt-5-codex": {
+          "inputTokens": 721874023,
+          "cachedInputTokens": 691489536,
+          "outputTokens": 2059556,
+          "reasoningOutputTokens": 894400,
+          "totalTokens": 723933579,
+          "isFallback": false
+        }
+      }
+    },
+    {
+      "sessionId": "2025/10/13/rollout-2025-10-13T20-13-24-0199dd7d-5e76-7df3-83ca-a4161b680c64",
+      "lastActivity": "2025-10-19T01:02:09.991Z",
+      "sessionFile": "rollout-2025-10-13T20-13-24-0199dd7d-5e76-7df3-83ca-a4161b680c64",
+      "directory": "2025/10/13",
+      "inputTokens": 725959632,
+      "cachedInputTokens": 689764224,
+      "outputTokens": 2583501,
+      "reasoningOutputTokens": 965568,
+      "totalTokens": 728543133,
+      "costUSD": 157.299798,
+      "models": {
+        "gpt-5-codex": {
+          "inputTokens": 725959632,
+          "cachedInputTokens": 689764224,
+          "outputTokens": 2583501,
+          "reasoningOutputTokens": 965568,
+          "totalTokens": 728543133,
+          "isFallback": false
+        }
+      }
+    },
+    {
+      "sessionId": "2025/10/19/rollout-2025-10-19T01-57-49-0199f878-7b4c-7423-9b83-c2bd6e6749d6",
+      "lastActivity": "2025-10-19T06:32:52.714Z",
+      "sessionFile": "rollout-2025-10-19T01-57-49-0199f878-7b4c-7423-9b83-c2bd6e6749d6",
+      "directory": "2025/10/19",
+      "inputTokens": 141639285,
+      "cachedInputTokens": 137210752,
+      "outputTokens": 663415,
+      "reasoningOutputTokens": 296192,
+      "totalTokens": 142302700,
+      "costUSD": 29.32116025,
+      "models": {
+        "gpt-5-codex": {
+          "inputTokens": 141639285,
+          "cachedInputTokens": 137210752,
+          "outputTokens": 663415,
+          "reasoningOutputTokens": 296192,
+          "totalTokens": 142302700,
+          "isFallback": false
+        }
+      }
+    }
+  ],
+  "totals": {
+    "inputTokens": 7349197355,
+    "cachedInputTokens": 7074188288,
+    "outputTokens": 23525908,
+    "reasoningOutputTokens": 10953792,
+    "totalTokens": 7372723263,
+    "costUSD": 1463.2939497500001
+  }
+}

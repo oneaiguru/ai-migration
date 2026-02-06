@@ -1,0 +1,54 @@
+# Configuration files
+config/api_keys.txt
+.env
+.env.*
+.env.single
+.env.multi
+
+# Database files
+database/*.db
+sherlock.db
+relationship_advisor.db
+tasks.db
+
+# Virtual environments
+venv/
+env/
+myenv/
+
+# macOS system files
+.DS_Store
+
+# Python artifacts
+*.pyc
+__pycache__/
+.mypy_cache/
+tests/.mypy_cache/
+.pytest_cache/
+.cache/
+*.egg-info/
+dist/
+build/
+
+# IDE settings
+.vscode/
+.idea/
+
+# Logs and coverage
+logs/
+*.log
+.coverage
+htmlcov/
+
+# Behave (BDD) configuration
+*.behave
+
+# Backups and artifacts
+backups/
+reports/
+tree.txt
+concatenated_output.txt
+config.json
+.modal/
+.fileselect/
+sherlock01.zip

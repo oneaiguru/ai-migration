@@ -1,0 +1,15 @@
+{
+"window": {"rolling_seconds": 18000, "weekly_seconds": 604800},
+"models": {
+"claude-haiku-4.5": {
+"rolling_pct": 50.0,
+"weekly_pct": 5.0,
+"warn": false,
+"block": false
+}
+}
+}
+
+(Aligns with your QUOTAS doc: rolling vs weekly, warn≥80%, block=100%. )
+
+---

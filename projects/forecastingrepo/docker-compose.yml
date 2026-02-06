@@ -1,0 +1,14 @@
+version: '3.8'
+
+services:
+  forecast-api:
+    build: .
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./data:/app/data
+      - ./data/cache:/app/data/cache
+    environment:
+      - SITES_SERVICE_PATH=/app/data/sites_service.csv
+      - SITES_REGISTRY_PATH=/app/data/sites_registry.csv
+    restart: unless-stopped

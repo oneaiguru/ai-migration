@@ -1,0 +1,25 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Session",
+  "type": "object",
+  "required": [
+    "session_id",
+    "repo_id",
+    "branch",
+    "commit",
+    "license_id",
+    "privacy_tier",
+    "created_at"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "session_id": {"type": "string"},
+    "repo_id": {"type": "string"},
+    "branch": {"type": "string"},
+    "commit": {"type": "string"},
+    "license_id": {"type": "string"},
+    "privacy_tier": {"type": "string", "enum": ["local", "minimized", "full"]},
+    "created_at": {"type": "string"},
+    "metadata": {"type": "object", "additionalProperties": true}
+  }
+}

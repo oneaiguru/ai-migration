@@ -1,0 +1,10 @@
+churn W0-CHP-1: files=0 +0/-0 net=0 per-feature=0.00
+Decision Card
+  Window:   W0-CHP-1
+  Status:   GO
+  Anoms:    0
+  Finalized:True
+  Outcome:  pass
+  Evidence: 4
+  Churn:    2
+ledger checkpoint recorded for W0-CHP-1 (provider=codex)

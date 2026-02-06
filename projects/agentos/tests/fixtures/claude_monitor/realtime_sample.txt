@@ -1,0 +1,11 @@
+CLAUDE CODE USAGE MONITOR
+=========================
+Plan: custom | Timezone: Asia/Irkutsk
+
+Token Usage:    [################--------------] 0.0%
+Tokens:         0 / ~153,378 (0 left)
+Burn Rate:      0.0 tokens/min
+Cost Rate:      $0.00 $/min
+Sent Messages:  0 messages
+
+Clock: 04:27:40 AM | Note: No active session | Ctrl+C to exit

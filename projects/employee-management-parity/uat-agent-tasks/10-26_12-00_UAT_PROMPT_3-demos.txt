@@ -1,0 +1,49 @@
+Consolidated UAT – Three Demos (Employees, Manager, Analytics)
+
+Hi — please run the checks below on the latest production URLs and reply with the Pass/Fail table (one line per check). Attach new screenshots for any Fail. I’ve attached prior artifacts where available.
+
+Targets
+- Employee Portal: https://wfm-employee-portal.vercel.app
+- Manager Portal: https://manager-portal-demo-46qb9mity-granins-projects.vercel.app
+- Analytics Dashboard: https://analytics-dashboard-demo-d60586nei-granins-projects.vercel.app
+
+Packs to use
+- Employee Portal: parity_static.md + trimmed_smoke.md (behaviour only; visuals frozen)
+- Manager Portal: parity_static.md + chart_visual_spec.md (focus on coverage/adherence toggle)
+- Analytics Dashboard: parity_static.md + chart_visual_spec.md (focus on dual‑axis trend legend/labels)
+
+Focus checks (delta)
+1) Employee Portal (EP‑1 fix validation)
+   - Page: /vacation-requests
+   - Action: submit one new vacation request
+   - Expect: single new row added (no duplicates), the “All” counter increments by 1, no console errors
+   - Attach: portal-requests-after-fix.png (previous run), add a new screenshot if anything changes
+
+2) Manager Portal (MP‑1 toggle validation)
+   - Page: Dashboard
+   - Action: toggle coverage/adherence
+   - Expect: two datasets visible per mode, legend/labels aligned with the toggle; RU formatting OK; no console errors
+   - Screenshot: capture the dashboard chart with the toggle visible
+
+3) Analytics Dashboard (AD‑1 re‑validation)
+   - Page: Dashboard (trend analysis panel)
+   - Check: dual‑axis trend shows correct primary/secondary labelling; legend items align to the right axis when `secondaryAxis` is used
+   - Expect: labels and colours match, RU formatting OK; no console errors
+   - Screenshot: capture the trend chart and legend
+
+Pass/Fail reply template (paste back)
+| Demo | Check | Pass/Fail | Notes | Screenshot |
+| --- | --- | --- | --- | --- |
+| Employee Portal | EP‑1 duplicate submit |  |  |  |
+| Manager Portal | MP‑1 coverage/adherence toggle |  |  |  |
+| Analytics Dashboard | AD‑1 dual‑axis legend/labels |  |  |  |
+
+Attachments (uploaded with this prompt)
+- test-results/portal-requests-after-fix.png — Employee Portal duplicate‑submit fix evidence
+- test-results/portal-uat-results-2025-10-26.json — prior EP UAT JSON (for reference)
+
+Notes
+- Behaviour‑only UAT (no visual pixel checks). Report any console errors with a short note.
+- If any check fails, include the first error message line and a screenshot so we can reproduce and fix quickly.
+
+Thank you — reply with the table above and any failing screenshots.

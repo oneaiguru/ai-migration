@@ -1,0 +1,5 @@
+UAT Outbound Package — 2025-10-30
+
+Files:
+1. UAT_PROMPT_2025-10-30.txt — Paste-ready instructions for Forecasting parity UAT (targets, packs, focus checks, pass/fail table).
+Attachments to upload: none (screenshots only if agent encounters failures).

@@ -1,0 +1,22 @@
+{
+    "login": "your_login@example.com",
+    "password": "your_password",
+    "headless": true,
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.51 Safari/537.36",
+    "sku_list": [
+        "1760282452",
+        "1750193957",
+        "709868368",
+        "1908331943"
+    ],
+    "payment_method": "Юмани",
+    "telegram_token": "",
+    "telegram_chat_id": "",
+    "schedule": {
+        "enabled": true,
+        "daily": [
+            "15:00"
+        ],
+        "run_duration_hours": 7
+    }
+}

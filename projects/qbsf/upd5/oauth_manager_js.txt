@@ -1,0 +1,385 @@
+/**
+ * OAuth Manager for handling authentication with Salesforce and QuickBooks
+ * This manager handles token storage, refresh, and OAuth flows for both services
+ */
+const fs = require('fs');
+const path = require('path');
+const axios = require('axios');
+const crypto = require('crypto');
+const logger = require('../utils/logger');
+const config = require('../config');
+
+class OAuthManager {
+  constructor() {
+    this.tokenFile = path.join(__dirname, '../../data/tokens.json');
+    this.tokens = this.initializeTokenStorage();
+  }
+
+  /**
+   * Initialize token storage file
+   */
+  initializeTokenStorage() {
+    try {
+      // Ensure the data directory exists
+      const dataDir = path.dirname(this.tokenFile);
+      if (!fs.existsSync(dataDir)) {
+        fs.mkdirSync(dataDir, { recursive: true });
+      }
+
+      // Create token file if it doesn't exist
+      if (!fs.existsSync(this.tokenFile)) {
+        const initialTokens = {
+          salesforce: {},
+          quickbooks: {}
+        };
+        fs.writeFileSync(this.tokenFile, JSON.stringify(initialTokens, null, 2));
+        return initialTokens;
+      }
+
+      // Read existing tokens
+      const tokensData = fs.readFileSync(this.tokenFile, 'utf8');
+      return JSON.parse(tokensData);
+    } catch (error) {
+      logger.error('Error initializing token storage:', error);
+      return { salesforce: {}, quickbooks: {} };
+    }
+  }
+
+  /**
+   * Save tokens to storage
+   */
+  saveTokens(tokens) {
+    try {
+      fs.writeFileSync(this.tokenFile, JSON.stringify(tokens, null, 2));
+      logger.debug('Tokens saved successfully');
+    } catch (error) {
+      logger.error('Error saving tokens:', error);
+    }
+  }
+
+  /**
+   * Encrypt sensitive data
+   */
+  encrypt(text) {
+    if (!config.security.tokenEncryptionKey) {
+      return text; // No encryption if key not provided
+    }
+
+    const algorithm = 'aes-256-gcm';
+    const key = Buffer.from(config.security.tokenEncryptionKey, 'utf8');
+    const iv = crypto.randomBytes(16);
+    const cipher = crypto.createCipheriv(algorithm, key, iv);
+    
+    let encrypted = cipher.update(text, 'utf8', 'hex');
+    encrypted += cipher.final('hex');
+    
+    const authTag = cipher.getAuthTag();
+    
+    return iv.toString('hex') + ':' + authTag.toString('hex') + ':' + encrypted;
+  }
+
+  /**
+   * Decrypt sensitive data
+   */
+  decrypt(encryptedText) {
+    if (!config.security.tokenEncryptionKey || !encryptedText.includes(':')) {
+      return encryptedText; // No decryption if key not provided or data not encrypted
+    }
+
+    try {
+      const algorithm = 'aes-256-gcm';
+      const key = Buffer.from(config.security.tokenEncryptionKey, 'utf8');
+      const parts = encryptedText.split(':');
+      const iv = Buffer.from(parts[0], 'hex');
+      const authTag = Buffer.from(parts[1], 'hex');
+      const encrypted = parts[2];
+      
+      const decipher = crypto.createDecipheriv(algorithm, key, iv);
+      decipher.setAuthTag(authTag);
+      
+      let decrypted = decipher.update(encrypted, 'hex', 'utf8');
+      decrypted += decipher.final('utf8');
+      
+      return decrypted;
+    } catch (error) {
+      logger.error('Error decrypting data:', error);
+      return encryptedText;
+    }
+  }
+
+  /**
+   * Store OAuth tokens for a service
+   */
+  storeOAuthTokens(service, tokenData) {
+    try {
+      const tokens = this.initializeTokenStorage();
+      
+      if (service === 'salesforce') {
+        tokens.salesforce[tokenData.instanceUrl] = {
+          accessToken: this.encrypt(tokenData.accessToken),
+          refreshToken: this.encrypt(tokenData.refreshToken || ''),
+          instanceUrl: tokenData.instanceUrl,
+          expiresAt: Date.now() + (tokenData.expiresIn * 1000)
+        };
+      } else if (service === 'quickbooks') {
+        tokens.quickbooks[tokenData.realmId] = {
+          accessToken: this.encrypt(tokenData.accessToken),
+          refreshToken: this.encrypt(tokenData.refreshToken),
+          realmId: tokenData.realmId,
+          expiresAt: Date.now() + (tokenData.expiresIn * 1000)
+        };
+      }
+      
+      this.saveTokens(tokens);
+      logger.info(`${service} tokens stored successfully`);
+      return true;
+    } catch (error) {
+      logger.error(`Error storing ${service} tokens:`, error);
+      return false;
+    }
+  }
+
+  /**
+   * Check if Salesforce token is valid and refresh if needed
+   */
+  async getSalesforceAccessToken(instanceUrl) {
+    const tokens = this.initializeTokenStorage();
+    
+    if (!tokens.salesforce[instanceUrl]) {
+      throw new Error(`No Salesforce tokens found for instance ${instanceUrl}`);
+    }
+
+    const sfTokens = tokens.salesforce[instanceUrl];
+    const decryptedAccessToken = this.decrypt(sfTokens.accessToken);
+    
+    // Check if token is expired (with 5 minute buffer)
+    if (Date.now() >= sfTokens.expiresAt - 300000) {
+      // Token is expired or about to expire, refresh it
+      try {
+        logger.info(`Refreshing Salesforce token for instance ${instanceUrl}`);
+        
+        const response = await axios({
+          method: 'post',
+          url: `${config.salesforce.loginUrl}/services/oauth2/token`,
+          params: {
+            grant_type: 'refresh_token',
+            client_id: config.salesforce.clientId,
+            client_secret: config.salesforce.clientSecret,
+            refresh_token: this.decrypt(sfTokens.refreshToken)
+          }
+        });
+
+        // Update tokens
+        sfTokens.accessToken = this.encrypt(response.data.access_token);
+        sfTokens.expiresAt = Date.now() + ((response.data.expires_in || 7200) * 1000);
+        
+        // Save updated tokens
+        tokens.salesforce[instanceUrl] = sfTokens;
+        this.saveTokens(tokens);
+        
+        logger.info(`Salesforce token refreshed for instance ${instanceUrl}`);
+        return response.data.access_token;
+      } catch (error) {
+        logger.error(`Error refreshing Salesforce token for instance ${instanceUrl}:`, error);
+        throw new Error(`Failed to refresh Salesforce token: ${error.message}`);
+      }
+    }
+
+    return decryptedAccessToken;
+  }
+
+  /**
+   * Check if QuickBooks token is valid and refresh if needed
+   */
+  async getQuickBooksAccessToken(realmId) {
+    const tokens = this.initializeTokenStorage();
+    
+    if (!tokens.quickbooks[realmId]) {
+      throw new Error(`No QuickBooks tokens found for realm ${realmId}`);
+    }
+
+    const qbTokens = tokens.quickbooks[realmId];
+    const decryptedAccessToken = this.decrypt(qbTokens.accessToken);
+    
+    // Check if token is expired (with 5 minute buffer)
+    if (Date.now() >= qbTokens.expiresAt - 300000) {
+      // Token is expired or about to expire, refresh it
+      try {
+        logger.info(`Refreshing QuickBooks token for realm ${realmId}`);
+        
+        const tokenUrl = 'https://oauth.platform.intuit.com/oauth2/v1/tokens/bearer';
+        
+        const response = await axios({
+          method: 'post',
+          url: tokenUrl,
+          data: new URLSearchParams({
+            grant_type: 'refresh_token',
+            refresh_token: this.decrypt(qbTokens.refreshToken)
+          }),
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'Authorization': `Basic ${Buffer.from(`${config.quickbooks.clientId}:${config.quickbooks.clientSecret}`).toString('base64')}`
+          }
+        });
+
+        // Update tokens
+        qbTokens.accessToken = this.encrypt(response.data.access_token);
+        qbTokens.refreshToken = this.encrypt(response.data.refresh_token);
+        qbTokens.expiresAt = Date.now() + (response.data.expires_in * 1000);
+        
+        // Save updated tokens
+        tokens.quickbooks[realmId] = qbTokens;
+        this.saveTokens(tokens);
+        
+        logger.info(`QuickBooks token refreshed for realm ${realmId}`);
+        return response.data.access_token;
+      } catch (error) {
+        logger.error(`Error refreshing QuickBooks token for realm ${realmId}:`, error);
+        throw new Error(`Failed to refresh QuickBooks token: ${error.message}`);
+      }
+    }
+
+    return decryptedAccessToken;
+  }
+
+  /**
+   * Get Salesforce authorization URL
+   */
+  getSalesforceAuthUrl() {
+    const state = crypto.randomBytes(16).toString('hex');
+    const authUrl = `${config.salesforce.loginUrl}/services/oauth2/authorize`;
+    
+    const params = new URLSearchParams({
+      response_type: 'code',
+      client_id: config.salesforce.clientId,
+      redirect_uri: config.salesforce.redirectUri,
+      state: state,
+      scope: 'full refresh_token'
+    });
+    
+    return `${authUrl}?${params.toString()}`;
+  }
+
+  /**
+   * Get QuickBooks authorization URL
+   */
+  getQuickBooksAuthUrl() {
+    const scopes = 'com.intuit.quickbooks.accounting';
+    const state = crypto.randomBytes(16).toString('hex');
+    const authUrl = 'https://appcenter.intuit.com/connect/oauth2';
+    
+    const params = new URLSearchParams({
+      client_id: config.quickbooks.clientId,
+      response_type: 'code',
+      scope: scopes,
+      redirect_uri: config.quickbooks.redirectUri,
+      state: state
+    });
+    
+    return `${authUrl}?${params.toString()}`;
+  }
+
+  /**
+   * Exchange Salesforce authorization code for tokens
+   */
+  async exchangeSalesforceCode(code) {
+    try {
+      const response = await axios({
+        method: 'post',
+        url: `${config.salesforce.loginUrl}/services/oauth2/token`,
+        params: {
+          grant_type: 'authorization_code',
+          code: code,
+          client_id: config.salesforce.clientId,
+          client_secret: config.salesforce.clientSecret,
+          redirect_uri: config.salesforce.redirectUri
+        }
+      });
+
+      return {
+        accessToken: response.data.access_token,
+        refreshToken: response.data.refresh_token,
+        instanceUrl: response.data.instance_url,
+        expiresIn: response.data.expires_in || 7200
+      };
+    } catch (error) {
+      logger.error('Error exchanging Salesforce code:', error);
+      throw new Error(`Failed to exchange Salesforce code: ${error.message}`);
+    }
+  }
+
+  /**
+   * Exchange QuickBooks authorization code for tokens
+   */
+  async exchangeQuickBooksCode(code, realmId) {
+    try {
+      const tokenUrl = 'https://oauth.platform.intuit.com/oauth2/v1/tokens/bearer';
+      
+      const response = await axios({
+        method: 'post',
+        url: tokenUrl,
+        data: new URLSearchParams({
+          grant_type: 'authorization_code',
+          code: code,
+          redirect_uri: config.quickbooks.redirectUri
+        }),
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+          'Authorization': `Basic ${Buffer.from(`${config.quickbooks.clientId}:${config.quickbooks.clientSecret}`).toString('base64')}`
+        }
+      });
+
+      return {
+        accessToken: response.data.access_token,
+        refreshToken: response.data.refresh_token,
+        expiresIn: response.data.expires_in,
+        realmId: realmId
+      };
+    } catch (error) {
+      logger.error('Error exchanging QuickBooks code:', error);
+      throw new Error(`Failed to exchange QuickBooks code: ${error.message}`);
+    }
+  }
+
+  /**
+   * Revoke QuickBooks tokens
+   */
+  async revokeQuickBooksTokens(realmId) {
+    try {
+      const tokens = this.initializeTokenStorage();
+      if (!tokens.quickbooks[realmId]) {
+        logger.warn(`No QuickBooks tokens found for realm ${realmId}`);
+        return;
+      }
+
+      const qbTokens = tokens.quickbooks[realmId];
+      const refreshToken = this.decrypt(qbTokens.refreshToken);
+      
+      // Revoke the token
+      await axios({
+        method: 'post',
+        url: 'https://developer.api.intuit.com/v2/oauth2/tokens/revoke',
+        data: new URLSearchParams({
+          token: refreshToken
+        }),
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+          'Authorization': `Basic ${Buffer.from(`${config.quickbooks.clientId}:${config.quickbooks.clientSecret}`).toString('base64')}`
+        }
+      });
+
+      // Remove from storage
+      delete tokens.quickbooks[realmId];
+      this.saveTokens(tokens);
+      
+      logger.info(`QuickBooks tokens revoked for realm ${realmId}`);
+    } catch (error) {
+      logger.error(`Error revoking QuickBooks tokens for realm ${realmId}:`, error);
+      throw new Error(`Failed to revoke QuickBooks tokens: ${error.message}`);
+    }
+  }
+}
+
+// Create singleton
+const oauthManager = new OAuthManager();
+module.exports = oauthManager;

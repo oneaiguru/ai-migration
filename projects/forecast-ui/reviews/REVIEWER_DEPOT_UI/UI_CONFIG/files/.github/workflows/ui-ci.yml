@@ -1,0 +1,49 @@
+name: UI CI
+
+on:
+  push:
+    branches: [ main, feat/**, docs/**, refactor/** ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  unit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - run: npm ci
+      - name: Size gate (enforced)
+        run: bash scripts/ci/check_large_files_ui.sh 350 500
+      - name: Review registry check (enforced)
+        run: node scripts/ci/check_review_registry.mjs
+      - name: Lint (advisory)
+        run: |
+          npx --yes eslint . || true
+      - run: npm run test
+
+  e2e-smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - run: npm ci
+      - name: Install Playwright browsers
+        uses: microsoft/playwright-github-action@v1
+      - name: Run Playwright smoke
+        env:
+          E2E_BASE_URL: https://mytko-forecast-ui.vercel.app
+          PW_TIMEOUT_MS: '30000'
+          E2E_ALLOW_DOWNLOAD: '0'
+        run: npx playwright test --reporter=line --workers=1
+      - name: Upload Playwright HTML report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ui-playwright-report
+          path: playwright-report
+          if-no-files-found: ignore

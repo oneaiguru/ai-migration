@@ -1,0 +1,2115 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+
+"""
+iMessage рассылка - графический интерфейс
+Версия: 1.0.0
+Автор: Михаил
+"""
+
+import os
+import sys
+import time
+import threading
+import datetime
+from typing import Dict, Any, List, Optional
+
+from PyQt5.QtWidgets import (
+    QApplication, QMainWindow, QTabWidget, QWidget, QVBoxLayout, QHBoxLayout,
+    QPushButton, QLabel, QLineEdit, QTextEdit, QFileDialog, QComboBox,
+    QSpinBox, QDoubleSpinBox, QCheckBox, QTableWidget, QTableWidgetItem,
+    QHeaderView, QProgressBar, QMessageBox, QGroupBox, QFormLayout,
+    QSplitter, QStyle, QToolBar, QAction, QStatusBar, QDialog, QDialogButtonBox
+)
+from PyQt5.QtCore import Qt, QThread, pyqtSignal, QSettings, QTimer, QSize
+from PyQt5.QtGui import QIcon, QFont, QTextCursor, QPixmap
+
+# Импорт внутренних модулей
+from contact_manager import ContactManager
+from message_template import MessageTemplate
+from imessage_sender import iMessageSender
+from logger import Logger
+from config import Config
+
+
+class SendMessageThread(QThread):
+    """Поток для отправки сообщений"""
+    
+    # Сигналы для взаимодействия с интерфейсом
+    progress_signal = pyqtSignal(int, int)  # (current, total)
+    message_signal = pyqtSignal(str, str, str)  # (phone, status, message)
+    finished_signal = pyqtSignal(dict)  # статистика отправки
+    error_signal = pyqtSignal(str)  # сообщение об ошибке
+    
+    def __init__(self, sender, contacts, template, delay_min=3, delay_max=7, media_path=None):
+        """
+        Инициализация потока отправки
+        
+        Args:
+            sender: Объект iMessageSender
+            contacts: Список контактов
+            template: Объект шаблона
+            delay_min: Минимальная задержка между отправками
+            delay_max: Максимальная задержка между отправками
+            media_path: Путь к медиафайлу (опционально)
+        """
+        super().__init__()
+        self.sender = sender
+        self.contacts = contacts
+        self.template = template
+        self.delay_min = delay_min
+        self.delay_max = delay_max
+        self.media_path = media_path
+        self.is_running = True
+        self.stats = {
+            'total': len(contacts),
+            'sent': 0,
+            'failed': 0,
+            'start_time': None,
+            'end_time': None,
+        }
+    
+    def run(self):
+        """Запуск потока отправки"""
+        self.stats['start_time'] = datetime.datetime.now()
+        
+        # Если указан медиафайл, добавляем его
+        if self.media_path and os.path.exists(self.media_path):
+            if not self.sender.add_media(self.media_path):
+                self.error_signal.emit(f"Ошибка добавления медиафайла: {self.media_path}")
+        
+        # Отправка сообщений
+        for i, contact in enumerate(self.contacts):
+            if not self.is_running:
+                break
+            
+            # Обновление прогресса
+            self.progress_signal.emit(i, len(self.contacts))
+            
+            # Получение номера телефона
+            phone = contact.get('phone')
+            if not phone:
+                self.message_signal.emit('', 'ERROR', 'Контакт без номера телефона')
+                self.stats['failed'] += 1
+                continue
+            
+            # Рендеринг шаблона
+            message = self.template.render(contact)
+            
+            # Отправка сообщения
+            try:
+                result = self.sender.send(phone, message)
+                
+                if result:
+                    status = 'SUCCESS'
+                    self.stats['sent'] += 1
+                else:
+                    status = 'ERROR'
+                    self.stats['failed'] += 1
+                
+                # Сигнал о результате отправки
+                self.message_signal.emit(phone, status, message[:50] + '...' if len(message) > 50 else message)
+                
+                # Пауза между отправками (кроме последнего сообщения)
+                if i < len(self.contacts) - 1 and self.is_running:
+                    import random
+                    delay = random.uniform(self.delay_min, self.delay_max)
+                    time.sleep(delay)
+                    
+            except Exception as e:
+                self.error_signal.emit(f"Ошибка отправки: {str(e)}")
+                self.stats['failed'] += 1
+        
+        # Очистка медиафайлов
+        self.sender.clear_media()
+        
+        # Обновление статистики
+        self.stats['end_time'] = datetime.datetime.now()
+        
+        # Сигнал о завершении отправки
+        self.progress_signal.emit(len(self.contacts), len(self.contacts))
+        self.finished_signal.emit(self.stats)
+    
+    def stop(self):
+        """Остановка потока отправки"""
+        self.is_running = False
+
+
+class ContactsTab(QWidget):
+    """Вкладка управления контактами"""
+    
+    def __init__(self, parent=None, contact_manager=None, logger=None):
+        """
+        Инициализация вкладки контактов
+        
+        Args:
+            parent: Родительский виджет
+            contact_manager: Объект ContactManager
+            logger: Объект логгера
+        """
+        super().__init__(parent)
+        self.contact_manager = contact_manager or ContactManager()
+        self.logger = logger
+        self.init_ui()
+    
+    def init_ui(self):
+        """Инициализация интерфейса"""
+        layout = QVBoxLayout()
+        
+        # Панель кнопок
+        btn_layout = QHBoxLayout()
+        
+        self.load_btn = QPushButton("Загрузить контакты", self)
+        self.load_btn.clicked.connect(self.load_contacts)
+        btn_layout.addWidget(self.load_btn)
+        
+        self.export_btn = QPushButton("Экспортировать контакты", self)
+        self.export_btn.clicked.connect(self.export_contacts)
+        btn_layout.addWidget(self.export_btn)
+        
+        self.clear_btn = QPushButton("Очистить список", self)
+        self.clear_btn.clicked.connect(self.clear_contacts)
+        btn_layout.addWidget(self.clear_btn)
+        
+        layout.addLayout(btn_layout)
+        
+        # Информация о контактах
+        info_layout = QHBoxLayout()
+        self.contact_count_label = QLabel("Загружено контактов: 0", self)
+        info_layout.addWidget(self.contact_count_label)
+        
+        self.search_edit = QLineEdit(self)
+        self.search_edit.setPlaceholderText("Поиск контактов...")
+        self.search_edit.textChanged.connect(self.filter_contacts)
+        info_layout.addWidget(self.search_edit)
+        
+        layout.addLayout(info_layout)
+        
+        # Таблица контактов
+        self.contacts_table = QTableWidget(self)
+        self.contacts_table.setColumnCount(3)
+        self.contacts_table.setHorizontalHeaderLabels(["Телефон", "Имя", "Дополнительно"])
+        self.contacts_table.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
+        self.contacts_table.setEditTriggers(QTableWidget.NoEditTriggers)
+        self.contacts_table.setSelectionBehavior(QTableWidget.SelectRows)
+        layout.addWidget(self.contacts_table)
+        
+        self.setLayout(layout)
+    
+    def load_contacts(self):
+        """Загрузка контактов из файла"""
+        file_dialog = QFileDialog()
+        file_path, _ = file_dialog.getOpenFileName(
+            self, 
+            "Выберите файл с контактами",
+            "",
+            "Файлы с контактами (*.csv *.xlsx *.xls *.txt);;Все файлы (*)"
+        )
+        
+        if not file_path:
+            return
+        
+        # Очистка текущего поиска
+        self.search_edit.clear()
+        
+        # Загрузка контактов
+        count = self.contact_manager.load_from_file(file_path)
+        
+        if count > 0:
+            self.update_contacts_table()
+            QMessageBox.information(
+                self,
+                "Загрузка контактов",
+                f"Успешно загружено {count} контактов из файла"
+            )
+            
+            if self.logger:
+                self.logger.info(f"Загружено {count} контактов из файла: {file_path}")
+        else:
+            QMessageBox.warning(
+                self,
+                "Загрузка контактов",
+                "Не удалось загрузить контакты из файла"
+            )
+    
+    def export_contacts(self):
+        """Экспорт контактов в файл"""
+        if not self.contact_manager.get_contacts():
+            QMessageBox.warning(
+                self,
+                "Экспорт контактов",
+                "Нет контактов для экспорта"
+            )
+            return
+        
+        file_dialog = QFileDialog()
+        file_path, _ = file_dialog.getSaveFileName(
+            self, 
+            "Экспорт контактов",
+            "",
+            "CSV-файлы (*.csv);;Все файлы (*)"
+        )
+        
+        if not file_path:
+            return
+        
+        # Добавление расширения .csv, если не указано
+        if not file_path.lower().endswith('.csv'):
+            file_path += '.csv'
+        
+        # Экспорт контактов
+        if self.contact_manager.export_to_csv(file_path):
+            QMessageBox.information(
+                self,
+                "Экспорт контактов",
+                f"Контакты успешно экспортированы в файл: {file_path}"
+            )
+            
+            if self.logger:
+                self.logger.info(f"Экспортировано {len(self.contact_manager.get_contacts())} контактов в файл: {file_path}")
+        else:
+            QMessageBox.warning(
+                self,
+                "Экспорт контактов",
+                "Ошибка экспорта контактов"
+            )
+    
+    def clear_contacts(self):
+        """Очистка списка контактов"""
+        if not self.contact_manager.get_contacts():
+            return
+        
+        reply = QMessageBox.question(
+            self,
+            "Очистка списка контактов",
+            "Вы уверены, что хотите очистить список контактов?",
+            QMessageBox.Yes | QMessageBox.No,
+            QMessageBox.No
+        )
+        
+        if reply == QMessageBox.Yes:
+            self.contact_manager.clear()
+            self.update_contacts_table()
+            
+            if self.logger:
+                self.logger.info("Список контактов очищен")
+    
+    def update_contacts_table(self):
+        """Обновление таблицы контактов"""
+        contacts = self.contact_manager.get_contacts()
+        search_text = self.search_edit.text().lower()
+        
+        # Фильтрация по поисковому запросу
+        if search_text:
+            filtered_contacts = []
+            for contact in contacts:
+                # Поиск по всем полям
+                for key, value in contact.items():
+                    if str(value).lower().find(search_text) != -1:
+                        filtered_contacts.append(contact)
+                        break
+            contacts = filtered_contacts
+        
+        # Обновление таблицы
+        self.contacts_table.setRowCount(len(contacts))
+        
+        for i, contact in enumerate(contacts):
+            # Телефон
+            phone_item = QTableWidgetItem(contact.get('phone', ''))
+            self.contacts_table.setItem(i, 0, phone_item)
+            
+            # Имя (из поля name или имя+фамилия)
+            name = contact.get('name', '')
+            if not name and 'first_name' in contact:
+                name = contact.get('first_name', '')
+                if 'last_name' in contact:
+                    name += ' ' + contact.get('last_name', '')
+            name_item = QTableWidgetItem(name)
+            self.contacts_table.setItem(i, 1, name_item)
+            
+            # Дополнительная информация (компания или другие поля)
+            extra_info = contact.get('company', '')
+            if not extra_info:
+                # Сбор других полей
+                extra_fields = []
+                for key, value in contact.items():
+                    if key not in ['phone', 'name', 'first_name', 'last_name', 'company'] and value:
+                        extra_fields.append(f"{key}: {value}")
+                extra_info = ', '.join(extra_fields)
+            
+            extra_item = QTableWidgetItem(extra_info)
+            self.contacts_table.setItem(i, 2, extra_item)
+        
+        # Обновление счетчика контактов
+        self.contact_count_label.setText(f"Загружено контактов: {len(contacts)}")
+    
+    def filter_contacts(self):
+        """Фильтрация контактов по поисковому запросу"""
+        self.update_contacts_table()
+    
+    def get_selected_contacts(self):
+        """Получение выбранных контактов"""
+        selected_rows = self.contacts_table.selectionModel().selectedRows()
+        contacts = self.contact_manager.get_contacts()
+        search_text = self.search_edit.text().lower()
+        
+        # Если есть поисковый запрос, сначала фильтруем контакты
+        if search_text:
+            filtered_contacts = []
+            for contact in contacts:
+                for key, value in contact.items():
+                    if str(value).lower().find(search_text) != -1:
+                        filtered_contacts.append(contact)
+                        break
+            contacts = filtered_contacts
+        
+        # Если выбраны строки, возвращаем только выбранные контакты
+        if selected_rows:
+            selected_contacts = []
+            for index in selected_rows:
+                row = index.row()
+                if row < len(contacts):
+                    selected_contacts.append(contacts[row])
+            return selected_contacts
+        
+        # Если ничего не выбрано, возвращаем все отфильтрованные контакты
+        return contacts
+
+
+class TemplatesTab(QWidget):
+    """Вкладка управления шаблонами сообщений"""
+    
+    def __init__(self, parent=None, template_manager=None, logger=None):
+        """
+        Инициализация вкладки шаблонов
+        
+        Args:
+            parent: Родительский виджет
+            template_manager: Объект MessageTemplate
+            logger: Объект логгера
+        """
+        super().__init__(parent)
+        self.template_manager = template_manager or MessageTemplate()
+        self.logger = logger
+        self.templates = {}  # Словарь с шаблонами {name: template_text}
+        self.current_template = None  # Имя текущего шаблона
+        self.init_ui()
+    
+    def init_ui(self):
+        """Инициализация интерфейса"""
+        layout = QVBoxLayout()
+        
+        # Верхняя панель с выбором шаблона
+        top_layout = QHBoxLayout()
+        
+        top_layout.addWidget(QLabel("Шаблон:"))
+        
+        self.template_combo = QComboBox()
+        self.template_combo.currentIndexChanged.connect(self.load_selected_template)
+        top_layout.addWidget(self.template_combo, 1)
+        
+        self.new_btn = QPushButton("Новый", self)
+        self.new_btn.clicked.connect(self.new_template)
+        top_layout.addWidget(self.new_btn)
+        
+        self.save_btn = QPushButton("Сохранить", self)
+        self.save_btn.clicked.connect(self.save_template)
+        top_layout.addWidget(self.save_btn)
+        
+        self.load_btn = QPushButton("Загрузить", self)
+        self.load_btn.clicked.connect(self.load_template)
+        top_layout.addWidget(self.load_btn)
+        
+        self.delete_btn = QPushButton("Удалить", self)
+        self.delete_btn.clicked.connect(self.delete_template)
+        top_layout.addWidget(self.delete_btn)
+        
+        layout.addLayout(top_layout)
+        
+        # Редактор шаблона
+        self.template_edit = QTextEdit()
+        self.template_edit.textChanged.connect(self.analyze_template)
+        layout.addWidget(self.template_edit)
+        
+        # Найденные переменные
+        variables_layout = QHBoxLayout()
+        variables_layout.addWidget(QLabel("Переменные в шаблоне:"))
+        self.variables_label = QLabel("")
+        variables_layout.addWidget(self.variables_label, 1)
+        layout.addLayout(variables_layout)
+        
+        # Панель предпросмотра
+        preview_group = QGroupBox("Предпросмотр")
+        preview_layout = QVBoxLayout()
+        
+        # Тестовые данные для предпросмотра
+        preview_controls = QHBoxLayout()
+        preview_controls.addWidget(QLabel("Имя:"))
+        self.preview_name = QLineEdit("Иван Иванов")
+        preview_controls.addWidget(self.preview_name)
+        
+        preview_controls.addWidget(QLabel("Компания:"))
+        self.preview_company = QLineEdit("ООО Компания")
+        preview_controls.addWidget(self.preview_company)
+        
+        self.preview_btn = QPushButton("Предпросмотр", self)
+        self.preview_btn.clicked.connect(self.update_preview)
+        preview_controls.addWidget(self.preview_btn)
+        
+        preview_layout.addLayout(preview_controls)
+        
+        # Окно предпросмотра
+        self.preview_text = QTextEdit()
+        self.preview_text.setReadOnly(True)
+        preview_layout.addWidget(self.preview_text)
+        
+        preview_group.setLayout(preview_layout)
+        layout.addWidget(preview_group)
+        
+        self.setLayout(layout)
+        
+        # Загрузка примера шаблона
+        self.load_example_template()
+    
+    def load_example_template(self):
+        """Загрузка примера шаблона"""
+        example = self.template_manager.create_template_example()
+        self.template_manager.set_template(example)
+        self.template_edit.setText(example)
+        self.add_template("Пример шаблона", example)
+        self.current_template = "Пример шаблона"
+    
+    def add_template(self, name, text):
+        """
+        Добавление шаблона в список
+        
+        Args:
+            name: Имя шаблона
+            text: Текст шаблона
+        """
+        if name not in self.templates:
+            self.templates[name] = text
+            self.template_combo.addItem(name)
+            self.template_combo.setCurrentText(name)
+    
+    def new_template(self):
+        """Создание нового шаблона"""
+        # Запрос имени нового шаблона
+        from PyQt5.QtWidgets import QInputDialog
+        name, ok = QInputDialog.getText(
+            self,
+            "Новый шаблон",
+            "Введите имя шаблона:"
+        )
+        
+        if ok and name:
+            if name in self.templates:
+                QMessageBox.warning(
+                    self,
+                    "Новый шаблон",
+                    f"Шаблон с именем '{name}' уже существует"
+                )
+                return
+            
+            # Создание нового шаблона
+            self.add_template(name, "")
+            self.template_edit.setText("")
+            self.current_template = name
+            
+            if self.logger:
+                self.logger.info(f"Создан новый шаблон: {name}")
+    
+    def save_template(self):
+        """Сохранение текущего шаблона"""
+        if not self.current_template:
+            self.new_template()
+            return
+        
+        # Сохранение изменений в текущем шаблоне
+        text = self.template_edit.toPlainText()
+        self.templates[self.current_template] = text
+        self.template_manager.set_template(text)
+        
+        # Сохранение в файл
+        file_dialog = QFileDialog()
+        file_path, _ = file_dialog.getSaveFileName(
+            self, 
+            "Сохранение шаблона",
+            "",
+            "Текстовые файлы (*.txt);;Все файлы (*)"
+        )
+        
+        if not file_path:
+            return
+        
+        # Добавление расширения .txt, если не указано
+        if not file_path.lower().endswith('.txt'):
+            file_path += '.txt'
+        
+        # Сохранение шаблона
+        if self.template_manager.save_to_file(file_path):
+            QMessageBox.information(
+                self,
+                "Сохранение шаблона",
+                f"Шаблон успешно сохранен в файл: {file_path}"
+            )
+            
+            if self.logger:
+                self.logger.info(f"Шаблон '{self.current_template}' сохранен в файл: {file_path}")
+        else:
+            QMessageBox.warning(
+                self,
+                "Сохранение шаблона",
+                "Ошибка сохранения шаблона"
+            )
+    
+    def load_template(self):
+        """Загрузка шаблона из файла"""
+        file_dialog = QFileDialog()
+        file_path, _ = file_dialog.getOpenFileName(
+            self, 
+            "Загрузка шаблона",
+            "",
+            "Текстовые файлы (*.txt);;Все файлы (*)"
+        )
+        
+        if not file_path:
+            return
+        
+        # Загрузка шаблона
+        if self.template_manager.load_from_file(file_path):
+            # Получение имени файла без расширения
+            import os
+            template_name = os.path.splitext(os.path.basename(file_path))[0]
+            
+            # Добавление шаблона
+            template_text = self.template_manager.get_template()
+            self.add_template(template_name, template_text)
+            self.template_edit.setText(template_text)
+            self.current_template = template_name
+            
+            QMessageBox.information(
+                self,
+                "Загрузка шаблона",
+                f"Шаблон успешно загружен из файла: {file_path}"
+            )
+            
+            if self.logger:
+                self.logger.info(f"Шаблон загружен из файла: {file_path}")
+        else:
+            QMessageBox.warning(
+                self,
+                "Загрузка шаблона",
+                "Ошибка загрузки шаблона"
+            )
+    
+    def delete_template(self):
+        """Удаление текущего шаблона"""
+        if not self.current_template:
+            return
+        
+        reply = QMessageBox.question(
+            self,
+            "Удаление шаблона",
+            f"Вы уверены, что хотите удалить шаблон '{self.current_template}'?",
+            QMessageBox.Yes | QMessageBox.No,
+            QMessageBox.No
+        )
+        
+        if reply == QMessageBox.Yes:
+            # Удаление шаблона
+            index = self.template_combo.findText(self.current_template)
+            if index >= 0:
+                self.template_combo.removeItem(index)
+            
+            del self.templates[self.current_template]
+            
+            # Выбор нового текущего шаблона
+            if self.template_combo.count() > 0:
+                self.current_template = self.template_combo.currentText()
+                self.template_edit.setText(self.templates.get(self.current_template, ""))
+            else:
+                self.current_template = None
+                self.template_edit.setText("")
+            
+            if self.logger:
+                self.logger.info(f"Удален шаблон: {self.current_template}")
+    
+    def load_selected_template(self):
+        """Загрузка выбранного шаблона из списка"""
+        name = self.template_combo.currentText()
+        if name and name in self.templates:
+            self.template_edit.setText(self.templates[name])
+            self.template_manager.set_template(self.templates[name])
+            self.current_template = name
+            self.analyze_template()
+    
+    def analyze_template(self):
+        """Анализ шаблона и отображение переменных"""
+        text = self.template_edit.toPlainText()
+        self.template_manager.set_template(text)
+        
+        # Обновление текущего шаблона
+        if self.current_template:
+            self.templates[self.current_template] = text
+        
+        # Получение переменных
+        variables = self.template_manager.get_template_variables()
+        
+        if variables:
+            self.variables_label.setText(", ".join(variables))
+        else:
+            self.variables_label.setText("Не найдено")
+    
+    def update_preview(self):
+        """Обновление предпросмотра шаблона"""
+        # Создание контекста для предпросмотра
+        context = {
+            'name': self.preview_name.text(),
+            'company': self.preview_company.text(),
+            'phone': '+7 (999) 123-45-67',
+            'event': 'Важное событие',
+            'product': 'Наш продукт',
+            'price': '1000 руб.',
+            'discount': '20%',
+        }
+        
+        # Рендеринг шаблона
+        preview_text = self.template_manager.render(context)
+        
+        # Отображение результата
+        self.preview_text.setText(preview_text)
+    
+    def get_current_template(self):
+        """
+        Получение текущего шаблона
+        
+        Returns:
+            MessageTemplate: Объект текущего шаблона
+        """
+        # Обновление шаблона из редактора
+        text = self.template_edit.toPlainText()
+        self.template_manager.set_template(text)
+        
+        return self.template_manager
+
+
+class SendingTab(QWidget):
+    """Вкладка отправки сообщений"""
+    
+    def __init__(self, parent=None, contact_manager=None, template_manager=None, sender=None, logger=None, config=None):
+        """
+        Инициализация вкладки отправки
+        
+        Args:
+            parent: Родительский виджет
+            contact_manager: Объект ContactManager
+            template_manager: Объект MessageTemplate
+            sender: Объект iMessageSender
+            logger: Объект логгера
+            config: Объект конфигурации
+        """
+        super().__init__(parent)
+        self.contact_manager = contact_manager
+        self.template_manager = template_manager
+        self.sender = sender
+        self.logger = logger
+        self.config = config
+        self.send_thread = None
+        self.init_ui()
+    
+    def init_ui(self):
+        """Инициализация интерфейса"""
+        layout = QVBoxLayout()
+        
+        # Настройки рассылки
+        settings_group = QGroupBox("Настройки рассылки")
+        settings_layout = QFormLayout()
+        
+        # Получатели
+        recipients_layout = QHBoxLayout()
+        self.recipients_label = QLabel("Выберите получателей")
+        recipients_layout.addWidget(self.recipients_label)
+        
+        self.select_contacts_btn = QPushButton("Выбрать контакты...", self)
+        self.select_contacts_btn.clicked.connect(self.select_contacts)
+        recipients_layout.addWidget(self.select_contacts_btn)
+        
+        settings_layout.addRow("Получатели:", recipients_layout)
+        
+        # Шаблон
+        template_layout = QHBoxLayout()
+        self.template_label = QLabel("Выберите шаблон")
+        template_layout.addWidget(self.template_label)
+        
+        self.select_template_btn = QPushButton("Выбрать шаблон...", self)
+        self.select_template_btn.clicked.connect(self.select_template)
+        template_layout.addWidget(self.select_template_btn)
+        
+        settings_layout.addRow("Шаблон:", template_layout)
+        
+        # Медиафайл
+        media_layout = QHBoxLayout()
+        self.media_path = ""
+        self.media_label = QLabel("Не выбран")
+        media_layout.addWidget(self.media_label)
+        
+        self.select_media_btn = QPushButton("Выбрать медиафайл...", self)
+        self.select_media_btn.clicked.connect(self.select_media)
+        media_layout.addWidget(self.select_media_btn)
+        
+        self.clear_media_btn = QPushButton("Очистить", self)
+        self.clear_media_btn.clicked.connect(self.clear_media)
+        media_layout.addWidget(self.clear_media_btn)
+        
+        settings_layout.addRow("Медиафайл:", media_layout)
+        
+        # Интервалы отправки
+        delay_layout = QHBoxLayout()
+        
+        settings_layout.addRow("Минимальный интервал (сек):", self.create_spin_box(3, 0, 60, 0.5))
+        settings_layout.addRow("Максимальный интервал (сек):", self.create_spin_box(7, 0, 60, 0.5))
+        
+        settings_group.setLayout(settings_layout)
+        layout.addWidget(settings_group)
+        
+        # Прогресс отправки
+        progress_group = QGroupBox("Прогресс отправки")
+        progress_layout = QVBoxLayout()
+        
+        # Прогресс-бар
+        self.progress_bar = QProgressBar()
+        self.progress_bar.setTextVisible(True)
+        self.progress_bar.setAlignment(Qt.AlignCenter)
+        progress_layout.addWidget(self.progress_bar)
+        
+        # Статистика
+        self.stats_label = QLabel("Готово к отправке")
+        progress_layout.addWidget(self.stats_label)
+        
+        # Кнопки управления
+        buttons_layout = QHBoxLayout()
+        
+        self.send_test_btn = QPushButton("Тестовое сообщение", self)
+        self.send_test_btn.clicked.connect(self.send_test_message)
+        buttons_layout.addWidget(self.send_test_btn)
+        
+        self.start_btn = QPushButton("Начать рассылку", self)
+        self.start_btn.clicked.connect(self.start_sending)
+        buttons_layout.addWidget(self.start_btn)
+        
+        self.stop_btn = QPushButton("Остановить", self)
+        self.stop_btn.clicked.connect(self.stop_sending)
+        self.stop_btn.setEnabled(False)
+        buttons_layout.addWidget(self.stop_btn)
+        
+        progress_layout.addLayout(buttons_layout)
+        
+        progress_group.setLayout(progress_layout)
+        layout.addWidget(progress_group)
+        
+        # Журнал отправки
+        log_group = QGroupBox("Журнал отправки")
+        log_layout = QVBoxLayout()
+        
+        self.log_text = QTextEdit()
+        self.log_text.setReadOnly(True)
+        log_layout.addWidget(self.log_text)
+        
+        # Кнопки для журнала
+        log_buttons = QHBoxLayout()
+        
+        self.clear_log_btn = QPushButton("Очистить журнал", self)
+        self.clear_log_btn.clicked.connect(self.clear_log)
+        log_buttons.addWidget(self.clear_log_btn)
+        
+        self.save_log_btn = QPushButton("Сохранить журнал", self)
+        self.save_log_btn.clicked.connect(self.save_log)
+        log_buttons.addWidget(self.save_log_btn)
+        
+        log_layout.addLayout(log_buttons)
+        
+        log_group.setLayout(log_layout)
+        layout.addWidget(log_group)
+        
+        self.setLayout(layout)
+    
+    def create_spin_box(self, value, min_value, max_value, step):
+        """
+        Создание виджета QDoubleSpinBox
+        
+        Args:
+            value: Начальное значение
+            min_value: Минимальное значение
+            max_value: Максимальное значение
+            step: Шаг изменения
+        
+        Returns:
+            QDoubleSpinBox: Созданный виджет
+        """
+        spin_box = QDoubleSpinBox()
+        spin_box.setMinimum(min_value)
+        spin_box.setMaximum(max_value)
+        spin_box.setValue(value)
+        spin_box.setSingleStep(step)
+        return spin_box
+    
+    def select_contacts(self):
+        """Выбор контактов для рассылки"""
+        # Получение доступа к вкладке контактов
+        contacts_tab = self.parent().parent().findChild(ContactsTab)
+        if not contacts_tab:
+            QMessageBox.warning(
+                self,
+                "Выбор контактов",
+                "Не удалось получить доступ к списку контактов"
+            )
+            return
+        
+        # Переключение на вкладку контактов
+        parent_tabs = self.parent().parent()
+        for i in range(parent_tabs.count()):
+            if isinstance(parent_tabs.widget(i), ContactsTab):
+                parent_tabs.setCurrentIndex(i)
+                break
+        
+        # Сообщение пользователю
+        QMessageBox.information(
+            self,
+            "Выбор контактов",
+            "Выберите контакты на вкладке 'Контакты' и вернитесь на вкладку 'Отправка'"
+        )
+    
+    def select_template(self):
+        """Выбор шаблона для рассылки"""
+        # Получение доступа к вкладке шаблонов
+        templates_tab = self.parent().parent().findChild(TemplatesTab)
+        if not templates_tab:
+            QMessageBox.warning(
+                self,
+                "Выбор шаблона",
+                "Не удалось получить доступ к списку шаблонов"
+            )
+            return
+        
+        # Переключение на вкладку шаблонов
+        parent_tabs = self.parent().parent()
+        for i in range(parent_tabs.count()):
+            if isinstance(parent_tabs.widget(i), TemplatesTab):
+                parent_tabs.setCurrentIndex(i)
+                break
+        
+        # Сообщение пользователю
+        QMessageBox.information(
+            self,
+            "Выбор шаблона",
+            "Выберите шаблон на вкладке 'Шаблоны' и вернитесь на вкладку 'Отправка'"
+        )
+    
+    def select_media(self):
+        """Выбор медиафайла для отправки"""
+        file_dialog = QFileDialog()
+        file_path, _ = file_dialog.getOpenFileName(
+            self, 
+            "Выберите медиафайл",
+            "",
+            "Медиафайлы (*.jpg *.jpeg *.png *.gif *.mp4 *.mov *.pdf *.doc *.docx);;Все файлы (*)"
+        )
+        
+        if not file_path:
+            return
+        
+        self.media_path = file_path
+        self.media_label.setText(os.path.basename(file_path))
+    
+    def clear_media(self):
+        """Очистка выбранного медиафайла"""
+        self.media_path = ""
+        self.media_label.setText("Не выбран")
+    
+    def send_test_message(self):
+        """Отправка тестового сообщения"""
+        # Проверка настроек
+        if not self.check_settings():
+            return
+        
+        # Получение контактов
+        contacts_tab = self.parent().parent().findChild(ContactsTab)
+        if not contacts_tab:
+            QMessageBox.warning(
+                self,
+                "Отправка тестового сообщения",
+                "Не удалось получить доступ к списку контактов"
+            )
+            return
+        
+        selected_contacts = contacts_tab.get_selected_contacts()
+        
+        if not selected_contacts:
+            QMessageBox.warning(
+                self,
+                "Отправка тестового сообщения",
+                "Не выбраны контакты для отправки"
+            )
+            return
+        
+        # Выбор одного контакта для тестового сообщения
+        contact = selected_contacts[0]
+        
+        # Получение шаблона
+        templates_tab = self.parent().parent().findChild(TemplatesTab)
+        if not templates_tab:
+            QMessageBox.warning(
+                self,
+                "Отправка тестового сообщения",
+                "Не удалось получить доступ к шаблонам"
+            )
+            return
+        
+        template = templates_tab.get_current_template()
+        
+        # Рендеринг сообщения
+        message = template.render(contact)
+        
+        # Получение задержек
+        delay_min = self.get_delay_min()
+        delay_max = self.get_delay_max()
+        
+        # Создание и запуск потока отправки
+        self.send_thread = SendMessageThread(
+            self.sender,
+            [contact],
+            template,
+            delay_min,
+            delay_max,
+            self.media_path
+        )
+        
+        # Подключение сигналов
+        self.connect_thread_signals()
+        
+        # Запуск потока
+        self.send_thread.start()
+        
+        # Обновление интерфейса
+        self.start_btn.setEnabled(False)
+        self.send_test_btn.setEnabled(False)
+        self.stop_btn.setEnabled(True)
+        
+        # Добавление записи в журнал
+        self.add_log_message("info", "Отправка тестового сообщения...")
+    
+    def start_sending(self):
+        """Запуск массовой рассылки"""
+        # Проверка настроек
+        if not self.check_settings():
+            return
+        
+        # Получение контактов
+        contacts_tab = self.parent().parent().findChild(ContactsTab)
+        if not contacts_tab:
+            QMessageBox.warning(
+                self,
+                "Запуск рассылки",
+                "Не удалось получить доступ к списку контактов"
+            )
+            return
+        
+        selected_contacts = contacts_tab.get_selected_contacts()
+        
+        if not selected_contacts:
+            QMessageBox.warning(
+                self,
+                "Запуск рассылки",
+                "Не выбраны контакты для отправки"
+            )
+            return
+        
+        # Получение шаблона
+        templates_tab = self.parent().parent().findChild(TemplatesTab)
+        if not templates_tab:
+            QMessageBox.warning(
+                self,
+                "Запуск рассылки",
+                "Не удалось получить доступ к шаблонам"
+            )
+            return
+        
+        template = templates_tab.get_current_template()
+        
+        # Подтверждение запуска рассылки
+        reply = QMessageBox.question(
+            self,
+            "Запуск рассылки",
+            f"Вы собираетесь отправить сообщения {len(selected_contacts)} контактам.\n"
+            f"Продолжить?",
+            QMessageBox.Yes | QMessageBox.No,
+            QMessageBox.No
+        )
+        
+        if reply != QMessageBox.Yes:
+            return
+        
+        # Получение задержек
+        delay_min = self.get_delay_min()
+        delay_max = self.get_delay_max()
+        
+        # Создание и запуск потока отправки
+        self.send_thread = SendMessageThread(
+            self.sender,
+            selected_contacts,
+            template,
+            delay_min,
+            delay_max,
+            self.media_path
+        )
+        
+        # Подключение сигналов
+        self.connect_thread_signals()
+        
+        # Запуск потока
+        self.send_thread.start()
+        
+        # Обновление интерфейса
+        self.start_btn.setEnabled(False)
+        self.send_test_btn.setEnabled(False)
+        self.stop_btn.setEnabled(True)
+        self.progress_bar.setValue(0)
+        
+        # Добавление записи в журнал
+        self.add_log_message("info", f"Запуск рассылки на {len(selected_contacts)} контактов...")
+        
+        if self.logger:
+            self.logger.info(f"Запуск рассылки на {len(selected_contacts)} контактов")
+    
+    def stop_sending(self):
+        """Остановка рассылки"""
+        if self.send_thread and self.send_thread.isRunning():
+            reply = QMessageBox.question(
+                self,
+                "Остановка рассылки",
+                "Вы уверены, что хотите остановить рассылку?",
+                QMessageBox.Yes | QMessageBox.No,
+                QMessageBox.No
+            )
+            
+            if reply == QMessageBox.Yes:
+                self.send_thread.stop()
+                self.add_log_message("warning", "Рассылка остановлена пользователем")
+                
+                if self.logger:
+                    self.logger.warning("Рассылка остановлена пользователем")
+    
+    def connect_thread_signals(self):
+        """Подключение сигналов потока отправки"""
+        self.send_thread.progress_signal.connect(self.update_progress)
+        self.send_thread.message_signal.connect(self.message_sent)
+        self.send_thread.finished_signal.connect(self.sending_finished)
+        self.send_thread.error_signal.connect(self.sending_error)
+    
+    def update_progress(self, current, total):
+        """
+        Обновление прогресс-бара
+        
+        Args:
+            current: Текущий прогресс
+            total: Общее количество
+        """
+        progress = int((current / total) * 100) if total > 0 else 0
+        self.progress_bar.setValue(progress)
+        self.stats_label.setText(f"Прогресс: {current}/{total} ({progress}%)")
+    
+    def message_sent(self, phone, status, message):
+        """
+        Обработка события отправки сообщения
+        
+        Args:
+            phone: Номер телефона
+            status: Статус отправки
+            message: Текст сообщения
+        """
+        if status == "SUCCESS":
+            self.add_log_message("info", f"Отправлено: {phone} - {message}")
+            
+            if self.logger:
+                self.logger.log_message_sent(phone, message, "success")
+        else:
+            self.add_log_message("error", f"Ошибка отправки: {phone} - {message}")
+            
+            if self.logger:
+                self.logger.log_message_sent(phone, message, "error")
+    
+    def sending_finished(self, stats):
+        """
+        Обработка события завершения отправки
+        
+        Args:
+            stats: Статистика отправки
+        """
+        # Обновление интерфейса
+        self.start_btn.setEnabled(True)
+        self.send_test_btn.setEnabled(True)
+        self.stop_btn.setEnabled(False)
+        
+        # Формирование статистики
+        duration = (stats['end_time'] - stats['start_time']).total_seconds() if stats['end_time'] and stats['start_time'] else 0
+        success_rate = (stats['sent'] / stats['total']) * 100 if stats['total'] > 0 else 0
+        
+        stats_text = (
+            f"Рассылка завершена\n"
+            f"Всего: {stats['total']}\n"
+            f"Отправлено: {stats['sent']}\n"
+            f"Ошибок: {stats['failed']}\n"
+            f"Успешность: {success_rate:.1f}%\n"
+            f"Длительность: {duration:.1f} сек"
+        )
+        
+        self.stats_label.setText(stats_text)
+        
+        # Добавление записи в журнал
+        self.add_log_message("info", f"Рассылка завершена. Отправлено: {stats['sent']}, Ошибок: {stats['failed']}")
+        
+        # Запись в лог
+        if self.logger:
+            self.logger.info(f"Рассылка завершена. Отправлено: {stats['sent']}, Ошибок: {stats['failed']}")
+            
+            # Генерация отчета
+            report_path = self.logger.generate_report(format_type='txt')
+            if report_path:
+                self.add_log_message("info", f"Отчет сгенерирован: {report_path}")
+        
+        # Уведомление пользователя
+        QMessageBox.information(
+            self,
+            "Завершение рассылки",
+            f"Рассылка успешно завершена!\n\n{stats_text}"
+        )
+    
+    def sending_error(self, error_message):
+        """
+        Обработка ошибки отправки
+        
+        Args:
+            error_message: Сообщение об ошибке
+        """
+        self.add_log_message("error", f"Ошибка: {error_message}")
+        
+        if self.logger:
+            self.logger.error(f"Ошибка отправки: {error_message}")
+    
+    def add_log_message(self, level, message):
+        """
+        Добавление сообщения в журнал отправки
+        
+        Args:
+            level: Уровень сообщения (info, warning, error)
+            message: Текст сообщения
+        """
+        # Форматирование времени
+        timestamp = datetime.datetime.now().strftime("%H:%M:%S")
+        
+        # Форматирование уровня
+        level_format = {
+            'info': 'INFO',
+            'warning': 'WARN',
+            'error': 'ERROR',
+            'debug': 'DEBUG'
+        }
+        level_str = level_format.get(level, 'INFO')
+        
+        # Цвет в зависимости от уровня
+        color = {
+            'info': 'black',
+            'warning': 'orange',
+            'error': 'red',
+            'debug': 'gray'
+        }
+        
+        # Форматирование сообщения
+        formatted_message = f"<span style='color:{color.get(level, 'black')}'>[{timestamp} {level_str}] {message}</span>"
+        
+        # Добавление в журнал
+        self.log_text.append(formatted_message)
+        
+        # Прокрутка до конца
+        self.log_text.moveCursor(QTextCursor.End)
+    
+    def clear_log(self):
+        """Очистка журнала отправки"""
+        self.log_text.clear()
+    
+    def save_log(self):
+        """Сохранение журнала отправки в файл"""
+        file_dialog = QFileDialog()
+        file_path, _ = file_dialog.getSaveFileName(
+            self, 
+            "Сохранение журнала",
+            "",
+            "Текстовые файлы (*.txt);;HTML-файлы (*.html);;Все файлы (*)"
+        )
+        
+        if not file_path:
+            return
+        
+        try:
+            # Определение формата файла
+            _, ext = os.path.splitext(file_path)
+            
+            if ext.lower() == '.html':
+                # Сохранение в HTML
+                with open(file_path, 'w', encoding='utf-8') as f:
+                    f.write(self.log_text.toHtml())
+            else:
+                # Сохранение в текстовый файл
+                with open(file_path, 'w', encoding='utf-8') as f:
+                    f.write(self.log_text.toPlainText())
+            
+            QMessageBox.information(
+                self,
+                "Сохранение журнала",
+                f"Журнал успешно сохранен в файл: {file_path}"
+            )
+            
+            if self.logger:
+                self.logger.info(f"Журнал сохранен в файл: {file_path}")
+                
+        except Exception as e:
+            QMessageBox.warning(
+                self,
+                "Сохранение журнала",
+                f"Ошибка сохранения журнала: {str(e)}"
+            )
+    
+    def check_settings(self):
+        """
+        Проверка настроек перед отправкой
+        
+        Returns:
+            bool: True если настройки корректны, иначе False
+        """
+        # Проверка наличия контактов
+        contacts_tab = self.parent().parent().findChild(ContactsTab)
+        if not contacts_tab or not contacts_tab.get_selected_contacts():
+            QMessageBox.warning(
+                self,
+                "Проверка настроек",
+                "Не выбраны контакты для отправки"
+            )
+            return False
+        
+        # Проверка наличия шаблона
+        templates_tab = self.parent().parent().findChild(TemplatesTab)
+        if not templates_tab or not templates_tab.get_current_template().get_template():
+            QMessageBox.warning(
+                self,
+                "Проверка настроек",
+                "Не выбран шаблон сообщения"
+            )
+            return False
+        
+        # Проверка медиафайла, если указан
+        if self.media_path and not os.path.exists(self.media_path):
+            QMessageBox.warning(
+                self,
+                "Проверка настроек",
+                f"Медиафайл не найден: {self.media_path}"
+            )
+            return False
+        
+        return True
+    
+    def get_delay_min(self):
+        """
+        Получение минимальной задержки
+        
+        Returns:
+            float: Минимальная задержка
+        """
+        # Поиск SpinBox для минимальной задержки
+        for i in range(self.layout().count()):
+            widget = self.layout().itemAt(i).widget()
+            if isinstance(widget, QGroupBox) and widget.title() == "Настройки рассылки":
+                form_layout = widget.layout()
+                for j in range(form_layout.rowCount()):
+                    label_item = form_layout.itemAt(j * 2, QFormLayout.LabelRole)
+                    if label_item and label_item.widget():
+                        label = label_item.widget()
+                        if label.text() == "Минимальный интервал (сек):":
+                            field_item = form_layout.itemAt(j * 2 + 1, QFormLayout.FieldRole)
+                            if field_item and field_item.widget():
+                                spin_box = field_item.widget()
+                                if isinstance(spin_box, QDoubleSpinBox):
+                                    return spin_box.value()
+        
+        # Значение по умолчанию
+        return self.config.get('delay_min', 3.0) if self.config else 3.0
+    
+    def get_delay_max(self):
+        """
+        Получение максимальной задержки
+        
+        Returns:
+            float: Максимальная задержка
+        """
+        # Поиск SpinBox для максимальной задержки
+        for i in range(self.layout().count()):
+            widget = self.layout().itemAt(i).widget()
+            if isinstance(widget, QGroupBox) and widget.title() == "Настройки рассылки":
+                form_layout = widget.layout()
+                for j in range(form_layout.rowCount()):
+                    label_item = form_layout.itemAt(j * 2, QFormLayout.LabelRole)
+                    if label_item and label_item.widget():
+                        label = label_item.widget()
+                        if label.text() == "Максимальный интервал (сек):":
+                            field_item = form_layout.itemAt(j * 2 + 1, QFormLayout.FieldRole)
+                            if field_item and field_item.widget():
+                                spin_box = field_item.widget()
+                                if isinstance(spin_box, QDoubleSpinBox):
+                                    return spin_box.value()
+        
+        # Значение по умолчанию
+        return self.config.get('delay_max', 7.0) if self.config else 7.0
+
+
+class SettingsTab(QWidget):
+    """Вкладка настроек"""
+    
+    def __init__(self, parent=None, config=None, logger=None):
+        """
+        Инициализация вкладки настроек
+        
+        Args:
+            parent: Родительский виджет
+            config: Объект конфигурации
+            logger: Объект логгера
+        """
+        super().__init__(parent)
+        self.config = config
+        self.logger = logger
+        self.init_ui()
+    
+    def init_ui(self):
+        """Инициализация интерфейса"""
+        layout = QVBoxLayout()
+        
+        # Настройки рассылки
+        sending_group = QGroupBox("Настройки рассылки")
+        sending_layout = QFormLayout()
+        
+        # Минимальная задержка
+        self.delay_min = QDoubleSpinBox()
+        self.delay_min.setMinimum(0)
+        self.delay_min.setMaximum(60)
+        self.delay_min.setValue(self.config.get('delay_min', 3.0) if self.config else 3.0)
+        self.delay_min.setSingleStep(0.5)
+        sending_layout.addRow("Минимальная задержка (сек):", self.delay_min)
+        
+        # Максимальная задержка
+        self.delay_max = QDoubleSpinBox()
+        self.delay_max.setMinimum(0)
+        self.delay_max.setMaximum(60)
+        self.delay_max.setValue(self.config.get('delay_max', 7.0) if self.config else 7.0)
+        self.delay_max.setSingleStep(0.5)
+        sending_layout.addRow("Максимальная задержка (сек):", self.delay_max)
+        
+        # Размер пакета
+        self.batch_size = QSpinBox()
+        self.batch_size.setMinimum(1)
+        self.batch_size.setMaximum(1000)
+        self.batch_size.setValue(self.config.get('batch_size', 50) if self.config else 50)
+        sending_layout.addRow("Размер пакета:", self.batch_size)
+        
+        # Использовать AppleScript
+        self.use_applescript = QCheckBox()
+        self.use_applescript.setChecked(self.config.get('use_applescript', True) if self.config else True)
+        sending_layout.addRow("Использовать AppleScript:", self.use_applescript)
+        
+        sending_group.setLayout(sending_layout)
+        layout.addWidget(sending_group)
+        
+        # Настройки логирования
+        logging_group = QGroupBox("Настройки логирования")
+        logging_layout = QFormLayout()
+        
+        # Путь к логам
+        log_path_layout = QHBoxLayout()
+        self.log_path = QLineEdit()
+        self.log_path.setText(self.config.get('log_path', 'logs') if self.config else 'logs')
+        log_path_layout.addWidget(self.log_path)
+        
+        self.browse_log_path = QPushButton("Обзор...")
+        self.browse_log_path.clicked.connect(lambda: self.browse_directory(self.log_path))
+        log_path_layout.addWidget(self.browse_log_path)
+        
+        logging_layout.addRow("Директория логов:", log_path_layout)
+        
+        # Уровень логирования
+        self.log_level = QComboBox()
+        self.log_level.addItems(["debug", "info", "warning", "error", "critical"])
+        self.log_level.setCurrentText(self.config.get('log_level', 'info') if self.config else 'info')
+        logging_layout.addRow("Уровень логирования:", self.log_level)
+        
+        # Вывод в консоль
+        self.console_log = QCheckBox()
+        self.console_log.setChecked(self.config.get('console_log', True) if self.config else True)
+        logging_layout.addRow("Вывод в консоль:", self.console_log)
+        
+        logging_group.setLayout(logging_layout)
+        layout.addWidget(logging_group)
+        
+        # Настройки путей
+        paths_group = QGroupBox("Настройки путей")
+        paths_layout = QFormLayout()
+        
+        # Путь к шаблонам
+        templates_path_layout = QHBoxLayout()
+        self.templates_path = QLineEdit()
+        self.templates_path.setText(self.config.get('templates_path', 'templates') if self.config else 'templates')
+        templates_path_layout.addWidget(self.templates_path)
+        
+        self.browse_templates_path = QPushButton("Обзор...")
+        self.browse_templates_path.clicked.connect(lambda: self.browse_directory(self.templates_path))
+        templates_path_layout.addWidget(self.browse_templates_path)
+        
+        paths_layout.addRow("Директория шаблонов:", templates_path_layout)
+        
+        # Путь к отчетам
+        reports_path_layout = QHBoxLayout()
+        self.reports_path = QLineEdit()
+        self.reports_path.setText(self.config.get('reports_path', 'reports') if self.config else 'reports')
+        reports_path_layout.addWidget(self.reports_path)
+        
+        self.browse_reports_path = QPushButton("Обзор...")
+        self.browse_reports_path.clicked.connect(lambda: self.browse_directory(self.reports_path))
+        reports_path_layout.addWidget(self.browse_reports_path)
+        
+        paths_layout.addRow("Директория отчетов:", reports_path_layout)
+        
+        paths_group.setLayout(paths_layout)
+        layout.addWidget(paths_group)
+        
+        # Кнопки управления
+        buttons_layout = QHBoxLayout()
+        
+        self.save_btn = QPushButton("Сохранить настройки", self)
+        self.save_btn.clicked.connect(self.save_settings)
+        buttons_layout.addWidget(self.save_btn)
+        
+        self.reset_btn = QPushButton("Сбросить настройки", self)
+        self.reset_btn.clicked.connect(self.reset_settings)
+        buttons_layout.addWidget(self.reset_btn)
+        
+        self.export_btn = QPushButton("Экспорт настроек", self)
+        self.export_btn.clicked.connect(self.export_settings)
+        buttons_layout.addWidget(self.export_btn)
+        
+        self.import_btn = QPushButton("Импорт настроек", self)
+        self.import_btn.clicked.connect(self.import_settings)
+        buttons_layout.addWidget(self.import_btn)
+        
+        layout.addLayout(buttons_layout)
+        
+        self.setLayout(layout)
+    
+    def browse_directory(self, line_edit):
+        """
+        Выбор директории через диалог
+        
+        Args:
+            line_edit: Виджет для отображения пути
+        """
+        directory = QFileDialog.getExistingDirectory(
+            self,
+            "Выбор директории",
+            line_edit.text()
+        )
+        
+        if directory:
+            line_edit.setText(directory)
+    
+    def save_settings(self):
+        """Сохранение настроек"""
+        if not self.config:
+            QMessageBox.warning(
+                self,
+                "Сохранение настроек",
+                "Ошибка доступа к конфигурации"
+            )
+            return
+        
+        # Получение значений из виджетов
+        settings = {
+            'delay_min': self.delay_min.value(),
+            'delay_max': self.delay_max.value(),
+            'batch_size': self.batch_size.value(),
+            'use_applescript': self.use_applescript.isChecked(),
+            'log_path': self.log_path.text(),
+            'log_level': self.log_level.currentText(),
+            'console_log': self.console_log.isChecked(),
+            'templates_path': self.templates_path.text(),
+            'reports_path': self.reports_path.text()
+        }
+        
+        # Обновление конфигурации
+        self.config.update(settings)
+        
+        # Сохранение в файл
+        config_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'config.json')
+        
+        if self.config.save_to_file(config_path):
+            QMessageBox.information(
+                self,
+                "Сохранение настроек",
+                "Настройки успешно сохранены"
+            )
+            
+            if self.logger:
+                self.logger.info(f"Настройки сохранены в файл: {config_path}")
+        else:
+            QMessageBox.warning(
+                self,
+                "Сохранение настроек",
+                "Ошибка сохранения настроек"
+            )
+    
+    def reset_settings(self):
+        """Сброс настроек к значениям по умолчанию"""
+        reply = QMessageBox.question(
+            self,
+            "Сброс настроек",
+            "Вы уверены, что хотите сбросить все настройки к значениям по умолчанию?",
+            QMessageBox.Yes | QMessageBox.No,
+            QMessageBox.No
+        )
+        
+        if reply != QMessageBox.Yes:
+            return
+        
+        # Сброс конфигурации
+        if self.config:
+            self.config.reset()
+        
+        # Обновление виджетов
+        self.delay_min.setValue(self.config.get('delay_min', 3.0) if self.config else 3.0)
+        self.delay_max.setValue(self.config.get('delay_max', 7.0) if self.config else 7.0)
+        self.batch_size.setValue(self.config.get('batch_size', 50) if self.config else 50)
+        self.use_applescript.setChecked(self.config.get('use_applescript', True) if self.config else True)
+        self.log_path.setText(self.config.get('log_path', 'logs') if self.config else 'logs')
+        self.log_level.setCurrentText(self.config.get('log_level', 'info') if self.config else 'info')
+        self.console_log.setChecked(self.config.get('console_log', True) if self.config else True)
+        self.templates_path.setText(self.config.get('templates_path', 'templates') if self.config else 'templates')
+        self.reports_path.setText(self.config.get('reports_path', 'reports') if self.config else 'reports')
+        
+        QMessageBox.information(
+            self,
+            "Сброс настроек",
+            "Настройки сброшены к значениям по умолчанию"
+        )
+        
+        if self.logger:
+            self.logger.info("Настройки сброшены к значениям по умолчанию")
+    
+    def export_settings(self):
+        """Экспорт настроек в файл"""
+        file_dialog = QFileDialog()
+        file_path, _ = file_dialog.getSaveFileName(
+            self, 
+            "Экспорт настроек",
+            "",
+            "JSON-файлы (*.json);;INI-файлы (*.ini);;Все файлы (*)"
+        )
+        
+        if not file_path:
+            return
+        
+        if self.config and self.config.save_to_file(file_path):
+            QMessageBox.information(
+                self,
+                "Экспорт настроек",
+                f"Настройки успешно экспортированы в файл: {file_path}"
+            )
+            
+            if self.logger:
+                self.logger.info(f"Настройки экспортированы в файл: {file_path}")
+        else:
+            QMessageBox.warning(
+                self,
+                "Экспорт настроек",
+                "Ошибка экспорта настроек"
+            )
+    
+    def import_settings(self):
+        """Импорт настроек из файла"""
+        file_dialog = QFileDialog()
+        file_path, _ = file_dialog.getOpenFileName(
+            self, 
+            "Импорт настроек",
+            "",
+            "Файлы настроек (*.json *.ini);;Все файлы (*)"
+        )
+        
+        if not file_path:
+            return
+        
+        if self.config and self.config.load_from_file(file_path):
+            # Обновление виджетов
+            self.delay_min.setValue(self.config.get('delay_min', 3.0))
+            self.delay_max.setValue(self.config.get('delay_max', 7.0))
+            self.batch_size.setValue(self.config.get('batch_size', 50))
+            self.use_applescript.setChecked(self.config.get('use_applescript', True))
+            self.log_path.setText(self.config.get('log_path', 'logs'))
+            self.log_level.setCurrentText(self.config.get('log_level', 'info'))
+            self.console_log.setChecked(self.config.get('console_log', True))
+            self.templates_path.setText(self.config.get('templates_path', 'templates'))
+            self.reports_path.setText(self.config.get('reports_path', 'reports'))
+            
+            QMessageBox.information(
+                self,
+                "Импорт настроек",
+                f"Настройки успешно импортированы из файла: {file_path}"
+            )
+            
+            if self.logger:
+                self.logger.info(f"Настройки импортированы из файла: {file_path}")
+        else:
+            QMessageBox.warning(
+                self,
+                "Импорт настроек",
+                "Ошибка импорта настроек"
+            )
+
+
+class LogsTab(QWidget):
+    """Вкладка логов и отчетов"""
+    
+    def __init__(self, parent=None, logger=None, config=None):
+        """
+        Инициализация вкладки логов
+        
+        Args:
+            parent: Родительский виджет
+            logger: Объект логгера
+            config: Объект конфигурации
+        """
+        super().__init__(parent)
+        self.logger = logger
+        self.config = config
+        self.init_ui()
+    
+    def init_ui(self):
+        """Инициализация интерфейса"""
+        layout = QVBoxLayout()
+        
+        # Основной сплиттер
+        splitter = QSplitter(Qt.Vertical)
+        
+        # Просмотр логов
+        logs_group = QGroupBox("Журнал событий")
+        logs_layout = QVBoxLayout()
+        
+        # Фильтр логов
+        filter_layout = QHBoxLayout()
+        
+        filter_layout.addWidget(QLabel("Уровень:"))
+        
+        self.level_combo = QComboBox()
+        self.level_combo.addItems(["Все", "info", "warning", "error", "debug"])
+        self.level_combo.currentIndexChanged.connect(self.filter_logs)
+        filter_layout.addWidget(self.level_combo)
+        
+        filter_layout.addWidget(QLabel("Поиск:"))
+        
+        self.search_edit = QLineEdit()
+        self.search_edit.setPlaceholderText("Введите текст для поиска...")
+        self.search_edit.textChanged.connect(self.filter_logs)
+        filter_layout.addWidget(self.search_edit)
+        
+        self.refresh_btn = QPushButton("Обновить", self)
+        self.refresh_btn.clicked.connect(self.load_logs)
+        filter_layout.addWidget(self.refresh_btn)
+        
+        logs_layout.addLayout(filter_layout)
+        
+        # Просмотр логов
+        self.log_text = QTextEdit()
+        self.log_text.setReadOnly(True)
+        logs_layout.addWidget(self.log_text)
+        
+        # Кнопки для работы с логами
+        log_buttons = QHBoxLayout()
+        
+        self.clear_log_btn = QPushButton("Очистить журнал", self)
+        self.clear_log_btn.clicked.connect(self.clear_log)
+        log_buttons.addWidget(self.clear_log_btn)
+        
+        self.export_log_btn = QPushButton("Экспорт журнала", self)
+        self.export_log_btn.clicked.connect(self.export_log)
+        log_buttons.addWidget(self.export_log_btn)
+        
+        logs_layout.addLayout(log_buttons)
+        
+        logs_group.setLayout(logs_layout)
+        splitter.addWidget(logs_group)
+        
+        # Управление отчетами
+        reports_group = QGroupBox("Отчеты")
+        reports_layout = QVBoxLayout()
+        
+        # Таблица отчетов
+        self.reports_table = QTableWidget(self)
+        self.reports_table.setColumnCount(4)
+        self.reports_table.setHorizontalHeaderLabels(["Имя файла", "Дата создания", "Размер", "Путь"])
+        self.reports_table.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
+        self.reports_table.setEditTriggers(QTableWidget.NoEditTriggers)
+        self.reports_table.setSelectionBehavior(QTableWidget.SelectRows)
+        self.reports_table.doubleClicked.connect(self.open_report)
+        reports_layout.addWidget(self.reports_table)
+        
+        # Кнопки для работы с отчетами
+        report_buttons = QHBoxLayout()
+        
+        self.generate_report_btn = QPushButton("Создать отчет", self)
+        self.generate_report_btn.clicked.connect(self.generate_report)
+        report_buttons.addWidget(self.generate_report_btn)
+        
+        self.refresh_reports_btn = QPushButton("Обновить список", self)
+        self.refresh_reports_btn.clicked.connect(self.load_reports)
+        report_buttons.addWidget(self.refresh_reports_btn)
+        
+        self.open_report_btn = QPushButton("Открыть отчет", self)
+        self.open_report_btn.clicked.connect(self.open_selected_report)
+        report_buttons.addWidget(self.open_report_btn)
+        
+        self.delete_report_btn = QPushButton("Удалить отчет", self)
+        self.delete_report_btn.clicked.connect(self.delete_report)
+        report_buttons.addWidget(self.delete_report_btn)
+        
+        reports_layout.addLayout(report_buttons)
+        
+        reports_group.setLayout(reports_layout)
+        splitter.addWidget(reports_group)
+        
+        layout.addWidget(splitter)
+        
+        self.setLayout(layout)
+        
+        # Загрузка данных
+        self.load_logs()
+        self.load_reports()
+    
+    def load_logs(self):
+        """Загрузка логов"""
+        if not self.logger:
+            self.log_text.setPlainText("Логгер не инициализирован")
+            return
+        
+        try:
+            # Чтение файла лога
+            log_file = self.logger.log_file
+            
+            if not os.path.exists(log_file):
+                self.log_text.setPlainText(f"Файл лога не найден: {log_file}")
+                return
+            
+            with open(log_file, 'r', encoding='utf-8') as f:
+                log_content = f.read()
+            
+            # Форматирование и отображение
+            self.log_text.setPlainText(log_content)
+            
+            # Применение фильтра
+            self.filter_logs()
+            
+        except Exception as e:
+            self.log_text.setPlainText(f"Ошибка загрузки логов: {str(e)}")
+    
+    def filter_logs(self):
+        """Фильтрация логов по уровню и поисковому запросу"""
+        try:
+            # Получение текста лога
+            log_text = self.log_text.toPlainText()
+            
+            # Фильтр по уровню
+            level = self.level_combo.currentText()
+            if level != "Все":
+                filtered_lines = []
+                for line in log_text.split('\n'):
+                    if f"[{level.upper()}]" in line or level.upper() in line:
+                        filtered_lines.append(line)
+                log_text = '\n'.join(filtered_lines)
+            
+            # Фильтр по поисковому запросу
+            search_text = self.search_edit.text()
+            if search_text:
+                filtered_lines = []
+                for line in log_text.split('\n'):
+                    if search_text.lower() in line.lower():
+                        filtered_lines.append(line)
+                log_text = '\n'.join(filtered_lines)
+            
+            # Отображение отфильтрованного текста
+            self.log_text.setPlainText(log_text)
+            
+        except Exception as e:
+            self.log_text.setPlainText(f"Ошибка фильтрации логов: {str(e)}")
+    
+    def clear_log(self):
+        """Очистка журнала"""
+        reply = QMessageBox.question(
+            self,
+            "Очистка журнала",
+            "Вы уверены, что хотите очистить журнал событий?\nЭто действие нельзя отменить.",
+            QMessageBox.Yes | QMessageBox.No,
+            QMessageBox.No
+        )
+        
+        if reply != QMessageBox.Yes:
+            return
+        
+        try:
+            # Очистка содержимого файла лога
+            if self.logger and self.logger.log_file:
+                open(self.logger.log_file, 'w').close()
+                self.log_text.clear()
+                
+                if self.logger:
+                    self.logger.info("Журнал событий очищен пользователем")
+                
+        except Exception as e:
+            QMessageBox.warning(
+                self,
+                "Очистка журнала",
+                f"Ошибка очистки журнала: {str(e)}"
+            )
+    
+    def export_log(self):
+        """Экспорт журнала в файл"""
+        file_dialog = QFileDialog()
+        file_path, _ = file_dialog.getSaveFileName(
+            self, 
+            "Экспорт журнала",
+            "",
+            "Текстовые файлы (*.txt);;HTML-файлы (*.html);;CSV-файлы (*.csv);;JSON-файлы (*.json);;Все файлы (*)"
+        )
+        
+        if not file_path:
+            return
+        
+        try:
+            if self.logger:
+                # Определение формата по расширению
+                _, ext = os.path.splitext(file_path)
+                format_type = ext.lower().lstrip('.')
+                
+                if not format_type:
+                    format_type = 'txt'
+                
+                # Экспорт лога
+                if self.logger.export_log(file_path, format_type):
+                    QMessageBox.information(
+                        self,
+                        "Экспорт журнала",
+                        f"Журнал успешно экспортирован в файл: {file_path}"
+                    )
+                else:
+                    QMessageBox.warning(
+                        self,
+                        "Экспорт журнала",
+                        "Ошибка экспорта журнала"
+                    )
+            else:
+                # Если логгер недоступен, сохраняем текущий текст
+                with open(file_path, 'w', encoding='utf-8') as f:
+                    f.write(self.log_text.toPlainText())
+                
+                QMessageBox.information(
+                    self,
+                    "Экспорт журнала",
+                    f"Журнал успешно экспортирован в файл: {file_path}"
+                )
+                
+        except Exception as e:
+            QMessageBox.warning(
+                self,
+                "Экспорт журнала",
+                f"Ошибка экспорта журнала: {str(e)}"
+            )
+    
+    def load_reports(self):
+        """Загрузка списка отчетов"""
+        # Определение директории с отчетами
+        reports_dir = self.config.get('reports_path', 'reports') if self.config else 'reports'
+        
+        if not os.path.exists(reports_dir):
+            try:
+                os.makedirs(reports_dir)
+            except Exception:
+                pass
+            
+            self.reports_table.setRowCount(0)
+            return
+        
+        try:
+            # Получение списка файлов
+            files = os.listdir(reports_dir)
+            
+            # Фильтрация и сбор информации
+            reports = []
+            
+            for file in files:
+                file_path = os.path.join(reports_dir, file)
+                if os.path.isfile(file_path):
+                    # Получение информации о файле
+                    stat_info = os.stat(file_path)
+                    size = stat_info.st_size
+                    ctime = datetime.datetime.fromtimestamp(stat_info.st_ctime)
+                    
+                    # Формирование размера в читаемом виде
+                    if size < 1024:
+                        size_str = f"{size} B"
+                    elif size < 1024 * 1024:
+                        size_str = f"{size / 1024:.1f} KB"
+                    else:
+                        size_str = f"{size / (1024 * 1024):.1f} MB"
+                    
+                    reports.append({
+                        'name': file,
+                        'date': ctime.strftime("%Y-%m-%d %H:%M:%S"),
+                        'size': size_str,
+                        'path': file_path
+                    })
+            
+            # Сортировка по дате создания (новые сверху)
+            reports.sort(key=lambda x: x['date'], reverse=True)
+            
+            # Отображение в таблице
+            self.reports_table.setRowCount(len(reports))
+            
+            for i, report in enumerate(reports):
+                self.reports_table.setItem(i, 0, QTableWidgetItem(report['name']))
+                self.reports_table.setItem(i, 1, QTableWidgetItem(report['date']))
+                self.reports_table.setItem(i, 2, QTableWidgetItem(report['size']))
+                self.reports_table.setItem(i, 3, QTableWidgetItem(report['path']))
+            
+        except Exception as e:
+            QMessageBox.warning(
+                self,
+                "Загрузка отчетов",
+                f"Ошибка загрузки списка отчетов: {str(e)}"
+            )
+    
+    def generate_report(self):
+        """Генерация нового отчета"""
+        # Выбор формата отчета
+        formats = ["txt", "html", "json"]
+        from PyQt5.QtWidgets import QInputDialog
+        format_type, ok = QInputDialog.getItem(
+            self,
+            "Генерация отчета",
+            "Выберите формат отчета:",
+            formats,
+            0,
+            False
+        )
+        
+        if not ok:
+            return
+        
+        try:
+            if self.logger:
+                # Генерация отчета
+                report_path = self.logger.generate_report(format_type=format_type)
+                
+                if report_path:
+                    # Обновление списка отчетов
+                    self.load_reports()
+                    
+                    QMessageBox.information(
+                        self,
+                        "Генерация отчета",
+                        f"Отчет успешно создан: {report_path}"
+                    )
+                    
+                    # Автоматическое открытие отчета
+                    self.open_report_file(report_path)
+                else:
+                    QMessageBox.warning(
+                        self,
+                        "Генерация отчета",
+                        "Ошибка создания отчета"
+                    )
+            else:
+                QMessageBox.warning(
+                    self,
+                    "Генерация отчета",
+                    "Логгер не инициализирован, невозможно создать отчет"
+                )
+                
+        except Exception as e:
+            QMessageBox.warning(
+                self,
+                "Генерация отчета",
+                f"Ошибка создания отчета: {str(e)}"
+            )
+    
+    def open_report(self, index):
+        """
+        Открытие отчета по двойному клику
+        
+        Args:
+            index: Индекс выбранной ячейки таблицы
+        """
+        row = index.row()
+        path_item = self.reports_table.item(row, 3)
+        
+        if path_item:
+            file_path = path_item.text()
+            self.open_report_file(file_path)
+    
+    def open_selected_report(self):
+        """Открытие выбранного отчета"""
+        selected_rows = self.reports_table.selectionModel().selectedRows()
+        
+        if not selected_rows:
+            QMessageBox.warning(
+                self,
+                "Открытие отчета",
+                "Не выбран отчет для открытия"
+            )
+            return
+        
+        row = selected_rows[0].row()
+        path_item = self.reports_table.item(row, 3)
+        
+        if path_item:
+            file_path = path_item.text()
+            self.open_report_file(file_path)
+    
+    def open_report_file(self, file_path):
+        """
+        Открытие файла отчета
+        
+        Args:
+            file_path: Путь к файлу отчета
+        """
+        if not os.path.exists(file_path):
+            QMessageBox.warning(
+                self,
+                "Открытие отчета",
+                f"Файл не найден: {file_path}"
+            )
+            return
+        
+        try:
+            # Определение расширения
+            _, ext = os.path.splitext(file_path)
+            ext = ext.lower()
+            
+            if ext in ['.html', '.htm']:
+                # Чтение HTML-файла
+                with open(file_path, 'r', encoding='utf-8') as f:
+                    html_content = f.read()
+                
+                # Создание диалога для просмотра
+                dialog = QDialog(self)
+                dialog.setWindowTitle(f"Отч

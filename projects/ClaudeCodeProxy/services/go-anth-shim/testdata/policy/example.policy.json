@@ -1,0 +1,19 @@
+{
+  "version": "test-2025-10-21",
+  "expiresAt": "2030-01-01T00:00:00Z",
+  "routing": [
+    {"pattern": "claude-haiku-*", "lane": "zai"},
+    {"pattern": "*", "lane": "anth"}
+  ],
+  "providers": {
+    "zai": {
+      "baseURL": "https://api.z.ai/api/anthropic",
+      "headerMode": "x-api-key"
+    },
+    "anth": {
+      "baseURL": "https://api.anthropic.com",
+      "passthrough": true,
+      "fallbackEnv": "ANTHROPIC_AUTH_TOKEN"
+    }
+  }
+}

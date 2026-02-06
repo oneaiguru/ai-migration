@@ -1,0 +1,187 @@
+{% extends "base.html" %}
+{% block title %}TaskFlow Mobile{% endblock %}
+{% block content %}
+<link rel="manifest" href="/static/mobile-manifest.json">
+<div class="container mobile-container py-3">
+  <h1 class="h3 mb-3">Create Task</h1>
+  <div id="step1" class="wizard-step">
+    <label for="templateSelect" class="form-label">Template:</label>
+    <select id="templateSelect" class="form-select form-select-lg mb-3"></select>
+    <button id="nextBtn" class="btn btn-primary btn-lg w-100">Next</button>
+  </div>
+  <div id="step2" class="wizard-step d-none">
+    <form id="taskForm" class="mb-3"></form>
+    <div id="preview" class="hidden preview mb-2"></div>
+    <div class="d-flex gap-2">
+      <button id="prevBtn" class="btn btn-secondary btn-lg flex-fill">Back</button>
+      <button id="submitBtn" class="btn btn-primary btn-lg flex-fill">Save</button>
+    </div>
+    <button id="copyBtn" class="btn btn-outline-secondary btn-lg w-100 mt-2">Copy Prompt</button>
+    <button id="shareBtn" class="btn btn-outline-secondary btn-lg w-100 mt-2">Share</button>
+  </div>
+  <div id="message" class="hidden mt-3"></div>
+</div>
+{% endblock %}
+{% block scripts %}
+<script>
+const templateSelect = document.getElementById('templateSelect');
+const form = document.getElementById('taskForm');
+const preview = document.getElementById('preview');
+const message = document.getElementById('message');
+const copyBtn = document.getElementById('copyBtn');
+const submitBtn = document.getElementById('submitBtn');
+const shareBtn = document.getElementById('shareBtn');
+const nextBtn = document.getElementById('nextBtn');
+const prevBtn = document.getElementById('prevBtn');
+const step1 = document.getElementById('step1');
+const step2 = document.getElementById('step2');
+let templates = {};
+const STORAGE_KEY = 'mobile-tasks';
+
+fetch('../../bot/templates.json')
+  .then(r => r.ok ? r.json() : Promise.reject('template load failed'))
+  .then(data => { templates = data; populateTemplates(); })
+  .catch(() => { message.textContent = 'Failed to load templates'; message.className = 'error'; });
+
+function populateTemplates(){
+    templateSelect.innerHTML = '<option value="">Select a template</option>';
+    Object.keys(templates).forEach(k => {
+        const opt = document.createElement('option');
+        opt.value = k;
+        opt.textContent = templates[k].name;
+        templateSelect.appendChild(opt);
+    });
+}
+
+function createInput(name){
+    const wrap = document.createElement('div');
+    const label = document.createElement('label');
+    label.className = 'form-label mt-2';
+    label.textContent = name;
+    const input = document.createElement('input');
+    input.className = 'form-control form-control-lg';
+    input.id = name;
+    input.required = true;
+    wrap.appendChild(label);
+    wrap.appendChild(input);
+    return wrap;
+}
+
+function renderPrompt(key, values){
+    let text = templates[key].prompt;
+    Object.entries(values).forEach(([k,v]) => {
+        const re = new RegExp(`{{${k}}}`, 'g');
+        text = text.replace(re, v);
+    });
+    return text;
+}
+
+function updateForm(){
+    form.innerHTML = '';
+    preview.classList.add('hidden');
+    const key = templateSelect.value;
+    if(!key) return;
+    const prompt = templates[key].prompt;
+    const vars = Array.from(new Set(prompt.match(/{{(.*?)}}/g))) || [];
+    vars.forEach(v => {
+        const name = v.replace(/{{|}}/g,'');
+        form.appendChild(createInput(name));
+    });
+}
+
+function showPreview(){
+    const key = templateSelect.value;
+    if(!key) return;
+    const inputs = form.querySelectorAll('input');
+    const values = {};
+    inputs.forEach(i => values[i.id] = i.value.trim());
+    preview.textContent = renderPrompt(key, values);
+    preview.classList.remove('hidden');
+}
+
+templateSelect.addEventListener('change', () => { updateForm(); showPreview(); });
+form.addEventListener('input', showPreview);
+
+copyBtn.addEventListener('click', () => {
+    if(preview.classList.contains('hidden')) return;
+    navigator.clipboard.writeText(preview.textContent).then(() => {
+        message.textContent = 'Copied!';
+        message.className = 'success';
+    });
+});
+
+shareBtn.addEventListener('click', () => {
+    if(navigator.share && !preview.classList.contains('hidden')) {
+        navigator.share({text: preview.textContent});
+    }
+});
+
+function saveLocal(task){
+    const tasks = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+    tasks.push(task);
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(tasks));
+}
+
+function syncTasks(){
+    if(!navigator.onLine) return;
+    const tasks = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+    const unsynced = tasks.filter(t => !t.synced);
+    if(unsynced.length === 0) return;
+    Promise.all(unsynced.map(t =>
+        fetch('/api/tasks', {
+            method:'POST',
+            headers:{'Content-Type':'application/json'},
+            body: JSON.stringify({id: t.id, title: t.prompt})
+        }).then(res => res.ok).catch(() => false)
+    )).then(responses => {
+        const updated = tasks.map((t,i) => {
+            if(unsynced[i] && responses[i]) return {...unsynced[i], synced:true};
+            return t;
+        });
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
+    });
+}
+
+submitBtn.addEventListener('click', e => {
+    e.preventDefault();
+    if(!templateSelect.value){ message.textContent = 'Select template'; message.className='error'; return;}
+    const inputs = form.querySelectorAll('input');
+    for(const input of inputs){ if(!input.value.trim()){ message.textContent='All fields required'; message.className='error'; return; } }
+    const values = {};
+    inputs.forEach(i => values[i.id] = i.value.trim());
+    const task = { id: Date.now().toString(), template: templateSelect.value, params: values, prompt: renderPrompt(templateSelect.value, values), synced:false};
+    saveLocal(task);
+    showPreview();
+    message.textContent='Task saved locally';
+    message.className='success';
+    form.reset();
+    syncTasks();
+});
+
+nextBtn.addEventListener('click', () => {
+    if(!templateSelect.value){ message.textContent = 'Select template'; message.className='error'; return;}
+    step1.classList.add('d-none');
+    step2.classList.remove('d-none');
+});
+
+prevBtn.addEventListener('click', () => {
+    step2.classList.add('d-none');
+    step1.classList.remove('d-none');
+});
+
+let touchStartX = 0;
+let touchEndX = 0;
+function handleGesture(){
+  if(touchEndX < touchStartX - 50) nextBtn.click();
+  if(touchEndX > touchStartX + 50) prevBtn.click();
+}
+document.addEventListener('touchstart', e => {touchStartX = e.changedTouches[0].screenX;});
+document.addEventListener('touchend', e => {touchEndX = e.changedTouches[0].screenX; handleGesture();});
+
+window.addEventListener('online', syncTasks);
+document.addEventListener('DOMContentLoaded', syncTasks);
+if('serviceWorker' in navigator){
+    navigator.serviceWorker.register('/static/mobile-sw.js');
+}
+</script>
+{% endblock %}

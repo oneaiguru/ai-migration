@@ -1,0 +1,93 @@
+{
+  "forecast": {
+    "path": "sent/forecast_jun_dec_2025_jury_format_daily.csv",
+    "start": "2025-06-01",
+    "days": 214,
+    "rows": 22761
+  },
+  "history": {
+    "path": "/Users/m/ai/projects/forecastingrepo/data/raw/jury_volumes/derived/jury_volumes_2025-01-01_to_2025-05-31_all_sites.csv",
+    "history_start": null,
+    "history_end": null,
+    "min_events": 8,
+    "min_events_per_week": 0.75,
+    "max_k": 3,
+    "schedule_alignment_threshold": 0.6,
+    "daily_mode": "noop"
+  },
+  "result": {
+    "rows": 22761,
+    "sites_adjusted": 14132,
+    "total_before": 4513661.342333095,
+    "total_after": 4513661.341004967,
+    "total_diff": -0.0013281283900141716,
+    "sum_abs_delta": 2686868.5591686545,
+    "impact_ratio": 0.595274734940531,
+    "modified_volume": 2306039.092482058,
+    "modified_volume_share": 0.5109021075316375,
+    "days": 214,
+    "sources": {
+      "daily_noop": 2850,
+      "gated_to_inferred": 1852,
+      "gated_to_none": 250,
+      "inferred": 860,
+      "none": 5529,
+      "schedule": 11420
+    },
+    "jun_oct_total_before": 3227211.74632277,
+    "jun_oct_total_after": 3227211.7454036367,
+    "jun_oct_total_diff": -0.0009191334247589111,
+    "month_totals": [
+      {
+        "year": 2025,
+        "month": 6,
+        "before": 633581.1062849463,
+        "after": 633581.1063859079,
+        "diff": 0.0001009615371003747
+      },
+      {
+        "year": 2025,
+        "month": 7,
+        "before": 653630.6854358981,
+        "after": 653630.6848879419,
+        "diff": -0.0005479562096297741
+      },
+      {
+        "year": 2025,
+        "month": 8,
+        "before": 653033.5446398965,
+        "after": 653033.5446888984,
+        "diff": 4.900188650935888e-05
+      },
+      {
+        "year": 2025,
+        "month": 9,
+        "before": 633301.4484529464,
+        "after": 633301.4481329013,
+        "diff": -0.0003200450446456671
+      },
+      {
+        "year": 2025,
+        "month": 10,
+        "before": 653664.9615338932,
+        "after": 653664.9613178656,
+        "diff": -0.00021602760534733534
+      },
+      {
+        "year": 2025,
+        "month": 11,
+        "before": 632001.8785599356,
+        "after": 632001.878309899,
+        "diff": -0.00025003659538924694
+      },
+      {
+        "year": 2025,
+        "month": 12,
+        "before": 654447.7174249197,
+        "after": 654447.7172809113,
+        "diff": -0.00014400843065232038
+      }
+    ],
+    "max_per_kp_month_diff": 5.000000037114205e-06
+  }
+}

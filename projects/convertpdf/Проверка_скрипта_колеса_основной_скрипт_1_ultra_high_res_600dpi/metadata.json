@@ -1,0 +1,297 @@
+{
+  "source_file": "/Users/m/Downloads/Проверка_скрипта_колеса_основной_скрипт_1.pdf",
+  "pages": "1-10",
+  "target_dpi": 600,
+  "zoom_factor": 8.333333333333334,
+  "total_images": 32,
+  "images": [
+    {
+      "filename": "page001_embedded_img01_165x39.png",
+      "type": "embedded_original",
+      "page": 1,
+      "width": 165,
+      "height": 39,
+      "size_kb": 6.31640625,
+      "dpi": "original"
+    },
+    {
+      "filename": "page001_embedded_img02_241x178.png",
+      "type": "embedded_original",
+      "page": 1,
+      "width": 241,
+      "height": 178,
+      "size_kb": 30.513671875,
+      "dpi": "original"
+    },
+    {
+      "filename": "page001_rendered_600dpi_7017x9917.png",
+      "type": "page_render",
+      "page": 1,
+      "width": 7017,
+      "height": 9917,
+      "size_kb": 1837.6044921875,
+      "dpi": 600
+    },
+    {
+      "filename": "page002_embedded_img01_609x132.png",
+      "type": "embedded_original",
+      "page": 2,
+      "width": 609,
+      "height": 132,
+      "size_kb": 42.51953125,
+      "dpi": "original"
+    },
+    {
+      "filename": "page002_embedded_img02_569x77.png",
+      "type": "embedded_original",
+      "page": 2,
+      "width": 569,
+      "height": 77,
+      "size_kb": 17.5908203125,
+      "dpi": "original"
+    },
+    {
+      "filename": "page002_embedded_img03_783x96.png",
+      "type": "embedded_original",
+      "page": 2,
+      "width": 783,
+      "height": 96,
+      "size_kb": 26.65625,
+      "dpi": "original"
+    },
+    {
+      "filename": "page002_embedded_img04_629x383.png",
+      "type": "embedded_original",
+      "page": 2,
+      "width": 629,
+      "height": 383,
+      "size_kb": 109.3427734375,
+      "dpi": "original"
+    },
+    {
+      "filename": "page002_embedded_img05_439x106.png",
+      "type": "embedded_original",
+      "page": 2,
+      "width": 439,
+      "height": 106,
+      "size_kb": 26.9384765625,
+      "dpi": "original"
+    },
+    {
+      "filename": "page002_rendered_600dpi_7017x9917.png",
+      "type": "page_render",
+      "page": 2,
+      "width": 7017,
+      "height": 9917,
+      "size_kb": 1472.7724609375,
+      "dpi": 600
+    },
+    {
+      "filename": "page003_embedded_img01_379x80.png",
+      "type": "embedded_original",
+      "page": 3,
+      "width": 379,
+      "height": 80,
+      "size_kb": 19.080078125,
+      "dpi": "original"
+    },
+    {
+      "filename": "page003_embedded_img02_463x59.png",
+      "type": "embedded_original",
+      "page": 3,
+      "width": 463,
+      "height": 59,
+      "size_kb": 20.228515625,
+      "dpi": "original"
+    },
+    {
+      "filename": "page003_embedded_img03_336x46.png",
+      "type": "embedded_original",
+      "page": 3,
+      "width": 336,
+      "height": 46,
+      "size_kb": 11.302734375,
+      "dpi": "original"
+    },
+    {
+      "filename": "page003_embedded_img04_1109x67.png",
+      "type": "embedded_original",
+      "page": 3,
+      "width": 1109,
+      "height": 67,
+      "size_kb": 23.99609375,
+      "dpi": "original"
+    },
+    {
+      "filename": "page003_embedded_img05_186x70.png",
+      "type": "embedded_original",
+      "page": 3,
+      "width": 186,
+      "height": 70,
+      "size_kb": 1.3173828125,
+      "dpi": "original"
+    },
+    {
+      "filename": "page003_embedded_img06_278x89.png",
+      "type": "embedded_original",
+      "page": 3,
+      "width": 278,
+      "height": 89,
+      "size_kb": 23.896484375,
+      "dpi": "original"
+    },
+    {
+      "filename": "page003_rendered_600dpi_7017x9917.png",
+      "type": "page_render",
+      "page": 3,
+      "width": 7017,
+      "height": 9917,
+      "size_kb": 1826.734375,
+      "dpi": 600
+    },
+    {
+      "filename": "page004_embedded_img01_186x70.png",
+      "type": "embedded_original",
+      "page": 4,
+      "width": 186,
+      "height": 70,
+      "size_kb": 1.3173828125,
+      "dpi": "original"
+    },
+    {
+      "filename": "page004_embedded_img02_278x89.png",
+      "type": "embedded_original",
+      "page": 4,
+      "width": 278,
+      "height": 89,
+      "size_kb": 23.896484375,
+      "dpi": "original"
+    },
+    {
+      "filename": "page004_embedded_img03_515x149.png",
+      "type": "embedded_original",
+      "page": 4,
+      "width": 515,
+      "height": 149,
+      "size_kb": 15.2490234375,
+      "dpi": "original"
+    },
+    {
+      "filename": "page004_embedded_img04_443x49.png",
+      "type": "embedded_original",
+      "page": 4,
+      "width": 443,
+      "height": 49,
+      "size_kb": 9.2734375,
+      "dpi": "original"
+    },
+    {
+      "filename": "page004_embedded_img05_795x199.png",
+      "type": "embedded_original",
+      "page": 4,
+      "width": 795,
+      "height": 199,
+      "size_kb": 77.134765625,
+      "dpi": "original"
+    },
+    {
+      "filename": "page004_embedded_img06_309x103.png",
+      "type": "embedded_original",
+      "page": 4,
+      "width": 309,
+      "height": 103,
+      "size_kb": 16.64453125,
+      "dpi": "original"
+    },
+    {
+      "filename": "page004_rendered_600dpi_7017x9917.png",
+      "type": "page_render",
+      "page": 4,
+      "width": 7017,
+      "height": 9917,
+      "size_kb": 1908.318359375,
+      "dpi": 600
+    },
+    {
+      "filename": "page005_rendered_600dpi_7017x9917.png",
+      "type": "page_render",
+      "page": 5,
+      "width": 7017,
+      "height": 9917,
+      "size_kb": 1389.9912109375,
+      "dpi": 600
+    },
+    {
+      "filename": "page006_embedded_img01_385x131.png",
+      "type": "embedded_original",
+      "page": 6,
+      "width": 385,
+      "height": 131,
+      "size_kb": 25.6171875,
+      "dpi": "original"
+    },
+    {
+      "filename": "page006_embedded_img02_687x132.png",
+      "type": "embedded_original",
+      "page": 6,
+      "width": 687,
+      "height": 132,
+      "size_kb": 72.4658203125,
+      "dpi": "original"
+    },
+    {
+      "filename": "page006_embedded_img03_697x334.png",
+      "type": "embedded_original",
+      "page": 6,
+      "width": 697,
+      "height": 334,
+      "size_kb": 133.478515625,
+      "dpi": "original"
+    },
+    {
+      "filename": "page006_rendered_600dpi_7017x9917.png",
+      "type": "page_render",
+      "page": 6,
+      "width": 7017,
+      "height": 9917,
+      "size_kb": 1456.974609375,
+      "dpi": 600
+    },
+    {
+      "filename": "page007_rendered_600dpi_7017x9917.png",
+      "type": "page_render",
+      "page": 7,
+      "width": 7017,
+      "height": 9917,
+      "size_kb": 1097.6259765625,
+      "dpi": 600
+    },
+    {
+      "filename": "page008_rendered_600dpi_7017x9917.png",
+      "type": "page_render",
+      "page": 8,
+      "width": 7017,
+      "height": 9917,
+      "size_kb": 1000.9580078125,
+      "dpi": 600
+    },
+    {
+      "filename": "page009_rendered_600dpi_7017x9917.png",
+      "type": "page_render",
+      "page": 9,
+      "width": 7017,
+      "height": 9917,
+      "size_kb": 1091.439453125,
+      "dpi": 600
+    },
+    {
+      "filename": "page010_rendered_600dpi_7017x9917.png",
+      "type": "page_render",
+      "page": 10,
+      "width": 7017,
+      "height": 9917,
+      "size_kb": 1369.912109375,
+      "dpi": 600
+    }
+  ]
+}

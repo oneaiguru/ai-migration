@@ -1,0 +1,16 @@
+[
+  ".",
+  ".fileselect",
+  ".github/workflows",
+  "bot",
+  "cli",
+  "core",
+  "core/.claude",
+  "core/.claude/commands",
+  "core/ai-docs/architecture",
+  "core/ai-docs/patterns",
+  "core/specs",
+  "core/specs/templates",
+  "filestomov",
+  "tools"
+]

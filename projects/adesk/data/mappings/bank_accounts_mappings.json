@@ -1,0 +1,34 @@
+{
+    "3967": {
+        "adesk_id": 268031,
+        "last_updated": "2025-12-09T00:00:00Z",
+        "metadata": {
+            "name": "KGS-BIZ-3967",
+            "adesk_name": "kgs"
+        }
+    },
+    "4068": {
+        "adesk_id": 268026,
+        "last_updated": "2025-12-09T00:00:00Z",
+        "metadata": {
+            "name": "USD-BIZ-4068",
+            "adesk_name": "usd"
+        }
+    },
+    "4169": {
+        "adesk_id": 268030,
+        "last_updated": "2025-12-09T00:00:00Z",
+        "metadata": {
+            "name": "EUR-BIZ-4169",
+            "adesk_name": "eur"
+        }
+    },
+    "4270": {
+        "adesk_id": 268029,
+        "last_updated": "2025-12-09T00:00:00Z",
+        "metadata": {
+            "name": "RUB-BIZ-4270",
+            "adesk_name": "rur"
+        }
+    }
+}

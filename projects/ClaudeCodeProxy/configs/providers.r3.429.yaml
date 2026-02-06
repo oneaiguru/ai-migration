@@ -1,0 +1,19 @@
+# Tiny overlay used for local/manual 429→fallback demos.
+# Replace the localhost ports with your httptest servers or mock upstreams.
+
+providers:
+  anthropic:
+    base_url: http://127.0.0.1:9001     # mock server that returns HTTP 429 JSON
+    header_mode: bearer
+    pass_through: true
+    fallback_env: ""
+  zai:
+    base_url: http://127.0.0.1:9002     # mock server that returns HTTP 200 JSON
+    header_mode: x-api-key
+    pass_through: false
+
+routes:
+  - pattern: "claude-3.5-sonnet*"
+    provider: anthropic
+  - pattern: "claude-haiku-*"
+    provider: zai

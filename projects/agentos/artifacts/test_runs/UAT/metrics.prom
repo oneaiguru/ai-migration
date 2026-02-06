@@ -1,0 +1,10 @@
+# HELP ccp_requests_total Number of requests handled by lane/op/status
+# TYPE ccp_requests_total counter
+# HELP ccp_request_duration_seconds Proxy request latency in seconds
+# TYPE ccp_request_duration_seconds histogram
+# HELP ccp_partial_writes_total Number of partial output files created
+# TYPE ccp_partial_writes_total counter
+ccp_partial_writes_total 0
+# HELP ccp_upstream_ready Upstream readiness (1 ready, 0 unavailable)
+# TYPE ccp_upstream_ready gauge
+ccp_upstream_ready{lane="anthropic"} 1

@@ -1,0 +1,17 @@
+pids
+logs
+node_modules
+npm-debug.log
+coverage/
+run
+dist
+cache
+.DS_Store
+.nyc_output
+.basement
+config.local.js
+basement_dist
+tg-bot-api
+.env
+test.ts
+service_account.json

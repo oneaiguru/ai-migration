@@ -1,0 +1,45 @@
+[build-system]
+requires = ["setuptools>=61", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "taskflow-ai"
+version = "0.1.0"
+description = "Agent orchestration platform for AI coding tools"
+authors = [{name = "TaskFlow.ai", email = "dev@taskflow.ai"}]
+readme = "README.md"
+requires-python = ">=3.8"
+dependencies = [
+    "pyTelegramBotAPI==4.12.0",
+    "GitPython==3.1.44",
+    "python-dotenv==1.0.0",
+    "requests==2.31.0",
+    "schedule==1.2.0",
+    "fastapi==0.88.0",
+    "uvicorn==0.29.0",
+]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest==7.4.0",
+    "pytest-cov==4.1.0",
+    "pytest-mock==3.11.1",
+    "black==23.7.0",
+    "flake8==6.1.0",
+    "mypy==1.5.1",
+]
+
+[project.urls]
+Homepage = "https://github.com/granin/taskflow-ai"
+
+[project.scripts]
+taskflow-bot = "bot.bot:main"
+taskflow-cli = "cli.task_cli:main"
+taskflow-api = "src.main:main"
+taskflow-scheduler = "bot.scheduled_runner:main"
+taskflow-claude = "bot.claude_runner:main"

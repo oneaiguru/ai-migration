@@ -1,0 +1,15 @@
+{
+    "timestamp": "2025-12-08 14:58:20",
+    "mode": "incremental",
+    "entity_type": "categories",
+    "start_date": null,
+    "end_date": null,
+    "is_test_mode": false,
+    "entities": {
+        "categories": {
+            "success": [],
+            "error": [],
+            "total": 0
+        }
+    }
+}

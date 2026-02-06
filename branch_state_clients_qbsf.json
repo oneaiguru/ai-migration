@@ -1,0 +1,10 @@
+{
+  "repo": "projects/qbsf",
+  "pr_index": 3,
+  "total_prs": 3,
+  "branch": "",
+  "base_sha": "60bd90f4f02726eb2d10554fd49f72beda534df8",
+  "state": "merged",
+  "last_codex_check": "pr21 merged; oauth state + log parsing fixes on main",
+  "requires_rebase": false
+}

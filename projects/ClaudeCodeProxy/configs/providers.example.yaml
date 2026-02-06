@@ -1,0 +1,37 @@
+providers:
+  anthropic:
+    key_env: ANTHROPIC_AUTH_TOKEN
+    base_url: https://api.anthropic.com
+    header_mode: authorization
+  zai:
+    key_env: ZAI_API_KEY
+    base_url: https://api.z.ai/api/anthropic
+    header_mode: x-api-key
+    notes: "Anthropic-compatible Haiku lane"
+  openai:
+    scoped_env:
+      dev: OPENAI_DEV_KEY
+      prod: OPENAI_API_KEY
+    base_url: https://api.openai.com/v1
+    model_map:
+      gpt-5-pro: gpt-5.0-pro
+  glm:
+    key_env: ZHIPU_API_KEY
+    via: openrouter
+    base_url: https://openrouter.ai/api
+    model_map:
+      glm-4-6: glm-4-6
+  local:
+    via: ollama
+    base_url: http://127.0.0.1:11434
+    models: [codellama, qwen2.5-coder]
+
+routes:
+  - pattern: claude-haiku-4*
+    provider: zai
+  - pattern: gpt-5*
+    provider: openai
+  - pattern: glm*
+    provider: glm
+  - pattern: local/*
+    provider: local

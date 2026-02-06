@@ -1,0 +1,101 @@
+[
+    {
+        "file": "contacts.csv",
+        "passed": true,
+        "errors": [],
+        "warnings": [],
+        "stats": {
+            "size": 123,
+            "rows": 2,
+            "header_fields": 8
+        }
+    },
+    {
+        "file": "accounts.csv",
+        "passed": true,
+        "errors": [],
+        "warnings": [],
+        "stats": {
+            "size": 305,
+            "rows": 4,
+            "header_fields": 8
+        }
+    },
+    {
+        "file": "apartments.csv",
+        "passed": true,
+        "errors": [],
+        "warnings": [],
+        "stats": {
+            "size": 31,
+            "rows": 0,
+            "header_fields": 4
+        }
+    },
+    {
+        "file": "target.csv",
+        "passed": true,
+        "errors": [],
+        "warnings": [],
+        "stats": {
+            "size": 153,
+            "rows": 4,
+            "header_fields": 4
+        }
+    },
+    {
+        "file": "debet.csv",
+        "passed": true,
+        "errors": [],
+        "warnings": [],
+        "stats": {
+            "size": 232,
+            "rows": 2,
+            "header_fields": 8
+        }
+    },
+    {
+        "file": "credit.csv",
+        "passed": true,
+        "errors": [],
+        "warnings": [],
+        "stats": {
+            "size": 13737,
+            "rows": 88,
+            "header_fields": 9
+        }
+    },
+    {
+        "file": "moving.csv",
+        "passed": true,
+        "errors": [],
+        "warnings": [],
+        "stats": {
+            "size": 664,
+            "rows": 8,
+            "header_fields": 7
+        }
+    },
+    {
+        "file": "currency.csv",
+        "passed": true,
+        "errors": [],
+        "warnings": [],
+        "stats": {
+            "size": 5,
+            "rows": 0,
+            "header_fields": 1
+        }
+    },
+    {
+        "file": "user_account.csv",
+        "passed": true,
+        "errors": [],
+        "warnings": [],
+        "stats": {
+            "size": 30,
+            "rows": 0,
+            "header_fields": 5
+        }
+    }
+]

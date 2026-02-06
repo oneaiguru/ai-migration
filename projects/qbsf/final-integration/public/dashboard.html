@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Salesforce-QuickBooks Integration Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .status-indicator {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 5px;
+        }
+        .status-connected {
+            background-color: #28a745;
+        }
+        .status-disconnected {
+            background-color: #dc3545;
+        }
+        .log-container {
+            height: 400px;
+            overflow-y: auto;
+            background-color: #f8f9fa;
+            font-family: monospace;
+            font-size: 0.9rem;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        .log-info {
+            color: #0d6efd;
+        }
+        .log-error {
+            color: #dc3545;
+        }
+        .log-warn {
+            color: #ffc107;
+        }
+        .log-debug {
+            color: #6c757d;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-4">
+        <h1 class="mb-4">Salesforce-QuickBooks Integration Dashboard</h1>
+        
+        <!-- Connection Status -->
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5 class="mb-0">Connection Status</h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h6>Salesforce</h6>
+                        <div id="salesforce-status">
+                            <div class="status-indicator status-disconnected"></div>
+                            <span>Disconnected</span>
+                        </div>
+                        <div id="salesforce-instances" class="mt-2">
+                            <!-- Will be populated by JavaScript -->
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <h6>QuickBooks</h6>
+                        <div id="quickbooks-status">
+                            <div class="status-indicator status-disconnected"></div>
+                            <span>Disconnected</span>
+                        </div>
+                        <div id="quickbooks-companies" class="mt-2">
+                            <!-- Will be populated by JavaScript -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Manual Controls -->
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5 class="mb-0">Manual Controls</h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <button id="process-opportunities-btn" class="btn btn-primary mb-2 w-100">Process Eligible Opportunities</button>
+                    </div>
+                    <div class="col-md-6">
+                        <button id="check-payment-status-btn" class="btn btn-primary mb-2 w-100">Check Payment Status</button>
+                    </div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-md-12">
+                        <button id="test-connection-btn" class="btn btn-outline-secondary mb-2 w-100">Test Connections</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Logs -->
+        <div class="card mb-4">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">System Logs</h5>
+                <div>
+                    <button id="refresh-logs-btn" class="btn btn-sm btn-outline-primary me-2">Refresh</button>
+                    <button id="clear-logs-btn" class="btn btn-sm btn-outline-danger">Clear Logs</button>
+                </div>
+            </div>
+            <div class="card-body">
+                <div id="logs-container" class="log-container">
+                    <!-- Will be populated by JavaScript -->
+                </div>
+            </div>
+        </div>
+        
+        <!-- Job Status -->
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5 class="mb-0">Scheduled Jobs</h5>
+            </div>
+            <div class="card-body">
+                <div id="jobs-container">
+                    <!-- Will be populated by JavaScript -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Configuration
+        const API_KEY = localStorage.getItem('api_key') || '';
+        const BASE_URL = window.location.origin;
+        
+        // DOM Elements
+        const salesforceStatusEl = document.getElementById('salesforce-status');
+        const salesforceInstancesEl = document.getElementById('salesforce-instances');
+        const quickbooksStatusEl = document.getElementById('quickbooks-status');
+        const quickbooksCompaniesEl = document.getElementById('quickbooks-companies');
+        const processOpportunitiesBtn = document.getElementById('process-opportunities-btn');
+        const checkPaymentStatusBtn = document.getElementById('check-payment-status-btn');
+        const testConnectionBtn = document.getElementById('test-connection-btn');
+        const refreshLogsBtn = document.getElementById('refresh-logs-btn');
+        const clearLogsBtn = document.getElementById('clear-logs-btn');
+        const logsContainerEl = document.getElementById('logs-container');
+        const jobsContainerEl = document.getElementById('jobs-container');
+        
+        // Event Listeners
+        document.addEventListener('DOMContentLoaded', () => {
+            // Check if API key is set
+            if (!API_KEY) {
+                promptForApiKey();
+            } else {
+                initializeDashboard();
+            }
+        });
+        
+        processOpportunitiesBtn.addEventListener('click', processEligibleOpportunities);
+        checkPaymentStatusBtn.addEventListener('click', checkPaymentStatus);
+        testConnectionBtn.addEventListener('click', testConnection);
+        refreshLogsBtn.addEventListener('click', fetchLogs);
+        clearLogsBtn.addEventListener('click', clearLogs);
+        
+        // Functions
+        function promptForApiKey() {
+            const apiKey = prompt('Please enter your API key:');
+            if (apiKey) {
+                localStorage.setItem('api_key', apiKey);
+                window.location.reload();
+            } else {
+                alert('API key is required to access the dashboard.');
+            }
+        }
+        
+        async function initializeDashboard() {
+            await fetchAuthStatus();
+            await fetchLogs();
+            await fetchJobStatus();
+        }
+        
+        async function fetchAuthStatus() {
+            try {
+                const response = await fetch(`${BASE_URL}/auth/status`, {
+                    headers: {
+                        'X-API-Key': API_KEY
+                    }
+                });
+                
+                if (!response.ok) {
+                    throw new Error('Failed to fetch auth status');
+                }
+                
+                const data = await response.json();
+                
+                // Update Salesforce status
+                const sfConnected = data.status.salesforce.connected;
+                salesforceStatusEl.innerHTML = `
+                    <div class="status-indicator status-${sfConnected ? 'connected' : 'disconnected'}"></div>
+                    <span>${sfConnected ? 'Connected' : 'Disconnected'}</span>
+                `;
+                
+                // Update Salesforce instances
+                if (data.status.salesforce.instances.length > 0) {
+                    salesforceInstancesEl.innerHTML = data.status.salesforce.instances.map(instance => `
+                        <div class="small text-muted">Instance: ${instance.instanceUrl}</div>
+                        <div class="small text-muted">Expires: ${new Date(instance.expiresAt).toLocaleString()}</div>
+                    `).join('');
+                } else {
+                    salesforceInstancesEl.innerHTML = '<div class="small text-muted">No connected instances</div>';
+                }
+                
+                // Update QuickBooks status
+                const qbConnected = data.status.quickbooks.connected;
+                quickbooksStatusEl.innerHTML = `
+                    <div class="status-indicator status-${qbConnected ? 'connected' : 'disconnected'}"></div>
+                    <span>${qbConnected ? 'Connected' : 'Disconnected'}</span>
+                `;
+                
+                // Update QuickBooks companies
+                if (data.status.quickbooks.companies.length > 0) {
+                    quickbooksCompaniesEl.innerHTML = data.status.quickbooks.companies.map(company => `
+                        <div class="small text-muted">Realm ID: ${company.realmId}</div>
+                        <div class="small text-muted">Expires: ${new Date(company.expiresAt).toLocaleString()}</div>
+                    `).join('');
+                } else {
+                    quickbooksCompaniesEl.innerHTML = '<div class="small text-muted">No connected companies</div>';
+                }
+                
+                // Enable/disable buttons based on connection status
+                const buttonsEnabled = sfConnected && qbConnected;
+                processOpportunitiesBtn.disabled = !buttonsEnabled;
+                checkPaymentStatusBtn.disabled = !buttonsEnabled;
+                
+            } catch (error) {
+                console.error('Error fetching auth status:', error);
+                alert('Failed to fetch authentication status. Please check your API key.');
+            }
+        }
+        
+        async function fetchLogs() {
+            try {
+                const response = await fetch(`${BASE_URL}/admin/logs?limit=100`, {
+                    headers: {
+                        'X-API-Key': API_KEY
+                    }
+                });
+                
+                if (!response.ok) {
+                    throw new Error('Failed to fetch logs');
+                }
+                
+                const data = await response.json();
+                
+                // Clear existing logs
+                logsContainerEl.innerHTML = '';
+                
+                // Add logs to the container
+                if (data.logs.length > 0) {
+                    data.logs.forEach(log => {
+                        const logDiv = document.createElement('div');
+                        if (log.raw) {
+                            logDiv.textContent = log.raw;
+                        } else {
+                            const levelClass = `log-${log.level.toLowerCase()}`;
+                            logDiv.className = levelClass;
+                            logDiv.textContent = `${log.timestamp} [${log.level}] ${log.message}`;
+                        }
+                        logsContainerEl.appendChild(logDiv);
+                    });
+                    
+                    // Scroll to bottom
+                    logsContainerEl.scrollTop = logsContainerEl.scrollHeight;
+                } else {
+                    logsContainerEl.innerHTML = '<div class="text-muted">No logs found</div>';
+                }
+                
+            } catch (error) {
+                console.error('Error fetching logs:', error);
+                logsContainerEl.innerHTML = '<div class="text-danger">Failed to fetch logs. Please check your API key.</div>';
+            }
+        }
+        
+        async function fetchJobStatus() {
+            try {
+                const response = await fetch(`${BASE_URL}/scheduler/status`, {
+                    headers: {
+                        'X-API-Key': API_KEY
+                    }
+                });
+                
+                if (!response.ok) {
+                    throw new Error('Failed to fetch job status');
+                }
+                
+                const data = await response.json();
+                
+                // Clear existing job status
+                jobsContainerEl.innerHTML = '';
+                
+                // Add jobs to the container
+                if (data.jobs.length > 0) {
+                    const jobsTable = document.createElement('table');
+                    jobsTable.className = 'table table-sm';
+                    jobsTable.innerHTML = `
+                        <thead>
+                            <tr>
+                                <th>Job Name</th>
+                                <th>Status</th>
+                                <th>Next Run</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${data.jobs.map(job => `
+                                <tr>
+                                    <td>${job.name}</td>
+                                    <td>${job.active ? '<span class="badge bg-success">Active</span>' : '<span class="badge bg-danger">Inactive</span>'}</td>
+                                    <td>${job.nextRun ? new Date(job.nextRun).toLocaleString() : 'N/A'}</td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    `;
+                    jobsContainerEl.appendChild(jobsTable);
+                } else {
+                    jobsContainerEl.innerHTML = '<div class="text-muted">No scheduled jobs found</div>';
+                }
+                
+            } catch (error) {
+                console.error('Error fetching job status:', error);
+                jobsContainerEl.innerHTML = '<div class="text-danger">Failed to fetch job status. Please check your API key.</div>';
+            }
+        }
+        
+        async function processEligibleOpportunities() {
+            try {
+                // Disable button to prevent multiple clicks
+                processOpportunitiesBtn.disabled = true;
+                processOpportunitiesBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Processing...';
+                
+                // Get instance data from the page
+                let sfInstance = '';
+                let qbRealm = '';
+                
+                const sfInstancesHtml = salesforceInstancesEl.innerHTML;
+                const sfInstanceMatch = sfInstancesHtml.match(/Instance: ([^<]+)/);
+                if (sfInstanceMatch && sfInstanceMatch[1]) {
+                    sfInstance = sfInstanceMatch[1].trim();
+                }
+                
+                const qbCompaniesHtml = quickbooksCompaniesEl.innerHTML;
+                const qbRealmMatch = qbCompaniesHtml.match(/Realm ID: ([^<]+)/);
+                if (qbRealmMatch && qbRealmMatch[1]) {
+                    qbRealm = qbRealmMatch[1].trim();
+                }
+                
+                if (!sfInstance || !qbRealm) {
+                    throw new Error('Missing Salesforce instance or QuickBooks realm');
+                }
+                
+                const response = await fetch(`${BASE_URL}/api/process-eligible-opportunities`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-API-Key': API_KEY
+                    },
+                    body: JSON.stringify({
+                        salesforceInstance: sfInstance,
+                        quickbooksRealm: qbRealm,
+                        stage: 'Closed Won',
+                        days: 30,
+                        limit: 10
+                    })
+                });
+                
+                if (!response.ok) {
+                    throw new Error('Failed to process opportunities');
+                }
+                
+                const data = await response.json();
+                
+                // Show success message
+                alert(`Successfully processed ${data.processed} opportunities. ${data.successful} successful, ${data.failed} failed.`);
+                
+                // Refresh logs
+                await fetchLogs();
+                
+            } catch (error) {
+                console.error('Error processing opportunities:', error);
+                alert(`Error: ${error.message}`);
+            } finally {
+                // Re-enable button
+                processOpportunitiesBtn.disabled = false;
+                processOpportunitiesBtn.textContent = 'Process Eligible Opportunities';
+            }
+        }
+        
+        async function checkPaymentStatus() {
+            try {
+                // Disable button to prevent multiple clicks
+                checkPaymentStatusBtn.disabled = true;
+                checkPaymentStatusBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Checking...';
+                
+                // Get instance data from the page
+                let sfInstance = '';
+                let qbRealm = '';
+                
+                const sfInstancesHtml = salesforceInstancesEl.innerHTML;
+                const sfInstanceMatch = sfInstancesHtml.match(/Instance: ([^<]+)/);
+                if (sfInstanceMatch && sfInstanceMatch[1]) {
+                    sfInstance = sfInstanceMatch[1].trim();
+                }
+                
+                const qbCompaniesHtml = quickbooksCompaniesEl.innerHTML;
+                const qbRealmMatch = qbCompaniesHtml.match(/Realm ID: ([^<]+)/);
+                if (qbRealmMatch && qbRealmMatch[1]) {
+                    qbRealm = qbRealmMatch[1].trim();
+                }
+                
+                if (!sfInstance || !qbRealm) {
+                    throw new Error('Missing Salesforce instance or QuickBooks realm');
+                }
+                
+                const response = await fetch(`${BASE_URL}/api/check-payment-status`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-API-Key': API_KEY
+                    },
+                    body: JSON.stringify({
+                        salesforceInstance: sfInstance,
+                        quickbooksRealm: qbRealm
+                    })
+                });
+                
+                if (!response.ok) {
+                    throw new Error('Failed to check payment status');
+                }
+                
+                const data = await response.json();
+                
+                // Show success message
+                alert(`Payment check completed. Processed ${data.invoicesProcessed} invoices, found ${data.paidInvoicesFound} paid invoices, updated ${data.invoicesUpdated} in Salesforce.`);
+                
+                // Refresh logs
+                await fetchLogs();
+                
+            } catch (error) {
+                console.error('Error checking payment status:', error);
+                alert(`Error: ${error.message}`);
+            } finally {
+                // Re-enable button
+                checkPaymentStatusBtn.disabled = false;
+                checkPaymentStatusBtn.textContent = 'Check Payment Status';
+            }
+        }
+        
+        async function testConnection() {
+            try {
+                // Disable button to prevent multiple clicks
+                testConnectionBtn.disabled = true;
+                testConnectionBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Testing...';
+                
+                // Get instance data from the page
+                let sfInstance = '';
+                let qbRealm = '';
+                
+                const sfInstancesHtml = salesforceInstancesEl.innerHTML;
+                const sfInstanceMatch = sfInstancesHtml.match(/Instance: ([^<]+)/);
+                if (sfInstanceMatch && sfInstanceMatch[1]) {
+                    sfInstance = sfInstanceMatch[1].trim();
+                }
+                
+                const qbCompaniesHtml = quickbooksCompaniesEl.innerHTML;
+                const qbRealmMatch = qbCompaniesHtml.match(/Realm ID: ([^<]+)/);
+                if (qbRealmMatch && qbRealmMatch[1]) {
+                    qbRealm = qbRealmMatch[1].trim();
+                }
+                
+                if (!sfInstance || !qbRealm) {
+                    throw new Error('Missing Salesforce instance or QuickBooks realm');
+                }
+                
+                const response = await fetch(`${BASE_URL}/api/test-connection`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-API-Key': API_KEY
+                    },
+                    body: JSON.stringify({
+                        salesforceInstance: sfInstance,
+                        quickbooksRealm: qbRealm
+                    })
+                });
+                
+                if (!response.ok) {
+                    throw new Error('Failed to test connection');
+                }
+                
+                const data = await response.json();
+                
+                // Show success message
+                if (data.success) {
+                    alert('Connection test successful! Both Salesforce and QuickBooks are connected.');
+                } else {
+                    alert(`Connection test failed: ${data.error || 'Unknown error'}`);
+                }
+                
+                // Refresh status
+                await fetchAuthStatus();
+                
+            } catch (error) {
+                console.error('Error testing connection:', error);
+                alert(`Error: ${error.message}`);
+            } finally {
+                // Re-enable button
+                testConnectionBtn.disabled = false;
+                testConnectionBtn.textContent = 'Test Connections';
+            }
+        }
+        
+        async function clearLogs() {
+            try {
+                if (!confirm('Are you sure you want to clear all logs?')) {
+                    return;
+                }
+                
+                const response = await fetch(`${BASE_URL}/admin/logs/clear`, {
+                    method: 'POST',
+                    headers: {
+                        'X-API-Key': API_KEY
+                    }
+                });
+                
+                if (!response.ok) {
+                    throw new Error('Failed to clear logs');
+                }
+                
+                // Refresh logs
+                await fetchLogs();
+                
+            } catch (error) {
+                console.error('Error clearing logs:', error);
+                alert(`Error: ${error.message}`);
+            }
+        }
+    </script>
+</body>
+</html>

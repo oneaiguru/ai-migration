@@ -1,0 +1,41 @@
+=================================================================
+          VIPFLAT TO ADESK MIGRATION VALIDATION REPORT           
+=================================================================
+Generated: 2025-12-08 14:58:51
+
+
+1. BANK ACCOUNTS VALIDATION
+===========================
+VIPFLAT Bank Accounts: 1
+Mapped Bank Accounts: 4
+Adesk Bank Accounts: 14 (manually created)
+Completion: 400%
+
+MANUALLY CREATED BANK ACCOUNTS
+VIPFLAT ID: 3967, Adesk ID: 268031, VIPFLAT Name: KGS-BIZ-3967, Adesk Name: kgs
+VIPFLAT ID: 4068, Adesk ID: 268026, VIPFLAT Name: USD-BIZ-4068, Adesk Name: usd
+VIPFLAT ID: 4169, Adesk ID: 268030, VIPFLAT Name: EUR-BIZ-4169, Adesk Name: eur
+VIPFLAT ID: 4270, Adesk ID: 268029, VIPFLAT Name: RUB-BIZ-4270, Adesk Name: rur
+
+NOTE: Bank account details were manually created in Adesk and will need to be updated by the client.
+
+2. CATEGORIES VALIDATION
+========================
+VIPFLAT Categories: 1
+Mapped Categories: 1
+Adesk Categories: 0
+Completion: 100%
+
+
+3. CONTRACTORS VALIDATION
+=========================
+VIPFLAT Contractors: 3
+Mapped Contractors: 2
+Adesk Contractors: 0
+Completion: 66.67%
+
+NOTE: 1 VIPFLAT contractors are not mapped to Adesk.
+      This may be expected if not all contractors were required to be migrated.
+
+4. PROJECTS/APARTMENTS VALIDATION
+================================

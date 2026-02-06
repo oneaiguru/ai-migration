@@ -1,0 +1,42 @@
+=== Targets ===
+1. Real system (reference)
+   - OIDC URL: https://kc.dc.oswfm.ru/realms/os_practice51/protocol/openid-connect/auth?client_id=wfm-frontend&redirect_uri=https%3A%2F%2Fwfm-practice51.dc.oswfm.ru&state=0e91ff11-af12-40f0-bd78-13d17f293aea&response_mode=fragment&response_type=code&scope=openid&nonce=5c1a0726-a17f-4227-8fa9-781109a5771c&code_challenge=tyu4i8fC68DDYnOmtqh5y4DD-YiF8qzipnS9bo3nwuA&code_challenge_method=S256
+   - App URL (post-login): https://wfm-practice51.dc.oswfm.ru/
+   - Credentials: user20082025 / user20082025
+   - Login macro: Ctrl+0 → Ctrl+L → paste OIDC URL → Enter → enter creds → Enter (wait for redirect; if stalled >15 s, click page and retry credentials once).
+
+2. Demo under test
+   - Forecasting & Analytics parity build (2025-10-30)
+   - Production deploy: https://forecasting-analytics-oyldslume-granins-projects.vercel.app
+
+=== Instructions ===
+Behaviour-only UAT (no pixel diff). Use the deploy above, report console errors, and follow the packs listed. Cross-check against the real Naumen portal after each major step and note any behavioural or localisation deltas.
+
+Run these packs end-to-end:
+- docs/Tasks/uat-packs/parity_static.md — Forecasting & Analytics section.
+- docs/Tasks/uat-packs/chart_visual_spec.md — Forecasting charts focus.
+
+Focus checks / deltas to log explicitly:
+1. FA‑1 — Trends: confidence band + secondary axis legend
+   • Page: /trends
+   • Expect: shaded confidence band around the forecast line, legend labels include the secondary axis (“Отклонение, %”), console clean.
+2. FA‑2 — Manual adjustments: inline status badges + undo/redo
+   • Page: /adjustments
+   • Expect: bulk +10 applies badges, undo/redo restores baseline, validation status chips progress idle → pending → saved, no errors.
+3. Accuracy dashboard overview
+   • Page: /accuracy
+   • Expect: KPI deck and error-analysis toggles render with RU formatting (comma decimals, non-breaking space before %), no console errors.
+
+Return findings in the table below (add extra rows if packs reveal more issues):
+| Check | Pass/Fail | Notes | Screenshot |
+| --- | --- | --- | --- |
+| FA‑1 trends confidence band + legend |  |  |  |
+| FA‑2 adjustments badges + undo/redo |  |  |  |
+| Accuracy KPI + error analysis |  |  |  |
+
+If any new issues surface while running parity_static/chart_visual_spec, append rows and mark them clearly (e.g., “Parity static – Build queue tree”).
+
+=== Attachments ===
+- None (upload screenshots only when documenting failures).
+
+When finished, paste the completed table + narrative notes and mention any screenshots you upload.

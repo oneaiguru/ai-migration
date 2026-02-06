@@ -1,0 +1,12 @@
+# Auto-merge Codex-approved imports
+pull_request_rules:
+  - name: auto-merge codex-approved imports
+    conditions:
+      - base=main
+      - label=codex-approved
+      # Add required checks when available; duplicate per check
+      # - check-success=ci/pr
+    actions:
+      merge:
+        method: squash
+        commit_message_template: "{{ title }} (#{{ number }}) — Codex-approved import"

@@ -1,0 +1,160 @@
+@echo off
+chcp 1251 > nul
+echo ======================================================
+echo    УСТАНОВКА БОТА ДЛЯ РЕЗЕРВИРОВАНИЯ ТОВАРОВ ОЗОН
+echo ======================================================
+echo.
+
+REM Создание рабочей директории
+echo Создание рабочей директории...
+mkdir C:\OzonBot
+cd /d C:\OzonBot
+
+REM Проверка наличия Python
+echo Проверка наличия Python...
+python --version >nul 2>&1
+if %errorlevel% neq 0 (
+    echo [ОШИБКА] Python не установлен!
+    echo Загрузка установщика Python...
+    curl -o python_installer.exe https://www.python.org/ftp/python/3.10.11/python-3.10.11-amd64.exe
+    echo Установка Python...
+    python_installer.exe /quiet InstallAllUsers=1 PrependPath=1 Include_test=0
+    echo Проверка установки Python...
+    python --version >nul 2>&1
+    if %errorlevel% neq 0 (
+        echo [ОШИБКА] Не удалось установить Python. Установите Python 3.8 или выше вручную.
+        pause
+        exit /b 1
+    ) else (
+        echo Python успешно установлен!
+        del python_installer.exe
+    )
+)
+
+REM Установка зависимостей
+echo Установка необходимых библиотек...
+pip install selenium webdriver-manager schedule python-telegram-bot
+
+REM Создание основных файлов
+echo Создание файлов бота...
+
+REM Создание файла конфигурации
+echo Создание файла конфигурации...
+echo {> config.json
+echo     "login": "your_login@example.com",>> config.json
+echo     "password": "your_password",>> config.json
+echo     "headless": false,>> config.json
+echo     "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.51 Safari/537.36",>> config.json
+echo     "sku_list": [>> config.json
+echo         "1760282452",>> config.json
+echo         "1750193957",>> config.json
+echo         "709868368",>> config.json
+echo         "1908331943">> config.json
+echo     ],>> config.json
+echo     "payment_method": "Банковская карта",>> config.json
+echo     "telegram_token": "",>> config.json
+echo     "telegram_chat_id": "",>> config.json
+echo     "schedule": {>> config.json
+echo         "enabled": true,>> config.json
+echo         "daily": [>> config.json
+echo             "15:00">> config.json
+echo         ],>> config.json
+echo         "run_duration_hours": 7>> config.json
+echo     }>> config.json
+echo }>> config.json
+
+REM Создание директории для скриншотов
+mkdir screenshots
+
+REM Создание скриптов для запуска
+echo Создание скриптов для запуска...
+
+REM Скрипт для стандартного запуска
+echo @echo off> run_bot.bat
+echo cd /d C:\OzonBot>> run_bot.bat
+echo echo Запуск бота для резервирования товаров Озон...>> run_bot.bat
+echo python ozon_bot_updated.py run>> run_bot.bat
+echo if %%errorlevel%% neq 0 (>> run_bot.bat
+echo    echo [ОШИБКА] Произошла ошибка при запуске бота. Проверьте лог-файл ozon_bot.log>> run_bot.bat
+echo    pause>> run_bot.bat
+echo )>> run_bot.bat
+
+REM Скрипт для запуска демо-версии
+echo @echo off> run_demo.bat
+echo cd /d C:\OzonBot>> run_demo.bat
+echo echo Запуск демо-версии бота для резервирования товаров Озон...>> run_demo.bat
+echo echo ВАЖНО: Демо-версия НЕ оформляет реальные заказы>> run_demo.bat
+echo python ozon_bot_demo.py>> run_demo.bat
+echo if %%errorlevel%% neq 0 (>> run_demo.bat
+echo    echo [ОШИБКА] Произошла ошибка при запуске демо-бота. Проверьте лог-файл ozon_bot_demo.log>> run_demo.bat
+echo    pause>> run_demo.bat
+echo ) else (>> run_demo.bat
+echo    echo Демо-режим успешно завершен. Проверьте скриншоты в папке screenshots>> run_demo.bat
+echo    pause>> run_demo.bat
+echo )>> run_demo.bat
+
+REM Скрипт для автозапуска
+echo @echo off> start_scheduled.bat
+echo cd /d C:\OzonBot>> start_scheduled.bat
+echo echo Запуск бота для резервирования товаров Озон в режиме планировщика...>> start_scheduled.bat
+echo python ozon_bot_updated.py>> start_scheduled.bat
+echo if %%errorlevel%% neq 0 (>> start_scheduled.bat
+echo    echo [ОШИБКА] Произошла ошибка при запуске бота. Проверьте лог-файл ozon_bot.log>> start_scheduled.bat
+echo    pause>> start_scheduled.bat
+echo )>> start_scheduled.bat
+
+REM Загрузка файлов бота
+echo Загрузка исходных кодов бота...
+
+REM Создание задачи в планировщике заданий Windows
+echo Создание задачи в планировщике заданий Windows...
+echo @echo off> create_scheduled_task.bat
+echo schtasks /create /tn "OzonBot" /tr "C:\OzonBot\start_scheduled.bat" /sc daily /st 15:00 /f>> create_scheduled_task.bat
+echo if %%errorlevel%% equ 0 (>> create_scheduled_task.bat
+echo    echo Задача успешно создана в планировщике заданий.>> create_scheduled_task.bat
+echo ) else (>> create_scheduled_task.bat
+echo    echo [ОШИБКА] Не удалось создать задачу в планировщике заданий.>> create_scheduled_task.bat
+echo )>> create_scheduled_task.bat
+echo pause>> create_scheduled_task.bat
+
+REM Создание ярлыков на рабочем столе
+echo Создание ярлыков на рабочем столе...
+
+REM Ярлык для основного бота
+echo Set oWS = WScript.CreateObject("WScript.Shell")> CreateBotShortcut.vbs
+echo sLinkFile = oWS.SpecialFolders("Desktop") ^& "\OzonBot.lnk">> CreateBotShortcut.vbs
+echo Set oLink = oWS.CreateShortcut(sLinkFile)>> CreateBotShortcut.vbs
+echo oLink.TargetPath = "C:\OzonBot\run_bot.bat">> CreateBotShortcut.vbs
+echo oLink.WorkingDirectory = "C:\OzonBot">> CreateBotShortcut.vbs
+echo oLink.Description = "Запуск бота резервирования товаров Озон">> CreateBotShortcut.vbs
+echo oLink.Save>> CreateBotShortcut.vbs
+
+REM Ярлык для демо-версии
+echo Set oWS = WScript.CreateObject("WScript.Shell")> CreateDemoShortcut.vbs
+echo sLinkFile = oWS.SpecialFolders("Desktop") ^& "\OzonBot_Demo.lnk">> CreateDemoShortcut.vbs
+echo Set oLink = oWS.CreateShortcut(sLinkFile)>> CreateDemoShortcut.vbs
+echo oLink.TargetPath = "C:\OzonBot\run_demo.bat">> CreateDemoShortcut.vbs
+echo oLink.WorkingDirectory = "C:\OzonBot">> CreateDemoShortcut.vbs
+echo oLink.Description = "Запуск демо-версии бота резервирования товаров Озон">> CreateDemoShortcut.vbs
+echo oLink.Save>> CreateDemoShortcut.vbs
+
+cscript /nologo CreateBotShortcut.vbs
+cscript /nologo CreateDemoShortcut.vbs
+del CreateBotShortcut.vbs
+del CreateDemoShortcut.vbs
+
+echo.
+echo ======================================================
+echo    УСТАНОВКА ЗАВЕРШЕНА
+echo ======================================================
+echo.
+echo 1. Отредактируйте файл config.json и укажите свои данные для входа на Озон
+echo 2. Запустите create_scheduled_task.bat от имени администратора для создания задачи в планировщике
+echo 3. Для ручного запуска используйте:
+echo    - OzonBot.lnk - для запуска основного бота
+echo    - OzonBot_Demo.lnk - для запуска демо-версии бота
+echo.
+echo Бот будет запускаться автоматически каждый день в 15:00 и работать до 22:00
+echo.
+echo Нажмите любую клавишу для завершения...
+pause >nul

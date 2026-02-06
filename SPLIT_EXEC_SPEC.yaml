@@ -1,0 +1,96 @@
+# VERIFIED SPLIT SPECIFICATION
+# Source: jury-en-EDITED-3-FIXED.txt
+# Total lines: 714
+# Verified: 2025-12-27 by Opus
+
+source: /Users/m/Downloads/jury-en-EDITED-3-FIXED.txt
+total_lines: 714
+output_dir: /Users/m/ai/docs/splits
+
+# Boundary timestamps verified via grep -n:
+#   Line 49:  06:41
+#   Line 142: 20:05
+#   Line 217: 32:04
+#   Line 301: 45:10
+#   Line 376: 56:46
+#   Line 541: 01:20:39
+#   Line 694: 01:42:45
+#   Line 703: 01:57:16
+#   Line 712: 01:58:20
+
+splits:
+  - doc: 1
+    filename: "01_00-00_06-41_forecasting_demo.txt"
+    start_line: 1
+    end_line: 49
+    line_count: 49
+    start_ts: "00:00"
+    end_ts: "06:41"
+
+  - doc: 2
+    filename: "02_06-41_20-05_data_strategy.txt"
+    start_line: 50
+    end_line: 142
+    line_count: 93
+    start_ts: "06:41"
+    end_ts: "20:05"
+
+  - doc: 3
+    filename: "03_20-05_32-04_regional_examples.txt"
+    start_line: 143
+    end_line: 217
+    line_count: 75
+    start_ts: "20:05"
+    end_ts: "32:04"
+
+  - doc: 4
+    filename: "04_32-04_45-10_technical_architecture.txt"
+    start_line: 218
+    end_line: 301
+    line_count: 84
+    start_ts: "32:04"
+    end_ts: "45:10"
+
+  - doc: 5
+    filename: "05_45-10_56-46_product_strategy.txt"
+    start_line: 302
+    end_line: 376
+    line_count: 75
+    start_ts: "45:10"
+    end_ts: "56:46"
+
+  - doc: 6
+    filename: "06_56-46_01-20-39_code_review.txt"
+    start_line: 377
+    end_line: 541
+    line_count: 165
+    start_ts: "56:46"
+    end_ts: "01:20:39"
+    replacement: "/Users/m/Downloads/code_review_product_transcript.md"
+    replacement_note: "Replace lines 403-541 with code_review content (01:00:21 onwards)"
+
+  - doc: 7
+    filename: "07_01-20-39_01-42-45_audio_video.txt"
+    start_line: 542
+    end_line: 694
+    line_count: 153
+    start_ts: "01:20:39"
+    end_ts: "01:42:45"
+
+  - doc: 8
+    filename: "08_01-57-16_01-58-20_course_scheduling.txt"
+    start_line: 703
+    end_line: 714
+    line_count: 12
+    start_ts: "01:57:16"
+    end_ts: "01:58:20"
+
+gap:
+  start_line: 695
+  end_line: 702
+  line_count: 8
+  note: "Gap between 01:42:45 and 01:57:16 - no content"
+
+verification:
+  expected_sum: 714  # 49+93+75+84+75+165+153+8+12 = 714
+  formula: "sum(all line_counts) + gap.line_count == total_lines"

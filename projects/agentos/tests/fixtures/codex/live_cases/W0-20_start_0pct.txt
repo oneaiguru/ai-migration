@@ -1,0 +1,15 @@
+╭─────────────────────────────────────────────────────────────────────────────╮
+│  >_ OpenAI Codex (v0.44.0)                                                  │
+│                                                                             │
+│  Model:            gpt-5-codex (reasoning high, summaries auto)             │
+│  Directory:        ~/git/client/employee-management-parity                  │
+│  Approval:         never                                                    │
+│  Sandbox:          danger-full-access                                       │
+│  Agents.md:        AGENTS.md                                                │
+│  Account:          www.yesplus.ru@gmail.com (Pro)                           │
+│  Session:          0199dd7d-5e76-7df3-83ca-a4161b680c64                     │
+│                                                                             │
+│  Context window:   38% left (171K used / 272K)                              │
+│  5h limit:         [░░░░░░░░░░░░░░░░░░░░] 0% used (resets 14:00)            │
+│  Weekly limit:     [██░░░░░░░░░░░░░░░░░░] 10% used (resets 21:11 on 25 Oct) │
+╰─────────────────────────────────────────────────────────────────────────────╯

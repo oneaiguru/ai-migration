@@ -1,0 +1,17 @@
+{
+  "view": "weekly",
+  "generated_at": "2025-10-20T07:00:00Z",
+  "resetAt": "2025-10-25T21:11:00Z",
+  "currentWeek": {
+    "startDate": "2025-10-19",
+    "endDate": "2025-10-25",
+    "percentUsed": 9.2,
+    "tokensUsed": 987654321,
+    "tokensRemaining": 123456789,
+    "costUSD": 180.25
+  },
+  "plan": {
+    "name": "codex-pro",
+    "weeklyTokenLimit": 2147483647
+  }
+}

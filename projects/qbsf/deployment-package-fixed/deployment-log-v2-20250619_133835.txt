@@ -1,0 +1,2900 @@
+🚀 Final Deployment: Salesforce-QuickBooks Integration Phase 2 - ИСПРАВЛЕННАЯ ВЕРСИЯ v2
+==========================================================================================
+[0;34m[STEP][0m 1. Checking Salesforce CLI...
+ ›   Warning: @salesforce/cli update available from [92m2.87.7[39m to [92m2.92.7[39m.
+[0;32m[INFO][0m Using: sf CLI version @salesforce/cli/2.87.7
+[0;34m[STEP][0m 2. Checking sfdx-project.json...
+[0;32m[INFO][0m ✅ sfdx-project.json exists
+[0;34m[STEP][0m 3. Validating deployment files...
+[0;32m[INFO][0m ✅ force-app/main/default/classes/SFInvoiceCreator.cls
+[0;32m[INFO][0m ✅ force-app/main/default/classes/QBInvoiceSyncQueueable.cls
+[0;32m[INFO][0m ✅ force-app/main/default/triggers/OpportunityInvoiceTrigger.trigger
+[0;32m[INFO][0m ✅ force-app/main/default/objects/QB_Invoice__c/QB_Invoice__c.object-meta.xml
+[0;32m[INFO][0m ✅ force-app/main/default/objects/Opportunity/fields/Supplier__c.field-meta.xml
+[0;32m[INFO][0m ✅ All required files present
+[0;34m[STEP][0m 4. Deploying to Salesforce...
+[0;32m[INFO][0m Using new sf CLI commands (source-dir only)...
+[0;32m[INFO][0m Validating deployment...
+ ›   Warning: @salesforce/cli update available from [92m2.87.7[39m to [92m2.92.7[39m.
+Validating Deployment of v57.0 metadata to olga.rybak@atocomm2023.eu using the v64.0 SOAP API.
+
+ ───────────── Validating Deployment ─────────────
+
+
+ ◼ Preparing
+ ◼ Waiting for the org to respond
+ ◼ Deploying Metadata
+ ◼ Running Tests
+ ◼ Updating Source Tracking
+ ◼ Done
+
+ Status: ⠁
+ Elapsed Time: 0ms
+
+[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[G
+ ───────────── Validating Deployment ─────────────
+
+
+ ⣾ Preparing 21ms
+ ◼ Waiting for the org to respond
+ ◼ Deploying Metadata
+ ◼ Running Tests
+ ◼ Updating Source Tracking
+ ◼ Done
+
+ Status: ⠁
+ Deploy ID: 0AfSo000002bEndKAE
+ Target Org: olga.rybak@atocomm2023.eu
+ Elapsed Time: 37ms
+
+[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[G
+ ───────────── Validating Deployment ─────────────
+
+
+ ⣾ Preparing 53ms
+ ◼ Waiting for the org to respond
+ ◼ Deploying Metadata
+ ◼ Running Tests
+ ◼ Updating Source Tracking
+ ◼ Done
+
+ Status: ⠁
+ Deploy ID: 0AfSo000002bEndKAE
+ Target Org: olga.rybak@atocomm2023.eu
+ Elapsed Time: 71ms
+
+[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[G
+ ───────────── Validating Deployment ─────────────
+
+
+ ⣽ Preparing 86ms
+ ◼ Waiting for the org to respond
+ ◼ Deploying Metadata
+ ◼ Running Tests
+ ◼ Updating Source Tracking
+ ◼ Done
+
+ Status: ⠁
+ Deploy ID: 0AfSo000002bEndKAE
+ Target Org: olga.rybak@atocomm2023.eu
+ Elapsed Time: 102ms
+
+[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[G
+ ───────────── Validating Deployment ─────────────
+
+
+ ⣽ Preparing 117ms
+ ◼ Waiting for the org to respond
+ ◼ Deploying Metadata
+ ◼ Running Tests
+ ◼ Updating Source Tracking
+ ◼ Done
+
+ Status: ⠂
+ Deploy ID: 0AfSo000002bEndKAE
+ Target Org: olga.rybak@atocomm2023.eu
+ Elapsed Time: 135ms
+
+[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[G
+ ───────────── Validating Deployment ─────────────
+
+
+ ⣽ Preparing 150ms
+ ◼ Waiting for the org to respond
+ ◼ Deploying Metadata
+ ◼ Running Tests
+ ◼ Updating Source Tracking
+ ◼ Done
+
+ Status: ⠂
+ Deploy ID: 0AfSo000002bEndKAE
+ Target Org: olga.rybak@atocomm2023.eu
+ Elapsed Time: 166ms
+
+[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[G
+ ───────────── Validating Deployment ─────────────
+
+
+ ⣻ Preparing 182ms
+ ◼ Waiting for the org to respond
+ ◼ Deploying Metadata
+ ◼ Running Tests
+ ◼ Updating Source Tracking
+ ◼ Done
+
+ Status: ⠂
+ Deploy ID: 0AfSo000002bEndKAE
+ Target Org: olga.rybak@atocomm2023.eu
+ Elapsed Time: 199ms
+
+[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[G
+ ───────────── Validating Deployment ─────────────
+
+
+ ⣻ Preparing 213ms
+ ◼ Waiting for the org to respond
+ ◼ Deploying Metadata
+ ◼ Running Tests
+ ◼ Updating Source Tracking
+ ◼ Done
+
+ Status: ⠄
+ Deploy ID: 0AfSo000002bEndKAE
+ Target Org: olga.rybak@atocomm2023.eu
+ Elapsed Time: 231ms
+
+[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[G
+ ───────────── Validating Deployment ─────────────
+
+
+ ✔ Preparing 243ms
+ ◯ Waiting for the org to respond - Skipped
+ ⣾ Deploying Metadata 3ms
+   ▸ Components: ⠁
+ ◼ Running Tests
+ ◼ Updating Source Tracking
+ ◼ Done
+
+ Status: In Progress
+ Deploy ID: 0AfSo000002bEndKAE
+ Target Org: olga.rybak@atocomm2023.eu
+ Elapsed Time: 262ms
+
+[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[G
+ ───────────── Validating Deployment ─────────────
+
+
+ ✔ Preparing 243ms
+ ◯ Waiting for the org to respond - Skipped
+ ⣾ Deploying Metadata 37ms
+   ▸ Components: ⠁
+ ◼ Running Tests
+ ◼ Updating Source Tracking
+ ◼ Done
+
+ Status: In Progress
+ Deploy ID: 0AfSo000002bEndKAE
+ Target Org: olga.rybak@atocomm2023.eu
+ Elapsed Time: 294ms
+
+[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[G
+ ───────────── Validating Deployment ─────────────
+
+
+ ✔ Preparing 243ms
+ ◯ Waiting for the org to respond - Skipped
+ ⣾ Deploying Metadata 68ms
+   ▸ Components: ⠁
+ ◼ Running Tests
+ ◼ Updating Source Tracking
+ ◼ Done
+
+ Status: In Progress
+ Deploy ID: 0AfSo000002bEndKAE
+ Target Org: olga.rybak@atocomm2023.eu
+ Elapsed Time: 326ms
+
+[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[G
+ ───────────── Validating Deployment ─────────────
+
+
+ ✔ Preparing 243ms
+ ◯ Waiting for the org to respond - Skipped
+ ⣽ Deploying Metadata 100ms
+   ▸ Components: ⠂
+ ◼ Running Tests
+ ◼ Updating Source Tracking
+ ◼ Done
+
+ Status: In Progress
+ Deploy ID: 0AfSo000002bEndKAE
+ Target Org: olga.rybak@atocomm2023.eu
+ Elapsed Time: 358ms
+
+[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[G
+ ───────────── Validating Deployment ─────────────
+
+
+ ✔ Preparing 243ms
+ ◯ Waiting for the org to respond - Skipped
+ ⣽ Deploying Metadata 132ms
+   ▸ Components: ⠂
+ ◼ Running Tests
+ ◼ Updating Source Tracking
+ ◼ Done
+
+ Status: In Progress
+ Deploy ID: 0AfSo000002bEndKAE
+ Target Org: olga.rybak@atocomm2023.eu
+ Elapsed Time: 390ms
+
+[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[G
+ ───────────── Validating Deployment ─────────────
+
+
+ ✔ Preparing 243ms
+ ◯ Waiting for the org to respond - Skipped
+ ⣻ Deploying Metadata 164ms
+   ▸ Components: ⠂
+ ◼ Running Tests
+ ◼ Updating Source Tracking
+ ◼ Done
+
+ Status: In Progress
+ Deploy ID: 0AfSo000002bEndKAE
+ Target Org: olga.rybak@atocomm2023.eu
+ Elapsed Time: 422ms
+
+[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[G
+ ───────────── Validating Deployment ─────────────
+
+
+ ✔ Preparing 243ms
+ ◯ Waiting for the org to respond - Skipped
+ ⣻ Deploying Metadata 195ms
+   ▸ Components: ⠂
+ ◼ Running Tests
+ ◼ Updating Source Tracking
+ ◼ Done
+
+ Status: In Progress
+ Deploy ID: 0AfSo000002bEndKAE
+ Target Org: olga.rybak@atocomm2023.eu
+ Elapsed Time: 455ms
+
+[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[G
+ ───────────── Validating Deployment ─────────────
+
+
+ ✔ Preparing 243ms
+ ◯ Waiting for the org to respond - Skipped
+ ⣻ Deploying Metadata 227ms
+   ▸ Components: ⠄
+ ◼ Running Tests
+ ◼ Updating Source Tracking
+ ◼ Done
+
+ Status: In Progress
+ Deploy ID: 0AfSo000002bEndKAE
+ Target Org: olga.rybak@atocomm2023.eu
+ Elapsed Time: 485ms
+
+[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[G
+ ───────────── Validating Deployment ─────────────
+
+
+ ✔ Preparing 243ms
+ ◯ Waiting for the org to respond - Skipped
+ ⢿ Deploying Metadata 260ms
+   ▸ Components: ⠄
+ ◼ Running Tests
+ ◼ Updating Source Tracking
+ ◼ Done
+
+ Status: In Progress
+ Deploy ID: 0AfSo000002bEndKAE
+ Target Org: olga.rybak@atocomm2023.eu
+ Elapsed Time: 519ms
+
+[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[G
+ ───────────── Validating Deployment ─────────────
+
+
+ ✔ Preparing 243ms
+ ◯ Waiting for the org to respond - Skipped
+ ⢿ Deploying Metadata 292ms
+   ▸ Components: ⠄
+ ◼ Running Tests
+ ◼ Updating Source Tracking
+ ◼ Done
+
+ Status: In Progress
+ Deploy ID: 0AfSo000002bEndKAE
+ Target Org: olga.rybak@atocomm2023.eu
+ Elapsed Time: 550ms
+
+[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[G
+ ───────────── Validating Deployment ─────────────
+
+
+ ✔ Preparing 243ms
+ ◯ Waiting for the org to respond - Skipped
+ ⡿ Deploying Metadata 324ms
+   ▸ Components: ⡀
+ ◼ Running Tests
+ ◼ Updating Source Tracking
+ ◼ Done
+
+ Status: In Progress
+ Deploy ID: 0AfSo000002bEndKAE
+ Target Org: olga.rybak@atocomm2023.eu
+ Elapsed Time: 584ms
+
+[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[G
+ ───────────── Validating Deployment ─────────────
+
+
+ ✔ Preparing 243ms
+ ◯ Waiting for the org to respond - Skipped
+ ⡿ Deploying Metadata 357ms
+   ▸ Components: ⡀
+ ◼ Running Tests
+ ◼ Updating Source Tracking
+ ◼ Done
+
+ Status: In Progress
+ Deploy ID: 0AfSo000002bEndKAE
+ Target Org: olga.rybak@atocomm2023.eu
+ Elapsed Time: 615ms
+
+[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[G
+ ───────────── Validating Deployment ─────────────
+
+
+ ✔ Preparing 243ms
+ ◯ Waiting for the org to respond - Skipped
+ ⡿ Deploying Metadata 389ms
+   ▸ Components: ⡀
+ ◼ Running Tests
+ ◼ Updating Source Tracking
+ ◼ Done
+
+ Status: In Progress
+ Deploy ID: 0AfSo000002bEndKAE
+ Target Org: olga.rybak@atocomm2023.eu
+ Elapsed Time: 648ms
+
+[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[G
+ ───────────── Validating Deployment ─────────────
+
+
+ ✔ Preparing 243ms
+ ◯ Waiting for the org to respond - Skipped
+ ⣟ Deploying Metadata 421ms
+   ▸ Components: ⢀
+ ◼ Running Tests
+ ◼ Updating Source Tracking
+ ◼ Done
+
+ Status: In Progress
+ Deploy ID: 0AfSo000002bEndKAE
+ Target Org: olga.rybak@atocomm2023.eu
+ Elapsed Time: 679ms
+
+[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[G
+ ───────────── Validating Deployment ─────────────
+
+
+ ✔ Preparing 243ms
+ ◯ Waiting for the org to respond - Skipped
+ ⣟ Deploying Metadata 452ms
+   ▸ Components: ⢀
+ ◼ Running Tests
+ ◼ Updating Source Tracking
+ ◼ Done
+
+ Status: In Progress
+ Deploy ID: 0AfSo000002bEndKAE
+ Target Org: olga.rybak@atocomm2023.eu
+ Elapsed Time: 712ms
+
+[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[G
+ ───────────── Validating Deployment ─────────────
+
+
+ ✔ Preparing 243ms
+ ◯ Waiting for the org to respond - Skipped
+ ⣯ Deploying Metadata 484ms
+   ▸ Components: ⢀
+ ◼ Running Tests
+ ◼ Updating Source Tracking
+ ◼ Done
+
+ Status: In Progress
+ Deploy ID: 0AfSo000002bEndKAE
+ Target Org: olga.rybak@atocomm2023.eu
+ Elapsed Time: 744ms
+
+[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[G
+ ───────────── Validating Deployment ─────────────
+
+
+ ✔ Preparing 243ms
+ ◯ Waiting for the org to respond - Skipped
+ ⣯ Deploying Metadata 516ms
+   ▸ Components: ⠠
+ ◼ Running Tests
+ ◼ Updating Source Tracking
+ ◼ Done
+
+ Status: In Progress
+ Deploy ID: 0AfSo000002bEndKAE
+ Target Org: olga.rybak@atocomm2023.eu
+ Elapsed Time: 776ms
+
+[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[G
+ ───────────── Validating Deployment ─────────────
+
+
+ ✔ Preparing 243ms
+ ◯ Waiting for the org to respond - Skipped
+ ⣯ Deploying Metadata 548ms
+   ▸ Components: ⠠
+ ◼ Running Tests
+ ◼ Updating Source Tracking
+ ◼ Done
+
+ Status: In Progress
+ Deploy ID: 0AfSo000002bEndKAE
+ Target Org: olga.rybak@atocomm2023.eu
+ Elapsed Time: 807ms
+
+[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[G
+ ───────────── Validating Deployment ─────────────
+
+
+ ✔ Preparing 243ms
+ ◯ Waiting for the org to respond - Skipped
+ ⣷ Deploying Metadata 580ms
+   ▸ Components: ⠠
+ ◼ Running Tests
+ ◼ Updating Source Tracking
+ ◼ Done
+
+ Status: In Progress
+ Deploy ID: 0AfSo000002bEndKAE
+ Target Org: olga.rybak@atocomm2023.eu
+ Elapsed Time: 840ms
+
+[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[G
+ ───────────── Validating Deployment ─────────────
+
+
+ ✔ Preparing 243ms
+ ◯ Waiting for the org to respond - Skipped
+ ⣷ Deploying Metadata 613ms
+   ▸ Components: ⠐
+ ◼ Running Tests
+ ◼ Updating Source Tracking
+ ◼ Done
+
+ Status: In Progress
+ Deploy ID: 0AfSo000002bEndKAE
+ Target Org: olga.rybak@atocomm2023.eu
+ Elapsed Time: 871ms
+
+[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[G
+ ───────────── Validating Deployment ─────────────
+
+
+ ✔ Preparing 243ms
+ ◯ Waiting for the org to respond - Skipped
+ ⣾ Deploying Metadata 645ms
+   ▸ Components: ⠐
+ ◼ Running Tests
+ ◼ Updating Source Tracking
+ ◼ Done
+
+ Status: In Progress
+ Deploy ID: 0AfSo000002bEndKAE
+ Target Org: olga.rybak@atocomm2023.eu
+ Elapsed Time: 903ms
+
+[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[G
+ ───────────── Validating Deployment ─────────────
+
+
+ ✔ Preparing 243ms
+ ◯ Waiting for the org to respond - Skipped
+ ⣾ Deploying Metadata 676ms
+   ▸ Components: ⠐
+ ◼ Running Tests
+ ◼ Updating Source Tracking
+ ◼ Done
+
+ Status: In Progress
+ Deploy ID: 0AfSo000002bEndKAE
+ Target Org: olga.rybak@atocomm2023.eu
+ Elapsed Time: 936ms
+
+[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[G
+ ───────────── Validating Deployment ─────────────
+
+
+ ✔ Preparing 243ms
+ ◯ Waiting for the org to respond - Skipped
+ ⣾ Deploying Metadata 709ms
+   ▸ Components: ⠈
+ ◼ Running Tests
+ ◼ Updating Source Tracking
+ ◼ Done
+
+ Status: In Progress
+ Deploy ID: 0AfSo000002bEndKAE
+ Target Org: olga.rybak@atocomm2023.eu
+ Elapsed Time: 967ms
+
+[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[G
+ ───────────── Validating Deployment ─────────────
+
+
+ ✔ Preparing 243ms
+ ◯ Waiting for the org to respond - Skipped
+ ⣽ Deploying Metadata 741ms
+   ▸ Components: 0/52 (0%)
+ ◼ Running Tests
+ ◼ Updating Source Tracking
+ ◼ Done
+
+ Status: In Progress
+ Deploy ID: 0AfSo000002bEndKAE
+ Target Org: olga.rybak@atocomm2023.eu
+ Elapsed Time: 1.00s
+
+[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[G
+ ───────────── Validating Deployment ─────────────
+
+
+ ✔ Preparing 243ms
+ ◯ Waiting for the org to respond - Skipped
+ ⣽ Deploying Metadata 773ms
+   ▸ Components: 0/52 (0%)
+ ◼ Running Tests
+ ◼ Updating Source Tracking
+ ◼ Done
+
+ Status: In Progress
+ Deploy ID: 0AfSo000002bEndKAE
+ Target Org: olga.rybak@atocomm2023.eu
+ Elapsed Time: 1.03s
+
+[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[G
+ ───────────── Validating Deployment ─────────────
+
+
+ ✔ Preparing 243ms
+ ◯ Waiting for the org to respond - Skipped
+ ⣻ Deploying Metadata 805ms
+   ▸ Components: 0/52 (0%)
+ ◼ Running Tests
+ ◼ Updating Source Tracking
+ ◼ Done
+
+ Status: In Progress
+ Deploy ID: 0AfSo000002bEndKAE
+ Target Org: olga.rybak@atocomm2023.eu
+ Elapsed Time: 1.06s
+
+[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[G
+ ───────────── Validating Deployment ─────────────
+
+
+ ✔ Preparing 243ms
+ ◯ Waiting for the org to respond - Skipped
+ ⣻ Deploying Metadata 837ms
+   ▸ Components: 0/52 (0%)
+ ◼ Running Tests
+ ◼ Updating Source Tracking
+ ◼ Done
+
+ Status: In Progress
+ Deploy ID: 0AfSo000002bEndKAE
+ Target Org: olga.rybak@atocomm2023.eu
+ Elapsed Time: 1.09s
+
+[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[G
+ ───────────── Validating Deployment ─────────────
+
+
+ ✔ Preparing 243ms
+ ◯ Waiting for the org to respond - Skipped
+ ⣻ Deploying Metadata 869ms
+   ▸ Components: 0/52 (0%)
+ ◼ Running Tests
+ ◼ Updating Source Tracking
+ ◼ Done
+
+ Status: In Progress
+ Deploy ID: 0AfSo000002bEndKAE
+ Target Org: olga.rybak@atocomm2023.eu
+ Elapsed Time: 1.12s
+
+[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[G
+ ───────────── Validating Deployment ─────────────
+
+
+ ✔ Preparing 243ms
+ ◯ Waiting for the org to respond - Skipped
+ ⢿ Deploying Metadata 901ms
+   ▸ Components: 0/52 (0%)
+ ◼ Running Tests
+ ◼ Updating Source Tracking
+ ◼ Done
+
+ Status: In Progress
+ Deploy ID: 0AfSo000002bEndKAE
+ Target Org: olga.rybak@atocomm2023.eu
+ Elapsed Time: 1.15s
+
+[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[G
+ ───────────── Validating Deployment ─────────────
+
+
+ ✔ Preparing 243ms
+ ◯ Waiting for the org to respond - Skipped
+ ⢿ Deploying Metadata 933ms
+   ▸ Components: 0/52 (0%)
+ ◼ Running Tests
+ ◼ Updating Source Tracking
+ ◼ Done
+
+ Status: In Progress
+ Deploy ID: 0AfSo000002bEndKAE
+ Target Org: olga.rybak@atocomm2023.eu
+ Elapsed Time: 1.19s
+
+[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[G
+ ───────────── Validating Deployment ─────────────
+
+
+ ✔ Preparing 243ms
+ ◯ Waiting for the org to respond - Skipped
+ ⡿ Deploying Metadata 965ms
+   ▸ Components: 0/52 (0%)
+ ◼ Running Tests
+ ◼ Updating Source Tracking
+ ◼ Done
+
+ Status: In Progress
+ Deploy ID: 0AfSo000002bEndKAE
+ Target Org: olga.rybak@atocomm2023.eu
+ Elapsed Time: 1.22s
+
+[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[G
+ ───────────── Validating Deployment ─────────────
+
+
+ ✔ Preparing 243ms
+ ◯ Waiting for the org to respond - Skipped
+ ⡿ Deploying Metadata 998ms
+   ▸ Components: 0/52 (0%)
+ ◼ Running Tests
+ ◼ Updating Source Tracking
+ ◼ Done
+
+ Status: In Progress
+ Deploy ID: 0AfSo000002bEndKAE
+ Target Org: olga.rybak@atocomm2023.eu
+ Elapsed Time: 1.25s
+
+[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[G
+ ───────────── Validating Deployment ─────────────
+
+
+ ✔ Preparing 243ms
+ ◯ Waiting for the org to respond - Skipped
+ ⡿ Deploying Metadata 1.03s
+   ▸ Components: 0/52 (0%)
+ ◼ Running Tests
+ ◼ Updating Source Tracking
+ ◼ Done
+
+ Status: In Progress
+ Deploy ID: 0AfSo000002bEndKAE
+ Target Org: olga.rybak@atocomm2023.eu
+ Elapsed Time: 1.28s
+
+[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[G
+ ───────────── Validating Deployment ─────────────
+
+
+ ✔ Preparing 243ms
+ ◯ Waiting for the org to respond - Skipped
+ ⣟ Deploying Metadata 1.06s
+   ▸ Components: 0/52 (0%)
+ ◼ Running Tests
+ ◼ Updating Source Tracking
+ ◼ Done
+
+ Status: In Progress
+ Deploy ID: 0AfSo000002bEndKAE
+ Target Org: olga.rybak@atocomm2023.eu
+ Elapsed Time: 1.32s
+
+[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[G
+ ───────────── Validating Deployment ─────────────
+
+
+ ✔ Preparing 243ms
+ ◯ Waiting for the org to respond - Skipped
+ ⣟ Deploying Metadata 1.09s
+   ▸ Components: 0/52 (0%)
+ ◼ Running Tests
+ ◼ Updating Source Tracking
+ ◼ Done
+
+ Status: In Progress
+ Deploy ID: 0AfSo000002bEndKAE
+ Target Org: olga.rybak@atocomm2023.eu
+ Elapsed Time: 1.35s
+
+[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[G
+ ───────────── Validating Deployment ─────────────
+
+
+ ✔ Preparing 243ms
+ ◯ Waiting for the org to respond - Skipped
+ ⣯ Deploying Metadata 1.12s
+   ▸ Components: 0/52 (0%)
+ ◼ Running Tests
+ ◼ Updating Source Tracking
+ ◼ Done
+
+ Status: In Progress
+ Deploy ID: 0AfSo000002bEndKAE
+ Target Org: olga.rybak@atocomm2023.eu
+ Elapsed Time: 1.38s
+
+[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[G
+ ───────────── Validating Deployment ─────────────
+
+
+ ✔ Preparing 243ms
+ ◯ Waiting for the org to respond - Skipped
+ ⣯ Deploying Metadata 1.15s
+   ▸ Components: 0/52 (0%)
+ ◼ Running Tests
+ ◼ Updating Source Tracking
+ ◼ Done
+
+ Status: In Progress
+ Deploy ID: 0AfSo000002bEndKAE
+ Target Org: olga.rybak@atocomm2023.eu
+ Elapsed Time: 1.41s
+
+[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[G
+ ───────────── Validating Deployment ─────────────
+
+
+ ✔ Preparing 243ms
+ ◯ Waiting for the org to respond - Skipped
+ ⣯ Deploying Metadata 1.19s
+   ▸ Components: 0/52 (0%)
+ ◼ Running Tests
+ ◼ Updating Source Tracking
+ ◼ Done
+
+ Status: In Progress
+ Deploy ID: 0AfSo000002bEndKAE
+ Target Org: olga.rybak@atocomm2023.eu
+ Elapsed Time: 1.45s
+
+[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[G
+ ───────────── Validating Deployment ─────────────
+
+
+ ✔ Preparing 243ms
+ ◯ Waiting for the org to respond - Skipped
+ ⣷ Deploying Metadata 1.22s
+   ▸ Components: 0/52 (0%)
+ ◼ Running Tests
+ ◼ Updating Source Tracking
+ ◼ Done
+
+ Status: In Progress
+ Deploy ID: 0AfSo000002bEndKAE
+ Target Org: olga.rybak@atocomm2023.eu
+ Elapsed Time: 1.48s
+
+[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[G
+ ───────────── Validating Deployment ─────────────
+
+
+ ✔ Preparing 243ms
+ ◯ Waiting for the org to respond - Skipped
+ ⣷ Deploying Metadata 1.25s
+   ▸ Components: 0/52 (0%)
+ ◼ Running Tests
+ ◼ Updating Source Tracking
+ ◼ Done
+
+ Status: In Progress
+ Deploy ID: 0AfSo000002bEndKAE
+ Target Org: olga.rybak@atocomm2023.eu
+ Elapsed Time: 1.51s
+
+[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[G
+ ───────────── Validating Deployment ─────────────
+
+
+ ✔ Preparing 243ms
+ ◯ Waiting for the org to respond - Skipped
+ ⣾ Deploying Metadata 1.28s
+   ▸ Components: 0/52 (0%)
+ ◼ Running Tests
+ ◼ Updating Source Tracking
+ ◼ Done
+
+ Status: In Progress
+ Deploy ID: 0AfSo000002bEndKAE
+ Target Org: olga.rybak@atocomm2023.eu
+ Elapsed Time: 1.54s
+
+[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[G
+ ───────────── Validating Deployment ─────────────
+
+
+ ✔ Preparing 243ms
+ ◯ Waiting for the org to respond - Skipped
+ ⣾ Deploying Metadata 1.32s
+   ▸ Components: 0/52 (0%)
+ ◼ Running Tests
+ ◼ Updating Source Tracking
+ ◼ Done
+
+ Status: In Progress
+ Deploy ID: 0AfSo000002bEndKAE
+ Target Org: olga.rybak@atocomm2023.eu
+ Elapsed Time: 1.58s
+
+[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[G
+ ───────────── Validating Deployment ─────────────
+
+
+ ✔ Preparing 243ms
+ ◯ Waiting for the org to respond - Skipped
+ ⣾ Deploying Metadata 1.35s
+   ▸ Components: 0/52 (0%)
+ ◼ Running Tests
+ ◼ Updating Source Tracking
+ ◼ Done
+
+ Status: In Progress
+ Deploy ID: 0AfSo000002bEndKAE
+ Target Org: olga.rybak@atocomm2023.eu
+ Elapsed Time: 1.61s
+
+[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[G
+ ───────────── Validating Deployment ─────────────
+
+
+ ✔ Preparing 243ms
+ ◯ Waiting for the org to respond - Skipped
+ ⣽ Deploying Metadata 1.38s
+   ▸ Components: 0/52 (0%)
+ ◼ Running Tests
+ ◼ Updating Source Tracking
+ ◼ Done
+
+ Status: In Progress
+ Deploy ID: 0AfSo000002bEndKAE
+ Target Org: olga.rybak@atocomm2023.eu
+ Elapsed Time: 1.64s
+
+[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[G
+ ───────────── Validating Deployment ─────────────
+
+
+ ✔ Preparing 243ms
+ ◯ Waiting for the org to respond - Skipped
+ ⣽ Deploying Metadata 1.41s
+   ▸ Components: 0/52 (0%)
+ ◼ Running Tests
+ ◼ Updating Source Tracking
+ ◼ Done
+
+ Status: In Progress
+ Deploy ID: 0AfSo000002bEndKAE
+ Target Org: olga.rybak@atocomm2023.eu
+ Elapsed Time: 1.67s
+
+[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[G
+ ───────────── Validating Deployment ─────────────
+
+
+ ✔ Preparing 243ms
+ ◯ Waiting for the org to respond - Skipped
+ ⣻ Deploying Metadata 1.44s
+   ▸ Components: 0/52 (0%)
+ ◼ Running Tests
+ ◼ Updating Source Tracking
+ ◼ Done
+
+ Status: In Progress
+ Deploy ID: 0AfSo000002bEndKAE
+ Target Org: olga.rybak@atocomm2023.eu
+ Elapsed Time: 1.70s
+
+[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[G
+ ───────────── Validating Deployment ─────────────
+
+
+ ✔ Preparing 243ms
+ ◯ Waiting for the org to respond - Skipped
+ ⣻ Deploying Metadata 1.48s
+   ▸ Components: 0/52 (0%)
+ ◼ Running Tests
+ ◼ Updating Source Tracking
+ ◼ Done
+
+ Status: In Progress
+ Deploy ID: 0AfSo000002bEndKAE
+ Target Org: olga.rybak@atocomm2023.eu
+ Elapsed Time: 1.74s
+
+[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[G
+ ───────────── Validating Deployment ─────────────
+
+
+ ✔ Preparing 243ms
+ ◯ Waiting for the org to respond - Skipped
+ ⣻ Deploying Metadata 1.51s
+   ▸ Components: 0/52 (0%)
+ ◼ Running Tests
+ ◼ Updating Source Tracking
+ ◼ Done
+
+ Status: In Progress
+ Deploy ID: 0AfSo000002bEndKAE
+ Target Org: olga.rybak@atocomm2023.eu
+ Elapsed Time: 1.77s
+
+[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[G
+ ───────────── Validating Deployment ─────────────
+
+
+ ✔ Preparing 243ms
+ ◯ Waiting for the org to respond - Skipped
+ ⢿ Deploying Metadata 1.54s
+   ▸ Components: 0/52 (0%)
+ ◼ Running Tests
+ ◼ Updating Source Tracking
+ ◼ Done
+
+ Status: In Progress
+ Deploy ID: 0AfSo000002bEndKAE
+ Target Org: olga.rybak@atocomm2023.eu
+ Elapsed Time: 1.80s
+
+[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[G
+ ───────────── Validating Deployment ─────────────
+
+
+ ✔ Preparing 243ms
+ ◯ Waiting for the org to respond - Skipped
+ ⢿ Deploying Metadata 1.57s
+   ▸ Components: 0/52 (0%)
+ ◼ Running Tests
+ ◼ Updating Source Tracking
+ ◼ Done
+
+ Status: In Progress
+ Deploy ID: 0AfSo000002bEndKAE
+ Target Org: olga.rybak@atocomm2023.eu
+ Elapsed Time: 1.83s
+
+[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[G
+ ───────────── Validating Deployment ─────────────
+
+
+ ✔ Preparing 243ms
+ ◯ Waiting for the org to respond - Skipped
+ ⡿ Deploying Metadata 1.60s
+   ▸ Components: 0/52 (0%)
+ ◼ Running Tests
+ ◼ Updating Source Tracking
+ ◼ Done
+
+ Status: In Progress
+ Deploy ID: 0AfSo000002bEndKAE
+ Target Org: olga.rybak@atocomm2023.eu
+ Elapsed Time: 1.86s
+
+[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[G
+ ───────────── Validating Deployment ─────────────
+
+
+ ✔ Preparing 243ms
+ ◯ Waiting for the org to respond - Skipped
+ ⡿ Deploying Metadata 1.64s
+   ▸ Components: 0/52 (0%)
+ ◼ Running Tests
+ ◼ Updating Source Tracking
+ ◼ Done
+
+ Status: In Progress
+ Deploy ID: 0AfSo000002bEndKAE
+ Target Org: olga.rybak@atocomm2023.eu
+ Elapsed Time: 1.89s
+
+[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[G
+ ───────────── Validating Deployment ─────────────
+
+
+ ✔ Preparing 243ms
+ ◯ Waiting for the org to respond - Skipped
+ ⡿ Deploying Metadata 1.67s
+   ▸ Components: 0/52 (0%)
+ ◼ Running Tests
+ ◼ Updating Source Tracking
+ ◼ Done
+
+ Status: In Progress
+ Deploy ID: 0AfSo000002bEndKAE
+ Target Org: olga.rybak@atocomm2023.eu
+ Elapsed Time: 1.93s
+
+[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[G
+ ───────────── Validating Deployment ─────────────
+
+
+ ✔ Preparing 243ms
+ ◯ Waiting for the org to respond - Skipped
+ ⣟ Deploying Metadata 1.70s
+   ▸ Components: 0/52 (0%)
+ ◼ Running Tests
+ ◼ Updating Source Tracking
+ ◼ Done
+
+ Status: In Progress
+ Deploy ID: 0AfSo000002bEndKAE
+ Target Org: olga.rybak@atocomm2023.eu
+ Elapsed Time: 1.96s
+
+[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[G
+ ───────────── Validating Deployment ─────────────
+
+
+ ✔ Preparing 243ms
+ ◯ Waiting for the org to respond - Skipped
+ ⣟ Deploying Metadata 1.73s
+   ▸ Components: 0/52 (0%)
+ ◼ Running Tests
+ ◼ Updating Source Tracking
+ ◼ Done
+
+ Status: In Progress
+ Deploy ID: 0AfSo000002bEndKAE
+ Target Org: olga.rybak@atocomm2023.eu
+ Elapsed Time: 1.99s
+
+[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[G
+ ───────────── Validating Deployment ─────────────
+
+
+ ✔ Preparing 243ms
+ ◯ Waiting for the org to respond - Skipped
+ ⣯ Deploying Metadata 1.77s
+   ▸ Components: 0/52 (0%)
+ ◼ Running Tests
+ ◼ Updating Source Tracking
+ ◼ Done
+
+ Status: In Progress
+ Deploy ID: 0AfSo000002bEndKAE
+ Target Org: olga.rybak@atocomm2023.eu
+ Elapsed Time: 2.02s
+
+[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[G
+ ───────────── Validating Deployment ─────────────
+
+
+ ✔ Preparing 243ms
+ ◯ Waiting for the org to respond - Skipped
+ ⣯ Deploying Metadata 1.80s
+   ▸ Components: 0/52 (0%)
+ ◼ Running Tests
+ ◼ Updating Source Tracking
+ ◼ Done
+
+ Status: In Progress
+ Deploy ID: 0AfSo000002bEndKAE
+ Target Org: olga.rybak@atocomm2023.eu
+ Elapsed Time: 2.06s
+
+[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[G
+ ───────────── Validating Deployment ─────────────
+
+
+ ✔ Preparing 243ms
+ ◯ Waiting for the org to respond - Skipped
+ ⣯ Deploying Metadata 1.83s
+   ▸ Components: 0/52 (0%)
+ ◼ Running Tests
+ ◼ Updating Source Tracking
+ ◼ Done
+
+ Status: In Progress
+ Deploy ID: 0AfSo000002bEndKAE
+ Target Org: olga.rybak@atocomm2023.eu
+ Elapsed Time: 2.09s
+
+[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[G
+ ───────────── Validating Deployment ─────────────
+
+
+ ✔ Preparing 243ms
+ ◯ Waiting for the org to respond - Skipped
+ ⣷ Deploying Metadata 1.86s
+   ▸ Components: 0/52 (0%)
+ ◼ Running Tests
+ ◼ Updating Source Tracking
+ ◼ Done
+
+ Status: In Progress
+ Deploy ID: 0AfSo000002bEndKAE
+ Target Org: olga.rybak@atocomm2023.eu
+ Elapsed Time: 2.12s
+
+[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[G
+ ───────────── Validating Deployment ─────────────
+
+
+ ✔ Preparing 243ms
+ ◯ Waiting for the org to respond - Skipped
+ ⣷ Deploying Metadata 1.89s
+   ▸ Components: 0/52 (0%)
+ ◼ Running Tests
+ ◼ Updating Source Tracking
+ ◼ Done
+
+ Status: In Progress
+ Deploy ID: 0AfSo000002bEndKAE
+ Target Org: olga.rybak@atocomm2023.eu
+ Elapsed Time: 2.15s
+
+[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[G
+ ───────────── Validating Deployment ─────────────
+
+
+ ✔ Preparing 243ms
+ ◯ Waiting for the org to respond - Skipped
+ ⣾ Deploying Metadata 1.93s
+   ▸ Components: 0/52 (0%)
+ ◼ Running Tests
+ ◼ Updating Source Tracking
+ ◼ Done
+
+ Status: In Progress
+ Deploy ID: 0AfSo000002bEndKAE
+ Target Org: olga.rybak@atocomm2023.eu
+ Elapsed Time: 2.19s
+
+[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[G
+ ───────────── Validating Deployment ─────────────
+
+
+ ✔ Preparing 243ms
+ ◯ Waiting for the org to respond - Skipped
+ ⣾ Deploying Metadata 1.96s
+   ▸ Components: 0/52 (0%)
+ ◼ Running Tests
+ ◼ Updating Source Tracking
+ ◼ Done
+
+ Status: In Progress
+ Deploy ID: 0AfSo000002bEndKAE
+ Target Org: olga.rybak@atocomm2023.eu
+ Elapsed Time: 2.22s
+
+[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[G
+ ───────────── Validating Deployment ─────────────
+
+
+ ✔ Preparing 243ms
+ ◯ Waiting for the org to respond - Skipped
+ ⣾ Deploying Metadata 1.99s
+   ▸ Components: 0/52 (0%)
+ ◼ Running Tests
+ ◼ Updating Source Tracking
+ ◼ Done
+
+ Status: In Progress
+ Deploy ID: 0AfSo000002bEndKAE
+ Target Org: olga.rybak@atocomm2023.eu
+ Elapsed Time: 2.25s
+
+[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[G
+ ───────────── Validating Deployment ─────────────
+
+
+ ✔ Preparing 243ms
+ ◯ Waiting for the org to respond - Skipped
+ ⣽ Deploying Metadata 2.02s
+   ▸ Components: 0/52 (0%)
+ ◼ Running Tests
+ ◼ Updating Source Tracking
+ ◼ Done
+
+ Status: In Progress
+ Deploy ID: 0AfSo000002bEndKAE
+ Target Org: olga.rybak@atocomm2023.eu
+ Elapsed Time: 2.28s
+
+[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[G
+ ───────────── Validating Deployment ─────────────
+
+
+ ✔ Preparing 243ms
+ ◯ Waiting for the org to respond - Skipped
+ ⣽ Deploying Metadata 2.05s
+   ▸ Components: 0/52 (0%)
+ ◼ Running Tests
+ ◼ Updating Source Tracking
+ ◼ Done
+
+ Status: In Progress
+ Deploy ID: 0AfSo000002bEndKAE
+ Target Org: olga.rybak@atocomm2023.eu
+ Elapsed Time: 2.31s
+
+[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[G
+ ───────────── Validating Deployment ─────────────
+
+
+ ✔ Preparing 243ms
+ ◯ Waiting for the org to respond - Skipped
+ ⣻ Deploying Metadata 2.09s
+   ▸ Components: 0/52 (0%)
+ ◼ Running Tests
+ ◼ Updating Source Tracking
+ ◼ Done
+
+ Status: In Progress
+ Deploy ID: 0AfSo000002bEndKAE
+ Target Org: olga.rybak@atocomm2023.eu
+ Elapsed Time: 2.35s
+
+[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[G
+ ───────────── Validating Deployment ─────────────
+
+
+ ✔ Preparing 243ms
+ ◯ Waiting for the org to respond - Skipped
+ ⣻ Deploying Metadata 2.12s
+   ▸ Components: 0/52 (0%)
+ ◼ Running Tests
+ ◼ Updating Source Tracking
+ ◼ Done
+
+ Status: In Progress
+ Deploy ID: 0AfSo000002bEndKAE
+ Target Org: olga.rybak@atocomm2023.eu
+ Elapsed Time: 2.38s
+
+[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[G
+ ───────────── Validating Deployment ─────────────
+
+
+ ✔ Preparing 243ms
+ ◯ Waiting for the org to respond - Skipped
+ ⣻ Deploying Metadata 2.15s
+   ▸ Components: 0/52 (0%)
+ ◼ Running Tests
+ ◼ Updating Source Tracking
+ ◼ Done
+
+ Status: In Progress
+ Deploy ID: 0AfSo000002bEndKAE
+ Target Org: olga.rybak@atocomm2023.eu
+ Elapsed Time: 2.41s
+
+[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[G
+ ───────────── Validating Deployment ─────────────
+
+
+ ✔ Preparing 243ms
+ ◯ Waiting for the org to respond - Skipped
+ ⢿ Deploying Metadata 2.18s
+   ▸ Components: 0/52 (0%)
+ ◼ Running Tests
+ ◼ Updating Source Tracking
+ ◼ Done
+
+ Status: In Progress
+ Deploy ID: 0AfSo000002bEndKAE
+ Target Org: olga.rybak@atocomm2023.eu
+ Elapsed Time: 2.44s
+
+[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[G
+ ───────────── Validating Deployment ─────────────
+
+
+ ✔ Preparing 243ms
+ ◯ Waiting for the org to respond - Skipped
+ ⢿ Deploying Metadata 2.22s
+   ▸ Components: 0/52 (0%)
+ ◼ Running Tests
+ ◼ Updating Source Tracking
+ ◼ Done
+
+ Status: In Progress
+ Deploy ID: 0AfSo000002bEndKAE
+ Target Org: olga.rybak@atocomm2023.eu
+ Elapsed Time: 2.48s
+
+[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[G
+ ───────────── Validating Deployment ─────────────
+
+
+ ✔ Preparing 243ms
+ ◯ Waiting for the org to respond - Skipped
+ ⡿ Deploying Metadata 2.25s
+   ▸ Components: 0/52 (0%)
+ ◼ Running Tests
+ ◼ Updating Source Tracking
+ ◼ Done
+
+ Status: In Progress
+ Deploy ID: 0AfSo000002bEndKAE
+ Target Org: olga.rybak@atocomm2023.eu
+ Elapsed Time: 2.51s
+
+[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[G
+ ───────────── Validating Deployment ─────────────
+
+
+ ✔ Preparing 243ms
+ ◯ Waiting for the org to respond - Skipped
+ ⡿ Deploying Metadata 2.28s
+   ▸ Components: 0/52 (0%)
+ ◼ Running Tests
+ ◼ Updating Source Tracking
+ ◼ Done
+
+ Status: In Progress
+ Deploy ID: 0AfSo000002bEndKAE
+ Target Org: olga.rybak@atocomm2023.eu
+ Elapsed Time: 2.54s
+
+[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[G
+ ───────────── Validating Deployment ─────────────
+
+
+ ✔ Preparing 243ms
+ ◯ Waiting for the org to respond - Skipped
+ ⡿ Deploying Metadata 2.31s
+   ▸ Components: 0/52 (0%)
+ ◼ Running Tests
+ ◼ Updating Source Tracking
+ ◼ Done
+
+ Status: In Progress
+ Deploy ID: 0AfSo000002bEndKAE
+ Target Org: olga.rybak@atocomm2023.eu
+ Elapsed Time: 2.57s
+
+[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[G
+ ───────────── Validating Deployment ─────────────
+
+
+ ✔ Preparing 243ms
+ ◯ Waiting for the org to respond - Skipped
+ ⣟ Deploying Metadata 2.35s
+   ▸ Components: 0/52 (0%)
+ ◼ Running Tests
+ ◼ Updating Source Tracking
+ ◼ Done
+
+ Status: In Progress
+ Deploy ID: 0AfSo000002bEndKAE
+ Target Org: olga.rybak@atocomm2023.eu
+ Elapsed Time: 2.60s
+
+[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[G
+ ───────────── Validating Deployment ─────────────
+
+
+ ✔ Preparing 243ms
+ ◯ Waiting for the org to respond - Skipped
+ ⣟ Deploying Metadata 2.38s
+   ▸ Components: 0/52 (0%)
+ ◼ Running Tests
+ ◼ Updating Source Tracking
+ ◼ Done
+
+ Status: In Progress
+ Deploy ID: 0AfSo000002bEndKAE
+ Target Org: olga.rybak@atocomm2023.eu
+ Elapsed Time: 2.64s
+
+[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[G
+ ───────────── Validating Deployment ─────────────
+
+
+ ✔ Preparing 243ms
+ ◯ Waiting for the org to respond - Skipped
+ ⣯ Deploying Metadata 2.41s
+   ▸ Components: 0/52 (0%)
+ ◼ Running Tests
+ ◼ Updating Source Tracking
+ ◼ Done
+
+ Status: In Progress
+ Deploy ID: 0AfSo000002bEndKAE
+ Target Org: olga.rybak@atocomm2023.eu
+ Elapsed Time: 2.67s
+
+[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[G
+ ───────────── Validating Deployment ─────────────
+
+
+ ✔ Preparing 243ms
+ ◯ Waiting for the org to respond - Skipped
+ ⣯ Deploying Metadata 2.44s
+   ▸ Components: 0/52 (0%)
+ ◼ Running Tests
+ ◼ Updating Source Tracking
+ ◼ Done
+
+ Status: In Progress
+ Deploy ID: 0AfSo000002bEndKAE
+ Target Org: olga.rybak@atocomm2023.eu
+ Elapsed Time: 2.70s
+
+[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[G
+ ───────────── Validating Deployment ─────────────
+
+
+ ✔ Preparing 243ms
+ ◯ Waiting for the org to respond - Skipped
+ ⣯ Deploying Metadata 2.47s
+   ▸ Components: 0/52 (0%)
+ ◼ Running Tests
+ ◼ Updating Source Tracking
+ ◼ Done
+
+ Status: In Progress
+ Deploy ID: 0AfSo000002bEndKAE
+ Target Org: olga.rybak@atocomm2023.eu
+ Elapsed Time: 2.73s
+
+[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[G
+ ───────────── Validating Deployment ─────────────
+
+
+ ✔ Preparing 243ms
+ ◯ Waiting for the org to respond - Skipped
+ ⣷ Deploying Metadata 2.51s
+   ▸ Components: 0/52 (0%)
+ ◼ Running Tests
+ ◼ Updating Source Tracking
+ ◼ Done
+
+ Status: In Progress
+ Deploy ID: 0AfSo000002bEndKAE
+ Target Org: olga.rybak@atocomm2023.eu
+ Elapsed Time: 2.76s
+
+[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[G
+ ───────────── Validating Deployment ─────────────
+
+
+ ✔ Preparing 243ms
+ ◯ Waiting for the org to respond - Skipped
+ ⣷ Deploying Metadata 2.54s
+   ▸ Components: 0/52 (0%)
+ ◼ Running Tests
+ ◼ Updating Source Tracking
+ ◼ Done
+
+ Status: In Progress
+ Deploy ID: 0AfSo000002bEndKAE
+ Target Org: olga.rybak@atocomm2023.eu
+ Elapsed Time: 2.80s
+
+[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[G
+ ───────────── Validating Deployment ─────────────
+
+
+ ✔ Preparing 243ms
+ ◯ Waiting for the org to respond - Skipped
+ ⣾ Deploying Metadata 2.57s
+   ▸ Components: 0/52 (0%)
+ ◼ Running Tests
+ ◼ Updating Source Tracking
+ ◼ Done
+
+ Status: In Progress
+ Deploy ID: 0AfSo000002bEndKAE
+ Target Org: olga.rybak@atocomm2023.eu
+ Elapsed Time: 2.83s
+
+[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[G
+ ───────────── Validating Deployment ─────────────
+
+
+ ✔ Preparing 243ms
+ ◯ Waiting for the org to respond - Skipped
+ ⣾ Deploying Metadata 2.60s
+   ▸ Components: 0/52 (0%)
+ ◼ Running Tests
+ ◼ Updating Source Tracking
+ ◼ Done
+
+ Status: In Progress
+ Deploy ID: 0AfSo000002bEndKAE
+ Target Org: olga.rybak@atocomm2023.eu
+ Elapsed Time: 2.86s
+
+[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[G
+ ───────────── Validating Deployment ─────────────
+
+
+ ✔ Preparing 243ms
+ ◯ Waiting for the org to respond - Skipped
+ ⣾ Deploying Metadata 2.64s
+   ▸ Components: 0/52 (0%)
+ ◼ Running Tests
+ ◼ Updating Source Tracking
+ ◼ Done
+
+ Status: In Progress
+ Deploy ID: 0AfSo000002bEndKAE
+ Target Org: olga.rybak@atocomm2023.eu
+ Elapsed Time: 2.89s
+
+[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[G
+ ───────────── Validating Deployment ─────────────
+
+
+ ✔ Preparing 243ms
+ ◯ Waiting for the org to respond - Skipped
+ ⣽ Deploying Metadata 2.67s
+   ▸ Components: 0/52 (0%)
+ ◼ Running Tests
+ ◼ Updating Source Tracking
+ ◼ Done
+
+ Status: In Progress
+ Deploy ID: 0AfSo000002bEndKAE
+ Target Org: olga.rybak@atocomm2023.eu
+ Elapsed Time: 2.93s
+
+[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[G
+ ───────────── Validating Deployment ─────────────
+
+
+ ✔ Preparing 243ms
+ ◯ Waiting for the org to respond - Skipped
+ ⣽ Deploying Metadata 2.70s
+   ▸ Components: 0/52 (0%)
+ ◼ Running Tests
+ ◼ Updating Source Tracking
+ ◼ Done
+
+ Status: In Progress
+ Deploy ID: 0AfSo000002bEndKAE
+ Target Org: olga.rybak@atocomm2023.eu
+ Elapsed Time: 2.96s
+
+[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[G
+ ───────────── Validating Deployment ─────────────
+
+
+ ✔ Preparing 243ms
+ ◯ Waiting for the org to respond - Skipped
+ ⣻ Deploying Metadata 2.73s
+   ▸ Components: 0/52 (0%)
+ ◼ Running Tests
+ ◼ Updating Source Tracking
+ ◼ Done
+
+ Status: In Progress
+ Deploy ID: 0AfSo000002bEndKAE
+ Target Org: olga.rybak@atocomm2023.eu
+ Elapsed Time: 2.99s
+
+[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[G
+ ───────────── Validating Deployment ─────────────
+
+
+ ✔ Preparing 243ms
+ ◯ Waiting for the org to respond - Skipped
+ ⣻ Deploying Metadata 2.76s
+   ▸ Components: 0/52 (0%)
+ ◼ Running Tests
+ ◼ Updating Source Tracking
+ ◼ Done
+
+ Status: In Progress
+ Deploy ID: 0AfSo000002bEndKAE
+ Target Org: olga.rybak@atocomm2023.eu
+ Elapsed Time: 3.02s
+
+[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[G
+ ───────────── Validating Deployment ─────────────
+
+
+ ✔ Preparing 243ms
+ ◯ Waiting for the org to respond - Skipped
+ ⣻ Deploying Metadata 2.80s
+   ▸ Components: 0/52 (0%)
+ ◼ Running Tests
+ ◼ Updating Source Tracking
+ ◼ Done
+
+ Status: In Progress
+ Deploy ID: 0AfSo000002bEndKAE
+ Target Org: olga.rybak@atocomm2023.eu
+ Elapsed Time: 3.05s
+
+[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[G
+ ───────────── Validating Deployment ─────────────
+
+
+ ✔ Preparing 243ms
+ ◯ Waiting for the org to respond - Skipped
+ ⢿ Deploying Metadata 2.83s
+   ▸ Components: 0/52 (0%)
+ ◼ Running Tests
+ ◼ Updating Source Tracking
+ ◼ Done
+
+ Status: In Progress
+ Deploy ID: 0AfSo000002bEndKAE
+ Target Org: olga.rybak@atocomm2023.eu
+ Elapsed Time: 3.09s
+
+[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[G
+ ───────────── Validating Deployment ─────────────
+
+
+ ✔ Preparing 243ms
+ ◯ Waiting for the org to respond - Skipped
+ ⢿ Deploying Metadata 2.86s
+   ▸ Components: 0/52 (0%)
+ ◼ Running Tests
+ ◼ Updating Source Tracking
+ ◼ Done
+
+ Status: In Progress
+ Deploy ID: 0AfSo000002bEndKAE
+ Target Org: olga.rybak@atocomm2023.eu
+ Elapsed Time: 3.12s
+
+[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[G
+ ───────────── Validating Deployment ─────────────
+
+
+ ✔ Preparing 243ms
+ ◯ Waiting for the org to respond - Skipped
+ ⡿ Deploying Metadata 2.89s
+   ▸ Components: 0/52 (0%)
+ ◼ Running Tests
+ ◼ Updating Source Tracking
+ ◼ Done
+
+ Status: In Progress
+ Deploy ID: 0AfSo000002bEndKAE
+ Target Org: olga.rybak@atocomm2023.eu
+ Elapsed Time: 3.15s
+
+[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[G
+ ───────────── Validating Deployment ─────────────
+
+
+ ✔ Preparing 243ms
+ ◯ Waiting for the org to respond - Skipped
+ ⡿ Deploying Metadata 2.92s
+   ▸ Components: 0/52 (0%)
+ ◼ Running Tests
+ ◼ Updating Source Tracking
+ ◼ Done
+
+ Status: In Progress
+ Deploy ID: 0AfSo000002bEndKAE
+ Target Org: olga.rybak@atocomm2023.eu
+ Elapsed Time: 3.18s
+
+[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[G
+ ───────────── Validating Deployment ─────────────
+
+
+ ✔ Preparing 243ms
+ ◯ Waiting for the org to respond - Skipped
+ ⡿ Deploying Metadata 2.96s
+   ▸ Components: 0/52 (0%)
+ ◼ Running Tests
+ ◼ Updating Source Tracking
+ ◼ Done
+
+ Status: In Progress
+ Deploy ID: 0AfSo000002bEndKAE
+ Target Org: olga.rybak@atocomm2023.eu
+ Elapsed Time: 3.21s
+
+[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[G
+ ───────────── Validating Deployment ─────────────
+
+
+ ✔ Preparing 243ms
+ ◯ Waiting for the org to respond - Skipped
+ ⣟ Deploying Metadata 2.99s
+   ▸ Components: 0/52 (0%)
+ ◼ Running Tests
+ ◼ Updating Source Tracking
+ ◼ Done
+
+ Status: In Progress
+ Deploy ID: 0AfSo000002bEndKAE
+ Target Org: olga.rybak@atocomm2023.eu
+ Elapsed Time: 3.25s
+
+[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[G
+ ───────────── Validating Deployment ─────────────
+
+
+ ✔ Preparing 243ms
+ ◯ Waiting for the org to respond - Skipped
+ ⣟ Deploying Metadata 3.02s
+   ▸ Components: 9/52 (17%)
+ ◼ Running Tests
+ ◼ Updating Source Tracking
+ ◼ Done
+
+ Status: In Progress
+ Deploy ID: 0AfSo000002bEndKAE
+ Target Org: olga.rybak@atocomm2023.eu
+ Elapsed Time: 3.28s
+
+[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[G
+ ───────────── Validating Deployment ─────────────
+
+
+ ✔ Preparing 243ms
+ ◯ Waiting for the org to respond - Skipped
+ ⣯ Deploying Metadata 3.05s
+   ▸ Components: 9/52 (17%)
+ ◼ Running Tests
+ ◼ Updating Source Tracking
+ ◼ Done
+
+ Status: In Progress
+ Deploy ID: 0AfSo000002bEndKAE
+ Target Org: olga.rybak@atocomm2023.eu
+ Elapsed Time: 3.31s
+
+[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[G
+ ───────────── Validating Deployment ─────────────
+
+
+ ✔ Preparing 243ms
+ ◯ Waiting for the org to respond - Skipped
+ ⣯ Deploying Metadata 3.08s
+   ▸ Components: 9/52 (17%)
+ ◼ Running Tests
+ ◼ Updating Source Tracking
+ ◼ Done
+
+ Status: In Progress
+ Deploy ID: 0AfSo000002bEndKAE
+ Target Org: olga.rybak@atocomm2023.eu
+ Elapsed Time: 3.34s
+
+[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[G
+ ───────────── Validating Deployment ─────────────
+
+
+ ✔ Preparing 243ms
+ ◯ Waiting for the org to respond - Skipped
+ ⣯ Deploying Metadata 3.12s
+   ▸ Components: 9/52 (17%)
+ ◼ Running Tests
+ ◼ Updating Source Tracking
+ ◼ Done
+
+ Status: In Progress
+ Deploy ID: 0AfSo000002bEndKAE
+ Target Org: olga.rybak@atocomm2023.eu
+ Elapsed Time: 3.37s
+
+[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[G
+ ───────────── Validating Deployment ─────────────
+
+
+ ✔ Preparing 243ms
+ ◯ Waiting for the org to respond - Skipped
+ ⣷ Deploying Metadata 3.15s
+   ▸ Components: 9/52 (17%)
+ ◼ Running Tests
+ ◼ Updating Source Tracking
+ ◼ Done
+
+ Status: In Progress
+ Deploy ID: 0AfSo000002bEndKAE
+ Target Org: olga.rybak@atocomm2023.eu
+ Elapsed Time: 3.41s
+
+[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[G
+ ───────────── Validating Deployment ─────────────
+
+
+ ✔ Preparing 243ms
+ ◯ Waiting for the org to respond - Skipped
+ ⣷ Deploying Metadata 3.18s
+   ▸ Components: 9/52 (17%)
+ ◼ Running Tests
+ ◼ Updating Source Tracking
+ ◼ Done
+
+ Status: In Progress
+ Deploy ID: 0AfSo000002bEndKAE
+ Target Org: olga.rybak@atocomm2023.eu
+ Elapsed Time: 3.44s
+
+[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[G
+ ───────────── Validating Deployment ─────────────
+
+
+ ✔ Preparing 243ms
+ ◯ Waiting for the org to respond - Skipped
+ ⣾ Deploying Metadata 3.21s
+   ▸ Components: 9/52 (17%)
+ ◼ Running Tests
+ ◼ Updating Source Tracking
+ ◼ Done
+
+ Status: In Progress
+ Deploy ID: 0AfSo000002bEndKAE
+ Target Org: olga.rybak@atocomm2023.eu
+ Elapsed Time: 3.47s
+
+[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[G
+ ───────────── Validating Deployment ─────────────
+
+
+ ✔ Preparing 243ms
+ ◯ Waiting for the org to respond - Skipped
+ ⣾ Deploying Metadata 3.24s
+   ▸ Components: 9/52 (17%)
+ ◼ Running Tests
+ ◼ Updating Source Tracking
+ ◼ Done
+
+ Status: In Progress
+ Deploy ID: 0AfSo000002bEndKAE
+ Target Org: olga.rybak@atocomm2023.eu
+ Elapsed Time: 3.50s
+
+[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[G
+ ───────────── Validating Deployment ─────────────
+
+
+ ✔ Preparing 243ms
+ ◯ Waiting for the org to respond - Skipped
+ ⣾ Deploying Metadata 3.28s
+   ▸ Components: 9/52 (17%)
+ ◼ Running Tests
+ ◼ Updating Source Tracking
+ ◼ Done
+
+ Status: In Progress
+ Deploy ID: 0AfSo000002bEndKAE
+ Target Org: olga.rybak@atocomm2023.eu
+ Elapsed Time: 3.53s
+
+[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[G
+ ───────────── Validating Deployment ─────────────
+
+
+ ✔ Preparing 243ms
+ ◯ Waiting for the org to respond - Skipped
+ ⣽ Deploying Metadata 3.31s
+   ▸ Components: 9/52 (17%)
+ ◼ Running Tests
+ ◼ Updating Source Tracking
+ ◼ Done
+
+ Status: In Progress
+ Deploy ID: 0AfSo000002bEndKAE
+ Target Org: olga.rybak@atocomm2023.eu
+ Elapsed Time: 3.57s
+
+[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[G
+ ───────────── Validating Deployment ─────────────
+
+
+ ✔ Preparing 243ms
+ ◯ Waiting for the org to respond - Skipped
+ ⣽ Deploying Metadata 3.34s
+   ▸ Components: 9/52 (17%)
+ ◼ Running Tests
+ ◼ Updating Source Tracking
+ ◼ Done
+
+ Status: In Progress
+ Deploy ID: 0AfSo000002bEndKAE
+ Target Org: olga.rybak@atocomm2023.eu
+ Elapsed Time: 3.60s
+
+[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[G
+ ───────────── Validating Deployment ─────────────
+
+
+ ✔ Preparing 243ms
+ ◯ Waiting for the org to respond - Skipped
+ ⣻ Deploying Metadata 3.37s
+   ▸ Components: 9/52 (17%)
+ ◼ Running Tests
+ ◼ Updating Source Tracking
+ ◼ Done
+
+ Status: In Progress
+ Deploy ID: 0AfSo000002bEndKAE
+ Target Org: olga.rybak@atocomm2023.eu
+ Elapsed Time: 3.63s
+
+[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[G
+ ───────────── Validating Deployment ─────────────
+
+
+ ✔ Preparing 243ms
+ ◯ Waiting for the org to respond - Skipped
+ ⣻ Deploying Metadata 3.41s
+   ▸ Components: 9/52 (17%)
+ ◼ Running Tests
+ ◼ Updating Source Tracking
+ ◼ Done
+
+ Status: In Progress
+ Deploy ID: 0AfSo000002bEndKAE
+ Target Org: olga.rybak@atocomm2023.eu
+ Elapsed Time: 3.66s
+
+[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[G
+ ───────────── Validating Deployment ─────────────
+
+
+ ✔ Preparing 243ms
+ ◯ Waiting for the org to respond - Skipped
+ ⣻ Deploying Metadata 3.44s
+   ▸ Components: 9/52 (17%)
+ ◼ Running Tests
+ ◼ Updating Source Tracking
+ ◼ Done
+
+ Status: In Progress
+ Deploy ID: 0AfSo000002bEndKAE
+ Target Org: olga.rybak@atocomm2023.eu
+ Elapsed Time: 3.70s
+
+[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[G
+ ───────────── Validating Deployment ─────────────
+
+
+ ✔ Preparing 243ms
+ ◯ Waiting for the org to respond - Skipped
+ ⢿ Deploying Metadata 3.47s
+   ▸ Components: 9/52 (17%)
+ ◼ Running Tests
+ ◼ Updating Source Tracking
+ ◼ Done
+
+ Status: In Progress
+ Deploy ID: 0AfSo000002bEndKAE
+ Target Org: olga.rybak@atocomm2023.eu
+ Elapsed Time: 3.73s
+
+[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[G
+ ───────────── Validating Deployment ─────────────
+
+
+ ✔ Preparing 243ms
+ ◯ Waiting for the org to respond - Skipped
+ ⢿ Deploying Metadata 3.50s
+   ▸ Components: 9/52 (17%)
+ ◼ Running Tests
+ ◼ Updating Source Tracking
+ ◼ Done
+
+ Status: In Progress
+ Deploy ID: 0AfSo000002bEndKAE
+ Target Org: olga.rybak@atocomm2023.eu
+ Elapsed Time: 3.76s
+
+[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[G
+ ───────────── Validating Deployment ─────────────
+
+
+ ✔ Preparing 243ms
+ ◯ Waiting for the org to respond - Skipped
+ ⡿ Deploying Metadata 3.53s
+   ▸ Components: 9/52 (17%)
+ ◼ Running Tests
+ ◼ Updating Source Tracking
+ ◼ Done
+
+ Status: In Progress
+ Deploy ID: 0AfSo000002bEndKAE
+ Target Org: olga.rybak@atocomm2023.eu
+ Elapsed Time: 3.79s
+
+[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[G
+ ───────────── Validating Deployment ─────────────
+
+
+ ✔ Preparing 243ms
+ ◯ Waiting for the org to respond - Skipped
+ ⡿ Deploying Metadata 3.57s
+   ▸ Components: 9/52 (17%)
+ ◼ Running Tests
+ ◼ Updating Source Tracking
+ ◼ Done
+
+ Status: In Progress
+ Deploy ID: 0AfSo000002bEndKAE
+ Target Org: olga.rybak@atocomm2023.eu
+ Elapsed Time: 3.83s
+
+[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[G
+ ───────────── Validating Deployment ─────────────
+
+
+ ✔ Preparing 243ms
+ ◯ Waiting for the org to respond - Skipped
+ ⡿ Deploying Metadata 3.60s
+   ▸ Components: 9/52 (17%)
+ ◼ Running Tests
+ ◼ Updating Source Tracking
+ ◼ Done
+
+ Status: In Progress
+ Deploy ID: 0AfSo000002bEndKAE
+ Target Org: olga.rybak@atocomm2023.eu
+ Elapsed Time: 3.86s
+
+[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[G
+ ───────────── Validating Deployment ─────────────
+
+
+ ✔ Preparing 243ms
+ ◯ Waiting for the org to respond - Skipped
+ ⣟ Deploying Metadata 3.63s
+   ▸ Components: 9/52 (17%)
+ ◼ Running Tests
+ ◼ Updating Source Tracking
+ ◼ Done
+
+ Status: In Progress
+ Deploy ID: 0AfSo000002bEndKAE
+ Target Org: olga.rybak@atocomm2023.eu
+ Elapsed Time: 3.89s
+
+[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[G
+ ───────────── Validating Deployment ─────────────
+
+
+ ✔ Preparing 243ms
+ ◯ Waiting for the org to respond - Skipped
+ ⣟ Deploying Metadata 3.66s
+   ▸ Components: 9/52 (17%)
+ ◼ Running Tests
+ ◼ Updating Source Tracking
+ ◼ Done
+
+ Status: In Progress
+ Deploy ID: 0AfSo000002bEndKAE
+ Target Org: olga.rybak@atocomm2023.eu
+ Elapsed Time: 3.92s
+
+[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[G
+ ───────────── Validating Deployment ─────────────
+
+
+ ✔ Preparing 243ms
+ ◯ Waiting for the org to respond - Skipped
+ ⣯ Deploying Metadata 3.70s
+   ▸ Components: 9/52 (17%)
+ ◼ Running Tests
+ ◼ Updating Source Tracking
+ ◼ Done
+
+ Status: In Progress
+ Deploy ID: 0AfSo000002bEndKAE
+ Target Org: olga.rybak@atocomm2023.eu
+ Elapsed Time: 3.95s
+
+[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[G
+ ───────────── Validating Deployment ─────────────
+
+
+ ✔ Preparing 243ms
+ ◯ Waiting for the org to respond - Skipped
+ ⣯ Deploying Metadata 3.73s
+   ▸ Components: 9/52 (17%)
+ ◼ Running Tests
+ ◼ Updating Source Tracking
+ ◼ Done
+
+ Status: In Progress
+ Deploy ID: 0AfSo000002bEndKAE
+ Target Org: olga.rybak@atocomm2023.eu
+ Elapsed Time: 3.99s
+
+[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[G
+ ───────────── Validating Deployment ─────────────
+
+
+ ✔ Preparing 243ms
+ ◯ Waiting for the org to respond - Skipped
+ ⣯ Deploying Metadata 3.76s
+   ▸ Components: 9/52 (17%)
+ ◼ Running Tests
+ ◼ Updating Source Tracking
+ ◼ Done
+
+ Status: In Progress
+ Deploy ID: 0AfSo000002bEndKAE
+ Target Org: olga.rybak@atocomm2023.eu
+ Elapsed Time: 4.02s
+
+[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[G
+ ───────────── Validating Deployment ─────────────
+
+
+ ✔ Preparing 243ms
+ ◯ Waiting for the org to respond - Skipped
+ ⣷ Deploying Metadata 3.79s
+   ▸ Components: 9/52 (17%)
+ ◼ Running Tests
+ ◼ Updating Source Tracking
+ ◼ Done
+
+ Status: In Progress
+ Deploy ID: 0AfSo000002bEndKAE
+ Target Org: olga.rybak@atocomm2023.eu
+ Elapsed Time: 4.05s
+
+[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[G
+ ───────────── Validating Deployment ─────────────
+
+
+ ✔ Preparing 243ms
+ ◯ Waiting for the org to respond - Skipped
+ ⣷ Deploying Metadata 3.82s
+   ▸ Components: 9/52 (17%)
+ ◼ Running Tests
+ ◼ Updating Source Tracking
+ ◼ Done
+
+ Status: In Progress
+ Deploy ID: 0AfSo000002bEndKAE
+ Target Org: olga.rybak@atocomm2023.eu
+ Elapsed Time: 4.08s
+
+[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[G
+ ───────────── Validating Deployment ─────────────
+
+
+ ✔ Preparing 243ms
+ ◯ Waiting for the org to respond - Skipped
+ ⣾ Deploying Metadata 3.86s
+   ▸ Components: 9/52 (17%)
+ ◼ Running Tests
+ ◼ Updating Source Tracking
+ ◼ Done
+
+ Status: In Progress
+ Deploy ID: 0AfSo000002bEndKAE
+ Target Org: olga.rybak@atocomm2023.eu
+ Elapsed Time: 4.12s
+
+[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[G
+ ───────────── Validating Deployment ─────────────
+
+
+ ✔ Preparing 243ms
+ ◯ Waiting for the org to respond - Skipped
+ ⣾ Deploying Metadata 3.89s
+   ▸ Components: 9/52 (17%)
+ ◼ Running Tests
+ ◼ Updating Source Tracking
+ ◼ Done
+
+ Status: In Progress
+ Deploy ID: 0AfSo000002bEndKAE
+ Target Org: olga.rybak@atocomm2023.eu
+ Elapsed Time: 4.15s
+
+[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[G
+ ───────────── Validating Deployment ─────────────
+
+
+ ✔ Preparing 243ms
+ ◯ Waiting for the org to respond - Skipped
+ ⣾ Deploying Metadata 3.92s
+   ▸ Components: 9/52 (17%)
+ ◼ Running Tests
+ ◼ Updating Source Tracking
+ ◼ Done
+
+ Status: In Progress
+ Deploy ID: 0AfSo000002bEndKAE
+ Target Org: olga.rybak@atocomm2023.eu
+ Elapsed Time: 4.18s
+
+[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[G
+ ───────────── Validating Deployment ─────────────
+
+
+ ✔ Preparing 243ms
+ ◯ Waiting for the org to respond - Skipped
+ ⣽ Deploying Metadata 3.95s
+   ▸ Components: 9/52 (17%)
+ ◼ Running Tests
+ ◼ Updating Source Tracking
+ ◼ Done
+
+ Status: In Progress
+ Deploy ID: 0AfSo000002bEndKAE
+ Target Org: olga.rybak@atocomm2023.eu
+ Elapsed Time: 4.21s
+
+[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[G
+ ───────────── Validating Deployment ─────────────
+
+
+ ✔ Preparing 243ms
+ ◯ Waiting for the org to respond - Skipped
+ ⣽ Deploying Metadata 3.99s
+   ▸ Components: 9/52 (17%)
+ ◼ Running Tests
+ ◼ Updating Source Tracking
+ ◼ Done
+
+ Status: In Progress
+ Deploy ID: 0AfSo000002bEndKAE
+ Target Org: olga.rybak@atocomm2023.eu
+ Elapsed Time: 4.24s
+
+[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[G
+ ───────────── Validating Deployment ─────────────
+
+
+ ✔ Preparing 243ms
+ ◯ Waiting for the org to respond - Skipped
+ ⣻ Deploying Metadata 4.02s
+   ▸ Components: 9/52 (17%)
+ ◼ Running Tests
+ ◼ Updating Source Tracking
+ ◼ Done
+
+ Status: In Progress
+ Deploy ID: 0AfSo000002bEndKAE
+ Target Org: olga.rybak@atocomm2023.eu
+ Elapsed Time: 4.28s
+
+[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[G
+ ───────────── Validating Deployment ─────────────
+
+
+ ✔ Preparing 243ms
+ ◯ Waiting for the org to respond - Skipped
+ ⣻ Deploying Metadata 4.05s
+   ▸ Components: 9/52 (17%)
+ ◼ Running Tests
+ ◼ Updating Source Tracking
+ ◼ Done
+
+ Status: In Progress
+ Deploy ID: 0AfSo000002bEndKAE
+ Target Org: olga.rybak@atocomm2023.eu
+ Elapsed Time: 4.31s
+
+[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[G
+ ───────────── Validating Deployment ─────────────
+
+
+ ✔ Preparing 243ms
+ ◯ Waiting for the org to respond - Skipped
+ ⣻ Deploying Metadata 4.08s
+   ▸ Components: 9/52 (17%)
+ ◼ Running Tests
+ ◼ Updating Source Tracking
+ ◼ Done
+
+ Status: In Progress
+ Deploy ID: 0AfSo000002bEndKAE
+ Target Org: olga.rybak@atocomm2023.eu
+ Elapsed Time: 4.34s
+
+[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[G
+ ───────────── Validating Deployment ─────────────
+
+
+ ✔ Preparing 243ms
+ ◯ Waiting for the org to respond - Skipped
+ ⢿ Deploying Metadata 4.12s
+   ▸ Components: 9/52 (17%)
+ ◼ Running Tests
+ ◼ Updating Source Tracking
+ ◼ Done
+
+ Status: In Progress
+ Deploy ID: 0AfSo000002bEndKAE
+ Target Org: olga.rybak@atocomm2023.eu
+ Elapsed Time: 4.37s
+
+[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[G
+ ───────────── Validating Deployment ─────────────
+
+
+ ✔ Preparing 243ms
+ ◯ Waiting for the org to respond - Skipped
+ ⢿ Deploying Metadata 4.15s
+   ▸ Components: 9/52 (17%)
+ ◼ Running Tests
+ ◼ Updating Source Tracking
+ ◼ Done
+
+ Status: In Progress
+ Deploy ID: 0AfSo000002bEndKAE
+ Target Org: olga.rybak@atocomm2023.eu
+ Elapsed Time: 4.41s
+
+[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[G
+ ───────────── Validating Deployment ─────────────
+
+
+ ✔ Preparing 243ms
+ ◯ Waiting for the org to respond - Skipped
+ ⡿ Deploying Metadata 4.18s
+   ▸ Components: 9/52 (17%)
+ ◼ Running Tests
+ ◼ Updating Source Tracking
+ ◼ Done
+
+ Status: In Progress
+ Deploy ID: 0AfSo000002bEndKAE
+ Target Org: olga.rybak@atocomm2023.eu
+ Elapsed Time: 4.44s
+
+[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[G
+ ───────────── Validating Deployment ─────────────
+
+
+ ✔ Preparing 243ms
+ ◯ Waiting for the org to respond - Skipped
+ ⡿ Deploying Metadata 4.21s
+   ▸ Components: 9/52 (17%)
+ ◼ Running Tests
+ ◼ Updating Source Tracking
+ ◼ Done
+
+ Status: In Progress
+ Deploy ID: 0AfSo000002bEndKAE
+ Target Org: olga.rybak@atocomm2023.eu
+ Elapsed Time: 4.47s
+
+[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[G
+ ───────────── Validating Deployment ─────────────
+
+
+ ✔ Preparing 243ms
+ ◯ Waiting for the org to respond - Skipped
+ ⡿ Deploying Metadata 4.24s
+   ▸ Components: 9/52 (17%)
+ ◼ Running Tests
+ ◼ Updating Source Tracking
+ ◼ Done
+
+ Status: In Progress
+ Deploy ID: 0AfSo000002bEndKAE
+ Target Org: olga.rybak@atocomm2023.eu
+ Elapsed Time: 4.50s
+
+[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[G
+ ───────────── Validating Deployment ─────────────
+
+
+ ✔ Preparing 243ms
+ ◯ Waiting for the org to respond - Skipped
+ ⣟ Deploying Metadata 4.28s
+   ▸ Components: 9/52 (17%)
+ ◼ Running Tests
+ ◼ Updating Source Tracking
+ ◼ Done
+
+ Status: In Progress
+ Deploy ID: 0AfSo000002bEndKAE
+ Target Org: olga.rybak@atocomm2023.eu
+ Elapsed Time: 4.54s
+
+[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[G
+ ───────────── Validating Deployment ─────────────
+
+
+ ✔ Preparing 243ms
+ ◯ Waiting for the org to respond - Skipped
+ ⣟ Deploying Metadata 4.31s
+   ▸ Components: 9/52 (17%)
+ ◼ Running Tests
+ ◼ Updating Source Tracking
+ ◼ Done
+
+ Status: In Progress
+ Deploy ID: 0AfSo000002bEndKAE
+ Target Org: olga.rybak@atocomm2023.eu
+ Elapsed Time: 4.57s
+
+[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[G
+ ───────────── Validating Deployment ─────────────
+
+
+ ✔ Preparing 243ms
+ ◯ Waiting for the org to respond - Skipped
+ ⣯ Deploying Metadata 4.34s
+   ▸ Components: 9/52 (17%)
+ ◼ Running Tests
+ ◼ Updating Source Tracking
+ ◼ Done
+
+ Status: In Progress
+ Deploy ID: 0AfSo000002bEndKAE
+ Target Org: olga.rybak@atocomm2023.eu
+ Elapsed Time: 4.60s
+
+[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[G
+ ───────────── Validating Deployment ─────────────
+
+
+ ✔ Preparing 243ms
+ ◯ Waiting for the org to respond - Skipped
+ ⣯ Deploying Metadata 4.37s
+   ▸ Components: 9/52 (17%)
+ ◼ Running Tests
+ ◼ Updating Source Tracking
+ ◼ Done
+
+ Status: In Progress
+ Deploy ID: 0AfSo000002bEndKAE
+ Target Org: olga.rybak@atocomm2023.eu
+ Elapsed Time: 4.63s
+
+[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[G
+ ───────────── Validating Deployment ─────────────
+
+
+ ✔ Preparing 243ms
+ ◯ Waiting for the org to respond - Skipped
+ ⣯ Deploying Metadata 4.41s
+   ▸ Components: 9/52 (17%)
+ ◼ Running Tests
+ ◼ Updating Source Tracking
+ ◼ Done
+
+ Status: In Progress
+ Deploy ID: 0AfSo000002bEndKAE
+ Target Org: olga.rybak@atocomm2023.eu
+ Elapsed Time: 4.66s
+
+[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[G
+ ───────────── Validating Deployment ─────────────
+
+
+ ✔ Preparing 243ms
+ ◯ Waiting for the org to respond - Skipped
+ ⣷ Deploying Metadata 4.44s
+   ▸ Components: 9/52 (17%)
+ ◼ Running Tests
+ ◼ Updating Source Tracking
+ ◼ Done
+
+ Status: In Progress
+ Deploy ID: 0AfSo000002bEndKAE
+ Target Org: olga.rybak@atocomm2023.eu
+ Elapsed Time: 4.70s
+
+[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[G
+ ───────────── Validating Deployment ─────────────
+
+
+ ✔ Preparing 243ms
+ ◯ Waiting for the org to respond - Skipped
+ ⣷ Deploying Metadata 4.47s
+   ▸ Components: 9/52 (17%)
+ ◼ Running Tests
+ ◼ Updating Source Tracking
+ ◼ Done
+
+ Status: In Progress
+ Deploy ID: 0AfSo000002bEndKAE
+ Target Org: olga.rybak@atocomm2023.eu
+ Elapsed Time: 4.73s
+
+[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[G
+ ───────────── Validating Deployment ─────────────
+
+
+ ✔ Preparing 243ms
+ ◯ Waiting for the org to respond - Skipped
+ ⣾ Deploying Metadata 4.50s
+   ▸ Components: 9/52 (17%)
+ ◼ Running Tests
+ ◼ Updating Source Tracking
+ ◼ Done
+
+ Status: In Progress
+ Deploy ID: 0AfSo000002bEndKAE
+ Target Org: olga.rybak@atocomm2023.eu
+ Elapsed Time: 4.76s
+
+[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[G
+ ───────────── Validating Deployment ─────────────
+
+
+ ✔ Preparing 243ms
+ ◯ Waiting for the org to respond - Skipped
+ ⣾ Deploying Metadata 4.53s
+   ▸ Components: 9/52 (17%)
+ ◼ Running Tests
+ ◼ Updating Source Tracking
+ ◼ Done
+
+ Status: In Progress
+ Deploy ID: 0AfSo000002bEndKAE
+ Target Org: olga.rybak@atocomm2023.eu
+ Elapsed Time: 4.79s
+
+[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[G
+ ───────────── Validating Deployment ─────────────
+
+
+ ✔ Preparing 243ms
+ ◯ Waiting for the org to respond - Skipped
+ ⣾ Deploying Metadata 4.56s
+   ▸ Components: 8/153 (5%)
+ ◼ Running Tests
+ ◼ Updating Source Tracking
+ ◼ Done
+
+ Status: Failed
+ Deploy ID: 0AfSo000002bEndKAE
+ Target Org: olga.rybak@atocomm2023.eu
+ Elapsed Time: 4.82s
+
+[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[G
+ ───────────── Validating Deployment ─────────────
+
+
+ ✔ Preparing 243ms
+ ◯ Waiting for the org to respond - Skipped
+ ✘ Deploying Metadata 4.56s
+   ▸ Components: 8/153 (5%)
+ ◼ Running Tests
+ ◼ Updating Source Tracking
+ ◼ Done
+
+ Status: Failed
+ Deploy ID: 0AfSo000002bEndKAE
+ Target Org: olga.rybak@atocomm2023.eu
+ Elapsed Time: 4.82s
+
+
+[1m[31mComponent Failures [145][39m[22m
+┌──────────────┬───────────────────────────────────┬────────────────────────────────────────────────────────────────────────────────────────────────┬─────────────┐
+│ Type         │ Name                              │ Problem                                                                                        │ Line:Column │
+├──────────────┼───────────────────────────────────┼────────────────────────────────────────────────────────────────────────────────────────────────┼─────────────┤
+│ ApexTrigger  │ OpportunityInvoiceTrigger         │ Variable does not exist: SFInvoiceCreator (31:9)                                               │ 31:9        │
+│ ApexTrigger  │ OpportunityQuickBooksTrigger      │ Invalid type: QBInvoiceIntegrationQueueable (69:27)                                            │ 69:27       │
+│ ApexClass    │ QBInvoiceIntegrationQueueable     │ Method does not exist or incorrect signature: void substring(Integer) from the type Id (31:86) │ 31:86       │
+│ ApexClass    │ QBInvoiceIntegrationQueueable     │ Invalid type: QB_Integration_Log__c (155:13)                                                   │ 155:13      │
+│ ApexClass    │ QBInvoiceIntegrationQueueable     │ DML requires SObject or SObject list type: QB_Integration_Log__c (162:13)                      │ 162:13      │
+│ ApexClass    │ QBInvoiceIntegrationQueueable     │ Invalid type: QB_Integration_Error_Log__c (175:13)                                             │ 175:13      │
+│ ApexClass    │ QBInvoiceIntegrationQueueable     │ DML requires SObject or SObject list type: QB_Integration_Error_Log__c (181:13)                │ 181:13      │
+│ ApexClass    │ QBInvoiceIntegrationQueueableTest │ Invalid type: QB_Integration_Error_Log__c (87:9)                                               │ 87:9        │
+│ ApexClass    │ QBInvoiceIntegrationQueueableTest │ Variable does not exist: errorLogs (93:32)                                                     │ 93:32       │
+│ ApexClass    │ QBInvoiceIntegrationQueueableTest │ Variable does not exist: Error_Message__c (94:36)                                              │ 94:36       │
+│ ApexClass    │ QBInvoiceIntegrationQueueableTest │ Invalid type: QB_Integration_Log__c (145:9)                                                    │ 145:9       │
+│ ApexClass    │ QBInvoiceIntegrationQueueableTest │ Variable does not exist: successLogs (151:32)                                                  │ 151:32      │
+│ ApexClass    │ QBInvoiceIntegrationQueueableTest │ Variable does not exist: Status__c (152:55)                                                    │ 152:55      │
+│ ApexClass    │ QBInvoiceIntegrationQueueableTest │ Variable does not exist: QB_Invoice_ID__c (153:53)                                             │ 153:53      │
+│ ApexClass    │ QBInvoiceSyncQueueable            │ Invalid type: QB_Invoice__c (7:13)                                                             │ 7:13        │
+│ ApexClass    │ QBInvoiceSyncQueueable            │ Invalid type: QB_Invoice__c (9:55)                                                             │ 9:55        │
+│ ApexClass    │ QBInvoiceSyncQueueable            │ Invalid type: QB_Invoice__c (17:14)                                                            │ 17:14       │
+│ ApexClass    │ QBInvoiceSyncQueueable            │ Variable does not exist: invoice (21:43)                                                       │ 21:43       │
+│ ApexClass    │ QBInvoiceSyncQueueable            │ Variable does not exist: invoice.Id (21:72)                                                    │ 21:72       │
+│ ApexClass    │ QBInvoiceSyncQueueable            │ Variable does not exist: invoice (27:57)                                                       │ 27:57       │
+│ ApexClass    │ QBInvoiceSyncQueueable            │ Variable does not exist: invoice (28:26)                                                       │ 28:26       │
+│ ApexClass    │ QBInvoiceSyncQueueable            │ Invalid type: QB_Invoice__c (35:14)                                                            │ 35:14       │
+│ ApexClass    │ QBInvoiceSyncQueueable            │ Variable does not exist: inv (36:28)                                                           │ 36:28       │
+│ ApexClass    │ QBInvoiceSyncQueueable            │ Invalid type: Schema.QB_Invoice__c (39:20)                                                     │ 39:20       │
+│ ApexClass    │ QBInvoiceSyncQueueable            │ Invalid type: QB_Invoice__c (54:56)                                                            │ 54:56       │
+│ ApexClass    │ QBInvoiceSyncQueueable            │ Variable does not exist: invoice (74:53)                                                       │ 74:53       │
+│ ApexClass    │ QBInvoiceSyncQueueable            │ Variable does not exist: invoice (82:39)                                                       │ 82:39       │
+│ ApexClass    │ QBInvoiceSyncQueueable            │ Variable does not exist: invoice (83:28)                                                       │ 83:28       │
+│ ApexClass    │ QBInvoiceSyncQueueable            │ Variable does not exist: invoice (88:26)                                                       │ 88:26       │
+│ ApexClass    │ QBInvoiceSyncQueueable            │ Variable does not exist: invoice (92:22)                                                       │ 92:22       │
+│ ApexClass    │ QBInvoiceSyncQueueable            │ Invalid type: QB_Invoice__c (96:65)                                                            │ 96:65       │
+│ ApexClass    │ QBInvoiceSyncQueueable            │ Variable does not exist: invoice (98:38)                                                       │ 98:38       │
+│ ApexClass    │ QBInvoiceSyncQueueable            │ Variable does not exist: invoice (105:21)                                                      │ 105:21      │
+│ ApexClass    │ QBInvoiceSyncQueueable            │ Variable does not exist: invoice (106:25)                                                      │ 106:25      │
+│ ApexClass    │ QBInvoiceSyncQueueable            │ Variable does not exist: invoice (107:25)                                                      │ 107:25      │
+│ ApexClass    │ QBInvoiceSyncQueueable            │ Variable does not exist: invoice (108:30)                                                      │ 108:30      │
+│ ApexClass    │ QBInvoiceSyncQueueable            │ Variable does not exist: invoice (109:38)                                                      │ 109:38      │
+│ ApexClass    │ QBInvoiceSyncQueueable            │ Variable does not exist: invoice (110:41)                                                      │ 110:41      │
+│ ApexClass    │ QBInvoiceSyncQueueable            │ Variable does not exist: invoice (115:21)                                                      │ 115:21      │
+│ ApexClass    │ QBInvoiceSyncQueueable            │ Variable does not exist: invoice.Account__r (116:23)                                           │ 116:23      │
+│ ApexClass    │ QBInvoiceSyncQueueable            │ Variable does not exist: invoice.Account__r (117:24)                                           │ 117:24      │
+│ ApexClass    │ QBInvoiceSyncQueueable            │ Variable does not exist: invoice.Account__r (118:24)                                           │ 118:24      │
+│ ApexClass    │ QBInvoiceSyncQueueable            │ Variable does not exist: invoice.Account__r (121:13)                                           │ 121:13      │
+│ ApexClass    │ QBInvoiceSyncQueueable            │ Variable does not exist: invoice.Account__r (123:29)                                           │ 123:29      │
+│ ApexClass    │ QBInvoiceSyncQueueable            │ Variable does not exist: invoice.Account__r (124:27)                                           │ 124:27      │
+│ ApexClass    │ QBInvoiceSyncQueueable            │ Variable does not exist: invoice.Account__r (125:28)                                           │ 125:28      │
+│ ApexClass    │ QBInvoiceSyncQueueable            │ Variable does not exist: invoice.Account__r (126:33)                                           │ 126:33      │
+│ ApexClass    │ QBInvoiceSyncQueueable            │ Variable does not exist: invoice.Account__r (127:30)                                           │ 127:30      │
+│ ApexClass    │ QBInvoiceSyncQueueable            │ Invalid type: QB_Invoice_Line_Item__c (135:14)                                                 │ 135:14      │
+│ ApexClass    │ QBInvoiceSyncQueueable            │ Variable does not exist: invoice (135:49)                                                      │ 135:49      │
+│ ApexClass    │ QBInvoiceSyncQueueable            │ Variable does not exist: lineItem (137:34)                                                     │ 137:34      │
+│ ApexClass    │ QBInvoiceSyncQueueable            │ Variable does not exist: lineItem (138:31)                                                     │ 138:31      │
+│ ApexClass    │ QBInvoiceSyncQueueable            │ Variable does not exist: lineItem (139:32)                                                     │ 139:32      │
+│ ApexClass    │ QBInvoiceSyncQueueable            │ Variable does not exist: lineItem (140:29)                                                     │ 140:29      │
+│ ApexClass    │ QBInvoiceSyncQueueable            │ Variable does not exist: lineItem (143:17)                                                     │ 143:17      │
+│ ApexClass    │ QBInvoiceSyncQueueable            │ Variable does not exist: lineItem (145:29)                                                     │ 145:29      │
+│ ApexClass    │ QBInvoiceSyncQueueable            │ Variable does not exist: lineItem.Product__r (146:31)                                          │ 146:31      │
+│ ApexClass    │ QBInvoiceSyncQueueable            │ Invalid type: QB_Invoice__c (161:20)                                                           │ 161:20      │
+│ ApexClass    │ QBInvoiceSyncQueueable            │ Invalid type: QB_Integration_Log__c (173:13)                                                   │ 173:13      │
+│ ApexClass    │ QBInvoiceSyncQueueable            │ DML requires SObject or SObject list type: QB_Integration_Log__c (180:13)                      │ 180:13      │
+│ ApexClass    │ QBInvoiceSyncQueueable            │ Invalid type: Schema.QB_Invoice__c (188:32)                                                    │ 188:32      │
+│ ApexClass    │ QBInvoiceSyncQueueable            │ Invalid type: QB_Integration_Error_Log__c (190:13)                                             │ 190:13      │
+│ ApexClass    │ QBInvoiceSyncQueueable            │ DML requires SObject or SObject list type: QB_Integration_Error_Log__c (196:13)                │ 196:13      │
+│ ApexClass    │ QBInvoiceSyncQueueableTest        │ Invalid type: QB_Invoice__c (41:9)                                                             │ 41:9        │
+│ ApexClass    │ QBInvoiceSyncQueueableTest        │ DML requires SObject or SObject list type: QB_Invoice__c (50:9)                                │ 50:9        │
+│ ApexClass    │ QBInvoiceSyncQueueableTest        │ Invalid type: QB_Invoice_Line_Item__c (53:9)                                                   │ 53:9        │
+│ ApexClass    │ QBInvoiceSyncQueueableTest        │ DML requires SObject or SObject list type: QB_Invoice_Line_Item__c (59:9)                      │ 59:9        │
+│ ApexClass    │ QBInvoiceSyncQueueableTest        │ Invalid type: QB_Invoice__c (64:9)                                                             │ 64:9        │
+│ ApexClass    │ QBInvoiceSyncQueueableTest        │ Invalid type: QB_Invoice__c (68:71)                                                            │ 68:71       │
+│ ApexClass    │ QBInvoiceSyncQueueableTest        │ Invalid type: QB_Invoice__c (74:9)                                                             │ 74:9        │
+│ ApexClass    │ QBInvoiceSyncQueueableTest        │ Variable does not exist: updatedInvoice (80:38)                                                │ 80:38       │
+│ ApexClass    │ QBInvoiceSyncQueueableTest        │ Variable does not exist: updatedInvoice.QB_Invoice_ID__c (81:23)                               │ 81:23       │
+│ ApexClass    │ QBInvoiceSyncQueueableTest        │ Variable does not exist: updatedInvoice (82:37)                                                │ 82:37       │
+│ ApexClass    │ QBInvoiceSyncQueueableTest        │ Invalid type: QB_Invoice__c (90:9)                                                             │ 90:9        │
+│ ApexClass    │ QBInvoiceSyncQueueableTest        │ Invalid type: QB_Invoice__c (94:71)                                                            │ 94:71       │
+│ ApexClass    │ QBInvoiceSyncQueueableTest        │ Invalid type: QB_Integration_Error_Log__c (100:9)                                              │ 100:9       │
+│ ApexClass    │ QBInvoiceSyncQueueableTest        │ Variable does not exist: errorLogs (105:32)                                                    │ 105:32      │
+│ ApexClass    │ QBInvoiceSyncQueueableTest        │ Variable does not exist: Error_Message__c (106:36)                                             │ 106:36      │
+│ ApexClass    │ QBInvoiceSyncQueueableTest        │ Invalid type: QB_Invoice__c (114:9)                                                            │ 114:9       │
+│ ApexClass    │ QBInvoiceSyncQueueableTest        │ Variable does not exist: invoices (116:13)                                                     │ 116:13      │
+│ ApexClass    │ QBInvoiceSyncQueueableTest        │ Invalid type: QB_Invoice__c (116:26)                                                           │ 116:26      │
+│ ApexClass    │ QBInvoiceSyncQueueableTest        │ DML requires SObject or SObject list type: List<QB_Invoice__c> (126:9)                         │ 126:9       │
+│ ApexClass    │ QBInvoiceSyncQueueableTest        │ Invalid type: QB_Invoice__c (136:9)                                                            │ 136:9       │
+│ ApexClass    │ QBInvoiceSyncQueueableTest        │ Invalid type: QB_Invoice__c (142:14)                                                           │ 142:14      │
+│ ApexClass    │ QBInvoiceSyncQueueableTest        │ Variable does not exist: invoice (143:42)                                                      │ 143:42      │
+│ ApexClass    │ QBPaymentMonitor                  │ Invalid type: QB_Integration_Log__c (155:13)                                                   │ 155:13      │
+│ ApexClass    │ QBPaymentMonitor                  │ DML requires SObject or SObject list type: QB_Integration_Log__c (161:13)                      │ 161:13      │
+│ ApexClass    │ QBPaymentMonitor                  │ Invalid type: QB_Integration_Error_Log__c (173:13)                                             │ 173:13      │
+│ ApexClass    │ QBPaymentMonitor                  │ DML requires SObject or SObject list type: QB_Integration_Error_Log__c (178:13)                │ 178:13      │
+│ ApexClass    │ QBPaymentMonitorTest              │ Invalid type: QB_Integration_Log__c (78:9)                                                     │ 78:9        │
+│ ApexClass    │ QBPaymentMonitorTest              │ Variable does not exist: logs (84:32)                                                          │ 84:32       │
+│ ApexClass    │ QBPaymentMonitorTest              │ Variable does not exist: Records_Processed__c (85:40)                                          │ 85:40       │
+│ ApexClass    │ QBPaymentMonitorTest              │ Invalid type: QB_Integration_Error_Log__c (111:9)                                              │ 111:9       │
+│ ApexClass    │ QBPaymentMonitorTest              │ Variable does not exist: errorLogs (117:32)                                                    │ 117:32      │
+│ ApexClass    │ QBPaymentMonitorTest              │ Variable does not exist: Error_Message__c (118:36)                                             │ 118:36      │
+│ CustomObject │ QB_Integration_Error_Log__c       │ Property 'enableChangeDataCapture' not valid in version 57.0                                   │             │
+│ CustomObject │ QB_Integration_Log__c             │ Property 'enableChangeDataCapture' not valid in version 57.0                                   │             │
+│ CustomObject │ QB_Integration_Settings__c        │ Cannot specify: pluralLabel for CustomSettings                                                 │             │
+│ CustomObject │ QB_Invoice_Line_Item__c           │ Property 'enableChangeDataCapture' not valid in version 57.0                                   │             │
+│ CustomObject │ QB_Invoice__c                     │ Property 'enableChangeDataCapture' not valid in version 57.0                                   │             │
+│ ApexClass    │ SFInvoiceCreator                  │ Invalid type: QB_Invoice__c (12:9)                                                             │ 12:9        │
+│ ApexClass    │ SFInvoiceCreator                  │ Invalid type: QB_Invoice__c (17:13)                                                            │ 17:13       │
+│ ApexClass    │ SFInvoiceCreator                  │ Variable does not exist: invoicesToInsert (27:13)                                              │ 27:13       │
+│ ApexClass    │ SFInvoiceCreator                  │ Variable does not exist: invoicesToInsert (30:14)                                              │ 30:14       │
+│ ApexClass    │ SFInvoiceCreator                  │ DML requires SObject or SObject list type: List<QB_Invoice__c> (31:13)                         │ 31:13       │
+│ ApexClass    │ SFInvoiceCreator                  │ Invalid type: QB_Invoice__c (37:13)                                                            │ 37:13       │
+│ ApexClass    │ SFInvoiceCreator                  │ Variable does not exist: invoicesForQBSync (39:18)                                             │ 39:18       │
+│ ApexClass    │ SFInvoiceCreator                  │ Invalid type: QB_Invoice__c (75:68)                                                            │ 75:68       │
+│ ApexClass    │ SFInvoiceCreator                  │ Invalid type: QB_Invoice_Line_Item__c (77:9)                                                   │ 77:9        │
+│ ApexClass    │ SFInvoiceCreator                  │ Invalid type: QB_Invoice__c (79:14)                                                            │ 79:14       │
+│ ApexClass    │ SFInvoiceCreator                  │ Variable does not exist: invoice (80:74)                                                       │ 80:74       │
+│ ApexClass    │ SFInvoiceCreator                  │ Variable does not exist: lineItemsToInsert (84:17)                                             │ 84:17       │
+│ ApexClass    │ SFInvoiceCreator                  │ Invalid type: QB_Invoice_Line_Item__c (84:39)                                                  │ 84:39       │
+│ ApexClass    │ SFInvoiceCreator                  │ Variable does not exist: lineItemsToInsert (93:21)                                             │ 93:21       │
+│ ApexClass    │ SFInvoiceCreator                  │ Invalid type: QB_Invoice_Line_Item__c (93:43)                                                  │ 93:43       │
+│ ApexClass    │ SFInvoiceCreator                  │ Variable does not exist: lineItemsToInsert (104:14)                                            │ 104:14      │
+│ ApexClass    │ SFInvoiceCreator                  │ DML requires SObject or SObject list type: List<QB_Invoice_Line_Item__c> (105:13)              │ 105:13      │
+│ ApexClass    │ SFInvoiceCreator                  │ Invalid type: QB_Invoice__c (113:40)                                                           │ 113:40      │
+│ ApexClass    │ SFInvoiceCreator                  │ Invalid type: QB_Invoice__c (113:85)                                                           │ 113:85      │
+│ ApexClass    │ SFInvoiceCreator                  │ Invalid type: QB_Invoice__c (114:9)                                                            │ 114:9       │
+│ ApexClass    │ SFInvoiceCreator                  │ Invalid type: QB_Invoice__c (118:14)                                                           │ 118:14      │
+│ ApexClass    │ SFInvoiceCreator                  │ Variable does not exist: invoice (119:24)                                                      │ 119:24      │
+│ ApexClass    │ SFInvoiceCreator                  │ Invalid type: QB_Invoice__c (131:14)                                                           │ 131:14      │
+│ ApexClass    │ SFInvoiceCreator                  │ Variable does not exist: invoice (132:42)                                                      │ 132:42      │
+│ ApexClass    │ SFInvoiceCreator                  │ Variable does not exist: usSupplierInvoices (137:17)                                           │ 137:17      │
+│ ApexClass    │ SFInvoiceCreator                  │ Variable does not exist: invoice (138:43)                                                      │ 138:43      │
+│ ApexClass    │ SFInvoiceCreator                  │ Variable does not exist: invoice (140:43)                                                      │ 140:43      │
+│ ApexClass    │ SFInvoiceCreatorTest              │ Invalid type: QB_Invoice__c (73:9)                                                             │ 73:9        │
+│ ApexClass    │ SFInvoiceCreatorTest              │ Variable does not exist: invoices (80:32)                                                      │ 80:32       │
+│ ApexClass    │ SFInvoiceCreatorTest              │ Invalid type: QB_Invoice__c (82:9)                                                             │ 82:9        │
+│ ApexClass    │ SFInvoiceCreatorTest              │ Variable does not exist: invoice (83:41)                                                       │ 83:41       │
+│ ApexClass    │ SFInvoiceCreatorTest              │ Variable does not exist: invoice (84:48)                                                       │ 84:48       │
+│ ApexClass    │ SFInvoiceCreatorTest              │ Variable does not exist: invoice (85:45)                                                       │ 85:45       │
+│ ApexClass    │ SFInvoiceCreatorTest              │ Variable does not exist: invoice (86:38)                                                       │ 86:38       │
+│ ApexClass    │ SFInvoiceCreatorTest              │ Variable does not exist: invoice (87:43)                                                       │ 87:43       │
+│ ApexClass    │ SFInvoiceCreatorTest              │ Invalid type: QB_Invoice_Line_Item__c (90:9)                                                   │ 90:9        │
+│ ApexClass    │ SFInvoiceCreatorTest              │ Variable does not exist: lineItems (96:32)                                                     │ 96:32       │
+│ ApexClass    │ SFInvoiceCreatorTest              │ Variable does not exist: Quantity__c (97:45)                                                   │ 97:45       │
+│ ApexClass    │ SFInvoiceCreatorTest              │ Variable does not exist: Unit_Price__c (98:47)                                                 │ 98:47       │
+│ ApexClass    │ SFInvoiceCreatorTest              │ Invalid type: QB_Invoice__c (122:9)                                                            │ 122:9       │
+│ ApexClass    │ SFInvoiceCreatorTest              │ Invalid type: QB_Invoice_Line_Item__c (124:9)                                                  │ 124:9       │
+│ ApexClass    │ SFInvoiceCreatorTest              │ Variable does not exist: lineItems (130:32)                                                    │ 130:32      │
+│ ApexClass    │ SFInvoiceCreatorTest              │ Variable does not exist: Description__c (131:53)                                               │ 131:53      │
+│ ApexClass    │ SFInvoiceCreatorTest              │ Variable does not exist: Quantity__c (132:45)                                                  │ 132:45      │
+│ ApexClass    │ SFInvoiceCreatorTest              │ Variable does not exist: Unit_Price__c (133:47)                                                │ 133:47      │
+└──────────────┴───────────────────────────────────┴────────────────────────────────────────────────────────────────────────────────────────────────┴─────────────┘
+
+
+[34m[1mTest Results Summary[22m[39m
+Passing: 0
+Failing: 0
+Total: 0
+[1m[31mError (FailedValidationError):[39m[22m Failed to validate the deployment (0AfSo000002bEndKAE). Due To:
+Error in QBInvoiceIntegrationQueueable - DML requires SObject or SObject list type: QB_Integration_Error_Log__c (181:13)
+Error in QBInvoiceIntegrationQueueable - Invalid type: QB_Integration_Error_Log__c (175:13)
+Error in QBInvoiceIntegrationQueueable - DML requires SObject or SObject list type: QB_Integration_Log__c (162:13)
+Error in QBInvoiceIntegrationQueueable - Invalid type: QB_Integration_Log__c (155:13)
+Error in QBInvoiceIntegrationQueueable - Method does not exist or incorrect signature: void substring(Integer) from the type Id (31:86)
+Error in QBInvoiceIntegrationQueueableTest - Variable does not exist: QB_Invoice_ID__c (153:53)
+Error in QBInvoiceIntegrationQueueableTest - Variable does not exist: Status__c (152:55)
+Error in QBInvoiceIntegrationQueueableTest - Variable does not exist: successLogs (151:32)
+Error in QBInvoiceIntegrationQueueableTest - Invalid type: QB_Integration_Log__c (145:9)
+Error in QBInvoiceIntegrationQueueableTest - Variable does not exist: Error_Message__c (94:36)
+Error in QBInvoiceIntegrationQueueableTest - Variable does not exist: errorLogs (93:32)
+Error in QBInvoiceIntegrationQueueableTest - Invalid type: QB_Integration_Error_Log__c (87:9)
+Error in QBInvoiceSyncQueueable - DML requires SObject or SObject list type: QB_Integration_Error_Log__c (196:13)
+Error in QBInvoiceSyncQueueable - Invalid type: QB_Integration_Error_Log__c (190:13)
+Error in QBInvoiceSyncQueueable - Invalid type: Schema.QB_Invoice__c (188:32)
+Error in QBInvoiceSyncQueueable - DML requires SObject or SObject list type: QB_Integration_Log__c (180:13)
+Error in QBInvoiceSyncQueueable - Invalid type: QB_Integration_Log__c (173:13)
+Error in QBInvoiceSyncQueueable - Invalid type: QB_Invoice__c (161:20)
+Error in QBInvoiceSyncQueueable - Variable does not exist: lineItem.Product__r (146:31)
+Error in QBInvoiceSyncQueueable - Variable does not exist: lineItem (145:29)
+Error in QBInvoiceSyncQueueable - Variable does not exist: lineItem (143:17)
+Error in QBInvoiceSyncQueueable - Variable does not exist: lineItem (140:29)
+Error in QBInvoiceSyncQueueable - Variable does not exist: lineItem (139:32)
+Error in QBInvoiceSyncQueueable - Variable does not exist: lineItem (138:31)
+Error in QBInvoiceSyncQueueable - Variable does not exist: lineItem (137:34)
+Error in QBInvoiceSyncQueueable - Invalid type: QB_Invoice_Line_Item__c (135:14)
+Error in QBInvoiceSyncQueueable - Variable does not exist: invoice (135:49)
+Error in QBInvoiceSyncQueueable - Variable does not exist: invoice.Account__r (127:30)
+Error in QBInvoiceSyncQueueable - Variable does not exist: invoice.Account__r (126:33)
+Error in QBInvoiceSyncQueueable - Variable does not exist: invoice.Account__r (125:28)
+Error in QBInvoiceSyncQueueable - Variable does not exist: invoice.Account__r (124:27)
+Error in QBInvoiceSyncQueueable - Variable does not exist: invoice.Account__r (123:29)
+Error in QBInvoiceSyncQueueable - Variable does not exist: invoice.Account__r (121:13)
+Error in QBInvoiceSyncQueueable - Variable does not exist: invoice.Account__r (118:24)
+Error in QBInvoiceSyncQueueable - Variable does not exist: invoice.Account__r (117:24)
+Error in QBInvoiceSyncQueueable - Variable does not exist: invoice.Account__r (116:23)
+Error in QBInvoiceSyncQueueable - Variable does not exist: invoice (115:21)
+Error in QBInvoiceSyncQueueable - Variable does not exist: invoice (110:41)
+Error in QBInvoiceSyncQueueable - Variable does not exist: invoice (109:38)
+Error in QBInvoiceSyncQueueable - Variable does not exist: invoice (108:30)
+Error in QBInvoiceSyncQueueable - Variable does not exist: invoice (107:25)
+Error in QBInvoiceSyncQueueable - Variable does not exist: invoice (106:25)
+Error in QBInvoiceSyncQueueable - Variable does not exist: invoice (105:21)
+Error in QBInvoiceSyncQueueable - Variable does not exist: invoice (98:38)
+Error in QBInvoiceSyncQueueable - Invalid type: QB_Invoice__c (96:65)
+Error in QBInvoiceSyncQueueable - Variable does not exist: invoice (92:22)
+Error in QBInvoiceSyncQueueable - Variable does not exist: invoice (88:26)
+Error in QBInvoiceSyncQueueable - Variable does not exist: invoice (83:28)
+Error in QBInvoiceSyncQueueable - Variable does not exist: invoice (82:39)
+Error in QBInvoiceSyncQueueable - Variable does not exist: invoice (74:53)
+Error in QBInvoiceSyncQueueable - Invalid type: QB_Invoice__c (54:56)
+Error in QBInvoiceSyncQueueable - Invalid type: Schema.QB_Invoice__c (39:20)
+Error in QBInvoiceSyncQueueable - Variable does not exist: inv (36:28)
+Error in QBInvoiceSyncQueueable - Invalid type: QB_Invoice__c (35:14)
+Error in QBInvoiceSyncQueueable - Variable does not exist: invoice (28:26)
+Error in QBInvoiceSyncQueueable - Variable does not exist: invoice (27:57)
+Error in QBInvoiceSyncQueueable - Variable does not exist: invoice.Id (21:72)
+Error in QBInvoiceSyncQueueable - Variable does not exist: invoice (21:43)
+Error in QBInvoiceSyncQueueable - Invalid type: QB_Invoice__c (17:14)
+Error in QBInvoiceSyncQueueable - Invalid type: QB_Invoice__c (9:55)
+Error in QBInvoiceSyncQueueable - Invalid type: QB_Invoice__c (7:13)
+Error in QBInvoiceSyncQueueableTest - Variable does not exist: invoice (143:42)
+Error in QBInvoiceSyncQueueableTest - Invalid type: QB_Invoice__c (142:14)
+Error in QBInvoiceSyncQueueableTest - Invalid type: QB_Invoice__c (136:9)
+Error in QBInvoiceSyncQueueableTest - DML requires SObject or SObject list type: List<QB_Invoice__c> (126:9)
+Error in QBInvoiceSyncQueueableTest - Invalid type: QB_Invoice__c (116:26)
+Error in QBInvoiceSyncQueueableTest - Variable does not exist: invoices (116:13)
+Error in QBInvoiceSyncQueueableTest - Invalid type: QB_Invoice__c (114:9)
+Error in QBInvoiceSyncQueueableTest - Variable does not exist: Error_Message__c (106:36)
+Error in QBInvoiceSyncQueueableTest - Variable does not exist: errorLogs (105:32)
+Error in QBInvoiceSyncQueueableTest - Invalid type: QB_Integration_Error_Log__c (100:9)
+Error in QBInvoiceSyncQueueableTest - Invalid type: QB_Invoice__c (94:71)
+Error in QBInvoiceSyncQueueableTest - Invalid type: QB_Invoice__c (90:9)
+Error in QBInvoiceSyncQueueableTest - Variable does not exist: updatedInvoice (82:37)
+Error in QBInvoiceSyncQueueableTest - Variable does not exist: updatedInvoice.QB_Invoice_ID__c (81:23)
+Error in QBInvoiceSyncQueueableTest - Variable does not exist: updatedInvoice (80:38)
+Error in QBInvoiceSyncQueueableTest - Invalid type: QB_Invoice__c (74:9)
+Error in QBInvoiceSyncQueueableTest - Invalid type: QB_Invoice__c (68:71)
+Error in QBInvoiceSyncQueueableTest - Invalid type: QB_Invoice__c (64:9)
+Error in QBInvoiceSyncQueueableTest - DML requires SObject or SObject list type: QB_Invoice_Line_Item__c (59:9)
+Error in QBInvoiceSyncQueueableTest - Invalid type: QB_Invoice_Line_Item__c (53:9)
+Error in QBInvoiceSyncQueueableTest - DML requires SObject or SObject list type: QB_Invoice__c (50:9)
+Error in QBInvoiceSyncQueueableTest - Invalid type: QB_Invoice__c (41:9)
+Error in QBPaymentMonitor - DML requires SObject or SObject list type: QB_Integration_Error_Log__c (178:13)
+Error in QBPaymentMonitor - Invalid type: QB_Integration_Error_Log__c (173:13)
+Error in QBPaymentMonitor - DML requires SObject or SObject list type: QB_Integration_Log__c (161:13)
+Error in QBPaymentMonitor - Invalid type: QB_Integration_Log__c (155:13)
+Error in QBPaymentMonitorTest - Variable does not exist: Error_Message__c (118:36)
+Error in QBPaymentMonitorTest - Variable does not exist: errorLogs (117:32)
+Error in QBPaymentMonitorTest - Invalid type: QB_Integration_Error_Log__c (111:9)
+Error in QBPaymentMonitorTest - Variable does not exist: Records_Processed__c (85:40)
+Error in QBPaymentMonitorTest - Variable does not exist: logs (84:32)
+Error in QBPaymentMonitorTest - Invalid type: QB_Integration_Log__c (78:9)
+Error in SFInvoiceCreator - Variable does not exist: invoice (140:43)
+Error in SFInvoiceCreator - Variable does not exist: invoice (138:43)
+Error in SFInvoiceCreator - Variable does not exist: usSupplierInvoices (137:17)
+Error in SFInvoiceCreator - Variable does not exist: invoice (132:42)
+Error in SFInvoiceCreator - Invalid type: QB_Invoice__c (131:14)
+Error in SFInvoiceCreator - Variable does not exist: invoice (119:24)
+Error in SFInvoiceCreator - Invalid type: QB_Invoice__c (118:14)
+Error in SFInvoiceCreator - Invalid type: QB_Invoice__c (114:9)
+Error in SFInvoiceCreator - Invalid type: QB_Invoice__c (113:85)
+Error in SFInvoiceCreator - DML requires SObject or SObject list type: List<QB_Invoice_Line_Item__c> (105:13)
+Error in SFInvoiceCreator - Variable does not exist: lineItemsToInsert (104:14)
+Error in SFInvoiceCreator - Invalid type: QB_Invoice_Line_Item__c (93:43)
+Error in SFInvoiceCreator - Variable does not exist: lineItemsToInsert (93:21)
+Error in SFInvoiceCreator - Invalid type: QB_Invoice_Line_Item__c (84:39)
+Error in SFInvoiceCreator - Variable does not exist: lineItemsToInsert (84:17)
+Error in SFInvoiceCreator - Variable does not exist: invoice (80:74)
+Error in SFInvoiceCreator - Invalid type: QB_Invoice__c (79:14)
+Error in SFInvoiceCreator - Invalid type: QB_Invoice_Line_Item__c (77:9)
+Error in SFInvoiceCreator - Invalid type: QB_Invoice__c (75:68)
+Error in SFInvoiceCreator - Variable does not exist: invoicesForQBSync (39:18)
+Error in SFInvoiceCreator - Invalid type: QB_Invoice__c (37:13)
+Error in SFInvoiceCreator - DML requires SObject or SObject list type: List<QB_Invoice__c> (31:13)
+Error in SFInvoiceCreator - Variable does not exist: invoicesToInsert (30:14)
+Error in SFInvoiceCreator - Variable does not exist: invoicesToInsert (27:13)
+Error in SFInvoiceCreator - Invalid type: QB_Invoice__c (17:13)
+Error in SFInvoiceCreator - Invalid type: QB_Invoice__c (12:9)
+Error in SFInvoiceCreator - Invalid type: QB_Invoice__c (113:40)
+Error in SFInvoiceCreatorTest - Variable does not exist: Unit_Price__c (133:47)
+Error in SFInvoiceCreatorTest - Variable does not exist: Quantity__c (132:45)
+Error in SFInvoiceCreatorTest - Variable does not exist: Description__c (131:53)
+Error in SFInvoiceCreatorTest - Variable does not exist: lineItems (130:32)
+Error in SFInvoiceCreatorTest - Invalid type: QB_Invoice_Line_Item__c (124:9)
+Error in SFInvoiceCreatorTest - Invalid type: QB_Invoice__c (122:9)
+Error in SFInvoiceCreatorTest - Variable does not exist: Unit_Price__c (98:47)
+Error in SFInvoiceCreatorTest - Variable does not exist: Quantity__c (97:45)
+Error in SFInvoiceCreatorTest - Variable does not exist: lineItems (96:32)
+Error in SFInvoiceCreatorTest - Invalid type: QB_Invoice_Line_Item__c (90:9)
+Error in SFInvoiceCreatorTest - Variable does not exist: invoice (87:43)
+Error in SFInvoiceCreatorTest - Variable does not exist: invoice (86:38)
+Error in SFInvoiceCreatorTest - Variable does not exist: invoice (85:45)
+Error in SFInvoiceCreatorTest - Variable does not exist: invoice (84:48)
+Error in SFInvoiceCreatorTest - Variable does not exist: invoice (83:41)
+Error in SFInvoiceCreatorTest - Invalid type: QB_Invoice__c (82:9)
+Error in SFInvoiceCreatorTest - Variable does not exist: invoices (80:32)
+Error in SFInvoiceCreatorTest - Invalid type: QB_Invoice__c (73:9)
+Error in OpportunityInvoiceTrigger - Variable does not exist: SFInvoiceCreator (31:9)
+Error in OpportunityQuickBooksTrigger - Invalid type: QBInvoiceIntegrationQueueable (69:27)
+Error in QB_Integration_Error_Log__c - Property 'enableChangeDataCapture' not valid in version 57.0
+Error in QB_Integration_Log__c - Property 'enableChangeDataCapture' not valid in version 57.0
+Error in QB_Integration_Settings__c - Cannot specify: pluralLabel for CustomSettings
+Error in QB_Invoice_Line_Item__c - Property 'enableChangeDataCapture' not valid in version 57.0
+Error in QB_Invoice__c - Property 'enableChangeDataCapture' not valid in version 57.0
+
+145 component error(s)
+
+[0;31m[ERROR][0m ❌ Validation failed

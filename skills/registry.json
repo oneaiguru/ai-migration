@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "skills": {
+    "gherkin-feature-summaries": {
+      "description": "Generate markdown summaries and condensed one-line indexes from Gherkin .feature files. Use when asked to summarize BDD feature files, produce scenario summaries, or create per-feature one-line overviews.",
+      "source_dir": "skills/gherkin-feature-summaries",
+      "version": "0.1.0",
+      "package": null,
+      "checksum_sha256": null,
+      "built_at": null,
+      "updated_at": "2026-01-15T10:37:21Z"
+    },
+    "message-file-splitter": {
+      "description": "Split large agent or chat markdown files that embed multiple file contents into extracted files plus interstitial garbage segments, generate a manifest for lossless recomposition, and validate code fence integrity. Use when parsing long message dumps into filesystem files and verifying reconstruction.",
+      "source_dir": "skills/message-file-splitter",
+      "version": "0.1.0",
+      "package": null,
+      "checksum_sha256": null,
+      "built_at": null,
+      "updated_at": "2026-01-15T10:37:21Z"
+    },
+    "xlsx": {
+      "description": "Comprehensive spreadsheet creation, editing, and analysis with support for formulas, formatting, data analysis, and visualization. When Claude needs to work with spreadsheets (.xlsx, .xlsm, .csv, .tsv, etc) for: (1) Creating new spreadsheets with formulas and formatting, (2) Reading or analyzing data, (3) Modify existing spreadsheets while preserving formulas, (4) Data analysis and visualization in spreadsheets, or (5) Recalculating formulas",
+      "source_dir": "skills/xls_caude_skill",
+      "version": "0.1.0",
+      "package": null,
+      "checksum_sha256": null,
+      "built_at": null,
+      "updated_at": "2026-01-15T10:37:21Z"
+    }
+  }
+}

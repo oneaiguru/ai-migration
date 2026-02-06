@@ -1,0 +1,52 @@
+# Salesforce cache
+.sfdx/
+.localdevserver/
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Dependency directories
+node_modules/
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+SECRETS.local.md
+SECRETS.local.*
+!SECRETS.local.example.md
+
+# MacOS system files
+.DS_Store
+
+# Windows system files
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# VS Code
+.vscode/
+*.code-workspace
+
+# IntelliJ
+.idea/
+*.iml
+
+# Local Netlify folder
+.netlify
+
+# Jest coverage
+coverage/
+.nyc_output/
+
+# Original source directory (linked project)
+/Users/m/git/clients/qbsf/
+
+# Credentials and sensitive data
+# This folder contains QB/SF credentials, tokens, and Roman's communications
+ignore/
+.claude-trace/

@@ -1,0 +1,8 @@
+[
+  "fileselect/config.py",
+  "fileselect/README.md",
+  "fileselect/main.py",
+  "fileselect/models.py",
+  "fileselect/__init__.py",
+  "fileselect/storage.py"
+]

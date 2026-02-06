@@ -1,0 +1,74 @@
+Forecasting & Analytics — Stage 6 Parity Sweep (2025‑11‑04)
+
+Targets
+- **New deploy (demo)**: https://forecasting-analytics-g46r7o1tl-granins-projects.vercel.app
+- **Reference (real Naumen)**: https://wfm-practice51.dc.oswfm.ru/ (log in via OIDC macro below)
+- **Legacy demo snapshot** (if you need to cross-check): https://forecasting-analytics-7jje4rjcj-granins-projects.vercel.app
+
+Authentication — Real System
+1. Press `Ctrl+0` → `Ctrl+L`, paste the OIDC URL, press Enter:
+   https://kc.dc.oswfm.ru/realms/os_practice51/protocol/openid-connect/auth?client_id=wfm-frontend&redirect_uri=https%3A%2F%2Fwfm-practice51.dc.oswfm.ru&state=0e91ff11-af12-40f0-bd78-13d17f293aea&response_mode=fragment&response_type=code&scope=openid&nonce=5c1a0726-a17f-4227-8fa9-781109a5771c&code_challenge=tyu4i8fC68DDYnOmtqh5y4DD-YiF8qzipnS9bo3nwuA&code_challenge_method=S256
+2. Credentials: `user20082025` / `user20082025`.
+3. After redirect you should land on `/schedule/graph`. Switch to **Прогнозы** in the top navigation before running comparisons. If redirect stalls >15 s, click once and re-enter credentials; if blocked, log LOGIN_FAIL in the results.
+
+Scope & References
+- Behaviour packs: `docs/Tasks/uat-packs/parity_static.md`, `chart_visual_spec.md` (use the Forecasting sections).
+- Manual crosswalk: `uat-agent-tasks/manual_forecasting-analytics-crosswalk.md` and CH4/CH6 manuals for ground truth.
+- Screenshot aliases: see `docs/SCREENSHOT_INDEX.md` (new captures: `forecasting-timezone-selector.png`, `forecasting-accuracy-detail.png`).
+- Log findings in `docs/Tasks/uat/2025-10-26_forecasting-uat.md` (rows AD‑1 … AD‑4). Summarise Pass/Fail in the table + add notes per item. Mention any blockers in `docs/SESSION_HANDOFF.md` (Stage 6 section).
+
+Checklist (run on **new deploy first**, then confirm against the real system)
+1. **Shell & Timezone selector**
+   - Demo: top-right dropdown should list at least «МСК (UTC+03)» and «Челябинск (UTC+05)». Toggle both and confirm header status + bell remain functional.
+   - Real system: validate the same selector exists/navigates without errors.
+   - Capture `forecasting-timezone-selector.png` if parity confirmed; log any mismatch.
+2. **Build Forecast (`/build`)**
+   - Queue tree shows loading shimmer, favourites, and child counts. Multi-horizon cards + absenteeism controls render with RU formatting.
+   - After changing timezone, date pickers reflect the selected zone; run “Построить прогноз” and confirm the summary banner + toast still appear.
+   - Use **Выгрузить прогноз**; ensure CSV filename includes today’s date and RU decimals.
+3. **Exceptions (`/exceptions`)**
+   - Day/Interval toggle, multi-interval editor, smoothing sliders, template import/export buttons.
+   - Applied-template summary updates when switching timezone.
+4. **Absenteeism (`/absenteeism`)**
+   - Run history table lists recent runs with status badges/time stamps in the current timezone.
+   - Template editor allows periodic + single overrides; export CSV contains RU percentages.
+5. **Trend Analysis (`/trends`)**
+   - Queue gate: charts remain blank until a queue/period is chosen; equal-period selector available.
+   - Strategic/Tactical/Operational tables populate with RU headers; timezone affects the period labels.
+6. **Accuracy (`/accuracy`)**
+   - KPI deck + error analysis toggles show RU numbers (comma decimals).
+   - Detail table lists forecast/fact/Δabs/Δ%/absenteeism/lost calls/AHT/SL (RU formatted). Click **Экспорт CSV** and confirm filename `accuracy_YYYY-MM-DD.csv`.
+   - Capture `forecasting-accuracy-detail.png` when confirmed.
+7. **Manual Adjustments (`/adjustments`)**
+   - Inline validation badges, undo/redo counters, Σ summary behave the same under each timezone.
+8. **Reports (shell bell)**
+   - Trigger a download (e.g., «Т-13 Табель…») and confirm the bell queue shows the request with RU timestamp + expiry. Filenames should use RU date suffixes.
+
+Comparison Steps
+- Repeat the checklist on the **real Naumen** portal (same order). Note any behaviours that diverge from the demo — especially timezone handling, CSV payloads, and accuracy detail columns.
+- If needed, spot-check the 7jje4rjcj legacy demo to identify regression vs. the new deploy.
+
+Reporting Template
+| Area | Environment | Pass/Fail | Notes | Screenshot |
+| --- | --- | --- | --- | --- |
+| Shell timezone selector | Demo |  |  |  |
+|  | Real |  |  | `forecasting-timezone-selector.png` |
+| Build forecast workflow | Demo |  |  |  |
+|  | Real |  |  |  |
+| Exceptions wizard | Demo |  |  |  |
+|  | Real |  |  |  |
+| Absenteeism history | Demo |  |  |  |
+|  | Real |  |  |  |
+| Trend analysis tables | Demo |  |  |  |
+|  | Real |  |  |  |
+| Accuracy detail table + export | Demo |  |  | `forecasting-accuracy-detail.png` |
+|  | Real |  |  |  |
+| Manual adjustments | Demo |  |  |  |
+|  | Real |  |  |  |
+| Reports bell / downloads | Demo |  |  |  |
+|  | Real |  |  |  |
+
+Blocked?
+- Note the blocker in the table, add a short blurb to `docs/Tasks/uat/2025-10-26_forecasting-uat.md`, and mention it in `docs/SESSION_HANDOFF.md` (Stage 6 section). Do **not** proceed if login or navigation fails.
+
+Thanks!

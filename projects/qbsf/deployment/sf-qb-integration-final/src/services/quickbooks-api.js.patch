@@ -1,0 +1,43 @@
+  /**
+   * Создает счет в QuickBooks
+   * @param {Object} invoiceData - Данные счета
+   * @returns {Promise<Object>} Созданный счет
+   */
+  async createInvoice(invoiceData) {
+    try {
+      logger.info('Creating invoice in QuickBooks');
+
+      // Исправление: Проверка наличия Line и принудительная установка
+      if (!invoiceData.Line || !Array.isArray(invoiceData.Line) || invoiceData.Line.length === 0) {
+        logger.warn('Invoice data missing Line, adding default line item');
+        
+        // Добавляем стандартную строку услуг
+        invoiceData.Line = [{
+          Amount: 1.00,
+          DetailType: "SalesItemLineDetail",
+          SalesItemLineDetail: {
+            ItemRef: {
+              value: "1",
+              name: "Services"
+            },
+            Qty: 1,
+            UnitPrice: 1.00
+          },
+          Description: "Default service item"
+        }];
+      }
+
+      // Логгируем данные перед отправкой
+      logger.debug('Invoice data to send:', {
+        customerRef: invoiceData.CustomerRef,
+        lineItems: invoiceData.Line,
+        docNumber: invoiceData.DocNumber
+      });
+
+      const invoice = await this.request('post', 'invoice', invoiceData);
+      return invoice;
+    } catch (error) {
+      logger.error('Error creating invoice:', error);
+      throw error;
+    }
+  }

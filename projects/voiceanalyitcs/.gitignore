@@ -1,0 +1,15 @@
+# Ignore regenerated outputs
+structured_json_handoff/output/*
+!structured_json_handoff/output/call_05_structured.json
+!structured_json_handoff/output/call_05_structured_input_min.json
+!structured_json_handoff/output/call_05_structured_input_signals.json
+
+# Ignore large media/data artifacts
+calls/
+*.mp3
+*.wav
+*.flac
+*.zip
+*.tar
+*.tgz
+*.7z

@@ -1,0 +1,41 @@
+{
+    "timestamp": "2025-12-08 16:47:43",
+    "mode": "incremental",
+    "entity_type": "expense_transactions",
+    "start_date": null,
+    "end_date": null,
+    "is_test_mode": false,
+    "entities": {
+        "expense_transactions": {
+            "success": [
+                {
+                    "vipflat_id": "3084",
+                    "adesk_id": 105024417,
+                    "amount": "1166.18"
+                },
+                {
+                    "vipflat_id": "3085",
+                    "adesk_id": 105024418,
+                    "amount": "1.64"
+                },
+                {
+                    "vipflat_id": "3086",
+                    "adesk_id": 105024420,
+                    "amount": "800.0"
+                },
+                {
+                    "vipflat_id": "3087",
+                    "adesk_id": 105024422,
+                    "amount": "3.45"
+                },
+                {
+                    "vipflat_id": "3088",
+                    "adesk_id": 105024423,
+                    "amount": "0.07"
+                }
+            ],
+            "error": [],
+            "total": 5
+        }
+    }
+}

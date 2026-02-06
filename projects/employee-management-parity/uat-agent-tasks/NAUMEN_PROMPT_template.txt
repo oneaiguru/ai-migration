@@ -1,0 +1,29 @@
+Real Naumen UAT — Login + Core Checks
+
+Login
+- OIDC URL: <OIDC_URL>
+- Username: user20082025
+- Password: user20082025
+
+Walkthrough (behaviour)
+1) Reports
+   - Go to Отчеты → Основные
+   - Expect list: График рабочего времени, (сутки), Пунктуальность (сутки/общая), Рабочий график сотрудников, Т‑13, Журнал построения расписания, Лицензии
+2) Employees
+   - Go to Сотрудники; verify toolbar: Теги, Импортировать, Экспортировать, Показывать уволенных
+   - Open column picker (Настройка отображения); verify field list includes логины/навыки/схема работы/теги/контакты
+3) Schedule
+   - График: tabs Прогноз+план/Отклонения/SL; День/Период switch; Σ/123 overlays; SL target line present (70–100)
+   - События: open form; fields match docs (время, активность, участники, распределение)
+   - Отпуска: Непостроенные/Построенные/Опубликованные with импорт/экспорт controls
+
+Reply (short table)
+| Area | Pass/Fail | Notes |
+| --- | --- | --- |
+| Reports list |  |  |
+| Employees toolbar + picker |  |  |
+| Schedule graph (tabs/switch/overlays) |  |  |
+| Schedule events form |  |  |
+| Vacations views |  |  |
+
+Thanks.

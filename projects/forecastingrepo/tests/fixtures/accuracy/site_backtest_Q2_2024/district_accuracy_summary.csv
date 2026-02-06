@@ -1,0 +1,3 @@
+district,total_actual,total_forecast,weighted_abs_error,median_wape,p25_wape,p75_wape,site_count,weighted_wape,accuracy_pct
+DQ2A,70,80,8,0.09,0.05,0.12,5,0.1142857,88
+DQ2B,40,30,6,0.15,0.1,0.18,3,0.2,75

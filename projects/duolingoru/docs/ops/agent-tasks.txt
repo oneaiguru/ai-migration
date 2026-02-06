@@ -1,0 +1,656 @@
+# ============================================================
+# AGENT_00_INITIALIZER.md (Run ONCE with Opus)
+# ============================================================
+
+# Task: Project Initialization
+
+**Model:** opus  
+**Type:** initializer  
+**Run:** Once at project start
+
+## Goal
+Set up the complete project scaffold, manifest, and BDD feature files.
+
+## Inputs
+- projects/anglo/PRD_Enhanced.md (the full PRD document)
+- ADR stack decisions (React+Vite, TypeScript, pnpm, etc.)
+
+## Create These Files
+
+### Agent Coordination
+```
+.agent/
+├── manifest.json      # Master task list (see schema below)
+├── progress.json      # [] (empty array initially)
+└── current-agent.json # {"status": "idle"}
+```
+
+### BDD Feature Files
+```
+features/
+├── onboarding/
+│   ├── anonymous-start.feature
+│   ├── placement-test.feature
+│   ├── account-creation.feature
+│   └── account-upgrade.feature
+├── lessons/
+│   ├── start-lesson.feature
+│   ├── exercise-translate-tap.feature
+│   ├── exercise-translate-type.feature
+│   ├── exercise-listen.feature
+│   ├── exercise-match-pairs.feature
+│   ├── complete-lesson.feature
+│   └── lesson-grading.feature
+├── gamification/
+│   ├── xp-earning.feature
+│   ├── streak-tracking.feature
+│   ├── streak-freeze.feature
+│   ├── leaderboard.feature
+│   └── achievements.feature
+├── progress/
+│   ├── course-progress.feature
+│   ├── unit-unlock.feature
+│   └── spaced-repetition.feature
+├── offline/
+│   ├── offline-lesson.feature
+│   ├── progress-sync.feature
+│   └── content-download.feature
+├── payments/
+│   ├── premium-upgrade.feature
+│   ├── mir-payment.feature
+│   └── lifetime-purchase.feature
+└── settings/
+    ├── daily-goal.feature
+    ├── notifications.feature
+    └── language-preferences.feature
+```
+
+### Scripts
+```
+scripts/
+├── init.sh            # Start dev servers, verify env
+├── verify.sh          # Run all verification gates
+└── agent-start.sh     # Bootstrap for new agent session
+```
+
+### Root Configs
+```
+package.json
+pnpm-workspace.yaml
+tsconfig.base.json
+.eslintrc.js
+.prettierrc
+.gitignore
+```
+
+BDD runner requirement:
+- Define a root `pnpm test:bdd` script that runs `pnpm -C projects/anglo/apps/pwa test:bdd`
+- Add `projects/anglo/apps/pwa/vitest.bdd.config.ts` and `projects/anglo/apps/pwa/tests/bdd/` as the BDD test home
+
+## Manifest Schema
+
+The manifest.json must follow this structure:
+
+```json
+{
+  "project": "duolingoru",
+  "version": "0.1.0",
+  "phases": [
+    {
+      "id": "phase_XX",
+      "name": "Phase Name",
+      "status": "pending|in_progress|done|blocked",
+      "blocked_by": "phase_id or null",
+      "tasks": [
+        {
+          "id": "task_XXX",
+          "name": "Human readable task name",
+          "type": "scaffold|types|feature|integration|review",
+          "model": "haiku|sonnet|opus",
+          "priority": 1,
+          "status": "pending|in_progress|done|blocked",
+          "depends_on": ["task_ids"],
+          "feature_file": "path/to/file.feature or null",
+          "verification": {
+            "type": "script|typecheck|bdd|manual",
+            "command": "shell command to verify",
+            "passed": false
+          },
+          "artifacts": ["list of files to create"],
+          "completed_by": null,
+          "completed_at": null
+        }
+      ]
+    }
+  ]
+}
+```
+
+## Phase Structure
+
+Create these phases with 50-100 tasks total:
+
+1. **phase_01_scaffold** (10-15 tasks, model: haiku)
+   - Monorepo setup
+   - PWA app shell
+   - API app shell
+   - Package scaffolds
+
+2. **phase_02_types** (5-10 tasks, model: haiku)
+   - Core domain types
+   - Content schemas (Zod)
+   - API types
+
+3. **phase_03_engine** (10-15 tasks, model: sonnet)
+   - Lesson engine models
+   - Grading logic
+   - Session generator
+   - Progress tracker
+
+4. **phase_04_content** (5-10 tasks, model: haiku)
+   - Content validation
+   - Sample A1 Unit 1 content
+   - Audio file structure
+
+5. **phase_05_ui** (15-20 tasks, model: sonnet)
+   - Welcome screen
+   - Lesson screen
+   - Exercise components
+   - Gamification UI
+
+6. **phase_06_offline** (5-10 tasks, model: sonnet)
+   - Service worker
+   - IndexedDB setup
+   - Sync logic
+
+7. **phase_07_backend** (10-15 tasks, model: sonnet)
+   - Auth endpoints
+   - Progress endpoints
+   - Leaderboard
+   - Payment integration
+
+8. **phase_08_integration** (5-10 tasks, model: opus)
+   - E2E testing
+   - Performance review
+   - Security review
+
+## Feature File Format
+
+Each .feature file must follow Gherkin syntax:
+
+```gherkin
+Feature: [Feature Name]
+  As a [role]
+  I want [goal]
+  So that [benefit]
+
+  Background:
+    Given [common preconditions]
+
+  @tag
+  Scenario: [Scenario name]
+    Given [precondition]
+    When [action]
+    Then [expected result]
+    And [additional assertions]
+```
+
+## Rules
+- Break work into SMALL tasks (1-2 hours each)
+- Every feature task MUST have a .feature file
+- Assign correct model to each task
+- No circular dependencies
+- All tasks must have verification command
+- Do NOT implement features - only plan and scaffold
+
+## Done Criteria
+- [ ] manifest.json exists with 50-100 tasks
+- [ ] All .feature files created (20-30 files)
+- [ ] scripts/init.sh works
+- [ ] pnpm install succeeds (run at repo root)
+- [ ] Git initialized with first commit
+
+
+# ============================================================
+# AGENT_01_SCAFFOLD_PWA.md (Haiku)
+# ============================================================
+
+# Task: PWA Application Scaffold
+
+**Model:** haiku  
+**Type:** scaffold  
+**Phase:** phase_01_scaffold
+
+## Goal
+Create the React + Vite PWA application shell with all configs.
+
+## Depends On
+- Root monorepo config exists (pnpm-workspace.yaml)
+
+## Create These Files
+
+```
+projects/anglo/apps/pwa/
+├── package.json
+├── tsconfig.json
+├── vite.config.ts
+├── tailwind.config.js
+├── postcss.config.js
+├── index.html
+├── public/
+│   ├── manifest.webmanifest
+│   ├── favicon.ico
+│   └── icons/
+│       ├── icon-192.png
+│       └── icon-512.png
+├── src/
+│   ├── main.tsx
+│   ├── App.tsx
+│   ├── routes.tsx
+│   ├── vite-env.d.ts
+│   ├── components/
+│   │   └── .gitkeep
+│   ├── stores/
+│   │   └── .gitkeep
+│   ├── hooks/
+│   │   └── .gitkeep
+│   ├── lib/
+│   │   └── .gitkeep
+│   └── styles/
+│       └── index.css
+└── tests/
+    └── setup.ts
+```
+
+## Package Dependencies
+
+```json
+{
+  "dependencies": {
+    "react": "^18.3.0",
+    "react-dom": "^18.3.0",
+    "@tanstack/react-router": "^1.45.0",
+    "@tanstack/react-query": "^5.50.0",
+    "zustand": "^4.5.0",
+    "dexie": "^4.0.0",
+    "dexie-react-hooks": "^1.1.0"
+  },
+  "devDependencies": {
+    "vite": "^5.4.0",
+    "vite-plugin-pwa": "^0.20.0",
+    "@vitejs/plugin-react": "^4.3.0",
+    "@types/react": "^18.3.0",
+    "@types/react-dom": "^18.3.0",
+    "tailwindcss": "^3.4.0",
+    "postcss": "^8.4.0",
+    "autoprefixer": "^10.4.0",
+    "typescript": "^5.5.0",
+    "vitest": "^2.0.0",
+    "@testing-library/react": "^16.0.0"
+  }
+}
+```
+
+## Vite Config Requirements
+
+```typescript
+// vite.config.ts must include:
+- React plugin
+- PWA plugin with:
+  - registerType: 'autoUpdate'
+  - workbox runtime caching
+  - manifest generation
+- Path aliases (@/ -> src/)
+- Build output to dist/
+```
+
+## Tailwind Config Requirements
+
+```javascript
+// tailwind.config.js
+module.exports = {
+  content: ['./index.html', './src/**/*.{ts,tsx}'],
+  theme: { extend: {} },
+  plugins: [],
+};
+```
+
+```javascript
+// postcss.config.js
+module.exports = {
+  plugins: { tailwindcss: {}, autoprefixer: {} },
+};
+```
+
+## Verification
+
+```bash
+pnpm install # run at repo root
+pnpm -C projects/anglo/apps/pwa typecheck
+pnpm -C projects/anglo/apps/pwa build
+test -f projects/anglo/apps/pwa/dist/index.html
+```
+
+## Rules
+- Use Tailwind CSS (include tailwind.config.js and postcss.config.js)
+- PWA manifest in Russian (lang: "ru")
+- App name: "Язычок"
+- No actual features - just shell
+- Must pass typecheck
+
+## Done Criteria
+- [ ] pnpm install succeeds (repo root)
+- [ ] pnpm -C projects/anglo/apps/pwa typecheck exits 0
+- [ ] pnpm -C projects/anglo/apps/pwa build creates dist/
+- [ ] PWA manifest is valid
+
+
+# ============================================================
+# AGENT_02_SCAFFOLD_ENGINE.md (Haiku)
+# ============================================================
+
+# Task: Lesson Engine Package Scaffold
+
+**Model:** haiku  
+**Type:** scaffold  
+**Phase:** phase_01_scaffold
+
+## Goal
+Create the pure TypeScript lesson engine package structure.
+
+## Create These Files
+
+```
+packages/lesson-engine/
+├── package.json
+├── tsconfig.json
+├── vitest.config.ts
+├── src/
+│   ├── index.ts
+│   ├── models/
+│   │   ├── index.ts
+│   │   ├── course.ts
+│   │   ├── unit.ts
+│   │   ├── lesson.ts
+│   │   ├── exercise.ts
+│   │   ├── session.ts
+│   │   └── progress.ts
+│   ├── grading/
+│   │   ├── index.ts
+│   │   └── grade.ts
+│   ├── session/
+│   │   ├── index.ts
+│   │   └── generator.ts
+│   └── spaced-rep/
+│       ├── index.ts
+│       └── sm2.ts
+└── tests/
+    ├── grading.test.ts
+    └── session.test.ts
+```
+
+## Package.json
+
+```json
+{
+  "name": "@duolingoru/lesson-engine",
+  "version": "0.1.0",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "devDependencies": {
+    "typescript": "^5.5.0",
+    "vitest": "^2.0.0"
+  }
+}
+```
+
+## tsconfig.json Requirements
+- compilerOptions.outDir = "dist"
+- compilerOptions.rootDir = "src"
+
+## Rules
+- NO React or DOM dependencies
+- NO external runtime dependencies (pure TS)
+- Export all types from index.ts
+- All files should have placeholder exports
+- Must pass typecheck
+
+## Verification
+
+```bash
+pnpm install # run at repo root
+pnpm -C packages/lesson-engine typecheck
+pnpm -C packages/lesson-engine test
+pnpm -C packages/lesson-engine build
+```
+
+## Done Criteria
+- [ ] pnpm -C packages/lesson-engine typecheck exits 0
+- [ ] pnpm -C packages/lesson-engine build creates dist/
+- [ ] Package exports types correctly
+- [ ] No React/DOM imports
+
+
+# ============================================================
+# AGENT_03_TYPES_CORE.md (Haiku)
+# ============================================================
+
+# Task: Core Domain Types
+
+**Model:** haiku  
+**Type:** types  
+**Phase:** phase_02_types
+
+## Goal
+Define all core domain types for the lesson engine.
+
+## File: packages/lesson-engine/src/models/index.ts
+
+Must export these types:
+
+```typescript
+// Course structure
+export interface Course { ... }
+export interface Unit { ... }
+export interface Lesson { ... }
+
+// Exercises
+export type ExerciseKind = 
+  | 'translate_tap'
+  | 'translate_type'
+  | 'listen_tap'
+  | 'listen_type'
+  | 'match_pairs'
+  | 'fill_blank'
+  | 'select_image';
+
+export interface Exercise { ... }
+export interface Prompt { ... }
+
+// Grading
+export type GradeResult = 'correct' | 'incorrect' | 'typo' | 'partial';
+export interface GradedAnswer { ... }
+
+// Session
+export interface Session { ... }
+export interface SessionConfig { ... }
+export interface CompletedSession { ... }
+
+// Progress
+export interface UserProgress { ... }
+export interface LessonProgress { ... }
+export interface WordStrength { ... }
+
+// User
+export interface User { ... }
+export interface Streak { ... }
+export interface Achievement { ... }
+```
+
+## Requirements
+- All types must be exported
+- Use readonly where appropriate
+- Include JSDoc comments
+- No any types
+- No external dependencies
+
+## Verification
+
+```bash
+cd packages/lesson-engine
+pnpm typecheck
+# Import test
+echo "import * as models from './src/models';" > /tmp/test.ts
+pnpm tsc /tmp/test.ts --noEmit
+```
+
+
+# ============================================================
+# AGENT_04_CONTENT_SCHEMA.md (Haiku)
+# ============================================================
+
+# Task: Content Schemas with Zod
+
+**Model:** haiku  
+**Type:** types  
+**Phase:** phase_02_types
+
+## Goal
+Create Zod schemas for content validation.
+
+## Create These Files
+
+```
+packages/content/
+├── package.json
+├── tsconfig.json
+├── src/
+│   ├── index.ts
+│   ├── schema/
+│   │   ├── index.ts
+│   │   ├── course.ts
+│   │   ├── unit.ts
+│   │   ├── lesson.ts
+│   │   └── exercise.ts
+│   └── validate.ts
+├── courses/
+│   └── ru-en/
+│       └── meta.json
+└── scripts/
+    └── validate-all.ts
+```
+
+## Schema Requirements
+
+```typescript
+// schema/exercise.ts
+import { z } from 'zod';
+
+export const ExerciseKindSchema = z.enum([...]);
+
+export const PromptSchema = z.object({
+  text: z.string().optional(),
+  audio: z.string().optional(),
+  image: z.string().optional(),
+});
+
+export const ExerciseSchema = z.object({
+  id: z.string().uuid(),
+  kind: ExerciseKindSchema,
+  prompt: PromptSchema,
+  choices: z.array(z.string()).optional(),
+  correct: z.union([z.string(), z.array(z.string())]),
+  hints: z.array(z.string()).optional(),
+});
+
+// Infer types from schemas
+export type Exercise = z.infer<typeof ExerciseSchema>;
+```
+
+## Verification
+
+```bash
+pnpm install # run at repo root
+pnpm -C packages/content typecheck
+pnpm -C packages/content validate # should validate courses/ru-en/meta.json
+```
+
+
+# ============================================================
+# AGENT_05_FEATURE_ANON_START.md (Sonnet)
+# ============================================================
+
+# Task: Anonymous User Start Feature
+
+**Model:** sonnet  
+**Type:** feature  
+**Phase:** phase_05_ui  
+**Feature File:** features/onboarding/anonymous-start.feature
+
+## Goal
+Implement the anonymous user start flow using BDD.
+
+## BDD Workflow (STRICT)
+
+### Step 1: Read Feature File
+```bash
+cat features/onboarding/anonymous-start.feature
+```
+
+### Step 2: Write Step Definitions
+Create: `projects/anglo/apps/pwa/tests/steps/anonymous-start.steps.ts`
+
+### Step 3: Run Tests (Must Be RED)
+```bash
+pnpm -C projects/anglo/apps/pwa test:bdd
+# Expected: 0/N scenarios passing
+```
+
+### Step 4: Implement ONE Scenario
+Create minimal code to pass first scenario only.
+
+### Step 5: Run Tests (ONE GREEN)
+```bash
+pnpm -C projects/anglo/apps/pwa test:bdd
+# Expected: 1/N scenarios passing
+```
+
+### Step 6: Commit
+```bash
+git add .
+git commit -m "feat(onboarding): welcome screen - 1/3"
+```
+
+### Step 7: Repeat Until All Green
+
+## Files to Create/Modify
+- projects/anglo/apps/pwa/src/components/WelcomeScreen.tsx
+- projects/anglo/apps/pwa/src/stores/user.ts
+- projects/anglo/apps/pwa/src/hooks/useDeviceId.ts
+- projects/anglo/apps/pwa/tests/steps/anonymous-start.steps.ts
+
+## Rules
+- NEVER skip red-green cycle
+- NEVER mark done if any scenario red
+- ONE commit per scenario
+- Update manifest when complete
+
+## Verification
+```bash
+pnpm -C projects/anglo/apps/pwa test:bdd
+# Must show: X/X scenarios passing (100%)
+```
+
+## Done Criteria
+- [ ] All BDD scenarios GREEN
+- [ ] No TypeScript errors
+- [ ] Device ID generated and stored
+- [ ] manifest.json task status = "done"
+- [ ] progress.json entry added

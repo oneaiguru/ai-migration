@@ -1,0 +1,7 @@
+> /usage
+──────────────────────────────────────────────────────────────────────────────
+ Settings:  Status   Config   Usage   (tab to cycle)
+
+ Error: Failed to load usage data
+
+ Esc to exit

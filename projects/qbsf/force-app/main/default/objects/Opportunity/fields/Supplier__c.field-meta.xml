@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Supplier__c</fullName>
+    <description>Поставщик для данной сделки</description>
+    <externalId>false</externalId>
+    <inlineHelpText>Выберите поставщика. Только US поставщики синхронизируются с QuickBooks.</inlineHelpText>
+    <label>Поставщик</label>
+    <referenceTo>Account</referenceTo>
+    <relationshipLabel>Opportunities (Supplier)</relationshipLabel>
+    <relationshipName>Supplier_Opportunities</relationshipName>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <type>Lookup</type>
+</CustomField>

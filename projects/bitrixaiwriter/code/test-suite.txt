@@ -1,0 +1,73 @@
+<?php
+/**
+ * Тесты для проверки работы системы автоматизации переписывания текстов
+ * 
+ * Запуск: phpunit tests.php
+ */
+
+use PHPUnit\Framework\TestCase;
+
+class TextRewriteSystemTest extends TestCase {
+    private $config;
+    private $bitrixClient;
+    private $claudeClient;
+    private $promptGenerator;
+    private $uniquenessChecker;
+    private $controller;
+    
+    protected function setUp(): void {
+        // Загрузка тестовой конфигурации
+        $this->config = [
+            'bitrix' => [
+                'endpoint' => 'https://test.example.com/rest',
+                'login' => 'test',
+                'password' => 'test',
+                'timeout' => 5
+            ],
+            'claude' => [
+                'api_key' => 'test-key',
+                'model' => 'claude-3-sonnet-20240229',
+                'temperature' => 0.7,
+                'max_tokens' => 500
+            ],
+            'uniqueness' => [
+                'threshold' => 70,
+                'use_external_api' => false
+            ],
+            'batch_size' => 5,
+            'log_file' => 'tests/test.log',
+            'save_history' => true,
+            'output_dir' => 'tests/output',
+            'retry_attempts' => 2
+        ];
+        
+        // Создание тестовой директории
+        if (!is_dir('tests/output')) {
+            mkdir('tests/output', 0755, true);
+        }
+        
+        // Создание моков для основных классов
+        $this->bitrixClient = $this->createMock(BitrixApiClient::class);
+        $this->claudeClient = $this->createMock(ClaudeAPIClient::class);
+        $this->promptGenerator = $this->createMock(PromptGenerator::class);
+        $this->uniquenessChecker = $this->createMock(UniquenessChecker::class);
+        
+        // Создание контроллера с моками
+        $this->controller = new TextRewriteController(
+            $this->bitrixClient,
+            $this->claudeClient,
+            $this->promptGenerator,
+            $this->uniquenessChecker,
+            $this->config
+        );
+    }
+    
+    public function testPromptGeneratorCreatesValidPrompts(): void {
+        // Создаем настоящий экземпляр PromptGenerator для тестирования
+        $realPromptGenerator = new PromptGenerator();
+        
+        $originalText = "Осциллограф цифровой АКТАКОМ ADS-4572 – это 2-канальный прибор с полосой пропускания 70 МГц, предназначенный для исследования электронных схем. Данный прибор позволяет наблюдать и измерять формы различных сигналов. Технические характеристики: Количество каналов: 2, Полоса пропускания: 70 МГц.";
+        
+        $prompt = $realPromptGenerator->generatePrompt($originalText);
+        
+        // Проверяем, что промпт содержит необ

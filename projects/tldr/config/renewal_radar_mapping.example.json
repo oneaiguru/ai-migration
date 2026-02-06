@@ -1,0 +1,26 @@
+{
+  "accounts": {
+    "account_id": "account_id",
+    "company": "company",
+    "tier": "tier",
+    "arr": "arr",
+    "renewal_date": "renewal_date"
+  },
+  "touchpoints": {
+    "account_id": "account_id",
+    "touchpoint_dt": "timestamp",
+    "interaction_type": "event_type"
+  },
+  "interaction_value_map": {
+    "email_open": 1.0,
+    "newsletter_open": 1.0,
+    "link_click": 1.0,
+    "email_reply": 2.0,
+    "content_download": 2.0,
+    "meeting_booked": 3.0,
+    "proposal_requested": 3.0
+  },
+  "default_interaction_value": null,
+  "drop_unmapped_event_types": true
+}
+

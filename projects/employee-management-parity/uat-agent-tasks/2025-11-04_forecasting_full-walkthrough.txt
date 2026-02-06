@@ -1,0 +1,82 @@
+Forecasting & Analytics — Full Parity Walkthrough (2025‑11‑04)
+
+Before you begin
+1. Read `PROGRESS.md` (Phase D entries), `docs/SESSION_HANDOFF.md` (latest forecasting section), and `uat-agent-tasks/2025-11-04_forecasting_stage6_summary.md`.
+2. Review `docs/SOP/uat/master-uat-workflow.md` and the delta/behaviour packs:
+   - `docs/Tasks/uat-packs/parity_static.md`
+   - `docs/Tasks/uat-packs/chart_visual_spec.md`
+   - `uat-agent-tasks/manual_forecasting-analytics-crosswalk.md`
+3. Keep `docs/SCREENSHOT_INDEX.md` handy for required aliases (`forecasting-timezone-selector.png`, `forecasting-accuracy-detail.png`, etc.).
+
+Targets
+- **Real Naumen portal** (full access): use the OIDC macro below, then navigate to the forecasting module.
+- **Demo build**: https://forecasting-analytics-d985qxj4y-granins-projects.vercel.app
+- Legacy snapshot (optional cross-check): https://forecasting-analytics-7jje4rjcj-granins-projects.vercel.app
+
+OIDC login macro (real portal)
+1. Press `Ctrl+0` → `Ctrl+L`, paste:
+   https://kc.dc.oswfm.ru/realms/os_practice51/protocol/openid-connect/auth?client_id=wfm-frontend&redirect_uri=https%3A%2F%2Fwfm-practice51.dc.oswfm.ru&state=0e91ff11-af12-40f0-bd78-13d17f293aea&response_mode=fragment&response_type=code&scope=openid&nonce=5c1a0726-a17f-4227-8fa9-781109a5771c&code_challenge=tyu4i8fC68DDYnOmtqh5y4DD-YiF8qzipnS9bo3nwuA&code_challenge_method=S256
+2. Credentials: `user20082025` / `user20082025`
+3. After redirect, use the top navigation to reach **Прогнозы**. If redirected elsewhere, click the module tab manually. Note any authentication issues in the results table and `docs/Tasks/uat/2025-10-26_forecasting-uat.md`.
+
+Walkthrough checklist (run on *real portal first*, then repeat on the demo). Capture discrepancies and screenshots in each step; reference docs and illustrated kit for expected behaviour.
+
+1. Shell & timezone selector
+   - Verify header modules, status badge, notification bell. If a timezone selector is present in the real portal, exercise it (switch between Moscow/Челябинск) and note effects.
+   - On the demo, confirm selector updates date pickers and keeps bell/user menu responsive. Capture `forecasting-timezone-selector.png` if parity holds.
+
+2. Build Forecast (`/forecast/build` on real portal; `/build` on demo)
+   - Queue tree: search, favourites, child counts. Validate multi-horizon cards or manual pickers depending on environment.
+   - History/forecast ranges: record whether both systems show horizon cards, custom range inputs, absenteeism controls, confirmation banner/toast, and CSV import/export buttons.
+   - Run a forecast in each environment; note any differences in banner copy or toast behaviour.
+
+3. Exceptions (`/forecast/exceptions`)
+   - Examine saved templates, Day/Interval toggle, editors, smoothing sliders, import/export affordances, history presets, queue selection.
+   - Export CSV in both systems; log filename patterns and column headers.
+
+4. Absenteeism (`/forecast/absenteeism`)
+   - Review summary banner, run-history table (dates, queues, statuses), template editor (periodic + single overrides), absenteeism calculator.
+   - Execute the calculator/run workflow in both systems if supported; compare results.
+
+5. Trend Analysis (`/forecast/trends`)
+   - Confirm queue gating (blank state until configuration), period selector, Strategic/Tactical/Operational tabs, confidence bands, anomaly tagging panel.
+   - Verify tooltips/axes respect RU formats and timezone.
+
+6. Accuracy (`/forecast/accuracy`)
+   - Compare KPI deck, confidence widget, sample size, error analysis toggles, detail table columns, and export CSV output (check filename + data).
+   - Capture `forecasting-accuracy-detail.png` from the demo; capture the equivalent real-system screenshot if available.
+
+7. Manual Adjustments (`/forecast/adjustments`)
+   - Validate grid columns, inline badges, undo/redo + Σ counters, CSV stub/download if present.
+
+8. Reports / Bell queue
+   - Trigger a report export. Check whether requests surface in the bell dropdown with RU timestamps/expiry. Compare queue behaviour between real portal and demo.
+
+For each step record:
+- UI/behaviour parity (Pass/Fail/Partial) with notes.
+- Screenshots using aliases from `docs/SCREENSHOT_INDEX.md`. Store demo captures under `/Users/m/Desktop/tmp-forecasting-uat/` and add new real-system references to `docs/System/images/forecasting/` if needed.
+
+Logging & documentation
+- Update `docs/Tasks/uat/2025-10-26_forecasting-uat.md` (Analytics section, AD rows) with Pass/Fail notes, screenshot filenames, and any blockers.
+- Append summary to `docs/SESSION_HANDOFF.md` (Stage 6 section) and note the comparison in `PROGRESS.md` if outcomes shift.
+- Refresh parity packs (`docs/Tasks/uat-packs/parity_static.md`, `chart_visual_spec.md`) and `docs/SCREENSHOT_INDEX.md` with any new captures.
+- If gaps require remediation, open/append a task file in `docs/Tasks/` (e.g., `forecasting-analytics_parity-followup-2025-11-xx.task.md`) with findings + evidence.
+
+Reporting template (add to the UAT doc)
+| Area | Real Naumen | Demo | Notes | Screenshots |
+| --- | --- | --- | --- | --- |
+| Shell / timezone |  |  |  |  |
+| Build forecast |  |  |  |  |
+| Exceptions |  |  |  |  |
+| Absenteeism |  |  |  |  |
+| Trend analysis |  |  |  |  |
+| Accuracy |  |  |  |  |
+| Manual adjustments |  |  |  |  |
+| Reports bell / downloads |  |  |  |  |
+
+If blocked
+- Note the blocker in the table and `docs/Tasks/uat/2025-10-26_forecasting-uat.md`.
+- Mention it in `docs/SESSION_HANDOFF.md` with timestamp + URL.
+- Do not proceed to the next step until the issue is resolved.
+
+Thank you! EOF

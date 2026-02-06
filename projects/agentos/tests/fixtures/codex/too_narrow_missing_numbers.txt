@@ -1,0 +1,17 @@
+╭───────────────────╮
+│  >_ OpenAI Codex  │
+│                   │
+│  Model:           │
+│  Directory:       │
+│  Approval:        │
+│  Sandbox:         │
+│  Agents.md:       │
+│  Account:         │
+│  Session:         │
+│                   │
+│  Context window:  │
+│  5h limit:        │
+│                   │
+│  Weekly limit:    │
+│                   │
+╰───────────────────╯

@@ -1,0 +1,156 @@
+Excellent—now that you have **2023 waste** and **2022–2024 weather**, here’s a **strategy-first plan** (no coding yet) to (1) quantify **expected accuracy**, (2) prove **robustness** to gaps, and (3) justify a **tiered refund contract** that’s better than unconditional money-back.
+
+------
+
+## 1) What we want to know before sending the offer
+
+- **Q1. Baseline realism:** If we train on **2023 only**, how well do we predict **2024** (monthly + daily, region + districts)?
+- **Q2. Value of weather:** With the **same training**, how much lift do we get by adding **weather (2022–2024)** features?
+- **Q3. Robustness:** If a **month is missing**, can we still predict the missing month reliably (e.g., **Dec‑2024**)?
+- **Q4. Confidence to promise:** Based on Q1–Q3, what **accuracy tiers** can we credibly promise for **2025** (for the contract)?
+
+------
+
+## 2) Evaluation design (clean, defensible, and small)
+
+**Avoid leakage.** Every experiment **freezes** training data strictly **≤ cutoff**.
+
+### Experiments (all hierarchical: districts → sum → region)
+
+- **E1 – Year‑ahead baseline:** Train on **2023** only → predict **all 2024**.
+   *Purpose:* “worst‑info” reality check, seasonality captured?
+- **E2 – Rolling origin across 2024 (blocked CV):**
+   Cutoffs at `2024‑03‑31`, `06‑30`, `09‑30`; each time predict the **next 3 months**.
+   *Purpose:* stability across seasons and data volume.
+- **E3 – Missing‑last‑month stress test:** Train on **2023–Nov‑2024** (exclude Dec) → predict **Dec‑2024**.
+   *Purpose:* This is the exact “one month missing” scenario you care about.
+- **E4 – Weather ablation:** Repeat **E1–E3** with **weather features** (flagged).
+   *Purpose:* quantify lift from weather → supports Phase‑2 upsell and/or accuracy‑tied refund.
+
+### Metrics & views
+
+- **Primary:** **WAPE** (a.k.a. sMAPE‑free absolute scaled error), easy to explain in business terms.
+- **Secondary:** **SMAPE** (scale‑safe) and **MAE** (tonnes) for intuition.
+- **Granularities:** **Monthly** (decision‑grade), **Daily** (operational sanity).
+- **Levels:** **Region** and **each district** (report both; reconcile bottom‑up).
+
+### Reporting
+
+- **Scoreboards:** `region` and `district` tables for each experiment (baseline vs +weather).
+- **Ablation deltas:** “ΔWAPE = WAPE_baseline − WAPE_weather” (positive = improvement).
+- **Stability bands:** For each metric, show **median, IQR, worst‑month** → supports a conservative “expected accuracy” statement.
+
+> Output should let you say: “Training on **2023**, we expected **~X%** monthly WAPE at region level in **2024**; adding weather improves by **Y pp**; in a missing‑last‑month case (Dec‑2024), we see **Z%**.”
+
+------
+
+## 3) Feature plan for weather (minimal yet effective)
+
+- **Join policy:** Map stations → district; if unknown, use **nearest** or **region average** (document fallback).
+- **Features (daily → monthly as appropriate):**
+  - **HDD/CDD** (heating/cooling degree days; base 18 °C commonly used),
+  - **Precipitation sum (7d/28d)**, **snow depth**,
+  - **Rolling means (7/14/28)** and **std** for temperature/precip,
+  - **Holidays/season flags** (already possible without external APIs).
+- **No leakage:** All features computed with data **≤ target date**.
+- **Flagged:** Forecasts **must not change** unless `--use-weather` is passed (you control when to show gains).
+
+------
+
+## 4) Robustness claims (what we’ll prove before the offer)
+
+- **R1. Missing‑month robustness:** In **E3**, monthly **WAPE** for Dec‑2024 stays **inside target** (see tiers below).
+- **R2. District coverage:** No district fails catastrophically (cap worst‑month WAPE).
+- **R3. Stability:** Rolling origin errors don’t blow up (IQR narrow enough).
+- **R4. Canonical hierarchy:** Client CSVs: **region == sum(districts)**; weather lift is computed at district level then reconciled upward.
+
+------
+
+## 5) Accuracy tiers → contract you can stand behind
+
+Tie **Phase 1 (300 000 ₽)** acceptance/refund to **achieved monthly WAPE** on the **2024 backtests** (E1 + E2 + E3 blended, weighted by months). Keep daily targets informational (not contractual) for now.
+
+> **Recommend conservative, defensible tiers (example):**
+
+**Region (monthly WAPE)**
+
+- **Tier A:** **≤ 12%** → **0% refund** (full acceptance).
+- **Tier B:** **12–15%** → **25% refund**.
+- **Tier C:** **15–20%** → **50% refund**.
+- **Tier D:** **> 20%** → **100% refund**.
+
+**Districts (monthly WAPE, averaged across districts; also cap worst‑district)**
+
+- Acceptance requires **avg ≤ 18%** **and** **worst ≤ 25%**.
+- If avg within 18–22% **or** worst 25–28% → **add +10 pp refund** to the region tier (e.g., Tier B becomes **35%**).
+- If avg > 22% **or** worst > 28% → escalate one tier (e.g., **B→C**, **C→D**).
+
+**Weather option (if client provides data early):**
+
+- Offer a **bonus clause**: “If enabling weather **improves region monthly WAPE by ≥ 1.5 pp** on backtests, the tier bumps **one level better** (e.g., C→B).”
+
+> These bands are realistic for municipal waste with 1–2 years of history; adjust upward/downward once you see E1–E3 results.
+
+------
+
+## 6) “Expected accuracy” statement template (internal → later RU)
+
+> “Using your **2023** data to predict **2024**, our **region‑level monthly WAPE** is typically **≈12–15%** (IQR), with district averages **≈16–20%**. In a **missing‑December** stress test, we see **≈14–17%** region WAPE. Adding **weather (2022–2024)** improves region WAPE by **~1–3 percentage points** and stabilizes daily volatility. We therefore set a **Phase 1 acceptance threshold at 15% region WAPE**, with a **tiered partial refund** if results are worse, as detailed in the proposal.”
+
+You’ll fill the numbers **after** E1–E3.
+
+------
+
+## 7) Decision & comms flow (internal)
+
+```mermaid
+flowchart TD
+  D0[Data ready: 2023 waste + 2022–24 weather] --> E1[Backtest E1: 2023 -> 2024]
+  E1 --> E2[Rolling origin across 2024]
+  E2 --> E3[Missing-month test: Dec-2024]
+  E3 --> ABL[+Weather ablation on E1–E3]
+  ABL --> CALC[Compute WAPE/SMAPE scoreboards]
+  CALC --> TIER[Select contract tiers]
+  TIER --> GO{Offer ready?}
+  GO -->|Yes| PROP[Prepare RU proposal with tiered refund]
+  GO -->|No| ITER[Iterate features/flags or scope]
+  classDef step fill:#e6f7ff,stroke:#1e90ff,color:#1a202c;
+  class D0,E1,E2,E3,ABL,CALC,TIER,GO,PROP,ITER step
+```
+
+------
+
+## 8) Practical guardrails (so the numbers are bullet‑proof)
+
+- **Leap day 2024:** verify Feb‑29 handling in both actuals and forecasts.
+- **Station mapping:** document station→district rules (nearest/area‑weighted); keep as data file in repo for reproducibility.
+- **Holiday calendar:** pin the calendar used (RU federal + regional if applicable).
+- **Determinism:** fix seeds and environment; log training cutoff, windows, feature flags.
+- **One metric to rule acceptance:** **monthly region WAPE** (clear and intuitive); districts used as **secondary caps**.
+
+------
+
+## 9) What to tell the friend now (business positioning, English here)
+
+- “Yes, we **already computed forecasts** for chosen 2025 windows on your 2024 data.”
+- “With your **2023 waste** and **2022–24 weather**, we’ll run a **clean backtest**: train on 2023 → predict 2024, plus a **December‑2024 blind test**. That gives you **expected accuracy** for 2025.”
+- “If accuracy meets the agreed **tier**, we proceed (code released); otherwise you get a **partial refund** proportional to shortfall.”
+
+(When you want the Russian client text, say the word and I’ll draft it.)
+
+------
+
+## 10) Your internal **Go/No‑Go** gate to send the RU offer
+
+- **GO** if:
+  - E1–E3 done, **scoreboards** show region monthly WAPE **≤ 15%** (median) and districts within caps;
+  - Weather ablation shows **≥ 1–2 pp** lift (optional but nice);
+  - Visual quicklook has no implausible spikes;
+  - All CI gates green (tests, spec‑sync, docs‑check, coverage).
+
+------
+
+If you want, I can now turn this into:
+
+1. a **one‑page internal checklist** for you, and
+2. a **client‑facing RU addendum** that replaces the unconditional refund with the tiered refund (referencing the backtest method).

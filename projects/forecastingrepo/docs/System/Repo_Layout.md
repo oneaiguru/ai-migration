@@ -1,0 +1,11 @@
+# Repository Layout (Phase 1)
+- scripts/: CLI (`ingest_and_forecast.py`)
+- data/: 2024 aggregates (training)
+- delivery/: run outputs (forecasts/, qa/, metadata/, summary/)
+- specs/overview/OVERVIEW.md
+- specs/bdd/features/*.feature  # Spec-IDs (CLI-001, DAILY-002, …)
+- specs/unit-md/*.md            # Unit briefs mapped to Spec-IDs
+- tests/{unit,e2e}/             # Tests marked with @spec_id(...)
+- .tools/spec_sync.py           # Ensures features ↔ tests ↔ briefs
+- .tools/docs_check.py          # Ensures docs/System completeness
+- docs/System/*.md              # This documentation

@@ -1,0 +1,99 @@
+{
+  "period": {
+    "dateFrom": "2025-01-20",
+    "dateTo": "2025-01-31",
+    "workspace": "Любой"
+  },
+  "days": [
+    {
+      "date": "2025-01-30",
+      "processed": 147,
+      "received": 157,
+      "errors": -1,
+      "callsProcessed": 305,
+      "callsProcessedErrors": -5,
+      "minutesTotal": 747
+    },
+    {
+      "date": "2025-01-29",
+      "processed": 170,
+      "received": 184,
+      "errors": -14,
+      "callsProcessed": 14,
+      "callsProcessedErrors": -2,
+      "minutesTotal": 77
+    },
+    {
+      "date": "2025-01-28",
+      "processed": 141,
+      "received": 145,
+      "errors": -4,
+      "callsProcessed": 26,
+      "callsProcessedErrors": 0,
+      "minutesTotal": 51
+    },
+    {
+      "date": "2025-01-27",
+      "processed": 0,
+      "received": 0,
+      "errors": 0,
+      "callsProcessed": 275,
+      "callsProcessedErrors": -9,
+      "minutesTotal": 539
+    },
+    {
+      "date": "2025-01-26",
+      "processed": 0,
+      "received": 0,
+      "errors": 0,
+      "callsProcessed": 31,
+      "callsProcessedErrors": 0,
+      "minutesTotal": 47
+    },
+    {
+      "date": "2025-01-25",
+      "processed": 102,
+      "received": 103,
+      "errors": -1,
+      "callsProcessed": 26,
+      "callsProcessedErrors": -1,
+      "minutesTotal": 30
+    },
+    {
+      "date": "2025-01-24",
+      "processed": 121,
+      "received": 127,
+      "errors": -6,
+      "callsProcessed": 6,
+      "callsProcessedErrors": -1,
+      "minutesTotal": 15
+    },
+    {
+      "date": "2025-01-23",
+      "processed": 176,
+      "received": 181,
+      "errors": -5,
+      "callsProcessed": 176,
+      "callsProcessedErrors": -5,
+      "minutesTotal": 279
+    },
+    {
+      "date": "2025-01-22",
+      "processed": 136,
+      "received": 140,
+      "errors": -4,
+      "callsProcessed": 135,
+      "callsProcessedErrors": -4,
+      "minutesTotal": 343
+    },
+    {
+      "date": "2025-01-21",
+      "processed": 154,
+      "received": 158,
+      "errors": -4,
+      "callsProcessed": 153,
+      "callsProcessedErrors": -3,
+      "minutesTotal": 334
+    }
+  ]
+}

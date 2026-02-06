@@ -1,0 +1,376 @@
+---
+name: c06-script-compliance-prompt-editor
+description: Review and iterate on C06 Extended Script Compliance prompt and preprocessor. Use when analyzing C06 evaluation outputs, comparing expected vs actual checkpoint results, debugging signal reliability, or suggesting prompt/preprocessor fixes. For 74колеса 48-checkpoint script compliance system.
+allowed-tools: Read, Grep, Glob, Write, Edit
+---
+
+# C06 Script Compliance Prompt Editor
+
+## Purpose
+
+Review agent outputs from C06_EXTENDED evaluator, identify discrepancies between expected and actual results, and suggest targeted fixes to either:
+1. **The prompt** (checkpoint definitions, applicability rules, signal usage)
+2. **The preprocessor** (Python regex patterns, signal generation, entity extraction)
+
+## System Components
+
+### Component Map
+
+```
+┌─────────────────────┐     ┌──────────────────────┐     ┌─────────────────────┐
+│  VTT + Diarization  │────▶│  PREPROCESSOR.py     │────▶│  structured.json    │
+│  (raw transcript)   │     │  (signals, entities) │     │  (utterances +      │
+└─────────────────────┘     └──────────────────────┘     │   preprocessor_     │
+                                                         │   signals)          │
+                                                         └─────────┬───────────┘
+                                                                   │
+                                                                   ▼
+                                                         ┌─────────────────────┐
+                                                         │  C06_EXTENDED       │
+                                                         │  PROMPT             │
+                                                         │  (48 checkpoints)   │
+                                                         └─────────┬───────────┘
+                                                                   │
+                                                                   ▼
+                                                         ┌─────────────────────┐
+                                                         │  c06_extended_      │
+                                                         │  evaluation.json    │
+                                                         │  (results)          │
+                                                         └─────────────────────┘
+```
+
+### File Locations (Convention)
+
+| File | Purpose | Editable? |
+|------|---------|-----------|
+| `74колеса_Script_Checkpoints_v3_0.md` | Main evaluator prompt | ✅ YES |
+| `structured_json_converter.py` | Preprocessor script | ✅ YES |
+| `call_XX_structured.json` | Preprocessor output | ❌ Generated |
+| `call_XX_c06_evaluation.json` | Agent output | ❌ Generated |
+
+---
+
+## Review Workflow
+
+### Step 1: Load Context
+
+When reviewing an evaluation, always gather:
+
+```
+REQUIRED INPUTS:
+1. Agent output (c06_extended_evaluation JSON)
+2. Preprocessor output (structured.json with utterances + signals)
+3. Current prompt version
+4. (Optional) Expected results if known
+```
+
+### Step 2: Categorize Issues
+
+| Issue Type | Symptom | Fix Location |
+|------------|---------|--------------|
+| Wrong PASS | Checkpoint passed but shouldn't have | Prompt (tighten criteria) |
+| Wrong FAIL | Checkpoint failed but shouldn't have | Prompt (loosen criteria) or Preprocessor (fix signal) |
+| Wrong N/A | Marked N/A but should be evaluated | Prompt (applicability rules) |
+| Missing evidence | Status correct but evidence weak | Prompt (evidence instructions) |
+| Signal unreliable | Agent overrode signal frequently | Preprocessor (fix regex) |
+| Entity missed | extracted_data missing obvious data | Preprocessor (add pattern) |
+| Wrong speaker | Diarization assigned wrong speaker | Preprocessor (alignment logic) |
+
+### Step 3: Root Cause Analysis
+
+For each discrepancy, determine:
+
+```
+1. IS THE SIGNAL CORRECT?
+   - Check preprocessor_signals in structured.json
+   - If signal wrong → FIX PREPROCESSOR
+   - If signal correct but agent ignored → CHECK PROMPT INSTRUCTIONS
+
+2. IS THE UTTERANCE CORRECTLY IDENTIFIED?
+   - Find relevant utterance by ID
+   - Check speaker assignment
+   - If wrong speaker → FIX PREPROCESSOR (align_entries)
+
+3. IS THE APPLICABILITY CORRECT?
+   - Check call_type detection
+   - Check extracted_data for customer-volunteered info
+   - If wrong applicability → FIX PROMPT (applicability rules)
+
+4. IS THE EVIDENCE APPROPRIATE?
+   - Check evidence quotes utterance correctly
+   - If weak evidence → FIX PROMPT (evidence instructions)
+```
+
+---
+
+## Signal Reliability Reference
+
+### HIGH Reliability (trust signal)
+
+| Signal | Checkpoint | What it checks |
+|--------|------------|----------------|
+| `greeting.first_agent_company` + `first_agent_greeting` | GR01 | Utterance #1 has "74 колеса" + greeting |
+| `greeting.first_agent_name` | GR02 | Utterance #1 has "меня зовут" |
+| `greeting.asked_how_to_address` | GR03 | "как можно к вам обращаться" |
+| `closing.thanks` + `thanks_in_last_block` | CL02 | Thanks in last 3 utterances |
+| `closing.goodbye` + `goodbye_in_last_block` | CL03 | Goodbye in last 3 utterances |
+
+### MEDIUM Reliability (verify)
+
+| Signal | Checkpoint | Issue |
+|--------|------------|-------|
+| `city.asked_city` | GR04 | Doesn't verify position (should be ≤5) |
+| `needs.season_asked` | NI05 | Doesn't verify AGENT asked (vs customer stated) |
+| `needs.quantity_asked` | NI07 | Same issue |
+
+### LOW/NONE Reliability (ignore signal)
+
+| Checkpoint | Why no good signal |
+|------------|-------------------|
+| NI01-NI04, NI06, NI08-12 | Complex semantic requirements |
+| PP01 | Counts "вариант" keyword, not actual products |
+| PP02-PP07 | Semantic analysis needed |
+| OH01-09 | Must detect CUSTOMER trigger first |
+| OR01-06 | No signals exist |
+| OS01-03, TS01-04 | Call type dependent, no signals |
+
+---
+
+## Common Issues & Fixes
+
+### Issue: GR04 False Positive
+
+**Symptom:** `city.asked_city = true` but city question was in utterance #38, not within first 5.
+
+**Root cause:** Preprocessor checks for city keywords anywhere, not position.
+
+**Fix (preprocessor):**
+```python
+# In detect_checkpoint_signals()
+# Current:
+city_ids, city_txt = find_matches(city_patterns, require_question_like=True)
+
+# Fixed:
+city_ids, city_txt = find_matches(city_patterns, require_question_like=True, max_id=5)
+```
+
+---
+
+### Issue: NI05 False N/A
+
+**Symptom:** Agent marks NI05 as N/A because `extracted_data.seasons` has value, but customer stated season AFTER agent should have asked.
+
+**Root cause:** Preprocessor extracts season from anywhere in call, doesn't track WHO said it first.
+
+**Fix (preprocessor):** Add `season_source` field:
+```python
+# In extract_entities(), track first occurrence speaker
+seasons_with_source = []
+for entry in entries:
+    # ... existing season detection ...
+    if season_detected:
+        seasons_with_source.append({
+            "season": season,
+            "first_mentioned_by": entry["speaker"],
+            "utterance_id": entry["id"]
+        })
+```
+
+**Fix (prompt):** Update N/A rule:
+```markdown
+| If extracted_data contains... | Then checkpoint is... | Condition |
+|-------------------------------|----------------------|-----------|
+| `seasons` with `first_mentioned_by: "customer"` AND `utterance_id < agent_first_question_id` | NI05 = N/A | Customer volunteered first |
+```
+
+---
+
+### Issue: PP01 False Positive
+
+**Symptom:** `three_options.offered_three_plus = true` but agent only offered 2 products.
+
+**Root cause:** Signal counts "вариант" keyword, not actual distinct products with prices.
+
+**Fix (prompt):** Already documented as LOW reliability. Ensure agent ignores signal:
+```markdown
+| PP01 | `three_options.offered_three_plus` | LOW | Checks for "вариант" keyword, not actual 3 products. Count products with prices yourself |
+```
+
+**Fix (preprocessor):** Improve detection:
+```python
+def count_product_offers(entries):
+    """Count distinct products with prices mentioned by agent."""
+    products = []
+    price_pattern = re.compile(r'(\d{1,3}[\s,]?\d{3})\s*(руб|₽|р\.?)?', re.IGNORECASE)
+    
+    for entry in entries:
+        if entry["speaker"] != "agent":
+            continue
+        prices = price_pattern.findall(entry["text"])
+        if prices:
+            products.append({
+                "utterance_id": entry["id"],
+                "prices_found": [p[0] for p in prices],
+                "text": entry["text"][:100]
+            })
+    
+    return {
+        "product_count": len(products),
+        "product_mentions": products
+    }
+```
+
+---
+
+### Issue: OH Checkpoints Evaluated Without Trigger
+
+**Symptom:** Agent evaluates OH01 (price objection handling) but customer never said "дорого".
+
+**Root cause:** Prompt says to check customer trigger first, but agent misidentified a customer utterance.
+
+**Fix (prompt):** Add explicit instruction:
+```markdown
+### OH Evaluation Procedure
+
+1. FIRST: Scan ALL customer utterances for trigger phrases
+2. Create list: `detected_triggers = []`
+3. For each OH checkpoint, check if its trigger is in detected_triggers
+4. If trigger NOT found → status = "CONDITIONAL_SKIPPED"
+5. If trigger found → evaluate agent response
+```
+
+---
+
+### Issue: Wrong Speaker Assignment
+
+**Symptom:** Customer question attributed to agent, causing false checkpoint pass.
+
+**Example:** Utterance #4 `"я хотела спросить, вот у вас диски тоже продаются?"` marked as agent but is clearly customer.
+
+**Root cause:** VTT has no speaker labels, diarization JSON didn't cover this segment, fallback alternation assigned wrong.
+
+**Fix (preprocessor):** Add semantic heuristics:
+```python
+def is_likely_customer(text_lower):
+    """Detect customer-like utterances."""
+    customer_indicators = (
+        "хотела", "хотел", "мне нужн", "я ищу", "у вас есть",
+        "сколько стоит", "можно ли", "подскажите", "а если"
+    )
+    return any(ind in text_lower for ind in customer_indicators)
+
+def is_likely_agent(text_lower):
+    """Detect agent-like utterances."""
+    agent_indicators = (
+        "здравствуйте", "компания", "меня зовут", "сейчас посмотр",
+        "минуту", "спасибо за ожидание", "стоимость", "в наличии",
+        "могу предложить", "оформля"
+    )
+    return any(ind in text_lower for ind in agent_indicators)
+```
+
+---
+
+## Change Suggestion Format
+
+When suggesting changes, use this format:
+
+```markdown
+## SUGGESTED CHANGE #N
+
+**Issue:** [Brief description]
+
+**Observed:** [What happened]
+
+**Expected:** [What should happen]
+
+**Root Cause:** [PROMPT | PREPROCESSOR | BOTH]
+
+**Fix Location:** [File name + function/section]
+
+**Proposed Change:**
+```[language]
+# Before:
+[existing code/text]
+
+# After:
+[proposed code/text]
+```
+
+**Impact:**
+- Checkpoints affected: [list]
+- Risk: [LOW | MEDIUM | HIGH]
+- Testing required: [specific calls to re-run]
+```
+
+---
+
+## Validation Checklist
+
+Before finalizing any change:
+
+- [ ] Change addresses root cause, not symptom
+- [ ] Change doesn't break other checkpoints
+- [ ] Signal reliability table updated if needed
+- [ ] Evidence quote rules still work
+- [ ] N/A vs FAIL distinction preserved
+- [ ] CONDITIONAL_SKIPPED logic intact
+- [ ] Grade calculation unaffected (or intentionally changed)
+
+---
+
+## Quick Reference: Checkpoint Categories
+
+| Category | Count | Signals Available? | Notes |
+|----------|-------|-------------------|-------|
+| GR (Greeting) | 4 | Yes (HIGH) | Most reliable signals |
+| OS (Order Status) | 3 | No | Call-type dependent |
+| TS (Tire Service) | 4 | No | Call-type dependent |
+| NI (Needs ID) | 12 | Partial (LOW-MEDIUM) | Many semantic |
+| PP (Product) | 7 | Weak (LOW) | Mostly semantic |
+| OH (Objection) | 9 | Wrong architecture | Trigger-dependent |
+| OR (Order Process) | 6 | No | ORDER calls only |
+| CL (Closing) | 3 | Yes (HIGH) | Reliable signals |
+
+---
+
+## Debugging Commands
+
+### Find all signal overrides in evaluation:
+```python
+overrides = [d for d in eval_data["c06_extended_evaluation"]["details"] 
+             if d.get("signal_override")]
+```
+
+### Compare signal vs actual status:
+```python
+for detail in eval_data["c06_extended_evaluation"]["details"]:
+    signal_path = SIGNAL_MAP.get(detail["id"])
+    if signal_path:
+        signal_value = get_nested(preprocessor_signals, signal_path)
+        actual_status = detail["status"]
+        if signal_implies_pass(signal_value) and actual_status == "FAIL":
+            print(f"OVERRIDE: {detail['id']} signal={signal_value} actual={actual_status}")
+```
+
+### Find missing entity extractions:
+```python
+# Check if obvious data in utterances but not in extracted_data
+for entry in structured["utterances"]:
+    if has_phone_pattern(entry["text"]) and not extracted_data.get("phone"):
+        print(f"Missing phone in utterance #{entry['id']}")
+```
+
+---
+
+## Version History
+
+| Version | Date | Changes |
+|---------|------|---------|
+| 1.0.0 | 2025-12-11 | Initial skill for C06 v3.0.0 prompt + preprocessor |
+
+This skill is focused specifically on the C06 iteration workflow. Use it when:
+- Reviewing agent evaluation outputs
+- Debugging why a checkpoint passed/failed incorrectly
+- Deciding whether to fix prompt vs preprocessor
+- Writing up change suggestions for approval

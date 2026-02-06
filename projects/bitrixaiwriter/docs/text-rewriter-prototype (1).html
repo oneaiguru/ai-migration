@@ -1,0 +1,1068 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>СОЮЗ-ПРИБОР: Система автоматического переписывания описаний товаров</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <style>
+        body {
+            padding-top: 20px;
+            padding-bottom: 40px;
+            font-family: 'Open Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            color: #333;
+            background-color: #f9f9f9;
+        }
+        
+        .dashboard-header {
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .stats-card {
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+        }
+        
+        .stats-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        
+        .stats-card .card-body {
+            padding: 1.5rem;
+        }
+        
+        .stats-card .card-title {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: #555;
+        }
+        
+        .stats-card h2 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        
+        .log-container {
+            height: 400px;
+            overflow-y: auto;
+            background-color: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            padding: 15px;
+            font-family: "Courier New", Courier, monospace;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+        
+        .log-container div {
+            padding: 2px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        
+        .loader-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: rgba(255, 255, 255, 0.8);
+            z-index: 100;
+            border-radius: 8px;
+            backdrop-filter: blur(2px);
+        }
+        
+        .card {
+            position: relative;
+            margin-bottom: 20px;
+            border: none;
+            border-radius: 8px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+            overflow: hidden;
+        }
+        
+        .card-header {
+            background-color: #f8f9fa;
+            border-bottom: 1px solid #eee;
+            padding: 1rem 1.5rem;
+            font-weight: 600;
+        }
+        
+        .btn {
+            border-radius: 6px;
+            padding: 0.5rem 1rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-pills .nav-link.active {
+            background-color: #007bff;
+        }
+        
+        .progress-bar {
+            animation: progress-animation 2s;
+        }
+        
+        @keyframes progress-animation {
+            from { width: 0%; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="dashboard-header">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <h1>СОЮЗ-ПРИБОР: Система автоматического переписывания описаний товаров</h1>
+                    <p class="lead">Мониторинг и управление процессом обработки товаров</p>
+                </div>
+                <div>
+                    <img src="/api/placeholder/200/60" alt="Союз-Прибор" height="60" class="d-none d-md-block">
+                </div>
+            </div>
+        </div>
+
+        <!-- Навигация -->
+        <ul class="nav nav-pills mb-4" id="mainTab" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="dashboard-tab" data-bs-toggle="pill" data-bs-target="#dashboard" type="button" role="tab" aria-controls="dashboard" aria-selected="true">
+                    <i class="bi bi-speedometer2"></i> Панель управления
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="processing-tab" data-bs-toggle="pill" data-bs-target="#processing" type="button" role="tab" aria-controls="processing" aria-selected="false">
+                    <i class="bi bi-gear"></i> Управление обработкой
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="logs-tab" data-bs-toggle="pill" data-bs-target="#logs" type="button" role="tab" aria-controls="logs" aria-selected="false">
+                    <i class="bi bi-list-check"></i> Логи и отчеты
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="texts-tab" data-bs-toggle="pill" data-bs-target="#texts" type="button" role="tab" aria-controls="texts" aria-selected="false">
+                    <i class="bi bi-file-text"></i> Управление текстами
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="settings-tab" data-bs-toggle="pill" data-bs-target="#settings" type="button" role="tab" aria-controls="settings" aria-selected="false">
+                    <i class="bi bi-sliders"></i> Настройки
+                </button>
+            </li>
+        </ul>
+
+        <!-- Содержимое табов -->
+        <div class="tab-content" id="mainTabContent">
+            <!-- Панель управления -->
+            <div class="tab-pane fade show active" id="dashboard" role="tabpanel" aria-labelledby="dashboard-tab">
+                <div class="row mb-4" id="statsSection">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-header d-flex justify-content-between align-items-center">
+                                <h5 class="mb-0">Общая статистика</h5>
+                                <div>
+                                    <button id="refreshStats" class="btn btn-sm btn-outline-primary">
+                                        <i class="bi bi-arrow-clockwise"></i> Обновить
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <div class="card stats-card bg-light">
+                                            <div class="card-body text-center">
+                                                <h5 class="card-title">Обработано</h5>
+                                                <h2 id="totalProcessed">2358</h2>
+                                                <div class="text-muted small">товаров</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="card stats-card bg-light">
+                                            <div class="card-body text-center">
+                                                <h5 class="card-title">Успешно</h5>
+                                                <h2 id="totalSuccess" class="text-success">2187</h2>
+                                                <div class="text-muted small">товаров</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="card stats-card bg-light">
+                                            <div class="card-body text-center">
+                                                <h5 class="card-title">Неудачно</h5>
+                                                <h2 id="totalFailed" class="text-danger">171</h2>
+                                                <div class="text-muted small">товаров</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="card stats-card bg-light">
+                                            <div class="card-body text-center">
+                                                <h5 class="card-title">Уникальность</h5>
+                                                <h2 id="averageUniqueness">86%</h2>
+                                                <div class="text-muted small">средняя</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row mb-4">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5 class="mb-0">Прогресс обработки</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="mb-3">
+                                    <p>Обработано: <strong>2358</strong> из <strong>3000</strong> товаров (78.6%)</p>
+                                    <div class="progress" style="height: 20px;">
+                                        <div class="progress-bar bg-success" role="progressbar" style="width: 78.6%;" aria-valuenow="78.6" aria-valuemin="0" aria-valuemax="100">78.6%</div>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <p>Статус: <span class="badge bg-success">Обработка активна</span></p>
+                                    <p>Скорость обработки: <strong>~120</strong> товаров в час</p>
+                                    <p>Расчетное время завершения: <strong>5 часов 22 минуты</strong></p>
+                                </div>
+                                <div class="d-flex gap-2">
+                                    <button class="btn btn-warning">
+                                        <i class="bi bi-pause-fill"></i> Приостановить
+                                    </button>
+                                    <button class="btn btn-danger">
+                                        <i class="bi bi-stop-fill"></i> Остановить
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5 class="mb-0">Последние обработанные товары</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-striped table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>ID</th>
+                                                <th>Название</th>
+                                                <th>Уникальность</th>
+                                                <th>Статус</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="recentProductsList">
+                                            <tr>
+                                                <td>10001</td>
+                                                <td>Осциллограф цифровой АКТАКОМ ADS-4572</td>
+                                                <td>84%</td>
+                                                <td><span class="badge bg-success">Успешно</span></td>
+                                            </tr>
+                                            <tr>
+                                                <td>10002</td>
+                                                <td>Мультиметр СОЮЗ-ПРИБОР DT830B</td>
+                                                <td>82%</td>
+                                                <td><span class="badge bg-success">Успешно</span></td>
+                                            </tr>
+                                            <tr>
+                                                <td>10003</td>
+                                                <td>Генератор сигналов RIGOL DG1022</td>
+                                                <td>90%</td>
+                                                <td><span class="badge bg-success">Успешно</span></td>
+                                            </tr>
+                                            <tr>
+                                                <td>10004</td>
+                                                <td>Источник питания АКТАКОМ APS-1305</td>
+                                                <td>68%</td>
+                                                <td><span class="badge bg-warning">Низкая уникальность</span></td>
+                                            </tr>
+                                            <tr>
+                                                <td>10005</td>
+                                                <td>Тестер напряжения СОЮЗ-ПРИБОР MS8900</td>
+                                                <td>79%</td>
+                                                <td><span class="badge bg-success">Успешно</span></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5 class="mb-0">Последние ошибки</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-striped table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>Время</th>
+                                                <th>Товар</th>
+                                                <th>Ошибка</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="recentErrorsList">
+                                            <tr>
+                                                <td>10:32:45</td>
+                                                <td>ID 10025</td>
+                                                <td>Не удалось получить описание товара</td>
+                                            </tr>
+                                            <tr>
+                                                <td>09:48:12</td>
+                                                <td>ID 10112</td>
+                                                <td>Ошибка соединения с Claude API</td>
+                                            </tr>
+                                            <tr>
+                                                <td>09:15:37</td>
+                                                <td>ID 10067</td>
+                                                <td>Низкая уникальность текста (58%)</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Управление обработкой -->
+            <div class="tab-pane fade" id="processing" role="tabpanel" aria-labelledby="processing-tab">
+                <div class="row mb-4">
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5 class="mb-0">Запуск обработки</h5>
+                            </div>
+                            <div class="card-body">
+                                <form id="processingForm">
+                                    <div class="mb-3">
+                                        <label for="limit" class="form-label">Количество товаров</label>
+                                        <input type="number" class="form-control" id="limit" name="limit" value="100" min="1" max="1000">
+                                        <div class="form-text">Укажите максимальное количество товаров для обработки</div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="filter" class="form-label">Фильтр (JSON)</label>
+                                        <textarea class="form-control" id="filter" name="filter" rows="3" placeholder='{"SECTION_ID": 10}'></textarea>
+                                        <div class="form-text">Оставьте пустым для обработки всех товаров</div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Параметры обработки</label>
+                                        <div class="form-check mb-2">
+                                            <input class="form-check-input" type="checkbox" value="" id="checkUniqueness" checked>
+                                            <label class="form-check-label" for="checkUniqueness">
+                                                Проверять уникальность
+                                            </label>
+                                        </div>
+                                        <div class="form-check mb-2">
+                                            <input class="form-check-input" type="checkbox" value="" id="skipExisting" checked>
+                                            <label class="form-check-label" for="skipExisting">
+                                                Пропускать уже обработанные товары
+                                            </label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" value="" id="autoRetry" checked>
+                                            <label class="form-check-label" for="autoRetry">
+                                                Автоматический повтор при ошибках
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary">
+                                        <i class="bi bi-play-fill"></i> Запустить обработку
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5 class="mb-0">Тестирование</h5>
+                            </div>
+                            <div class="card-body">
+                                <form id="testForm">
+                                    <div class="mb-3">
+                                        <label for="productId" class="form-label">ID товара</label>
+                                        <input type="number" class="form-control" id="productId" name="productId" value="10001">
+                                        <div class="form-text">Введите ID существующего товара в Битрикс</div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Настройки генерации</label>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <label for="temperature" class="form-label">Температура</label>
+                                                <input type="range" class="form-range" min="0.1" max="1" step="0.1" value="0.7" id="temperature">
+                                                <div class="text-center"><span id="temperatureValue">0.7</span></div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label for="maxTokens" class="form-label">Макс. токенов</label>
+                                                <input type="range" class="form-range" min="500" max="2000" step="100" value="1000" id="maxTokens">
+                                                <div class="text-center"><span id="maxTokensValue">1000</span></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <button type="submit" class="btn btn-success">
+                                        <i class="bi bi-lightning-fill"></i> Протестировать
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                        
+                        <div class="card mt-4">
+                            <div class="card-header">
+                                <h5 class="mb-0">Статус обработки</h5>
+                            </div>
+                            <div class="card-body">
+                                <p><strong>Текущий процесс:</strong> <span class="badge bg-success">Активен</span></p>
+                                <p><strong>Запущен:</strong> 05.05.2025 08:15:32</p>
+                                <p><strong>Обработано товаров:</strong> 2358 из 3000</p>
+                                <p><strong>Активных потоков:</strong> 5 из 5</p>
+                                <div class="d-flex gap-2">
+                                    <button class="btn btn-warning">
+                                        <i class="bi bi-pause-fill"></i> Приостановить
+                                    </button>
+                                    <button class="btn btn-danger">
+                                        <i class="bi bi-stop-fill"></i> Остановить
+                                    </button>
+                                    <button class="btn btn-primary">
+                                        <i class="bi bi-plus-lg"></i> Увеличить потоки
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Логи и отчеты -->
+            <div class="tab-pane fade" id="logs" role="tabpanel" aria-labelledby="logs-tab">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-header d-flex justify-content-between align-items-center">
+                                <h5 class="mb-0">Журнал системы</h5>
+                                <div>
+                                    <button id="refreshLog" class="btn btn-sm btn-outline-primary">
+                                        <i class="bi bi-arrow-clockwise"></i> Обновить
+                                    </button>
+                                    <button id="clearLog" class="btn btn-sm btn-outline-danger">
+                                        <i class="bi bi-trash"></i> Очистить
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="log-container" id="logOutput">
+                                    <div>[2025-05-05 10:36:32] [INFO] Запуск тестирования системы...</div>
+                                    <div>[2025-05-05 10:36:32] [INFO] ======================================</div>
+                                    <div>[2025-05-05 10:36:32] [INFO] Тестирование работы с Битрикс API...</div>
+                                    <div>[2025-05-05 10:36:32] [INFO] Успешно получен список товаров:</div>
+                                    <div>[2025-05-05 10:36:32] [INFO]   - ID: 10001, Название: Осциллограф цифровой АКТАКОМ ADS-4572</div>
+                                    <div>[2025-05-05 10:36:32] [INFO]   - ID: 10002, Название: Мультиметр СОЮЗ-ПРИБОР DT830B</div>
+                                    <div>[2025-05-05 10:36:32] [INFO]   - ID: 10003, Название: Генератор сигналов RIGOL DG1022</div>
+                                    <div>[2025-05-05 10:36:32] [INFO] Детальная информация о товаре ID=10001:</div>
+                                    <div>[2025-05-05 10:36:32] [INFO]   - Название: Осциллограф цифровой АКТАКОМ ADS-4572</div>
+                                    <div>[2025-05-05 10:36:32] [INFO]   - Бренд: АКТАКОМ</div>
+                                    <div>[2025-05-05 10:36:32] [INFO]   - Описание: Осциллограф цифровой АКТАКОМ ADS-4572 – это 2-канальный пр...</div>
+                                    <div>[2025-05-05 10:36:32] [INFO] Тестирование работы с Claude API...</div>
+                                    <div>[2025-05-05 10:36:32] [INFO] Отправляем запрос к Claude API...</div>
+                                    <div>[2025-05-05 10:36:32] [INFO] Промпт: Переформулируй следующее описание товара, сохраняя вс...</div>
+                                    <div>[2025-05-05 10:36:40] [INFO] Ответ от Claude API: Представляем вашему вниманию осциллограф цифровой АКТАКОМ ADS-4572 – высокопроизводительный и многофункциональный прибор, который станет незаменимым помощником...</div>
+                                    <div>[2025-05-05 10:36:40] [INFO] ======================================</div>
+                                    <div>[2025-05-05 10:36:40] [INFO] Результаты тестирования:</div>
+                                    <div>[2025-05-05 10:36:40] [INFO]   - Битрикс API: УСПЕШНО</div>
+                                    <div>[2025-05-05 10:36:40] [INFO]   - Claude API: УСПЕШНО</div>
+                                    <div>[2025-05-05 10:36:40] [INFO] ======================================</div>
+                                    <div>[2025-05-05 10:36:40] [INFO] Все тесты пройдены успешно!</div>
+                                    <div>[2025-05-05 10:37:15] [INFO] Запуск обработки товаров...</div>
+                                    <div>[2025-05-05 10:37:15] [INFO] Применен фильтр: {"SECTION_ID": 10}</div>
+                                    <div>[2025-05-05 10:37:15] [INFO] Ограничение количества товаров: 100</div>
+                                    <div>[2025-05-05 10:37:18] [INFO] Найдено 87 товаров для обработки</div>
+                                    <div>[2025-05-05 10:37:18] [INFO] Processing batch 1 of 9</div>
+                                    <div>[2025-05-05 10:37:18] [INFO] Processing product #10001: Осциллограф цифровой АКТАКОМ ADS-4572</div>
+                                    <div>[2025-05-05 10:37:22] [INFO] Product #10001 uniqueness: 84%</div>
+                                    <div>[2025-05-05 10:37:22] [INFO] Processing product #10002: Мультиметр СОЮЗ-ПРИБОР DT830B</div>
+                                    <div>[2025-05-05 10:37:26] [INFO] Product #10002 uniqueness: 82%</div>
+                                    <div>[2025-05-05 10:37:26] [WARNING] Product #10004 has empty description, skipping</div>
+                                    <div>[2025-05-05 10:37:27] [ERROR] Error processing product #10025: Не удалось получить описание товара</div>
+                                    <div>[2025-05-05 10:38:12] [ERROR] Error generating text for product #10112: Error with Claude API: Connection timeout</div>
+                                    <div>[2025-05-05 10:38:55] [WARNING] Generated text for product #10067 is not unique enough (58%), retrying...</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row mt-4">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-header d-flex justify-content-between align-items-center">
+                                <h5 class="mb-0">Отчеты</h5>
+                                <div>
+                                    <button id="refreshReports" class="btn btn-sm btn-outline-primary">
+                                        <i class="bi bi-arrow-clockwise"></i> Обновить
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-striped table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>Дата</th>
+                                                <th>Название</th>
+                                                <th>Обработано</th>
+                                                <th>Успешно</th>
+                                                <th>Действия</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="reportsList">
+                                            <tr>
+                                                <td>2025-05-05 09:39:11</td>
+                                                <td>report_2025-05-05_09-39-11.json</td>
+                                                <td>10</td>
+                                                <td>8</td>
+                                                <td>
+                                                    <button class="btn btn-sm btn-primary view-report" data-report="report_2025-05-05_09-39-11.json">Просмотр</button>
+                                                    <button class="btn btn-sm btn-outline-danger delete-report" data-report="report_2025-05-05_09-39-11.json">Удалить</button>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>2025-05-04 15:22:43</td>
+                                                <td>report_2025-05-04_15-22-43.json</td>
+                                                <td>200</td>
+                                                <td>187</td>
+                                                <td>
+                                                    <button class="btn btn-sm btn-primary view-report" data-report="report_2025-05-04_15-22-43.json">Просмотр</button>
+                                                    <button class="btn btn-sm btn-outline-danger delete-report" data-report="report_2025-05-04_15-22-43.json">Удалить</button>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>2025-05-03 10:15:08</td>
+                                                <td>report_2025-05-03_10-15-08.json</td>
+                                                <td>500</td>
+                                                <td>468</td>
+                                                <td>
+                                                    <button class="btn btn-sm btn-primary view-report" data-report="report_2025-05-03_10-15-08.json">Просмотр</button>
+                                                    <button class="btn btn-sm btn-outline-danger delete-report" data-report="report_2025-05-03_10-15-08.json">Удалить</button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Управление текстами -->
+            <div class="tab-pane fade" id="texts" role="tabpanel" aria-labelledby="texts-tab">
+                <div class="row mb-4">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5 class="mb-0">Поиск и фильтрация товаров</h5>
+                            </div>
+                            <div class="card-body">
+                                <form id="searchForm" class="mb-4">
+                                    <div class="row g-3">
+                                        <div class="col-md-4">
+                                            <div class="mb-3">
+                                                <label for="searchText" class="form-label">Поиск по названию</label>
+                                                <input type="text" class="form-control" id="searchText" placeholder="Введите текст для поиска...">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="mb-3">
+                                                <label for="filterStatus" class="form-label">Статус</label>
+                                                <select class="form-select" id="filterStatus">
+                                                    <option value="">Все</option>
+                                                    <option value="success">Успешно</option>
+                                                    <option value="failed">Неудачно</option>
+                                                    <option value="low_uniqueness">Низкая уникальность</option>
+                                                    <option value="pending">Ожидает</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="mb-3">
+                                                <label for="filterCategory" class="form-label">Категория</label>
+                                                <select class="form-select" id="filterCategory">
+                                                    <option value="">Все категории</option>
+                                                    <option value="10">Осциллографы</option>
+                                                    <option value="20">Мультиметры</option>
+                                                    <option value="30">Генераторы сигналов</option>
+                                                    <option value="40">Источники питания</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="mb-3">
+                                                <label for="sortBy" class="form-label">Сортировка</label>
+                                                <select class="form-select" id="sortBy">
+                                                    <option value="date_desc">Новые сверху</option>
+                                                    <option value="date_asc">Старые сверху</option>
+                                                    <option value="name_asc">По имени (А-Я)</option>
+                                                    <option value="name_desc">По имени (Я-А)</option>
+                                                    <option value="uniqueness_desc">По уникальности</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-12">
+                                            <button type="submit" class="btn btn-primary">
+                                                <i class="bi bi-search"></i> Найти
+                                            </button>
+                                            <button type="reset" class="btn btn-outline-secondary">
+                                                <i class="bi bi-x-circle"></i> Сбросить
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+
+                                <div class="table-responsive">
+                                    <table class="table table-striped table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>ID</th>
+                                                <th>Название</th>
+                                                <th>Категория</th>
+                                                <th>Уникальность</th>
+                                                <th>Дата обработки</th>
+                                                <th>Статус</th>
+                                                <th>Действия</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="productsList">
+                                            <tr>
+                                                <td>10001</td>
+                                                <td>Осциллограф цифровой АКТАКОМ ADS-4572</td>
+                                                <td>Осциллографы</td>
+                                                <td>84%</td>
+                                                <td>2025-05-05 09:39:17</td>
+                                                <td><span class="badge bg-success">Успешно</span></td>
+                                                <td>
+                                                    <button class="btn btn-sm btn-primary view-product" data-id="10001">Просмотр</button>
+                                                    <button class="btn btn-sm btn-outline-secondary edit-product" data-id="10001">Редактировать</button>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>10002</td>
+                                                <td>Мультиметр СОЮЗ-ПРИБОР DT830B</td>
+                                                <td>Мультиметры</td>
+                                                <td>82%</td>
+                                                <td>2025-05-05 09:41:23</td>
+                                                <td><span class="badge bg-success">Успешно</span></td>
+                                                <td>
+                                                    <button class="btn btn-sm btn-primary view-product" data-id="10002">Просмотр</button>
+                                                    <button class="btn btn-sm btn-outline-secondary edit-product" data-id="10002">Редактировать</button>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>10003</td>
+                                                <td>Генератор сигналов RIGOL DG1022</td>
+                                                <td>Генераторы сигналов</td>
+                                                <td>90%</td>
+                                                <td>2025-05-05 09:43:45</td>
+                                                <td><span class="badge bg-success">Успешно</span></td>
+                                                <td>
+                                                    <button class="btn btn-sm btn-primary view-product" data-id="10003">Просмотр</button>
+                                                    <button class="btn btn-sm btn-outline-secondary edit-product" data-id="10003">Редактировать</button>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>10004</td>
+                                                <td>Источник питания АКТАКОМ APS-1305</td>
+                                                <td>Источники питания</td>
+                                                <td>68%</td>
+                                                <td>2025-05-05 09:45:12</td>
+                                                <td><span class="badge bg-warning">Низкая уникальность</span></td>
+                                                <td>
+                                                    <button class="btn btn-sm btn-primary view-product" data-id="10004">Просмотр</button>
+                                                    <button class="btn btn-sm btn-outline-secondary edit-product" data-id="10004">Редактировать</button>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>10025</td>
+                                                <td>Анализатор спектра СОЮЗ-ПРИБОР SA1020</td>
+                                                <td>Анализаторы</td>
+                                                <td>-</td>
+                                                <td>2025-05-05 10:37:27</td>
+                                                <td><span class="badge bg-danger">Ошибка</span></td>
+                                                <td>
+                                                    <button class="btn btn-sm btn-primary view-product" data-id="10025">Просмотр</button>
+                                                    <button class="btn btn-sm btn-warning retry-product" data-id="10025">Повторить</button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                
+                                <nav aria-label="Навигация по страницам">
+                                    <ul class="pagination justify-content-center mt-4">
+                                        <li class="page-item disabled">
+                                            <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Назад</a>
+                                        </li>
+                                        <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                                        <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                        <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                        <li class="page-item">
+                                            <a class="page-link" href="#">Вперед</a>
+                                        </li>
+                                    </ul>
+                                </nav>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Настройки -->
+            <div class="tab-pane fade" id="settings" role="tabpanel" aria-labelledby="settings-tab">
+                <div class="row mb-4">
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5 class="mb-0">Настройки подключения</h5>
+                            </div>
+                            <div class="card-body">
+                                <form id="connectionSettingsForm">
+                                    <h6>Битрикс API</h6>
+                                    <div class="mb-3">
+                                        <label for="bitrixEndpoint" class="form-label">Endpoint</label>
+                                        <input type="text" class="form-control" id="bitrixEndpoint" value="https://www.souz-pribor.ru/rest">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="bitrixLogin" class="form-label">Логин</label>
+                                        <input type="text" class="form-control" id="bitrixLogin" value="admin">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="bitrixPassword" class="form-label">Пароль</label>
+                                        <input type="password" class="form-control" id="bitrixPassword" value="********">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="bitrixTimeout" class="form-label">Таймаут (сек)</label>
+                                        <input type="number" class="form-control" id="bitrixTimeout" value="30">
+                                    </div>
+                                    
+                                    <hr>
+                                    
+                                    <h6>Claude API</h6>
+                                    <div class="mb-3">
+                                        <label for="claudeApiKey" class="form-label">API Key</label>
+                                        <input type="password" class="form-control" id="claudeApiKey" value="sk-ant-api03-********************">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="claudeModel" class="form-label">Модель</label>
+                                        <select class="form-select" id="claudeModel">
+                                            <option value="claude-3-opus-20240229">Claude 3 Opus</option>
+                                            <option value="claude-3-sonnet-20240229" selected>Claude 3 Sonnet</option>
+                                            <option value="claude-3-haiku-20240307">Claude 3 Haiku</option>
+                                        </select>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="claudeTemperature" class="form-label">Температура</label>
+                                        <input type="range" class="form-range" min="0.1" max="1" step="0.1" value="0.7" id="claudeTemperature">
+                                        <div class="text-center"><span id="claudeTemperatureValue">0.7</span></div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="claudeMaxTokens" class="form-label">Макс. токенов</label>
+                                        <input type="number" class="form-control" id="claudeMaxTokens" value="1000">
+                                    </div>
+                                    
+                                    <button type="submit" class="btn btn-primary">Сохранить настройки</button>
+                                    <button type="button" class="btn btn-outline-secondary" id="testConnection">Проверить соединение</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5 class="mb-0">Настройки обработки</h5>
+                            </div>
+                            <div class="card-body">
+                                <form id="processingSettingsForm">
+                                    <h6>Настройки уникальности</h6>
+                                    <div class="mb-3">
+                                        <label for="uniquenessThreshold" class="form-label">Порог уникальности (%)</label>
+                                        <input type="range" class="form-range" min="50" max="95" step="5" value="70" id="uniquenessThreshold">
+                                        <div class="text-center"><span id="uniquenessThresholdValue">70</span></div>
+                                    </div>
+                                    <div class="mb-3 form-check">
+                                        <input class="form-check-input" type="checkbox" value="" id="useExternalApi" checked>
+                                        <label class="form-check-label" for="useExternalApi">
+                                            Использовать внешний API для проверки уникальности
+                                        </label>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="textRuApiKey" class="form-label">Text.ru API Key</label>
+                                        <input type="password" class="form-control" id="textRuApiKey" value="*******************">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="retryAttempts" class="form-label">Количество попыток при ошибке</label>
+                                        <input type="number" class="form-control" id="retryAttempts" value="3" min="1" max="10">
+                                    </div>
+                                    
+                                    <hr>
+                                    
+                                    <h6>Настройки производительности</h6>
+                                    <div class="mb-3">
+                                        <label for="batchSize" class="form-label">Размер пакета для обработки</label>
+                                        <input type="number" class="form-control" id="batchSize" value="10" min="1" max="50">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="maxThreads" class="form-label">Максимальное количество потоков</label>
+                                        <input type="number" class="form-control" id="maxThreads" value="5" min="1" max="10">
+                                    </div>
+                                    <div class="mb-3 form-check">
+                                        <input class="form-check-input" type="checkbox" value="" id="saveHistory" checked>
+                                        <label class="form-check-label" for="saveHistory">
+                                            Сохранять историю текстов
+                                        </label>
+                                    </div>
+                                    <div class="mb-3 form-check">
+                                        <input class="form-check-input" type="checkbox" value="" id="debugMode">
+                                        <label class="form-check-label" for="debugMode">
+                                            Режим отладки
+                                        </label>
+                                    </div>
+                                    
+                                    <button type="submit" class="btn btn-primary">Сохранить настройки</button>
+                                    <button type="button" class="btn btn-outline-secondary" id="resetDefaults">Сбросить по умолчанию</button>
+                                </form>
+                            </div>
+                        </div>
+                        
+                        <div class="card mt-4">
+                            <div class="card-header">
+                                <h5 class="mb-0">Статус системы</h5>
+                            </div>
+                            <div class="card-body">
+                                <p><strong>PHP версия:</strong> <span class="badge bg-success">8.1.12</span></p>
+                                <p><strong>Битрикс API:</strong> <span class="badge bg-success">Доступен</span></p>
+                                <p><strong>Claude API:</strong> <span class="badge bg-success">Доступен</span></p>
+                                <p><strong>Text.ru API:</strong> <span class="badge bg-success">Доступен</span></p>
+                                <p><strong>Директория логов:</strong> <span class="badge bg-success">Доступна для записи</span></p>
+                                <p><strong>Директория отчетов:</strong> <span class="badge bg-success">Доступна для записи</span></p>
+                                
+                                <button type="button" class="btn btn-primary" id="checkSystemStatus">
+                                    <i class="bi bi-check-circle"></i> Проверить статус системы
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <footer class="mt-5 mb-3 text-muted text-center">
+            <p>&copy; 2025 Гранин Михаил | <a href="mailto:m@granin.com">m@granin.com</a></p>
+        </footer>
+    </div>
+
+    <!-- Модальное окно для результатов -->
+    <div class="modal fade" id="resultModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Результат операции</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="modalBody">
+                    <h4>Результаты тестирования товара #10001</h4>
+                    <div class="card mb-3">
+                        <div class="card-header">Информация о товаре</div>
+                        <div class="card-body">
+                            <p><strong>Название:</strong> Осциллограф цифровой АКТАКОМ ADS-4572</p>
+                            <p><strong>Уникальность:</strong> 84%</p>
+                            <p><strong>Время генерации:</strong> 3.68 сек</p>
+                        </div>
+                    </div>
+                    
+                    <div class="card mb-3">
+                        <div class="card-header">Оригинальный текст</div>
+                        <div class="card-body">
+                            <p>Осциллограф цифровой АКТАКОМ ADS-4572 – это 2-канальный прибор с полосой пропускания 70 МГц, предназначенный для исследования электронных схем и сигналов. Технические характеристики: Количество каналов: 2, Полоса пропускания: 70 МГц, Частота дискретизации: 1 Гвыб/с, Скорость записи: 50,000 осциллограмм/с.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card-header">Сгенерированный текст</div>
+                        <div class="card-body">
+                            <p>Откройте для себя новые горизонты в мире цифровых измерений с осциллографом АКТАКОМ ADS-4572! Этот высокопроизводительный 2-канальный прибор с широкой полосой пропускания 70 МГц позволит вам исследовать электронные схемы и сигналы с беспрецедентной точностью и детализацией.</p>
+                            <p>Оснащенный передовыми технологиями, ADS-4572 обеспечивает впечатляющую частоту дискретизации 1 Гвыб/с, что гарантирует захват даже самых быстрых переходных процессов. А благодаря скорости записи 50 000 осциллограмм в секунду, вы сможете анализировать сложные сигналы с невероятной эффективностью.</p>
+                            <p>Независимо от того, работаете ли вы в области электроники, телекоммуникаций или исследований, осциллограф АКТАКОМ ADS-4572 станет вашим надежным помощником, открывая новые возможности для изучения и разработки передовых технологий. Погрузитесь в мир высокоточных измерений и раскройте потенциал своих проектов с этим инновационным прибором!</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-warning" id="regenerateText">Перегенерировать</button>
+                    <button type="button" class="btn btn-success" id="applyText">Применить</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Модальное окно для редактирования текста -->
+    <div class="modal fade" id="editModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Редактирование текста</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="editForm">
+                        <div class="mb-3">
+                            <label for="productTitle" class="form-label">Название товара</label>
+                            <input type="text" class="form-control" id="productTitle" value="Осциллограф цифровой АКТАКОМ ADS-4572" readonly>
+                        </div>
+                        <div class="mb-3">
+                            <label for="originalText" class="form-label">Оригинальный текст</label>
+                            <textarea class="form-control" id="originalText" rows="3" readonly>Осциллограф цифровой АКТАКОМ ADS-4572 – это 2-канальный прибор с полосой пропускания 70 МГц, предназначенный для исследования электронных схем и сигналов. Технические характеристики: Количество каналов: 2, Полоса пропускания: 70 МГц, Частота дискретизации: 1 Гвыб/с, Скорость записи: 50,000 осциллограмм/с.</textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editableText" class="form-label">Сгенерированный текст</label>
+                            <textarea class="form-control" id="editableText" rows="10">Откройте для себя новые горизонты в мире цифровых измерений с осциллографом АКТАКОМ ADS-4572! Этот высокопроизводительный 2-канальный прибор с широкой полосой пропускания 70 МГц позволит вам исследовать электронные схемы и сигналы с беспрецедентной точностью и детализацией.
+
+Оснащенный передовыми технологиями, ADS-4572 обеспечивает впечатляющую частоту дискретизации 1 Гвыб/с, что гарантирует захват даже самых быстрых переходных процессов. А благодаря скорости записи 50 000 осциллограмм в секунду, вы сможете анализировать сложные сигналы с невероятной эффективностью.
+
+Независимо от того, работаете ли вы в области электроники, телекоммуникаций или исследований, осциллограф АКТАКОМ ADS-4572 станет вашим надежным помощником, открывая новые возможности для изучения и разработки передовых технологий. Погрузитесь в мир высокоточных измерений и раскройте потенциал своих проектов с этим инновационным прибором!</textarea>
+                        </div>
+                        <div class="mb-3">
+                            <div class="d-flex justify-content-between">
+                                <label for="uniquenessScore" class="form-label">Уникальность текста</label>
+                                <span id="uniquenessScoreValue">84%</span>
+                            </div>
+                            <div class="progress" style="height: 20px;">
+                                <div class="progress-bar bg-success" role="progressbar" style="width: 84%;" aria-valuenow="84" aria-valuemin="0" aria-valuemax="100">84%</div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-warning" id="checkUniquenessBtn">Проверить уникальность</button>
+                    <button type="button" class="btn btn-success" id="saveTextBtn">Сохранить изменения</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Инициализация обработчиков событий
+        document.addEventListener('DOMContentLoaded', function() {
+            // Инициализация слайдеров
+            document.getElementById('temperature').addEventListener('input', function() {
+                document.getElementById('temperatureValue').textContent = this.value;
+            });
+            
+            document.getElementById('maxTokens').addEventListener('input', function() {
+                document.getElementById('maxTokensValue').textContent = this.value;
+            });
+            
+            document.getElementById('claudeTemperature').addEventListener('input', function() {
+                document.getElementById('claudeTemperatureValue').textContent = this.value;
+            });
+            
+            document.getElementById('uniquenessThreshold').addEventListener('input', function() {
+                document.getElementById('uniquenessThresholdValue').textContent = this.value;
+            });
+            
+            // Обработчики кнопок просмотра товаров
+            document.querySelectorAll('.view-product').forEach(button => {
+                button.addEventListener('click', function() {
+                    const productId = this.getAttribute('data-id');
+                    const modal = new bootstrap.Modal(document.getElementById('resultModal'));
+                    modal.show();
+                });
+            });
+            
+            // Обработчики кнопок редактирования товаров
+            document.querySelectorAll('.edit-product').forEach(button => {
+                button.addEventListener('click', function() {
+                    const productId = this.getAttribute('data-id');
+                    const modal = new bootstrap.Modal(document.getElementById('editModal'));
+                    modal.show();
+                });
+            });
+            
+            // Обработчики кнопок просмотра отчетов
+            document.querySelectorAll('.view-report').forEach(button => {
+                button.addEventListener('click', function() {
+                    const reportName = this.getAttribute('data-report');
+                    const modalBody = document.getElementById('modalBody');
+                    
+                    modalBody.innerHTML = `
+                        <h4>Отчет: ${reportName}</h4>
+                        <div class="card mb-3">
+                            <div class="card-header">Статистика обработки</div>
+                            <div class="card-body">
+                                <table class="table table-bordered">
+                                    <tr><th>Всего обработано</th><td>10</td></tr>
+                                    <tr><th>Успешно</th><td>8</td></tr>
+                                    <tr><th>Неудачно</th><td>2</td></tr>
+                                    <tr><th>Уникальных</th><td>7</td></tr>
+                                    <tr><th>Недостаточно уникальных</th><td>1</td></tr>
+                                    <tr><th>Пропущено</th><td>0</td></tr>
+                                </table>
+                            </div>
+                        </div>
+                        
+                        <div class="card">
+                            <div class="card-header">Ошибки</div>
+                            <div class="card-body">
+                                <ul class="list-group">
+                                    <li class="list-group-item text-danger">Error 1</li>
+                                    <li class="list-group-item text-danger">Error 2</li>
+                                </ul>
+                            </div>
+                        </div>
+                    `;
+                    
+                    const modal = new bootstrap.Modal(document.getElementById('resultModal'));
+                    modal.show();
+                });
+            });
+            
+            // Обработчик формы тестирования
+            document.getElementById('testForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                const modal = new bootstrap.Modal(document.getElementById('resultModal'));
+                modal.show();
+            });
+            
+            // Обработчик формы запуска обработки
+            document.getElementById('processingForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                alert('Обработка запущена');
+            });
+            
+            // Другие обработчики событий...
+        });
+    </script>
+</body>
+</html>

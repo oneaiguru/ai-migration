@@ -1,0 +1,34 @@
+Consolidated UAT — Demos (Employees, Manager, Analytics)
+
+Instructions
+- Behaviour‑only UAT (no pixel checks). Use the URLs below; report console errors.
+- Paste back the Pass/Fail table (one row per check). Attach a screenshot for any Fail.
+
+Targets
+- Employee Portal: <EMPLOYEE_PORTAL_URL>
+- Manager Portal: <MANAGER_PORTAL_URL>
+- Analytics Dashboard: <ANALYTICS_URL>
+
+Packs to use
+- Employee Portal: parity_static.md + trimmed_smoke.md
+- Manager Portal: parity_static.md + chart_visual_spec.md
+- Analytics: parity_static.md + chart_visual_spec.md
+
+Focus checks (delta)
+1) Employee Portal — duplicate submit fix
+   - /vacation-requests → submit one new request
+   - Expect: single new row; All count +1; no console errors
+2) Manager Portal — coverage/adherence toggle
+   - Dashboard → toggle coverage/adherence
+   - Expect: two datasets per mode; legend/labels aligned; RU OK; no console errors
+3) Analytics — dual‑axis trend legend/labels
+   - Trend panel → verify primary vs secondary labels; legend items align to data‑axis
+
+Reply format
+| Demo | Check | Pass/Fail | Notes | Screenshot |
+| --- | --- | --- | --- | --- |
+| Employee Portal | EP‑1 duplicate submit |  |  |  |
+| Manager Portal | MP‑1 coverage/adherence toggle |  |  |  |
+| Analytics | AD‑1 dual‑axis legend/labels |  |  |  |
+
+Thanks.

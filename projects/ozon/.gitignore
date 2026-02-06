@@ -1,0 +1,11 @@
+__pycache__/
+*.py[cod]
+*.log
+*.html
+screenshots/
+venv/
+.env
+.pytest_cache/
+chromedriver*
+geckodriver.log
+*.zip

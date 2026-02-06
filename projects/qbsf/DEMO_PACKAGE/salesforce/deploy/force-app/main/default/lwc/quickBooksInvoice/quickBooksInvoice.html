@@ -1,0 +1,75 @@
+<template>
+    <lightning-quick-action-panel header="Create QuickBooks Invoice">
+        <div class="slds-p-horizontal_medium">
+            <!-- Loading State -->
+            <template if:true={isLoading}>
+                <div class="slds-align_absolute-center slds-m-vertical_medium">
+                    <lightning-spinner alternative-text="Creating invoice..." size="medium"></lightning-spinner>
+                    <p class="slds-m-top_medium">Creating QuickBooks invoice...</p>
+                </div>
+            </template>
+            
+            <!-- Success State -->
+            <template if:true={isSuccess}>
+                <div class="slds-box slds-theme_success">
+                    <div class="slds-text-align_center">
+                        <lightning-icon icon-name="utility:success" variant="success" size="large"></lightning-icon>
+                        <h2 class="slds-text-heading_medium slds-m-top_medium">Invoice Created Successfully!</h2>
+                        <p class="slds-m-top_small">Invoice ID: {invoiceId}</p>
+                        <p>Invoice Number: {invoiceNumber}</p>
+                    </div>
+                </div>
+            </template>
+            
+            <!-- Error State -->
+            <template if:true={error}>
+                <div class="slds-box slds-theme_error">
+                    <div class="slds-text-align_center">
+                        <lightning-icon icon-name="utility:error" variant="error" size="large"></lightning-icon>
+                        <h2 class="slds-text-heading_medium slds-m-top_medium">Error Creating Invoice</h2>
+                        <p class="slds-m-top_small">{error}</p>
+                    </div>
+                </div>
+            </template>
+            
+            <!-- Initial State -->
+            <template if:false={isLoading}>
+                <template if:false={isSuccess}>
+                    <template if:false={error}>
+                        <div class="slds-text-align_center">
+                            <lightning-icon icon-name="standard:invoice" size="large"></lightning-icon>
+                            <h2 class="slds-text-heading_medium slds-m-top_medium">Create QuickBooks Invoice</h2>
+                            <p class="slds-m-vertical_medium">This will create an invoice in QuickBooks for this opportunity.</p>
+                            <div class="slds-box slds-theme_default slds-m-vertical_medium">
+                                <dl class="slds-dl_horizontal">
+                                    <dt class="slds-dl_horizontal__label">Opportunity:</dt>
+                                    <dd class="slds-dl_horizontal__detail">{opportunityName}</dd>
+                                    <dt class="slds-dl_horizontal__label">Amount:</dt>
+                                    <dd class="slds-dl_horizontal__detail">
+                                        <lightning-formatted-number value={opportunityAmount} format-style="currency" currency-code="USD"></lightning-formatted-number>
+                                    </dd>
+                                    <dt class="slds-dl_horizontal__label">Account:</dt>
+                                    <dd class="slds-dl_horizontal__detail">{accountName}</dd>
+                                </dl>
+                            </div>
+                            <div class="slds-button-group-row slds-m-top_medium">
+                                <lightning-button 
+                                    variant="neutral" 
+                                    label="Cancel" 
+                                    onclick={handleCancel}
+                                    class="slds-m-right_small">
+                                </lightning-button>
+                                <lightning-button 
+                                    variant="brand" 
+                                    label="Create Invoice" 
+                                    onclick={handleCreateInvoice} 
+                                    disabled={isLoading}>
+                                </lightning-button>
+                            </div>
+                        </div>
+                    </template>
+                </template>
+            </template>
+        </div>
+    </lightning-quick-action-panel>
+</template>

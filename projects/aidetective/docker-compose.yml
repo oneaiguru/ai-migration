@@ -1,0 +1,40 @@
+# docker-compose.yml
+version: '3.8'
+
+services:
+  sherlock-bot:
+    build: .
+    container_name: sherlock-ai-bot
+    restart: always
+    volumes:
+      - ./data:/app/data
+      - ./media:/app/media
+      - ./logs:/app/logs
+    env_file:
+      - .env
+    environment:
+      - DATABASE_URL=sqlite+aiosqlite:///app/data/sherlock.db
+      - MEDIA_DIR=/app/media
+    networks:
+      - sherlock-network
+
+  # Optional PostgreSQL database (uncomment if needed)
+  # db:
+  #   image: postgres:14-alpine
+  #   container_name: sherlock-db
+  #   restart: always
+  #   environment:
+  #     - POSTGRES_USER=sherlock
+  #     - POSTGRES_PASSWORD=sherlock_password
+  #     - POSTGRES_DB=sherlock_db
+  #   volumes:
+  #     - postgres_data:/var/lib/postgresql/data
+  #   networks:
+  #     - sherlock-network
+
+networks:
+  sherlock-network:
+    driver: bridge
+
+volumes:
+  postgres_data:

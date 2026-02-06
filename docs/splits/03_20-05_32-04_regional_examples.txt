@@ -1,0 +1,100 @@
+# Regional Examples & Data Sources (20:05–32:04)
+
+## Section 1: Data Sourcing Approach (20:05–21:03)
+
+In short, you have such a thing that is very difficult for you to decorate or copy.  And since this is all very much tied to your product, it was important for you to tell me directly that I think that if you take this as a long-term idea, this is the most important feature of the product. Everything else is done perfectly, I do not know what else they will finish there, all these things like there are clean scales and everything else, they are just buns.  There are a lot of these solutions and others on the market, and so on.
+
+20:35
+But if you do the right data strategy and give people better forecasts, it's exactly the same as with foreclosure. You came and said, we know everything about you, where and who lives in the region, who has what business and how much money to take. It should be the same here.  Here the company once received very good unfair advantages due to just a large amount of data collected and went perfectly to the market and to some.
+
+## Section 2: Irkutsk Region Baseline (21:03–21:59)
+
+21:03
+Now we need to do the same, but only in the long term.  If we assume that Rosrisov data can help us with the forecast, then what data do we need? What should I ask Volodya Lipovchenko?  Do they collect this data?  On the one hand, I can ask Lipovchenko myself, but on the other hand, I would just ask the scheme, and what is there in general? That's if I can be given a schema, that is, I don't need the data itself.
+
+21:29
+because he told me, for example, I asked him a question at one time, but like listen, show me my exact site, you have data on it, it turned out that he has a lot of data, there is a direct deflated feeling that everything is that I can go to Roskodaster, here is everything that I saw in the public field, everything, in my opinion, everything was pumped out, and this is a lot, here, but in some structure, how up-to-date it is, I have no idea, that is, I need relevance, how often something was swung, when the last dates are there, how...
+
+## Section 3: Data Discovery & Validation (21:59–23:27)
+
+21:59
+[Misha] By region, constantly pumped out. Well, yes, yes, this is the regularity of updates, the data scheme—it seems to me that this will be enough for me to just say that it can be useful, and then we took a small piece and, I don't know, tried to build something more accurately for some small town. Conditional. I do not know how it will actually be, yes, because well, the problem that I am now facing is that all this is quite heavy data. That is, it's already even just your historical data is tons of information.
+
+22:28
+And to just build a lot of some experiments, you just need to dial the address, do some small pilots. It's not complicated, there's nothing complicated heavy there. Okay, please.  And the second question is let's just do it with you then let's go back to this big list of all sorts of different data and look at it again from the point of view of what we would like to do first, looking from two sides here. On the one hand, data availability.
+
+22:58
+funds are already there the weather is already there and on the other hand I have already been able to try to do so as I can already see how the forecast works some kind of its own set of priorities conditionally that I think that this order of priorities will give us already looked and it seems to me that there is weather and real estate tourism will have an impact
+
+## Section 4: Weather Data Integration (23:27–24:26)
+
+23:27
+you are awesome to influence yes but there I do not know how to focus on what there is all this first of all you are doing all this while working on parks they have a lot of this data you actually have it in these passes and so on the pass system is already working? yes, a very certain percentage of it is a curve yes, of course there are a lot of people walking around without skipping but nevertheless there are generally in addition to such an anthropogenic load, it's just stupid you can look at the correlation that is, you can see how they are
+
+23:57
+it also floats there just here we have the same Olkhonsky district and similar places everything will affect there because bad weather summer people don't go good weather people go yes and these correlations between the weather there and tourism and not the engine because you will see there for example there you can tourism is not visible normally yes no there are statistics and vito can give us
+
+## Section 5: Tourism & Real Estate Data (24:26–25:20)
+
+24:26
+How many points are there? This is a separate patrognosis. We must learn to predict the flow of tourists and migration, which depends on a million factors, including global geopolitics. And then it is already modest to start from this. But we are also making a waste of education here. We have a huge task ahead of us.
+
+24:50
+they predict flows yes well look jura we are not trying to predict with you that tomorrow there will be a pandemic and so we predicted that no one will throw out garbage on alkhon no in short the point is that sometimes very crooked data in a minimal amount already improves the forecast and therefore it is not a fact that we need some complex data you just need here stupidly just I can write there lm-katura just by analyzing the news feed about whether people are going or not going will already give us enough data
+
+## Section 6: Irkutsk-Specific Examples (25:20–26:45)
+
+25:20
+I'm not saying that this is exactly how it should be done there, I'm saying that the areas that have some data are tourism, real estate, weather, and so on, there are quite a lot of them, I specifically started with this large list, and now this elephant needs to be cut on the bushetex and correctly choose where to start. Here, on the one hand, what is available, on the other hand, what affects.  Here. Again, for me, for example, it is important to understand what.
+
+25:49
+Here I am talking about tourism. Why am I interested in the Arhonsky district and beyond? Because you sell in Sochi. There it will have an awesome value. Yes, but again. If we have historical data on waste for a couple of years, then all these seasonal fluctuations will already be remarkable.  Seasonal variations and everything related to tourism are very different things. First, you have it... Yes, Archonia is a seasonal fluctuation associated with tourism. Look. First of all, it's yes...
+
+26:18
+The first thing that you say correctly is that you need to understand what part, because, for example, if you say, ah, let's take the Horn district, but in Yelontsy, no tourists are affected, because no one goes there. You need to separate some sub-districts. This is a more complex story.  And the data on tourism gives you this segmentation to do correctly. And some areas are related to tourism. In the Irkutsk region, only Listvyanka, for example. Yes? And these are the moments for you, as it were... No one will do this manually.
+
+## Section 7: Local Events & Holidays (26:45–29:06)
+
+26:45
+So I say, you need to take data that will allow, for example, segmentation to be done correctly. Therefore, I'm not talking about what needs to be specifically targeted at tourism. Here we have a weather forecast, we also need tourism. I'm talking about the fact that most likely we are talking about some kind of long-term history, where this strategy is gradual... Let's try to take this data here. You'll need it. And it is important to me that you look at what I do from this point of view, because in itself this craft is quite useless right now.
+
+27:13
+[Yuri] Some part of the data can make it very useful. Some part of the data... Only we don't know what it is. Yes, yes, but that's what we're doing with you right now. Then we have a large list, it is absolutely incomprehensible, it is not clear from which side to approach. And once again we approach it only with the understanding, okay, let's see what we really have, what is easy to find. I will try, for example, to do a simple thing on my part. And what is generally from public data, here's how we found with the weather, you can take quite easily. And here is the third point that I remember there, this is...
+
+27:42
+[Misha] Local holidays or festivals. That's the most important thing.  Yes, city Day, scarlet In envelope districts, envelope days.  Yes, yes. There's a calendar, and that's why I started analyzing your news feeds. This is very close to what you said about tourism. That is, if we just start to parse well correctly, and what actually happened in the past years, apparently, okay, this is what is called a special event in call centers.
+
+28:11
+That is, they are like a calendar, we always have them there, we know for sure that on such and such a day on January 1 it is always fun.  Some of our May holidays are always moving, for example, we have all the replacements here. We need to understand, okay, we need to improve our work calendar. Some other types of calendars, where someone usually transfers them. By the way, we use it. I'm sure you use it. All organizations should also use it, so this is a very important thing.
+
+28:36
+Then, in addition to it, we understand some things that do not fit into the standard holidays, the labor calendar. The day of the city, the same scarlet sails will make us all dirty, all sunny, something else like that.  We are starting to tighten it up.  Then we say, okay, we've cleaned that up too, and we can still improve. Okay, let's just try to find out what we have in our news feeds. For example, we have some festival of off-road vehicles or marathons, people run around the city.
+
+## Section 8: Data Collection Automation (29:06–30:37)
+
+29:06
+And we also start some kind of story, which here we have there messes up, turns out to be there every year nagrezhuya. that is, if we train the system based on past data, that is, we mark it up in a given region, say that last year on such and such a day there was such and such a holiday, in such and such an area, what affected it, we immediately say.  And late last year, for example, the same day was, for example, in the same area, but on such and such a day.  And then we know that this holiday will be on
+
+29:36
+in such and such an area.  neurometer correlation.  Specifically, how much more waste there will be on this day.  If it can be calculated.  This is the idea and task, so that there is not too much manual work.  Manual markup, I think, will be the most necessary option here.  There won't be very many of them.  In each city there are 5-6 of them per year at most.
+
+30:06
+[Misha] And we know where, so location is also important. The concentration of people occurs somewhere there, as in tourist areas. So that the system does not try to analyze the impact of this day, we just need to look for this peak. Well, look, let me tell you the simplest thing about this map: we just need geodata. Because, for example, all the beaches and everything that is near them—when it is warm, there will always be a lot of garbage. Just very simple. Tourist sites, ski resorts, and so on.
+
+## Section 9: Sochi Case Study (30:37–32:04)
+
+30:37
+[Yuri] Yes, but this information, such a seasonal fluctuation that repeats itself, you will already see them in history, was thrown into the PIPELINE. But these are the point ones, it will be... I tell you that there is a very big difference when I take the Irkutsk region and take a Leaf.  Or I'll take Baikalsk there and Mount Sobolinaya there, yes, there specifically. And this data is exactly what the map, news feed, tourist data, and so on give you. That is, here...
+
+31:04
+[Misha] The whole point of what I'm trying to convey to you is that you already have a lot of people who just sit around, well, doing this job of predicting dispatching, can be very automated. And now we will put even more people in jail, who will be even more engaged in some kind of markup. Let's do as much of this work automatically as possible just by collecting data. If you can do it with an automaton unreliably, if it doesn't mess up? With a review, human review is mandatory. That is, you once said that a person should really celebrate a special event later.
+
+31:34
+but who's going to get it for him, who's all of it? That's the job, how to collect this data in advance, I just want to do so that then people, specific people will analyze and understand the usefulness of this data. Not only did they mark up, but this data is good, not good, they then saw, they really give a return on investment in the fact that we were looking for this data or not. That is, my idea is that it should be some kind of machine that continuously collects this data. That according to all this data, some tourist stuff, and so on, it makes no sense to take it once and that's it. As with the weather, it seems to continue to rake in.
+
+32:04
+
+---
+## Raw Timestamps
+Original timestamps: 20:05–32:04
+Source: jury-en-EDITED-3-FIXED.txt lines 143-217

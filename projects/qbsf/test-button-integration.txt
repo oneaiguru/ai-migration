@@ -1,0 +1,54 @@
+#!/bin/bash
+# Test script for QuickBooks-Salesforce button integration
+
+echo "=== Testing QuickBooks-Salesforce Button Integration ==="
+echo ""
+
+# Configuration - update these values
+MIDDLEWARE_URL="https://3a62-166-1-160-232.ngrok-free.app"  # Your ngrok URL
+API_KEY="quickbooks_salesforce_api_key_2025"
+ORG_ALIAS="myorg"
+
+# Colors for output
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+RED='\033[0;31m'
+NC='\033[0m' # No Color
+
+# Check if middleware is running
+echo -e "${YELLOW}1. Checking middleware connection...${NC}"
+curl -s "${MIDDLEWARE_URL}/health" -H "X-API-Key: ${API_KEY}" | jq .
+if [ $? -ne 0 ]; then
+    echo -e "${RED}Error: Cannot connect to middleware at ${MIDDLEWARE_URL}${NC}"
+    echo "Please ensure your middleware is running with ngrok"
+    exit 1
+fi
+
+echo ""
+echo -e "${YELLOW}2. Checking auth status...${NC}"
+curl -s "${MIDDLEWARE_URL}/auth/status" -H "X-API-Key: ${API_KEY}" | jq .
+
+echo ""
+echo -e "${YELLOW}3. Test connection to both systems...${NC}"
+curl -s "${MIDDLEWARE_URL}/api/test-connection" -H "X-API-Key: ${API_KEY}" | jq .
+
+echo ""
+echo -e "${GREEN}=== Manual Button Test Instructions ===${NC}"
+echo ""
+echo "1. Open Salesforce in your browser"
+echo "2. Navigate to an Opportunity record (preferably in 'Closed Won' stage)"
+echo "3. Click the 'Create QuickBooks Invoice' button"
+echo "4. Monitor the console logs here for activity"
+echo "5. Check QuickBooks to verify the invoice was created"
+echo ""
+echo -e "${YELLOW}Monitoring middleware logs...${NC}"
+echo "(Press Ctrl+C to stop monitoring)"
+echo ""
+
+# If running middleware locally, show logs
+if [ -d "final-integration" ]; then
+    cd final-integration
+    npm start
+else
+    echo "Middleware not found locally. Monitor your ngrok session for requests."
+fi

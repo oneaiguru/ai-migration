@@ -1,7 +1,8 @@
 # AGENTS
 
-**Always push with the Codex wrapper**
-- Use `scripts/dev/push_with_codex.sh` (or alias `git pushcodex` if configured) instead of raw `git push`. It posts the required `@codex review` comment automatically. Never skip this.
+**Push workflow**
+- When creating a brand-new PR, you may push via `gh` (no wrapper) to open it.
+- Once a PR exists, use `scripts/dev/push_with_codex.sh` (or `git pushcodex`) for all subsequent pushes so the @codex review comment is posted.
 - Before pushing or using `gh`, ensure the active account is `oneaiguru`: `gh auth status -h github.com` (switch with `gh auth switch -u oneaiguru` if needed).
 - Exception: when explicitly instructed to merge Codex feedback tooling directly to `main` (no PR), commit on `main` and push as directed.
 

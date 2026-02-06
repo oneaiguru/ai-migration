@@ -21,9 +21,9 @@ Salesforce Opportunity (Stage Change)
 ## 🔧 Critical Configurations
 
 ### **Working API Authentication**
-- **API Key**: `UPCzgiXsPuXB4GiLuuzjqtXY4+4mGt+vXOmU4gaNCvM=` ✅ VERIFIED WORKING
+- **API Key**: `$API_KEY` ✅ VERIFIED WORKING
 - **Middleware**: `https://sqint.atocomm.eu` ✅ RESPONDING
-- **Health Check**: `curl -H "X-API-Key: UPCzgiXsPuXB4GiLuuzjqtXY4+4mGt+vXOmU4gaNCvM=" https://sqint.atocomm.eu/api/health`
+- **Health Check**: `curl -H "X-API-Key: $API_KEY" https://sqint.atocomm.eu/api/health`
 - **Expected Response**: `{"success":true,"status":"healthy"}`
 
 ### **Salesforce Org Details**
@@ -34,12 +34,12 @@ Salesforce Opportunity (Stage Change)
 ### **Custom Settings (CONFIGURED)**
 ```
 QB_Integration_Settings__c (ID: a0nSo000002xKO9IAM):
-├── API_Key__c: UPCzgiXsPuXB4GiLuuzjqtXY4+4mGt+vXOmU4gaNCvM=
+├── API_Key__c: $API_KEY
 ├── Middleware_Endpoint__c: https://sqint.atocomm.eu
 └── QB_Realm_ID__c: 9341454378379755
 
 QuickBooks_Settings__c (ID: a0oSo00000DvP8gIAF):
-├── API_Key__c: UPCzgiXsPuXB4GiLuuzjqtXY4+4mGt+vXOmU4gaNCvM=
+├── API_Key__c: $API_KEY
 ├── Middleware_URL__c: https://sqint.atocomm.eu
 └── QB_Realm_ID__c: 9341454378379755
 ```
@@ -128,7 +128,7 @@ sf apex run test --code-coverage --synchronous -o sanboxsf
 sf project deploy validate --source-dir force-app/main/default/ --test-level RunLocalTests -o sanboxsf
 
 # Test API connectivity
-curl -H "X-API-Key: UPCzgiXsPuXB4GiLuuzjqtXY4+4mGt+vXOmU4gaNCvM=" https://sqint.atocomm.eu/api/health
+curl -H "X-API-Key: $API_KEY" https://sqint.atocomm.eu/api/health
 ```
 
 ## 🔄 Integration Flow

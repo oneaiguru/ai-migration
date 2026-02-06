@@ -144,10 +144,10 @@ Then query the result after a few seconds.
 **Middleware Server:**
 - Host: `pve.atocomm.eu` port `2323`
 - User: `roman`
-- Password: `3Sd5R069jvuy[3u6yj`
+- Password: `$SSH_PASS`
 - Path: `/opt/qb-integration/`
 - URL: `https://sqint.atocomm.eu`
-- API Key: `UPCzgiXsPuXB4GiLuuzjqtXY4+4mGt+vXOmU4gaNCvM=`
+- API Key: `$API_KEY`
 
 **QuickBooks:**
 - Realm ID: `9130354519120066`
@@ -177,12 +177,12 @@ Then query the result after a few seconds.
 
 ### Check Middleware Health
 ```bash
-curl -s -H "X-API-Key: UPCzgiXsPuXB4GiLuuzjqtXY4+4mGt+vXOmU4gaNCvM=" https://sqint.atocomm.eu/api/health
+curl -s -H "X-API-Key: $API_KEY" https://sqint.atocomm.eu/api/health
 ```
 
 ### Check Middleware Logs
 ```bash
-sshpass -p "3Sd5R069jvuy[3u6yj" ssh -p 2323 roman@pve.atocomm.eu "tail -50 /opt/qb-integration/server.log"
+sshpass -p "$SSH_PASS" ssh -p 2323 roman@pve.atocomm.eu "tail -50 /opt/qb-integration/server.log"
 ```
 
 ### Query Opportunity Sync Status

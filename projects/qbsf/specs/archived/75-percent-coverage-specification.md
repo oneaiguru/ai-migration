@@ -128,7 +128,7 @@ sf apex run test --code-coverage --synchronous -o sanboxsf | grep "Org Wide Cove
 sf project deploy validate --source-dir force-app/main/default/ --test-level RunLocalTests -o sanboxsf
 
 # Test middleware connectivity
-curl -H "X-API-Key: UPCzgiXsPuXB4GiLuuzjqtXY4+4mGt+vXOmU4gaNCvM=" https://sqint.atocomm.eu/api/health
+curl -H "X-API-Key: $API_KEY" https://sqint.atocomm.eu/api/health
 ```
 
 ## ⚠️ Risk Mitigation

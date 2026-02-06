@@ -497,6 +497,7 @@ class QuickBooksAPI {
    */
   async findOrCreateCustomer(customerData) {
     const operationId = `customer-${Date.now()}`;
+    let trimmedDisplayName = null;
 
     const normalizeNameForMatch = (name) => String(name || '')
       .trim()
@@ -561,6 +562,11 @@ class QuickBooksAPI {
         return response.QueryResponse?.Customer || [];
       };
 
+      const findExactMatch = () => Array.from(candidatesById.values()).find(
+        (customer) => targetNormalized.has(normalizeNameForMatch(customer.DisplayName)) ||
+          targetNormalized.has(normalizeNameForMatch(customer.CompanyName))
+      );
+
       for (const variant of variants) {
         try {
           const fields = ['DisplayName', 'CompanyName', 'FullyQualifiedName'];
@@ -576,8 +582,14 @@ class QuickBooksAPI {
           };
 
           await collectMatches(false);
-          if (candidatesById.size === 0) {
+          let exactMatch = findExactMatch();
+          if (!exactMatch) {
             await collectMatches(true);
+            exactMatch = findExactMatch();
+          }
+
+          if (exactMatch) {
+            return exactMatch;
           }
         } catch (lookupError) {
           logger.warn('Failed to look up customer after duplicate-name error', {
@@ -588,14 +600,6 @@ class QuickBooksAPI {
             realmId: this.realmId
           });
         }
-
-        const exactMatch = Array.from(candidatesById.values()).find(
-          (customer) => targetNormalized.has(normalizeNameForMatch(customer.DisplayName)) ||
-            targetNormalized.has(normalizeNameForMatch(customer.CompanyName))
-        );
-        if (exactMatch) {
-          return exactMatch;
-        }
       }
 
       const candidates = Array.from(candidatesById.values());
@@ -605,13 +609,99 @@ class QuickBooksAPI {
 
       return null;
     };
+
+    const resolveNameConflictInOtherEntities = async (displayName, companyName) => {
+      const nameCandidates = [displayName, companyName]
+        .map((name) => String(name || '').trim())
+        .filter(Boolean);
+      if (nameCandidates.length === 0) {
+        return null;
+      }
+
+      const uniqueNames = Array.from(new Set(nameCandidates));
+      const entityDefinitions = [
+        { entity: 'Vendor', fields: ['DisplayName', 'CompanyName'] },
+        { entity: 'Employee', fields: ['DisplayName'] },
+        { entity: 'OtherName', fields: ['DisplayName'] }
+      ];
+
+      const queryExactMatch = async (entity, field, name) => {
+        const escapedName = name.replace(/'/g, "\\'");
+        const selectFields = ['Id', 'DisplayName'];
+        if (entity === 'Vendor') {
+          selectFields.push('CompanyName', 'Active');
+        }
+        const query = encodeURIComponent(
+          `SELECT ${selectFields.join(', ')} FROM ${entity} WHERE ${field} = '${escapedName}' MAXRESULTS 1`
+        );
+        const response = await this.request('get', `query?query=${query}`);
+        return response.QueryResponse?.[entity]?.[0] || null;
+      };
+
+      for (const { entity, fields } of entityDefinitions) {
+        for (const field of fields) {
+          for (const name of uniqueNames) {
+            try {
+              const record = await queryExactMatch(entity, field, name);
+              if (record) {
+                return { entity, record, name };
+              }
+            } catch (lookupError) {
+              logger.warn('Failed to look up name conflict entity', {
+                operationId,
+                entity,
+                field,
+                name,
+                error: lookupError.message,
+                realmId: this.realmId
+              });
+            }
+          }
+        }
+      }
+
+      return null;
+    };
+
+    const buildNameConflictError = (entity, record, displayName) => {
+      const entityLabel = entity || 'entity';
+      const recordName = record?.DisplayName || record?.CompanyName || displayName || 'unknown name';
+      const activeLabel = record?.Active === false ? 'inactive' : record?.Active === true ? 'active' : null;
+      const activeDescriptor = activeLabel ? ` ${activeLabel}` : '';
+      const error = new Error(
+        `QuickBooks name conflict: "${recordName}" matches an existing${activeDescriptor} ${entityLabel}. ` +
+          `Rename the ${entityLabel} or change the Salesforce Account name before creating a Customer.`
+      );
+      error.code = 'QB_NAME_CONFLICT';
+      error.statusCode = 422;
+      return error;
+    };
+
+    const isDuplicateNameError = (err) => {
+      const message = String(err?.message || '');
+      const normalizedMessage = message.toLowerCase();
+      const qbErrors = err?.response?.data?.Fault?.Error;
+      const duplicateFromResponse = Array.isArray(qbErrors) && qbErrors.some((qbError) => {
+        const code = String(qbError?.code || '');
+        const detail = `${qbError?.Message || ''} ${qbError?.Detail || ''}`.toLowerCase();
+        return code === '6240' ||
+          detail.includes('duplicate') ||
+          detail.includes('already exists') ||
+          detail.includes('name is already in use');
+      });
+
+      return duplicateFromResponse ||
+        normalizedMessage.includes('duplicate') ||
+        normalizedMessage.includes('already exists') ||
+        normalizedMessage.includes('name is already in use');
+    };
     
     try {
       if (!customerData || !customerData.DisplayName) {
         throw new Error('Invalid customer data: DisplayName is required');
       }
 
-      const trimmedDisplayName = customerData.DisplayName.trim();
+      trimmedDisplayName = customerData.DisplayName.trim();
       if (!trimmedDisplayName) {
         throw new Error('Invalid customer data: DisplayName is required');
       }
@@ -737,12 +827,8 @@ class QuickBooksAPI {
       
       return { id: newCustomerId, currency: newCustomerCurrency, isExisting: false };
     } catch (error) {
-      const errorMessage = String(error?.message || '');
-      const normalizedMessage = errorMessage.toLowerCase();
-      const isDuplicateError =
-        normalizedMessage.includes('duplicate') ||
-        normalizedMessage.includes('already exists') ||
-        normalizedMessage.includes('name is already in use');
+      const qbErrors = error?.response?.data?.Fault?.Error;
+      const isDuplicateError = isDuplicateNameError(error);
       
       logger.error('Error finding/creating customer in QuickBooks:', {
         operationId,
@@ -753,13 +839,14 @@ class QuickBooksAPI {
         customerEmail: customerData?.PrimaryEmailAddr?.Address || 'NO_EMAIL',
         operation: error.message.includes('query') ? 'find-customer' : 'create-customer',
         realmId: this.realmId,
+        qbErrors,
         isDuplicateError
       });
       
       // Provide specific error messages based on the error type
       if (isDuplicateError) {
         const resolvedCustomer = await resolveExistingCustomerByName(
-          customerData?.DisplayName,
+          trimmedDisplayName || customerData?.DisplayName,
           customerData?.CompanyName
         );
         if (resolvedCustomer) {
@@ -769,6 +856,79 @@ class QuickBooksAPI {
             currency: resolveCustomerCurrency(resolvedCustomer),
             isExisting: true
           };
+        }
+
+        const nameConflict = await resolveNameConflictInOtherEntities(
+          trimmedDisplayName || customerData?.DisplayName,
+          customerData?.CompanyName
+        );
+        if (nameConflict) {
+          const autoSuffixEnabled = Boolean(this.oauthConfig?.duplicateNameAutoSuffix);
+          if (!autoSuffixEnabled) {
+            throw buildNameConflictError(
+              nameConflict.entity,
+              nameConflict.record,
+              trimmedDisplayName || customerData?.DisplayName
+            );
+          }
+
+          const configuredSuffix = typeof this.oauthConfig?.duplicateNameSuffix === 'string' &&
+            this.oauthConfig.duplicateNameSuffix.length > 0
+            ? this.oauthConfig.duplicateNameSuffix
+            : ' (SF)';
+          const baseDisplayName = trimmedDisplayName || customerData?.DisplayName?.trim() || '';
+          const suffixedDisplayName = baseDisplayName.endsWith(configuredSuffix)
+            ? baseDisplayName
+            : `${baseDisplayName}${configuredSuffix}`;
+
+          if (!baseDisplayName || suffixedDisplayName === baseDisplayName) {
+            throw buildNameConflictError(
+              nameConflict.entity,
+              nameConflict.record,
+              baseDisplayName || customerData?.DisplayName
+            );
+          }
+
+          const suffixedCustomerData = {
+            ...customerData,
+            DisplayName: suffixedDisplayName,
+            CompanyName: baseDisplayName
+          };
+
+          logger.info('Creating QuickBooks customer with suffix after name conflict', {
+            operationId,
+            customerName: baseDisplayName,
+            suffixedName: suffixedDisplayName,
+            conflictEntity: nameConflict.entity,
+            realmId: this.realmId
+          });
+
+          try {
+            const createResponse = await this.request('post', 'customer', suffixedCustomerData);
+            const createdCustomer = createResponse.Customer || {};
+            const newCustomerId = createdCustomer.Id;
+            const newCustomerCurrency = createdCustomer.CurrencyRef?.value ||
+              suffixedCustomerData.CurrencyRef?.value ||
+              null;
+
+            logger.info('Successfully created suffixed customer in QuickBooks', {
+              operationId,
+              customerId: newCustomerId,
+              customerName: suffixedDisplayName,
+              realmId: this.realmId
+            });
+
+            return { id: newCustomerId, currency: newCustomerCurrency, isExisting: false };
+          } catch (suffixError) {
+            if (isDuplicateNameError(suffixError)) {
+              throw buildNameConflictError(
+                nameConflict.entity,
+                nameConflict.record,
+                suffixedDisplayName
+              );
+            }
+            throw suffixError;
+          }
         }
 
         throw new Error(

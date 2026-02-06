@@ -1,0 +1,48 @@
+{
+  "name": "recharts.org",
+  "version": "3.0.0",
+  "description": "the website of recharts",
+  "private": true,
+  "scripts": {
+    "build": "vite build",
+    "preview": "vite preview",
+    "start": "vite"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/recharts/recharts.git"
+  },
+  "author": "recharts group",
+  "devDependencies": {
+    "@babel/plugin-proposal-class-properties": "^7.12.1",
+    "@babel/plugin-proposal-decorators": "^7.28.0",
+    "@babel/preset-env": "^7.28.3",
+    "@babel/preset-react": "^7.27.1",
+    "@types/react": "^18.3.1",
+    "@types/react-dom": "^18.3.1",
+    "@types/react-helmet": "^6.1.11",
+    "@vitejs/plugin-react": "^4.7.0",
+    "sass": "^1.93.2",
+    "@testing-library/react":"^16.3.0",
+    "vite": "^6.3.6",
+    "vitest": "^3.2.4"
+  },
+  "dependencies": {
+    "@monaco-editor/react": "^4.7.0",
+    "@stackblitz/sdk": "^1.11.0",
+    "d3-scale": "^4.0.2",
+    "d3-shape": "^2.0.0",
+    "highlight.js": "^11.11.1",
+    "monaco-editor": "^0.52.2",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-ga4": "^2.1.0",
+    "react-helmet": "^6.1.0",
+    "react-monaco-editor": "^0.59.0",
+    "react-router": "^7.9.2",
+    "react-runner": "^1.0.5",
+    "recharts": "^3.2.1",
+    "simple-line-icons": "^2.5.5"
+  },
+  "license": "MIT"
+}

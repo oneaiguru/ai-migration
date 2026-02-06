@@ -45,6 +45,11 @@ const resolveExistingCustomerCurrency = async (qbApi, customerId, customerCurren
   return null;
 };
 
+const resolveInvoiceCurrencyPolicy = () => {
+  const raw = String(process.env.QB_INVOICE_CURRENCY_POLICY || 'opportunity').trim().toLowerCase();
+  return raw === 'customer' ? 'customer' : 'opportunity';
+};
+
 // Protect all API routes with API key authentication
 router.use(apiKeyAuth);
 
@@ -180,25 +185,46 @@ router.post('/opportunity-to-invoice', async (req, res, next) => {
       );
     }
 
+    const invoiceCurrencyPolicy = resolveInvoiceCurrencyPolicy();
     let targetCurrency = sourceCurrency;
-    if (isExistingCustomer) {
-      const resolvedCurrency = await resolveExistingCustomerCurrency(
-        qbApi,
-        qbCustomerId,
-        customerCurrency
-      );
-      if (!resolvedCurrency) {
-        throw new AppError(
-          `Existing customer ${qbCustomerId} currency is unavailable in QuickBooks`,
-          422,
-          'QB_CUSTOMER_CURRENCY_UNKNOWN'
+
+    if (invoiceCurrencyPolicy === 'opportunity') {
+      // Roman client checkpoint: force Opportunity currency if configured
+      targetCurrency = sourceCurrency;
+
+      if (isExistingCustomer) {
+        const resolvedCurrency = await resolveExistingCustomerCurrency(
+          qbApi,
+          qbCustomerId,
+          customerCurrency
         );
+        if (resolvedCurrency && resolvedCurrency !== sourceCurrency) {
+          logger.info(
+            `Note: Existing QB customer ${qbCustomerId} has ${resolvedCurrency}, ` +
+            `using Opportunity currency ${sourceCurrency} (QB_INVOICE_CURRENCY_POLICY=opportunity)`
+          );
+        }
       }
-      targetCurrency = resolvedCurrency;
     } else {
-      const createdCurrency = normalizeCurrencyCode(customerCurrency);
-      if (createdCurrency) {
-        targetCurrency = createdCurrency;
+      if (isExistingCustomer) {
+        const resolvedCurrency = await resolveExistingCustomerCurrency(
+          qbApi,
+          qbCustomerId,
+          customerCurrency
+        );
+        if (!resolvedCurrency) {
+          throw new AppError(
+            `Existing customer ${qbCustomerId} currency is unavailable in QuickBooks`,
+            422,
+            'QB_CUSTOMER_CURRENCY_UNKNOWN'
+          );
+        }
+        targetCurrency = resolvedCurrency;
+      } else {
+        const createdCurrency = normalizeCurrencyCode(customerCurrency);
+        if (createdCurrency) {
+          targetCurrency = createdCurrency;
+        }
       }
     }
 
@@ -207,21 +233,50 @@ router.post('/opportunity-to-invoice', async (req, res, next) => {
     let warningCode = null;
     let warningMessage = null;
 
-    if (sourceCurrency !== targetCurrency) {
+    let conversionSourceCurrency = sourceCurrency;
+    let conversionSourceType = 'opportunity';
+
+    // If OpportunityLineItems have different currency than Opportunity, convert from product currency
+    let productCurrency = null;
+    if (opportunityData.products && opportunityData.products.length > 0) {
+      productCurrency = normalizeCurrencyCode(opportunityData.products[0].CurrencyIsoCode);
+    }
+
+    if (productCurrency && productCurrency !== sourceCurrency) {
+      conversionSourceCurrency = productCurrency;
+      conversionSourceType = 'product';
+    }
+
+    if (conversionSourceCurrency !== targetCurrency) {
       const asOfDate = new Date().toISOString().split('T')[0];
       try {
-        fxRate = await qbApi.getExchangeRate(sourceCurrency, targetCurrency, asOfDate);
+        fxRate = await qbApi.getExchangeRate(conversionSourceCurrency, targetCurrency, asOfDate);
       } catch (fxError) {
-        throw new AppError(`FX rate API error: ${fxError.message}`, 502, 'FX_RATE_API_ERROR');
+        throw new AppError(
+          `FX rate API error: ${fxError.message}`,
+          502,
+          conversionSourceType === 'product' ? 'PRODUCT_CURRENCY_CONVERSION_ERROR' : 'FX_RATE_API_ERROR'
+        );
       }
       const normalizedFxRate = normalizeFxRate(fxRate);
       if (!normalizedFxRate || normalizedFxRate <= 0) {
-        throw new AppError(`No FX rate for ${sourceCurrency} -> ${targetCurrency} as of ${asOfDate}`, 422, 'FX_RATE_MISSING');
+        throw new AppError(
+          `No FX rate for ${conversionSourceCurrency} -> ${targetCurrency} as of ${asOfDate}`,
+          422,
+          conversionSourceType === 'product' ? 'PRODUCT_FX_RATE_MISSING' : 'FX_RATE_MISSING'
+        );
       }
       fxRate = normalizedFxRate;
       convertedProducts = convertProductsForCurrency(opportunityData.products, fxRate);
-      warningCode = 'CURRENCY_MISMATCH_CONVERTED';
-      warningMessage = `Converted ${sourceCurrency} to ${targetCurrency} at ${fxRate} as of ${asOfDate}`;
+
+      if (conversionSourceType === 'product' && targetCurrency === sourceCurrency) {
+        warningCode = 'PRODUCT_CURRENCY_CONVERTED';
+        warningMessage = `Converted product prices from ${conversionSourceCurrency} to ${targetCurrency} at ${fxRate} as of ${asOfDate}`;
+        logger.info(warningMessage);
+      } else {
+        warningCode = 'CURRENCY_MISMATCH_CONVERTED';
+        warningMessage = `Converted ${conversionSourceCurrency} to ${targetCurrency} at ${fxRate} as of ${asOfDate}`;
+      }
     }
     
     // Transform Opportunity to Invoice (include billing email for payment link)
@@ -239,10 +294,10 @@ router.post('/opportunity-to-invoice', async (req, res, next) => {
     logger.info('Creating Invoice in QuickBooks');
     // Prefer TxnDate for FX lookup when available
     const txnDate = invoiceData?.TxnDate || null;
-    if (txnDate && fxRate === null && sourceCurrency !== targetCurrency) {
+    if (txnDate && fxRate === null && conversionSourceCurrency !== targetCurrency) {
       // If fxRate not already fetched (shouldn't happen), attempt with txnDate
       try {
-        fxRate = await qbApi.getExchangeRate(sourceCurrency, targetCurrency, txnDate);
+        fxRate = await qbApi.getExchangeRate(conversionSourceCurrency, targetCurrency, txnDate);
       } catch (fxError) {
         logger.warn(`FX rate lookup on txnDate ${txnDate} failed: ${fxError.message}`);
       }
@@ -519,6 +574,25 @@ router.post('/update-invoice', async (req, res, next) => {
       const customerRecord = customerResponse.Customer || customerResponse.QueryResponse?.Customer?.[0];
       targetCurrency = normalizeCurrencyCode(customerRecord?.CurrencyRef?.value);
     }
+    let fxRate = null;
+    let convertedProducts = opportunityData.products;
+    let warningCode = null;
+    let warningMessage = null;
+
+    if (!targetCurrency) {
+      const companyCurrency = await qbApi.getCompanyCurrency();
+      if (companyCurrency) {
+        targetCurrency = companyCurrency;
+        warningCode = 'CURRENCY_DEFAULTED';
+        warningMessage = `Using QuickBooks company currency ${companyCurrency} because CurrencyRef is missing for invoice ${qbInvoiceId}`;
+        logger.info(warningMessage);
+      } else {
+        targetCurrency = sourceCurrency;
+        warningCode = 'CURRENCY_DEFAULTED';
+        warningMessage = `CurrencyRef missing; defaulting to source currency ${sourceCurrency}`;
+        logger.warn(`CurrencyRef missing for invoice ${qbInvoiceId}; defaulting to source currency ${sourceCurrency}`);
+      }
+    }
     if (!targetCurrency) {
       throw new AppError(
         `Unable to determine currency for invoice ${qbInvoiceId}`,
@@ -526,11 +600,6 @@ router.post('/update-invoice', async (req, res, next) => {
         'QB_CUSTOMER_CURRENCY_UNKNOWN'
       );
     }
-
-    let fxRate = null;
-    let convertedProducts = opportunityData.products;
-    let warningCode = null;
-    let warningMessage = null;
 
     if (sourceCurrency !== targetCurrency) {
       const asOfDate = invoiceRecord.TxnDate || new Date().toISOString().split('T')[0];

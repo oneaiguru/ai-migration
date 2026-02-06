@@ -1,0 +1,87 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --ink: 8 17 27;
+  --slate: 22 33 45;
+  --tide: 45 212 191;
+  --sun: 251 191 36;
+  --rose: 244 91 105;
+  --paper: 248 244 236;
+  --mist: 226 232 240;
+  --lime: 134 239 172;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  min-height: 100vh;
+  color: rgb(var(--paper));
+  background-color: rgb(var(--ink));
+  background-image:
+    radial-gradient(circle at top, rgba(45, 212, 191, 0.22), transparent 55%),
+    radial-gradient(circle at 80% 20%, rgba(251, 191, 36, 0.15), transparent 45%),
+    linear-gradient(135deg, rgba(15, 23, 42, 0.96), rgba(10, 18, 28, 0.98));
+  background-attachment: fixed;
+}
+
+a {
+  color: inherit;
+}
+
+@layer components {
+  .glass {
+    @apply border border-white/10 bg-white/5 backdrop-blur-md;
+  }
+
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 rounded-full bg-tide px-6 py-3 text-sm font-semibold text-ink shadow-lg shadow-tide/30 transition hover:scale-[1.02] hover:bg-tide/90;
+  }
+
+  .btn-outline {
+    @apply inline-flex items-center justify-center gap-2 rounded-full border border-white/30 px-6 py-3 text-sm font-semibold text-white transition hover:border-white/60 hover:bg-white/10;
+  }
+
+  .btn-ghost {
+    @apply inline-flex items-center justify-center gap-2 rounded-full border border-white/10 px-5 py-2 text-xs font-semibold text-white/80 transition hover:border-white/40 hover:text-white;
+  }
+
+  .card {
+    @apply glass rounded-3xl p-6 shadow-[0_20px_60px_rgba(8,17,27,0.6)];
+  }
+
+  .chip {
+    @apply rounded-full bg-white/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-white/70;
+  }
+
+  .tag {
+    @apply rounded-full bg-white/10 px-3 py-1 text-xs font-semibold text-white/70;
+  }
+
+  .divider {
+    @apply h-px w-full bg-gradient-to-r from-transparent via-white/20 to-transparent;
+  }
+
+  .input-field {
+    @apply w-full rounded-2xl border border-white/15 bg-white/5 px-4 py-3 text-sm text-white placeholder:text-white/50 focus:border-tide/60 focus:outline-none focus:ring-2 focus:ring-tide/30;
+  }
+
+  .toggle {
+    @apply relative inline-flex h-6 w-11 items-center rounded-full border border-white/10 bg-white/10 transition;
+  }
+
+  .toggle span {
+    @apply inline-block h-4 w-4 translate-x-1 rounded-full bg-white transition;
+  }
+
+  .toggle[data-on="true"] {
+    @apply border-tide/60 bg-tide/40;
+  }
+
+  .toggle[data-on="true"] span {
+    @apply translate-x-6 bg-white;
+  }
+}

@@ -424,7 +424,7 @@ deployment/sf-qb-integration-final/     # Middleware source code
 
 ### Working Configuration (DO NOT CHANGE)
 ```
-API Key:          UPCzgiXsPuXB4GiLuuzjqtXY4+4mGt+vXOmU4gaNCvM=
+API Key:          $API_KEY
 Middleware URL:   https://sqint.atocomm.eu
 SF Sandbox Org:   olga.rybak@atocomm2023.eu.sanboxsf
 SF Instance URL:  https://customer-inspiration-2543.my.salesforce.com
@@ -434,7 +434,7 @@ QB Realm ID:      9341454378379755
 ### Server Access
 ```
 SSH:     ssh roman@pve.atocomm.eu -p2323
-Password: 3Sd5R069jvuy[3u6yj
+Password: $SSH_PASS
 Path:    /opt/qb-integration/
 ```
 
@@ -444,7 +444,7 @@ Path:    /opt/qb-integration/
 sf org display --target-org sanboxsf
 
 # Test middleware
-curl -H "X-API-Key: UPCzgiXsPuXB4GiLuuzjqtXY4+4mGt+vXOmU4gaNCvM=" \
+curl -H "X-API-Key: $API_KEY" \
   https://sqint.atocomm.eu/api/health
 
 # Run tests with coverage

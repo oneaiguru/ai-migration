@@ -116,7 +116,7 @@ sf project deploy start \
 
 ### Step 1: Verify Deployment
 ```bash
-curl -H "X-API-Key: UPCzgiXsPuXB4GiLuuzjqtXY4+4mGt+vXOmU4gaNCvM=" \
+curl -H "X-API-Key: $API_KEY" \
   https://sqint.atocomm.eu/api/health
 # Expected: {"success":true,"status":"healthy"}
 ```
@@ -156,7 +156,7 @@ sf data query \
 ### Step 4: Check Middleware Logs
 ```bash
 ssh -p 2323 roman@pve.atocomm.eu
-# Password: 3Sd5R069jvuy[3u6yj
+# Password: $SSH_PASS
 tail -200 /tmp/server.log | grep -i "payment\|link\|obtained"
 # Look for: "Payment link obtained: no" or "invoiceLink": null
 ```
@@ -188,13 +188,13 @@ tail -200 /tmp/server.log | grep -i "payment\|link\|obtained"
 - URL: `https://customer-inspiration-2543.my.salesforce.com`
 
 **Middleware**:
-- API Key: `UPCzgiXsPuXB4GiLuuzjqtXY4+4mGt+vXOmU4gaNCvM=`
+- API Key: `$API_KEY`
 - URL: `https://sqint.atocomm.eu`
 
 **Middleware Server (SSH)**:
 - Host: `pve.atocomm.eu` port `2323`
 - User: `roman`
-- Password: `3Sd5R069jvuy[3u6yj`
+- Password: `$SSH_PASS`
 - Path: `/opt/qb-integration/`
 - Logs: `/tmp/server.log`
 
@@ -220,7 +220,7 @@ tail -200 /tmp/server.log | grep -i "payment\|link\|obtained"
 
 ```bash
 ssh -p 2323 roman@pve.atocomm.eu
-# Password: 3Sd5R069jvuy[3u6yj
+# Password: $SSH_PASS
 
 cd /opt/qb-integration
 pkill -f "node src/server.js"
@@ -229,7 +229,7 @@ node src/server.js > /tmp/server.log 2>&1 &
 sleep 3
 
 # Verify
-curl -H "X-API-Key: UPCzgiXsPuXB4GiLuuzjqtXY4+4mGt+vXOmU4gaNCvM=" \
+curl -H "X-API-Key: $API_KEY" \
   https://sqint.atocomm.eu/api/health
 ```
 

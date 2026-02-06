@@ -180,7 +180,7 @@ npm install
 pm2 restart qb-integration  # or: pkill node && node src/server.js &
 
 # Test health endpoint
-curl -H "X-API-Key: UPCzgiXsPuXB4GiLuuzjqtXY4+4mGt+vXOmU4gaNCvM=" \
+curl -H "X-API-Key: $API_KEY" \
   https://sqint.atocomm.eu/api/health
 # Should return: {"success":true}
 ```
@@ -341,10 +341,10 @@ sf org display --target-org myorg
 sf project deploy start --source-dir force-app/main/default/ --target-org myorg --test-level RunLocalTests
 
 # Check middleware health
-curl -H "X-API-Key: UPCzgiXsPuXB4GiLuuzjqtXY4+4mGt+vXOmU4gaNCvM=" https://sqint.atocomm.eu/api/health
+curl -H "X-API-Key: $API_KEY" https://sqint.atocomm.eu/api/health
 
 # SSH to server
-ssh roman@pve.atocomm.eu -p2323  # password: 3Sd5R069jvuy[3u6yj
+ssh roman@pve.atocomm.eu -p2323  # password: $SSH_PASS
 ```
 
 ---

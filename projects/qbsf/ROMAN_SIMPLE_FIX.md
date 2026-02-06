@@ -12,19 +12,19 @@
 
 **Windows (PowerShell):**
 ```powershell
-Invoke-RestMethod -Uri "https://sqint.atocomm.eu/api/check-payment-status" -Method POST -Headers @{"X-API-Key"="UPCzgiXsPuXB4GiLuuzjqtXY4+4mGt+vXOmU4gaNCvM="; "Content-Type"="application/json"} -Body '{"salesforceInstance":"https://customer-inspiration-2543.my.salesforce.com","quickbooksRealm":"9130354519120066"}'
+Invoke-RestMethod -Uri "https://sqint.atocomm.eu/api/check-payment-status" -Method POST -Headers @{"X-API-Key"="$API_KEY"; "Content-Type"="application/json"} -Body '{"salesforceInstance":"https://customer-inspiration-2543.my.salesforce.com","quickbooksRealm":"9130354519120066"}'
 ```
 
 **Или curl (если есть):**
 ```bash
-curl -X POST https://sqint.atocomm.eu/api/check-payment-status -H "X-API-Key: UPCzgiXsPuXB4GiLuuzjqtXY4+4mGt+vXOmU4gaNCvM=" -H "Content-Type: application/json" -d "{\"salesforceInstance\":\"https://customer-inspiration-2543.my.salesforce.com\",\"quickbooksRealm\":\"9130354519120066\"}"
+curl -X POST https://sqint.atocomm.eu/api/check-payment-status -H "X-API-Key: $API_KEY" -H "Content-Type: application/json" -d "{\"salesforceInstance\":\"https://customer-inspiration-2543.my.salesforce.com\",\"quickbooksRealm\":\"9130354519120066\"}"
 ```
 
 **Или Postman:**
 - URL: `https://sqint.atocomm.eu/api/check-payment-status`
 - Method: `POST`
 - Headers:
-  - `X-API-Key`: `UPCzgiXsPuXB4GiLuuzjqtXY4+4mGt+vXOmU4gaNCvM=`
+  - `X-API-Key`: `$API_KEY`
   - `Content-Type`: `application/json`
 - Body (raw JSON):
 ```json

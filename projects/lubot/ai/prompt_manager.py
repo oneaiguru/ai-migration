@@ -29,14 +29,14 @@ class PromptManager:
                         message=message)
 
     def get_prompt(self, key: str, gender: str, user_id: int) -> str:
-        variant = self.ab_test_repository.handle_ab_test(user_id, self.chatbot_id, "response_generation_method")
-        variant_name = variant.variant_name if variant else 'control'
-
-        cache_key = f"{self.chatbot_id}:{key}:{gender}:{variant_name}"
+        cache_key = f"{self.chatbot_id}:{key}:{gender}"
         cached_prompt = self.redis.get(cache_key)
-
+        
         if cached_prompt:
             return cached_prompt.decode('utf-8')
+
+        variant = self.ab_test_repository.handle_ab_test(user_id, self.chatbot_id, "response_generation_method")
+        variant_name = variant.variant_name if variant else 'control'
 
         prompt = self.prompt_repository.get_prompt(
             chatbot_id=self.chatbot_id,
@@ -81,7 +81,7 @@ class PromptManager:
         self.invalidate_cache(key, gender, variant)
 
     def invalidate_cache(self, key: str, gender: str, variant: str) -> None:
-        cache_key = f"{self.chatbot_id}:{key}:{gender}:{variant}"
+        cache_key = f"{self.chatbot_id}:{key}:{gender}"
         self.redis.delete(cache_key)
 
     def refresh_prompts(self) -> None:

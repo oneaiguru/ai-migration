@@ -206,12 +206,32 @@ class ThingsTUI {
 
       // Filter by selected tags if any
       if (this.selectedTags.size > 0) {
+        const tagIdToTitle = new Map<string, string>();
+        for (const tag of this.tags) {
+          if (tag.id && tag.title) {
+            tagIdToTitle.set(tag.id, tag.title);
+          }
+        }
+        const selectedTitles = new Set(
+          Array.from(this.selectedTags)
+            .map(id => tagIdToTitle.get(id))
+            .filter((title): title is string => Boolean(title))
+        );
+        const knownTagIds = new Set(tagIdToTitle.keys());
+
         tasks = tasks.filter(task => {
           if (!task.tags || task.tags.length === 0) {
             return false;
           }
-          // Include task if it has ANY of the selected tags
-          return task.tags.some(tag => this.selectedTags.has(tag));
+          // Include task if it has ANY of the selected tags (by id) or matching titles for duplicate-tag fallbacks
+          return task.tags.some(tag => {
+            if (this.selectedTags.has(tag)) {
+              return true;
+            }
+            const title = knownTagIds.has(tag) ? tagIdToTitle.get(tag) : tag;
+            if (!title) return false;
+            return selectedTitles.has(title);
+          });
         });
       }
 

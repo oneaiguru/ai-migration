@@ -1,0 +1,5 @@
+component,url,avg_latency,min_latency,max_latency,success_rate,timestamp
+Employee Portal,https://wfm-employee-portal.vercel.app,1240.9918056666666,598.8938749999999,2268.051084,100.0,2025-06-11T08:52:39.876928
+Forecasting Analytics,https://wfm-forecasting-analytics.vercel.app,670.2765143333339,587.0194170000004,818.2781670000007,100.0,2025-06-11T08:52:45.478528
+Reports Analytics,https://wfm-reports-analytics.vercel.app,665.548569333333,580.3415829999992,824.393916,100.0,2025-06-11T08:52:49.001206
+Employee Management,https://employee-management-sigma-eight.vercel.app,668.5699166666665,595.0100409999983,808.656000000001,100.0,2025-06-11T08:52:52.544398

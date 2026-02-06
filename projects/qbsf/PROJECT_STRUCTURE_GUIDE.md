@@ -70,7 +70,7 @@ node src/server.js
 ### Server Access
 ```bash
 ssh roman@pve.atocomm.eu -p2323
-# Password: 3Sd5R069jvuy[3u6yj
+# Password: $SSH_PASS
 ```
 
 ## 💡 Best Practices

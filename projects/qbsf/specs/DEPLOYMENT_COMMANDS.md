@@ -29,12 +29,12 @@ sf project deploy validate --source-dir force-app/main/default/ --test-level Run
 ## 🔍 VERIFY API CONNECTIVITY
 ```bash
 # Should return {"success":true}
-curl -H "X-API-Key: UPCzgiXsPuXB4GiLuuzjqtXY4+4mGt+vXOmU4gaNCvM=" https://sqint.atocomm.eu/api/health
+curl -H "X-API-Key: $API_KEY" https://sqint.atocomm.eu/api/health
 
 # Test integration endpoint
 curl -X POST https://sqint.atocomm.eu/api/opportunity-to-invoice \
   -H "Content-Type: application/json" \
-  -H "X-API-Key: UPCzgiXsPuXB4GiLuuzjqtXY4+4mGt+vXOmU4gaNCvM=" \
+  -H "X-API-Key: $API_KEY" \
   -d '{"opportunityId":"test123","name":"Test Opportunity","amount":1000}'
 ```
 
@@ -48,7 +48,7 @@ echo "2. Validate deployment:"
 sf project deploy validate --source-dir force-app/main/default/ --test-level RunLocalTests -o sanboxsf
 
 echo "3. Test API:"
-curl -H "X-API-Key: UPCzgiXsPuXB4GiLuuzjqtXY4+4mGt+vXOmU4gaNCvM=" https://sqint.atocomm.eu/api/health
+curl -H "X-API-Key: $API_KEY" https://sqint.atocomm.eu/api/health
 ```
 
 ## 🎉 WHEN ALL PASS → APPROVE PAYMENT

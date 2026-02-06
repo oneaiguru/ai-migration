@@ -17,6 +17,7 @@ Key docs
 - Local Quickstart: docs/SOP/LOCAL_DEMO_QUICKSTART.md
 - API Endpoints (frozen v0): docs/System/API_Endpoints.md
 - Health Checks: docs/System/Health_Checks.md
+- Deployment State (local): docs/System/Deployment_State.md
 - Review Bundles SOP: docs/SOP/review-bundles.md
 - Repo Map: docs/System/Repo_Map.md
 - Monorepo Plan: docs/System/Monorepo_Plan.md

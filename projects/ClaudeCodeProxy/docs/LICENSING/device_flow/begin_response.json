@@ -1,0 +1,9 @@
+{
+"user_code": "AB-CD-EF-GH",
+"poll_token": "xyz123",
+"authorize_url": "[http://127.0.0.1:8787/activate?code=AB-CD-EF-GH](http://127.0.0.1:8787/activate?code=AB-CD-EF-GH)",
+"interval": 2,
+"expires_in": 300
+}
+
+---

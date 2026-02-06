@@ -68,7 +68,7 @@ Location: https://appcenter.intuit.com/connect/oauth2?client_id=AB0kfuEcwI4T5GNq
 
 ### Middleware Health Check  
 ```bash
-$ curl -H "X-API-Key: UPCzgiXsPuXB4GiLuuzjqtXY4+4mGt+vXOmU4gaNCvM=" https://sqint.atocomm.eu/api/health
+$ curl -H "X-API-Key: $API_KEY" https://sqint.atocomm.eu/api/health
 {"success":true,"status":"healthy","timestamp":"2025-08-22T15:05:32.338Z"}
 ✅ HEALTHY
 ```

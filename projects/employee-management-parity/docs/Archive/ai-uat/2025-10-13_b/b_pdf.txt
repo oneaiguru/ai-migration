@@ -1,0 +1,774 @@
+Here's the completed side-by-side comparison report in a Markdown file. It maps each function and page from the real
+Naumen WFM system to the equivalent (or missing) features in the three Vercel demos, summarizing matches, gaps, and
+key observations:
+
+Naumen vs Demo
+Schedules/Manager/Employee:
+Behavioural Comparison
+This report documents a side‑by‑side walkthrough of the real Naumen WFM product (via the scheduling and employees
+modules) compared with three Vercel demos: Manager Portal, Analytics Dashboard and Employee Portal. Each row corresponds to a navigation path in the Naumen system as specified in naumen-real‑walkthrough.md. For each path the
+table summarises what was observed in the real system, maps the equivalent (or missing) functionality in the demos and
+notes whether the behaviour matches. Evidence from the session is provided via screenshot citations.
+Real Naumen
+
+Analytics
+
+behaviour (manual &
+
+Dashboard
+
+No. Path / Section observation)
+
+Manager Portal demo
+
+Employee Portal demo
+
+demo
+
+Match?
+
+Evidence
+
+1
+
+No – this functionality exists Real graph pagewfm-
+
+Расписание
+
+Opens the scheduling
+
+No equivalent. The
+
+Not available. The Employee
+
+Not
+
+→
+→ График
+
+grid with date range
+
+Manager Portal has a
+
+Portal is a self‑service
+
+accessible – only in the schedule grid
+
+(Schedule →
+→
+
+selectors, filters and a
+
+dashboard with KPIs and
+
+dashboard for vacation
+
+analytics
+
+demo; demos don’t replicate Manager dashboard
+
+Graph)
+
+small chart. Top of grid charts (team coverage,
+
+requestswfm-employee-
+
+demo
+
+forecast/day‑period/overlay manager-portal-demo-
+
+contains tabs Прогноз request distribution)
+
+portal.vercel.app; it doesn’t
+
+could not
+
+behaviour.
+
++ план, Отклонения, manager-portal-demo-
+
+display schedule charts or
+
+be loaded
+
+projects.vercel.app;
+
+Уровень сервиса
+
+80u2ylmlg-granins-
+
+overlays.
+
+due to SSO
+
+Employee dashboard
+
+(SL); there is a
+
+projects.vercel.app but no
+
+restrictions.
+
+wfm-employee-
+
+Day/Period switch, Σ
+
+schedule grid or
+
+and 123 overlays, and
+
+forecasting chart.
+
+practice51.dc.oswfm.ru;
+
+80u2ylmlg-granins-
+
+portal.vercel.app.
+
+build/publish controls.
+Chart shows forecast &
+plan lines; deviations
+as bars; service level
+line clamped to 70–100
+% with dashed “Цель
+90 %” target. The
+schedule grid lists
+employees row‑wise
+with shift blockswfmpractice51.dc.oswfm.ru.
+2
+
+Расписание
+
+Shows a list of
+
+No matching page. The
+
+None. Employees cannot view
+
+→
+→ Смены
+
+predefined shift
+
+Manager Portal does not
+
+(Shifts)
+
+patterns on the left and expose shift templates or
+a shift‑builder timeline
+
+—
+
+No – shift management is
+
+Real shifts pagewfm-
+
+or edit shifts.
+
+absent in demos.
+
+practice51.dc.oswfm.ru.
+
+editing.
+
+on the right with
+controls to create, copy
+or delete shiftswfmpractice51.dc.oswfm.ru.
+Users can add shifts,
+set start times,
+durations and periods.
+3
+
+Расписание
+
+Displays a calendar
+
+No matching feature.
+
+Not present – Employee Portal —
+
+No – scheme editor is
+
+Real schemes page
+
+→
+→ Схемы
+
+matrix of day types
+
+Manager Portal has a
+
+is focused on requests.
+
+missing in demos.
+
+wfm-
+
+(Schemes)
+
+(work, weekend,
+
+Teams view but no
+
+floating) for a month.
+
+calendar schemes.
+
+Left panel lists existing
+
+practice51.dc.oswfm.ru.
+
+schemes; top toolbar
+has Добавить схему
+(add scheme),
+Настройки схем and
+Нетипичные дни.
+Users can mark days
+and create new
+schemeswfmpractice51.dc.oswfm.ru.
+4
+
+Расписание
+
+Lists schedule change
+
+Partial. Manager Portal
+
+The Employee Portal displays
+
+—
+
+Partial – manager demo
+
+Real requests page
+
+→
+→ Заявки
+
+and shift exchange
+
+has an Approvals page
+
+(Requests)
+
+requests. Two
+
+with priority filters
+
+personal requests but there is
+
+covers approvals but not all
+
+wfm-
+
+no manager side and no bulk
+
+request categories or bulk
+
+categories
+
+(All/High/Medium/Low) actions.
+
+practice51.dc.oswfm.ru;
+
+actions.
+
+(Изменение
+
+and a table of vacation or
+
+Manager approvals
+manager-portal-demo-
+
+расписания, Обмен
+
+overtime requests
+
+80u2ylmlg-granins-
+
+сменами) appear as
+
+manager-portal-demo-
+
+projects.vercel.app.
+
+tabs. Filters for status
+
+80u2ylmlg-granins-
+
+(pending, approved,
+
+projects.vercel.app.
+
+rejected) and date
+
+However, it lacks shift
+
+range; bulk actions
+
+exchange requests and
+
+Одобрить
+
+bulk approval buttons.
+
+выбранные and
+Отклонить
+выбранные are
+availablewfmpractice51.dc.oswfm.ru.
+5
+
+Расписание
+
+Shows real‑time
+
+No equivalent. Manager
+
+→
+→
+
+statuses for all
+
+Portal dashboards show
+
+Мониторинг employees: columns
+
+coverage but not real‑time
+
+(Monitoring)
+
+status.
+
+include employee
+
+Not present.
+
+—
+
+No – monitoring module
+
+Real monitoring page
+
+absent in demos.
+
+wfmpractice51.dc.oswfm.ru.
+
+name, elapsed time,
+schedule type and
+current status (e.g.,
+working, absent).
+Filters and refresh
+period are available
+wfmpractice51.dc.oswfm.ru.
+6
+
+Расписание
+
+Provides a tasks list
+
+None. Manager Portal
+
+→
+→ Задачи
+
+and a button to
+
+doesn’t manage schedule
+
+(Tasks)
+
+Создать (create) a new tasks.
+
+Not present.
+
+—
+
+No – tasks module missing
+
+Real tasks pagewfm-
+
+from demos.
+
+practice51.dc.oswfm.ru.
+
+No – events module absent
+
+Real events pagewfm-
+
+in demos.
+
+practice51.dc.oswfm.ru.
+
+scheduling task. Empty
+state appears if no tasks
+are definedwfmpractice51.dc.oswfm.ru.
+7
+
+Расписание
+
+Presents a form to
+
+Not represented. Manager Not represented.
+
+→
+→ События
+
+create events with
+
+Portal has no event
+
+(Events)
+
+date/time, duration,
+
+scheduling.
+
+activity selection,
+participants (by tags,
+structure, office, skills)
+and distribution type
+(simultaneous,
+sequential, by load).
+Shows a list of created
+eventswfmpractice51.dc.oswfm.ru.
+
+—
+
+8
+
+Расписание
+
+Vacation planner with
+
+Not available. Manager
+
+Partial. Employee Portal
+
+No – vacation planning
+
+Real vacations page
+
+→
+→ Отпуска
+
+tabs:
+
+Portal shows upcoming
+
+allows employees to view
+
+—
+
+workflow is missing;
+
+wfm-
+
+(Vacations)
+
+Непостроенные,
+
+vacations count per team
+
+leave balance and submit
+
+employee demo only covers
+
+practice51.dc.oswfm.ru;
+
+Построенные,
+
+but no vacation planner.
+
+vacation requestswfm-
+
+request submission.
+
+Employee dashboard
+
+Опубликованные.
+
+employee-portal.vercel.app but
+
+wfm-employee-
+
+Buttons to build, send
+
+does not offer planners or
+
+portal.vercel.app.
+
+for approval, view
+
+build/publish flows.
+
+plan, publish,
+import/export, and
+clear schedule.
+Displays a list of
+vacation schedules
+wfmpractice51.dc.oswfm.ru.
+9
+
+Сотрудники Lists all employees
+(Employees)
+
+No – demos lack
+
+Real employees page
+
+with search and toolbar management. Manager
+
+No employee
+
+No. Employee Portal is a
+self‑service interface;
+
+—
+
+comprehensive employee
+
+wfm-
+
+actions: + (create
+
+Portal displays team
+
+employees cannot manage
+
+management.
+
+practice51.dc.oswfm.ru.
+
+employee), Теги (tag
+
+members via aggregated
+
+peers.
+
+management),
+
+cards but lacks full
+
+Импортировать and
+
+employee CRUD
+
+Экспортировать
+
+operations.
+
+No – reporting module
+
+Real reports listwfm-
+
+absent in demos.
+
+practice51.dc.oswfm.ru.
+
+(import/export).
+Provides bulk edit and
+show dismissed toggle.
+Opening an employee
+shows a drawer with
+editable fieldswfmpractice51.dc.oswfm.ru.
+10
+
+Отчеты
+
+Main reports page lists
+
+(Reports)
+
+several default reports: Manager Portal’s Reports
+
+Not implemented.
+
+График рабочего
+
+menu item is a
+
+времени, График
+
+placeholder with no report
+
+рабочего времени
+
+list.
+
+No. Employee Portal does not
+
+—
+
+include reports.
+
+(сутки),
+Пунктуальность за
+сутки, Общая
+пунктуальность,
+Рабочий график
+сотрудников, Табель
+учета рабочего
+времени (T‑13),
+Журнал построения
+расписания,
+Лицензииwfmpractice51.dc.oswfm.ru.
+Selecting a report leads
+to parameter selection
+(period, organisation)
+and options to
+generate, print or
+export to Excel (as
+described in CH6).
+11
+
+Profile / User
+
+In Naumen, clicking
+
+Manager Portal includes a Employee Portal provides a
+
+Partial – Employee Portal
+
+Real system (profile
+
+settings
+
+the avatar opens the
+
+Settings nav item
+
+Профиль tab where an
+
+profile matches Naumen’s
+
+accessible via avatar;
+
+user profile with fields
+
+(currently placeholder) –
+
+employee can edit personal
+
+edit fields; Manager Portal
+
+not captured),
+
+for password, phone,
+
+not mapped to real profile details, matching the real
+
+settings are undefined.
+
+Employee profile page
+
+email, date of birth and editing.
+address. No dedicated
+
+profile fields.
+
+—
+
+in demowfmemployee-
+
+“Settings” page in
+
+portal.vercel.app.
+
+scheduling.
+12
+
+KPIs /
+
+Naumen’s scheduling
+
+Manager Portal’s
+
+Employee Portal’s home page
+
+Dashboards
+
+module offers
+
+dashboard displays KPI
+
+shows personal stats: total
+
+—
+
+No – dashboards in demos
+
+are extra features not present manager-portal-demo-
+
+Demo dashboards
+
+performance metrics
+
+cards (Total Employees,
+
+requests,
+
+in Naumen scheduling slice. 80u2ylmlg-granins-
+
+via separate reports
+
+Active Today, Pending
+
+pending/approved/upcoming,
+
+projects.vercel.app
+
+(punctuality, coverage)
+
+Requests, Upcoming
+
+leave balance bars and recent
+
+wfm-employee-
+
+rather than a unified
+
+Vacations), a team
+
+requestswfm-employee-
+
+portal.vercel.app.
+
+dashboard. There is no
+
+coverage bar chart and
+
+portal.vercel.app.
+
+manager dashboard
+
+request distribution pie
+
+with KPI cards.
+
+chartmanager-portaldemo-80u2ylmlg-graninsprojects.vercel.app. This is
+a custom feature absent
+from Naumen.
+
+Observations and Key Behaviour Gaps
+Scheduling graph functions (forecast, day/period switch, overlays) only exist in the schedule grid demo; the
+Manager Portal and Employee Portal do not replicate them. Achieving parity would require adding these controls
+to the demos or removing them if not needed.
+Shifts, schemes, monitoring, tasks, events, vacations, employees and reports are full modules in Naumen but
+completely absent from the demos. The Manager Portal aggregates team metrics but offers no ability to manage
+shifts or employees; the Employee Portal focuses on personal requests.
+Approvals: the Manager Portal includes a request list with priority filters; however, it lacks shift exchange requests
+and bulk approve/decline actions found in Naumen’s requests module.
+Profile editing: the Employee Portal’s profile form matches Naumen’s user settings, but it is accessed via a dedicated tab rather than the avatar menu; Manager Portal’s settings are undefined.
+Dashboards & KPIs in demos are custom additions; they do not reflect existing Naumen behaviour, which relies
+on reports for analytics. Matching Naumen would require either removing these dashboards or implementing similar modules in the real product.
+Analytics Dashboard could not be assessed because the Vercel URL redirected to a protected SSO page. Without
+access to a real analytics module, parity cannot be verified.
+
+Conclusion
+The scheduling grid demo now aligns closely with Naumen’s Graph page for forecast/plan behaviours, but the Manager
+Portal and Employee Portal demos introduce entirely new dashboards and workflows that do not exist in the real Naumen scheduling slice. To achieve full behaviour parity, these demos would need significant adjustments: adding the full
+suite of scheduling modules (shifts, schemes, requests, monitoring, tasks, events, vacations, reports and employee management) or, alternatively, clarifying that they represent conceptual extensions rather than parity targets. The provided
+table and observations should help prioritise future parity work.
+Feel free to review it and let me know if further refinement is needed.
+
+

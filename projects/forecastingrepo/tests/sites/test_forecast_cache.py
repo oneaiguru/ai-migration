@@ -14,6 +14,7 @@ from src.sites.forecast_cache import (
     get_cache_metadata,
     clear_cache,
 )
+from src.sites.rolling_types import DEFAULT_MIN_OBS, DEFAULT_WINDOW_DAYS
 
 
 def _has_parquet_engine() -> bool:
@@ -37,7 +38,10 @@ class TestCacheKey:
     def test_cache_key_format(self):
         """Verify cache key format."""
         key = cache_key(date(2025, 3, 15), date(2025, 3, 16), date(2025, 4, 15))
-        assert key == "forecast_2025-03-15_2025-03-16_2025-04-15"
+        assert (
+            key
+            == f"forecast_2025-03-15_2025-03-16_2025-04-15_w{DEFAULT_WINDOW_DAYS}_m{DEFAULT_MIN_OBS}"
+        )
 
 
 class TestCachePaths:

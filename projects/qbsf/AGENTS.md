@@ -1,20 +1,33 @@
 # AGENTS
 
+## Scope (Roman vs SyncFlow)
+- **Roman / Production integration**: Salesforce ↔ QuickBooks middleware + Salesforce metadata + deployment/runbooks.
+- **SyncFlow SaaS (local-only)**: future product work (no real API calls, no deployments). Planned under a new `syncflow/` app.
+
+If a task is ambiguous, assume **Roman / integration** (this folder is primarily the integration codebase).
+
 ## Read First
-- `PROGRESS.md` (current role + task pointer).
-- If you are planning/executing a task, start from `tasks/` and `plans/`.
+- **Roman / integration**: start from `PROGRESS.md` and the middleware package `deployment/sf-qb-integration-final/`.
+- **SyncFlow SaaS**: start from `PROJECT_BRIEF.md` and `IMPLEMENTATION_PLAN.md`, then `docs/Tasks/README.md`.
+- Task systems: the Ralph loop lives in `docs/Tasks/`; the legacy task system lives in `tasks/` + `plans/`. Do not mix.
 
 ## Summary
 - Salesforce ↔ QuickBooks integration project with Node.js middleware (`src/`), PKCE flows/scripts, and Salesforce metadata/deployment bundles (force-app, deployment-package*, sf-deploy, sfdx-deploy, DEMO_PACKAGE).
 
+## Ralph Loop
+- Use `PROMPT_plan.md` and `PROMPT_build.md` with `./loop.sh`.
+- One role per loop; stop after each role.
+- Archive completed tasks by appending `ARCHIVE: docs/Tasks/<slug>.task.md` to `PROGRESS.md` (keep SyncFlow/Ralph-loop archive lines in their own section to avoid mixing with Roman integration notes).
+
 ## Install & Run
-- Requires Node 18+ and npm.
+- Requires Node 18+ and npm (Node 20+ recommended for the middleware).
 - Copy `.env.example` to `.env` and fill Salesforce/QuickBooks credentials plus server settings.
 - Install deps: `npm install`.
 - Start dev: `npm run dev`; start server: `npm start`.
 
 ## Tests
-- No automated tests provided; none run for this import slice (multiple app variants included, node_modules excluded).
+- Middleware unit tests (Jest): `cd deployment/sf-qb-integration-final && npm test`
+- QBO query lint: `cd deployment/sf-qb-integration-final && npm run lint:qbo`
 
 ## Dependencies
 - npm: express, axios, jsforce, node-quickbooks, node-cron, helmet, cors, dotenv, winston; dev: nodemon.
@@ -28,6 +41,11 @@
 - Salesforce metadata is under `force-app/`, `deployment-package*/force-app/`, `sf-deploy/force-app/`, and `sfdx-deploy/force-app/`.
 - Token storage paths: `data/tokens.json` (sample) and `data/sf_verifier.json` (generated at runtime).
 - Store real credentials only in gitignored `SECRETS.local.md` and `.env`; use `SECRETS.local.example.md` as the template. Node_modules and binaries/zips are excluded from the import.
+
+## Deployment Conventions (Host)
+- Backup before deploy: create `/opt/qb-integration/backups/$ts/` with `src/`, `package.json`, `package-lock.json`, `.env`, and a `manifest.txt` of the deployed files (at minimum `src/services/quickbooks-api.js` and `src/config/index.js`).
+- Deploy files via scp from `projects/qbsf/deployment/sf-qb-integration-final/`; restart with `pkill -f '[n]ode .*server.js' || true` then `nohup node src/server.js >> /opt/qb-integration/server.log 2>&1 &`.
+- Duplicate-name auto-suffix is opt-in only: `QB_DUPLICATE_NAME_AUTOSUFFIX=true` and optional `QB_DUPLICATE_NAME_SUFFIX` (defaults to ` (SF)`).
 
 ## Agent Roles, Magic Prompts, and Handoff
 Magic prompts (authoritative copies):
@@ -47,7 +65,7 @@ Tasks/Plans mapping
 
 Monorepo note: /Users/m/ai is a multi-project monorepo. See the root README for details.
 
-## Current QB/SF Middleware Status (2026-01-10)
+## Roman / Integration: Current Middleware Status (2026-01-10)
 - Code changes (local): `deployment/sf-qb-integration-final/src/services/quickbooks-api.js` (removed unsupported CurrencyRef in Item/Customer queries; FX fallback today→yesterday; duplicate-customer flow clean), `src/routes/api.js` (uses TxnDate for FX when present), `PROGRESS.md`, `HANDOFF.md`.
 - Added lint/tests: `scripts/lint_qbo_queries.js` + npm script `lint:qbo`; Jest cases for FX fallback and duplicate existing-customer path.
 - Server deploy: `/opt/qb-integration/src/services/quickbooks-api.js` and `/opt/qb-integration/src/routes/api.js`; last backup `20260110-020102`; restart via nohup (pm2 absent); health 401 without API key.

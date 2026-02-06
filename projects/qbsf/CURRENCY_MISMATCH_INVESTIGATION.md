@@ -282,7 +282,7 @@ node src/server.js > /tmp/server.log 2>&1 &
 ### Step 4: Verify Health
 
 ```bash
-curl -H "X-API-Key: UPCzgiXsPuXB4GiLuuzjqtXY4+4mGt+vXOmU4gaNCvM=" https://sqint.atocomm.eu/api/health
+curl -H "X-API-Key: $API_KEY" https://sqint.atocomm.eu/api/health
 ```
 
 ### Step 5: Test with New Opportunity

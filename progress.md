@@ -1,5 +1,14 @@
 # Jury Demo Refresh Progress
 
+## Codex Orchestrator Log
+- 2026-01-20: Task 1 complete - scanned `projects/` for Python packaging and README/testing conventions; noted no local `AGENTS.md` under new `projects/ai-flow` and recommended a `pyproject.toml` + `src/` + `tests/` layout.
+- 2026-01-20: Task 2 complete - imported `/Users/m/Downloads/Telegram Desktop/ai_flow.py` into `projects/ai-flow/ai_flow.py` unchanged and committed the original snapshot.
+- 2026-01-20: Task 3 complete - translated all Russian strings in `projects/ai-flow/ai_flow.py` to English with no behavior changes and committed the update.
+- 2026-01-20: Task 4 complete - refactor subagent run hung and was terminated; completed packaging refactor manually (src layout, pathlib, validation, shim) and committed it.
+- 2026-01-20: Task 5 complete - added CLI polish with --dry-run/--force and cleaner status output, then committed.
+- 2026-01-20: Task 6 complete - wrote human-readable README for `projects/ai-flow` and committed it.
+- 2026-01-20: Task 7 complete - added pytest-based E2E scaffolding tests, updated pyproject/README, and committed.
+
 ## 2026-01-08 – Units m3 switch (forecastingrepo)
 - Updated pipeline/API/scripts/tests/docs to use `collect_volume_m3` + `pred_volume_m3`; removed kg/ton fallbacks; regenerated OpenAPI.
 - Commands: `python -m pytest -q tests/sites/test_data_loader.py tests/sites/test_site_baseline.py tests/sites/test_site_simulator.py tests/sites/test_rolling_forecast.py tests/sites/test_reconcile.py tests/sites/test_reconcile_branches.py`; `python -m pytest -q tests/api/test_rolling_forecast_endpoint.py tests/api/test_site_forecast_v1.py tests/api/test_api_routes_forecast.py tests/api/test_api_sites_v1.py tests/api/test_sites_headers_filters_csv.py tests/api/test_sites_empty_csv_header_only.py tests/api/test_sites_paging_large_offset.py tests/api/test_routes_collection_join_and_csv.py tests/api/test_mytko_adapter.py`; `python -m pytest -q tests/test_export_validation.py tests/test_bundle_cli.py tests/test_html_report.py tests/test_data_access.py tests/routes/test_recommend.py`; `python -m pytest -q tests/unit/test_daily_semantics.py tests/unit/test_monthly_semantics.py tests/viz/test_quicklook_unit.py tests/e2e/test_cli_and_outputs.py`; `python scripts/export_openapi.py --write`; `python -m pytest -q tests/test_openapi_export.py`.

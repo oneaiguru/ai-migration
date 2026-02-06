@@ -1,0 +1,11 @@
+{
+  "paths": {
+    "database": "appstore.db",
+    "cache": "cache.json",
+    "sample_apps": "sample_apps"
+  },
+  "settings": {
+    "default_category": "Utilities",
+    "default_app_id": "app_001"
+  }
+}

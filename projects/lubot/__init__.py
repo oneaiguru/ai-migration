@@ -1,2 +1,1 @@
-
-# Configuration package initialization.
+# Lubot package initialization.

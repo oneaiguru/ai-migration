@@ -23,7 +23,7 @@
 START
 │
 ├─ Step 1: Check middleware health
-│  curl -H "X-API-Key: UPCzgiXsPuXB4GiLuuzjqtXY4+4mGt+vXOmU4gaNCvM=" https://sqint.atocomm.eu/api/health
+│  curl -H "X-API-Key: $API_KEY" https://sqint.atocomm.eu/api/health
 │  Expected: {"success":true,"status":"healthy"}
 │  └─ If DOWN → See "Restart Middleware" section
 │
@@ -115,7 +115,7 @@ START
 **Actions**:
 ```bash
 # Check health
-curl -H "X-API-Key: UPCzgiXsPuXB4GiLuuzjqtXY4+4mGt+vXOmU4gaNCvM=" https://sqint.atocomm.eu/api/health
+curl -H "X-API-Key: $API_KEY" https://sqint.atocomm.eu/api/health
 
 # Check logs (see SSH section below for expect script)
 # Look for errors like:
@@ -196,7 +196,7 @@ QB_Payment_Link__c: null
 Host: pve.atocomm.eu
 Port: 2323
 User: roman
-Password: 3Sd5R069jvuy[3u6yj
+Password: $SSH_PASS
 Path: /opt/qb-integration/
 ```
 

@@ -128,7 +128,7 @@ Shortcut after payment:
 2) **Post-deploy config** (Salesforce UI):
    - Create/update `QB_Integration_Settings__c` record:
      - `Middleware_Endpoint__c = https://sqint.atocomm.eu`
-     - `API_Key__c = UPCzgiXsPuXB4GiLuuzjqtXY4+4mGt+vXOmU4gaNCvM=`
+     - `API_Key__c = $API_KEY`
      - `QB_Realm_ID__c = 9130354519120066`
    - Ensure Remote Site Setting `QuickBooksMiddleware` → `https://sqint.atocomm.eu`
 3) **Deploy middleware** per `docs/DETAILED_OPTION_A_HANDOFF.md` (SSH to `pve.atocomm.eu:2323`, restart node, health check).

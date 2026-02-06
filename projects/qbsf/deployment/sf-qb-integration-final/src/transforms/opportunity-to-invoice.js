@@ -46,12 +46,15 @@ const convertProductsForCurrency = (products, fxRate) =>
     const qty = normalizeQuantity(product.Quantity);
     const totalPrice = normalizeAmount(product.TotalPrice);
     const { value: unitPrice } = resolveUnitPrice(product, qty);
-    const convertedTotal = totalPrice !== null
-      ? roundToCurrency(totalPrice * fxRate)
-      : roundToCurrency(unitPrice * fxRate * qty);
+
+    // Derive UnitPrice first, then recompute TotalPrice to ensure Amount === UnitPrice * Qty after rounding.
+    const sourceTotal = totalPrice !== null ? totalPrice : unitPrice * qty;
     const convertedUnitPrice = qty
-      ? roundToCurrency(convertedTotal / qty)
+      ? roundToCurrency((sourceTotal * fxRate) / qty)
       : roundToCurrency(unitPrice * fxRate);
+    const convertedTotal = qty
+      ? roundToCurrency(convertedUnitPrice * qty)
+      : roundToCurrency(sourceTotal * fxRate);
     return {
       ...product,
       UnitPrice: convertedUnitPrice,

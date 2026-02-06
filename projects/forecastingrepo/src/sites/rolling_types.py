@@ -85,4 +85,5 @@ class SingleSiteForecastPoint(TypedDict):
 MAX_CUTOFF_DATE = date(2025, 5, 31)  # Last available actual data
 MIN_HORIZON_DAYS = 1
 MAX_HORIZON_DAYS = 365
-DEFAULT_WINDOW_DAYS = 56  # Training window for baseline estimation
+DEFAULT_WINDOW_DAYS = 84  # Training window for baseline estimation
+DEFAULT_MIN_OBS = 4  # Minimum observations per weekday before smoothing

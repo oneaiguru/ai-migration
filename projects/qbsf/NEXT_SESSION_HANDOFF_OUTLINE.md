@@ -90,7 +90,7 @@ Possible reasons (next agent must investigate):
 ### 4.1 Verify Current Deployment
 ```bash
 # Check middleware health
-curl -H "X-API-Key: UPCzgiXsPuXB4GiLuuzjqtXY4+4mGt+vXOmU4gaNCvM=" https://sqint.atocomm.eu/api/health
+curl -H "X-API-Key: $API_KEY" https://sqint.atocomm.eu/api/health
 
 # Expected: {"success":true,"status":"healthy"}
 ```
@@ -99,7 +99,7 @@ curl -H "X-API-Key: UPCzgiXsPuXB4GiLuuzjqtXY4+4mGt+vXOmU4gaNCvM=" https://sqint.
 ```bash
 # SSH to server
 ssh -p 2323 roman@pve.atocomm.eu
-# Password: 3Sd5R069jvuy[3u6yj
+# Password: $SSH_PASS
 
 # Check logs
 tail -100 /tmp/server.log | grep -i "payment\|link\|invoice"
@@ -209,7 +209,7 @@ START
 ### 7.1 Restart Middleware
 ```bash
 ssh -p 2323 roman@pve.atocomm.eu
-# Password: 3Sd5R069jvuy[3u6yj
+# Password: $SSH_PASS
 
 cd /opt/qb-integration
 pkill -f "node src/server.js"
@@ -218,7 +218,7 @@ node src/server.js > /tmp/server.log 2>&1 &
 sleep 3
 
 # Verify
-curl -H "X-API-Key: UPCzgiXsPuXB4GiLuuzjqtXY4+4mGt+vXOmU4gaNCvM=" https://sqint.atocomm.eu/api/health
+curl -H "X-API-Key: $API_KEY" https://sqint.atocomm.eu/api/health
 ```
 
 ### 7.2 Check QB API Response Directly
@@ -249,7 +249,7 @@ git log --oneline force-app/main/default/classes/QBInvoiceIntegrationQueueable.c
 - This handoff: `NEXT_SESSION_HANDOFF_OUTLINE.md`
 
 ### 8.2 Production Server (middleware)
-- SSH: `roman@pve.atocomm.eu:2323` (password: `3Sd5R069jvuy[3u6yj`)
+- SSH: `roman@pve.atocomm.eu:2323` (password: `$SSH_PASS`)
 - Middleware path: `/opt/qb-integration/`
 - API routes: `/opt/qb-integration/src/routes/api.js`
 - QB service: `/opt/qb-integration/src/services/quickbooks-api.js`

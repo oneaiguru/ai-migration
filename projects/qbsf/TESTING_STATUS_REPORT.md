@@ -34,7 +34,7 @@ Response: {"success":true,"message":"Integration endpoint ready","qbInvoiceId":"
 
 ### Authentication Failed
 - **URL Tested:** https://login.salesforce.com/
-- **Credentials:** olga.rybak@atocomm2023.eu / 3Sd5R069jvuy[3u6yj
+- **Credentials:** olga.rybak@atocomm2023.eu / $SSH_PASS
 - **Error:** "Please check your username and password"
 
 ### Possible Causes:

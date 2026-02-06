@@ -1,0 +1,92 @@
+auth_enabled: true
+
+server:
+  http_listen_port: 9009
+  grpc_tls_config:
+    cert_file: /certs/server.crt
+    key_file: /certs/server.key
+
+distributor:
+  shard_by_all_labels: true
+  pool:
+    health_check_ingesters: true
+
+ingester:
+  lifecycler:
+    ring:
+      kvstore:
+        store: consul
+        prefix: collectors/
+      replication_factor: 3
+    final_sleep: 0s
+  chunk_idle_period: 30m
+  chunk_retention_period: 1m
+  max_transfer_retries: 3
+
+storage:
+  engine: blocks
+
+blocks_storage:
+  backend: s3
+  s3:
+    endpoint: "https://minio:9000"
+    bucket_name: cortex-blocks
+    access_key_id_file: /run/secrets/minio_access_key
+    secret_access_key_file: /run/secrets/minio_secret_key
+    insecure: false
+    ca_file: /certs/ca.crt
+  tsdb:
+    dir: /data/tsdb
+    retention_period: 90d
+    block_ranges_period: [2h, 12h, 24h]
+    ship_interval: 1m
+    block_sync_concurrency: 20
+    consistency_delay: 30s
+
+compactor:
+  data_dir: /data/compactor
+  sharding_enabled: true
+  sharding_ring:
+    kvstore:
+      store: consul
+      prefix: compactor/
+
+frontend:
+  log_queries_longer_than: 10s
+  compress_responses: true
+  cache_results: true
+  max_outstanding_per_tenant: 2048
+
+store_gateway:
+  sharding_enabled: true
+  sharding_ring:
+    kvstore:
+      store: consul
+      prefix: store-gateway/
+
+ruler:
+  enable_api: true
+  enable_sharding: true
+  ring:
+    kvstore:
+      store: consul
+      prefix: ruler/
+  storage:
+    type: s3
+    s3:
+      endpoint: "https://minio:9000"
+      bucket_name: cortex-rules
+      access_key_id_file: /run/secrets/minio_access_key
+      secret_access_key_file: /run/secrets/minio_secret_key
+      insecure: false
+      ca_file: /certs/ca.crt
+
+limits:
+  max_label_name_length: 1024
+  max_label_value_length: 2048
+  max_label_names_per_series: 64
+  reject_old_samples: true
+  reject_old_samples_max_age: 168h
+  ingestion_rate_strategy: global
+  ingestion_rate: 10000
+  ingestion_burst_size: 20000

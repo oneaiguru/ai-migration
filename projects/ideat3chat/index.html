@@ -1,0 +1,840 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ideas.t3.chat — Concept Prototype</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-primary: #0a0a0b;
+      --bg-secondary: #111113;
+      --bg-tertiary: #1a1a1d;
+      --bg-hover: #222226;
+      --border: #2a2a2e;
+      --border-bright: #3a3a3f;
+      --text-primary: #e4e4e7;
+      --text-secondary: #a1a1aa;
+      --text-muted: #71717a;
+      --accent: #f97316;
+      --accent-dim: #c2410c;
+      --accent-glow: rgba(249, 115, 22, 0.15);
+      --success: #22c55e;
+      --danger: #ef4444;
+      --purple: #a855f7;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'JetBrains Mono', monospace;
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      min-height: 100vh;
+      line-height: 1.6;
+    }
+
+    /* Grain overlay */
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+      opacity: 0.03;
+      pointer-events: none;
+      z-index: 1000;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 2rem 1.5rem;
+    }
+
+    /* Header */
+    header {
+      margin-bottom: 3rem;
+      padding-bottom: 2rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .logo {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.75rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 0.5rem;
+    }
+
+    .logo span {
+      color: var(--accent);
+    }
+
+    .tagline {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-bottom: 1rem;
+    }
+
+    .meta-badge {
+      display: inline-block;
+      font-size: 0.65rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      padding: 0.35rem 0.6rem;
+      background: var(--bg-tertiary);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      color: var(--text-muted);
+    }
+
+    .meta-badge a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    .meta-badge a:hover {
+      text-decoration: underline;
+    }
+
+    /* Form */
+    .submit-section {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .section-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1rem;
+      font-weight: 600;
+      margin-bottom: 1.25rem;
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .section-title::before {
+      content: '>';
+      color: var(--accent);
+    }
+
+    .form-grid {
+      display: grid;
+      gap: 1rem;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    @media (max-width: 600px) {
+      .form-row {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+
+    .form-group.full-width {
+      grid-column: 1 / -1;
+    }
+
+    label {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-muted);
+    }
+
+    input, textarea, select {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.85rem;
+      padding: 0.7rem 0.9rem;
+      background: var(--bg-primary);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      color: var(--text-primary);
+      transition: all 0.15s ease;
+    }
+
+    input:focus, textarea:focus, select:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px var(--accent-glow);
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 100px;
+    }
+
+    select {
+      cursor: pointer;
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2371717a' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 0.75rem center;
+      padding-right: 2.5rem;
+    }
+
+    /* Effort Slider */
+    .effort-container {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .effort-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .effort-value {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--accent);
+      min-width: 1.5rem;
+      text-align: right;
+    }
+
+    .effort-slider {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 100%;
+      height: 6px;
+      background: var(--bg-tertiary);
+      border-radius: 3px;
+      outline: none;
+      border: none;
+      padding: 0;
+    }
+
+    .effort-slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 18px;
+      height: 18px;
+      background: var(--accent);
+      border-radius: 50%;
+      cursor: pointer;
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    .effort-slider::-webkit-slider-thumb:hover {
+      transform: scale(1.15);
+      box-shadow: 0 0 0 4px var(--accent-glow);
+    }
+
+    .effort-slider::-moz-range-thumb {
+      width: 18px;
+      height: 18px;
+      background: var(--accent);
+      border-radius: 50%;
+      cursor: pointer;
+      border: none;
+    }
+
+    .effort-labels {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.6rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    /* Submit Button */
+    .submit-btn {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 600;
+      padding: 0.8rem 1.5rem;
+      background: var(--accent);
+      color: var(--bg-primary);
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-top: 0.5rem;
+    }
+
+    .submit-btn:hover {
+      background: var(--accent-dim);
+      transform: translateY(-1px);
+    }
+
+    .submit-btn:active {
+      transform: translateY(0);
+    }
+
+    /* Ideas List */
+    .ideas-section {
+      margin-top: 2rem;
+    }
+
+    .ideas-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+
+    .idea-count {
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .ideas-list {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .idea-card {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1.25rem;
+      transition: all 0.15s ease;
+    }
+
+    .idea-card:hover {
+      border-color: var(--border-bright);
+    }
+
+    .idea-header {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .vote-controls {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.15rem;
+    }
+
+    .vote-btn {
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      cursor: pointer;
+      padding: 0.2rem;
+      font-size: 1rem;
+      line-height: 1;
+      transition: all 0.15s ease;
+    }
+
+    .vote-btn:hover {
+      color: var(--accent);
+      transform: scale(1.2);
+    }
+
+    .vote-btn.upvoted {
+      color: var(--success);
+    }
+
+    .vote-btn.downvoted {
+      color: var(--danger);
+    }
+
+    .vote-count {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+
+    .idea-content {
+      flex: 1;
+    }
+
+    .idea-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 0.4rem;
+    }
+
+    .idea-description {
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+      margin-bottom: 0.75rem;
+      line-height: 1.5;
+    }
+
+    .idea-meta {
+      display: flex;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+    }
+
+    .meta-tag {
+      font-size: 0.65rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      padding: 0.25rem 0.5rem;
+      background: var(--bg-tertiary);
+      border-radius: 4px;
+      color: var(--text-muted);
+    }
+
+    .meta-tag.effort {
+      background: var(--accent-glow);
+      color: var(--accent);
+    }
+
+    .meta-tag.breaking {
+      background: rgba(239, 68, 68, 0.15);
+      color: var(--danger);
+    }
+
+    .meta-tag.semi-recent {
+      background: rgba(168, 85, 247, 0.15);
+      color: var(--purple);
+    }
+
+    .meta-tag.evergreen {
+      background: rgba(34, 197, 94, 0.15);
+      color: var(--success);
+    }
+
+    /* Comments */
+    .comments-section {
+      margin-top: 1rem;
+      padding-top: 1rem;
+      border-top: 1px solid var(--border);
+    }
+
+    .comments-toggle {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0;
+      transition: color 0.15s ease;
+    }
+
+    .comments-toggle:hover {
+      color: var(--accent);
+    }
+
+    .comments-list {
+      margin-top: 0.75rem;
+      display: none;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .comments-list.open {
+      display: flex;
+    }
+
+    .comment {
+      padding: 0.75rem;
+      background: var(--bg-tertiary);
+      border-radius: 6px;
+      font-size: 0.8rem;
+    }
+
+    .comment-header {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 0.4rem;
+    }
+
+    .comment-author {
+      color: var(--accent);
+      font-weight: 500;
+    }
+
+    .comment-time {
+      color: var(--text-muted);
+      font-size: 0.65rem;
+    }
+
+    .comment-text {
+      color: var(--text-secondary);
+    }
+
+    .add-comment {
+      display: none;
+      gap: 0.5rem;
+      margin-top: 0.75rem;
+    }
+
+    .comments-list.open + .add-comment,
+    .add-comment.open {
+      display: flex;
+    }
+
+    .add-comment input {
+      flex: 1;
+      font-size: 0.75rem;
+      padding: 0.5rem 0.75rem;
+    }
+
+    .add-comment button {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      padding: 0.5rem 0.75rem;
+      background: var(--bg-tertiary);
+      color: var(--text-secondary);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .add-comment button:hover {
+      background: var(--bg-hover);
+      color: var(--text-primary);
+    }
+
+    /* Empty State */
+    .empty-state {
+      text-align: center;
+      padding: 3rem 1rem;
+      color: var(--text-muted);
+    }
+
+    .empty-state-icon {
+      font-size: 2rem;
+      margin-bottom: 0.75rem;
+      opacity: 0.5;
+    }
+
+    .empty-state p {
+      font-size: 0.85rem;
+    }
+
+    /* Footer */
+    footer {
+      margin-top: 3rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--border);
+      text-align: center;
+    }
+
+    .footer-text {
+      font-size: 0.7rem;
+      color: var(--text-muted);
+    }
+
+    .footer-text a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    .footer-text a:hover {
+      text-decoration: underline;
+    }
+
+    /* Animations */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .idea-card {
+      animation: fadeIn 0.25s ease;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="logo">ideas<span>.t3.chat</span></div>
+      <p class="tagline">crowdsourced video ideas → upvotes surface the best → theo reviews digest</p>
+      <span class="meta-badge">concept prototype by <a href="https://twitter.com/granin" target="_blank">@granin</a> — built to make @granin obsolete</span>
+    </header>
+
+    <section class="submit-section">
+      <h2 class="section-title">Submit Idea</h2>
+      <form id="idea-form" class="form-grid">
+        <div class="form-group full-width">
+          <label for="title">Title</label>
+          <input type="text" id="title" placeholder="Catchy, clickable title..." required>
+        </div>
+        <div class="form-group full-width">
+          <label for="description">Description</label>
+          <textarea id="description" placeholder="What's the video about? What would Theo do/show?..." required></textarea>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="timeliness">Timeliness</label>
+            <select id="timeliness">
+              <option value="breaking">🔴 Breaking — film ASAP</option>
+              <option value="semi-recent">🟣 Semi-recent — next few days</option>
+              <option value="evergreen">🟢 Evergreen — whenever</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="sources">Source URL (optional)</label>
+            <input type="url" id="sources" placeholder="https://...">
+          </div>
+        </div>
+        <div class="form-group full-width">
+          <div class="effort-container">
+            <div class="effort-header">
+              <label for="effort">Theo Effort Score™</label>
+              <span class="effort-value" id="effort-display">3</span>
+            </div>
+            <input type="range" id="effort" class="effort-slider" min="1" max="5" value="3">
+            <div class="effort-labels">
+              <span>1 = "react & ship"</span>
+              <span>5 = "entire weekend"</span>
+            </div>
+          </div>
+        </div>
+        <button type="submit" class="submit-btn">Submit Idea</button>
+      </form>
+    </section>
+
+    <section class="ideas-section">
+      <div class="ideas-header">
+        <h2 class="section-title">Ideas Queue</h2>
+        <span class="idea-count" id="idea-count">0 ideas</span>
+      </div>
+      <div class="ideas-list" id="ideas-list">
+        <div class="empty-state">
+          <div class="empty-state-icon">📭</div>
+          <p>No ideas yet. Be the first.</p>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <p class="footer-text">
+        localStorage demo — no backend, data lives in your browser<br>
+        <a href="mailto:ideas@t3.gg">ideas@t3.gg</a> remains the real submission path
+      </p>
+    </footer>
+  </div>
+
+  <script>
+    // State
+    let ideas = JSON.parse(localStorage.getItem('t3-ideas') || '[]');
+
+    // DOM Elements
+    const form = document.getElementById('idea-form');
+    const effortSlider = document.getElementById('effort');
+    const effortDisplay = document.getElementById('effort-display');
+    const ideasList = document.getElementById('ideas-list');
+    const ideaCount = document.getElementById('idea-count');
+
+    // Effort slider
+    effortSlider.addEventListener('input', (e) => {
+      effortDisplay.textContent = e.target.value;
+    });
+
+    // Form submit
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      
+      const idea = {
+        id: Date.now(),
+        title: document.getElementById('title').value,
+        description: document.getElementById('description').value,
+        timeliness: document.getElementById('timeliness').value,
+        sources: document.getElementById('sources').value,
+        effort: parseInt(document.getElementById('effort').value),
+        votes: 0,
+        userVote: 0,
+        comments: [],
+        createdAt: new Date().toISOString()
+      };
+
+      ideas.unshift(idea);
+      saveAndRender();
+      form.reset();
+      effortDisplay.textContent = '3';
+    });
+
+    // Save to localStorage and render
+    function saveAndRender() {
+      localStorage.setItem('t3-ideas', JSON.stringify(ideas));
+      renderIdeas();
+    }
+
+    // Render ideas list
+    function renderIdeas() {
+      ideaCount.textContent = `${ideas.length} idea${ideas.length !== 1 ? 's' : ''}`;
+
+      if (ideas.length === 0) {
+        ideasList.innerHTML = `
+          <div class="empty-state">
+            <div class="empty-state-icon">📭</div>
+            <p>No ideas yet. Be the first.</p>
+          </div>
+        `;
+        return;
+      }
+
+      // Sort by votes
+      const sorted = [...ideas].sort((a, b) => b.votes - a.votes);
+
+      ideasList.innerHTML = sorted.map(idea => `
+        <div class="idea-card" data-id="${idea.id}">
+          <div class="idea-header">
+            <div class="vote-controls">
+              <button class="vote-btn ${idea.userVote === 1 ? 'upvoted' : ''}" onclick="vote(${idea.id}, 1)">▲</button>
+              <span class="vote-count">${idea.votes}</span>
+              <button class="vote-btn ${idea.userVote === -1 ? 'downvoted' : ''}" onclick="vote(${idea.id}, -1)">▼</button>
+            </div>
+            <div class="idea-content">
+              <h3 class="idea-title">${escapeHtml(idea.title)}</h3>
+              <p class="idea-description">${escapeHtml(idea.description)}</p>
+              <div class="idea-meta">
+                <span class="meta-tag effort">effort: ${idea.effort}/5</span>
+                <span class="meta-tag ${idea.timeliness}">${idea.timeliness.replace('-', ' ')}</span>
+                ${idea.sources ? `<span class="meta-tag">has source</span>` : ''}
+              </div>
+              <div class="comments-section">
+                <button class="comments-toggle" onclick="toggleComments(${idea.id})">
+                  ${idea.comments.length} comment${idea.comments.length !== 1 ? 's' : ''} ${idea.comments.length > 0 ? '▾' : ''}
+                </button>
+                <div class="comments-list" id="comments-${idea.id}">
+                  ${idea.comments.map(c => `
+                    <div class="comment">
+                      <div class="comment-header">
+                        <span class="comment-author">${escapeHtml(c.author)}</span>
+                        <span class="comment-time">${formatTime(c.createdAt)}</span>
+                      </div>
+                      <p class="comment-text">${escapeHtml(c.text)}</p>
+                    </div>
+                  `).join('')}
+                </div>
+                <div class="add-comment" id="add-comment-${idea.id}">
+                  <input type="text" placeholder="Add comment..." id="comment-input-${idea.id}">
+                  <button onclick="addComment(${idea.id})">Post</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    // Vote
+    function vote(id, direction) {
+      const idea = ideas.find(i => i.id === id);
+      if (!idea) return;
+
+      if (idea.userVote === direction) {
+        idea.votes -= direction;
+        idea.userVote = 0;
+      } else {
+        idea.votes -= idea.userVote;
+        idea.votes += direction;
+        idea.userVote = direction;
+      }
+
+      saveAndRender();
+    }
+
+    // Toggle comments
+    function toggleComments(id) {
+      const list = document.getElementById(`comments-${id}`);
+      const addForm = document.getElementById(`add-comment-${id}`);
+      list.classList.toggle('open');
+      addForm.classList.toggle('open');
+    }
+
+    // Add comment
+    function addComment(id) {
+      const input = document.getElementById(`comment-input-${id}`);
+      const text = input.value.trim();
+      if (!text) return;
+
+      const idea = ideas.find(i => i.id === id);
+      if (!idea) return;
+
+      idea.comments.push({
+        author: 'anon',
+        text: text,
+        createdAt: new Date().toISOString()
+      });
+
+      saveAndRender();
+      
+      // Re-open comments after render
+      setTimeout(() => {
+        const list = document.getElementById(`comments-${id}`);
+        const addForm = document.getElementById(`add-comment-${id}`);
+        if (list) list.classList.add('open');
+        if (addForm) addForm.classList.add('open');
+      }, 0);
+    }
+
+    // Helpers
+    function escapeHtml(text) {
+      const div = document.createElement('div');
+      div.textContent = text;
+      return div.innerHTML;
+    }
+
+    function formatTime(iso) {
+      const date = new Date(iso);
+      const now = new Date();
+      const diff = (now - date) / 1000;
+      
+      if (diff < 60) return 'just now';
+      if (diff < 3600) return `${Math.floor(diff / 60)}m ago`;
+      if (diff < 86400) return `${Math.floor(diff / 3600)}h ago`;
+      return `${Math.floor(diff / 86400)}d ago`;
+    }
+
+    // Initial render
+    renderIdeas();
+
+    // Seed with example if empty (comment out if you want blank slate)
+    if (ideas.length === 0) {
+      ideas = [{
+        id: 1,
+        title: "Anthropic hates OpenCode",
+        description: "Theo breaks down the reasons behind Anthropic blocking OpenCode users from using their Claude Code subscriptions. Goes through tweets, reactions, then economic incentives in Excalidraw.",
+        timeliness: "semi-recent",
+        sources: "https://twitter.com/...",
+        effort: 3,
+        votes: 12,
+        userVote: 0,
+        comments: [
+          { author: "chat_lurker", text: "This needs the Dax slack screenshot", createdAt: new Date(Date.now() - 7200000).toISOString() }
+        ],
+        createdAt: new Date(Date.now() - 86400000).toISOString()
+      }];
+      saveAndRender();
+    }
+  </script>
+</body>
+</html>

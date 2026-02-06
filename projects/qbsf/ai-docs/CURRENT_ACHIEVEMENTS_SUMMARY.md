@@ -7,8 +7,8 @@
 #### ✅ **PRIORITY 1: API Authentication** - 100% COMPLETE
 - **Problem**: Salesforce → Middleware 401 unauthorized errors
 - **Solution**: Fixed API key mismatch in Salesforce settings
-- **Working Key**: `UPCzgiXsPuXB4GiLuuzjqtXY4+4mGt+vXOmU4gaNCvM=`
-- **Verification**: ✅ `curl -H "X-API-Key: UPCzgiXsPuXB4GiLuuzjqtXY4+4mGt+vXOmU4gaNCvM=" https://sqint.atocomm.eu/api/health` returns healthy
+- **Working Key**: `$API_KEY`
+- **Verification**: ✅ `curl -H "X-API-Key: $API_KEY" https://sqint.atocomm.eu/api/health` returns healthy
 
 #### ✅ **PRIORITY 2: 75% Test Coverage** - 100% COMPLETE  
 - **Problem**: 54% coverage blocked production deployment

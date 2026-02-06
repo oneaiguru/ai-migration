@@ -162,7 +162,7 @@ tail -100 /tmp/server.log | grep -i currency
 **Debug steps**:
 1. Check middleware logs for error messages
 2. Verify contact has email address
-3. Verify QB API is responding: `curl -H "X-API-Key: UPCzgiXsPuXB4GiLuuzjqtXY4+4mGt+vXOmU4gaNCvM=" https://sqint.atocomm.eu/api/health`
+3. Verify QB API is responding: `curl -H "X-API-Key: $API_KEY" https://sqint.atocomm.eu/api/health`
 
 ### If Payment Link is NULL
 
@@ -215,7 +215,7 @@ Once testing is complete, use this template:
 ### Middleware
 - **URL**: https://sqint.atocomm.eu
 - **Health Check**: `/api/health`
-- **API Key**: `UPCzgiXsPuXB4GiLuuzjqtXY4+4mGt+vXOmU4gaNCvM=`
+- **API Key**: `$API_KEY`
 - **SSH**: `ssh -p 2323 roman@pve.atocomm.eu`
 
 ### QuickBooks

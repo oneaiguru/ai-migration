@@ -1,0 +1,29 @@
+graph TD
+    Start([New Task]) --> Type{Task Type?}
+    
+    Type -->|Feature Work| Feature[Read Parity Plan]
+    Type -->|Bug Fix| Bug[Check Session Handoff]
+    Type -->|Documentation| Docs[Documentation Refresh SOP]
+    Type -->|UAT| UAT{UAT Type?}
+    
+    Feature --> Role{Your Role?}
+    Role -->|Scout| Scout[Research Prompt + Discovery]
+    Role -->|Planner| Planner[Planning Prompt + Plan.md]
+    Role -->|Executor| Executor[Execution Prompt + Code]
+    
+    UAT -->|Manual| Manual[UI Walkthrough Checklist]
+    UAT -->|AI-Assisted| AI[Browser Agent SOP]
+    UAT -->|Delta-Focused| Delta[Delta Walkthrough SOP]
+    
+    Scout --> Evidence[Update SESSION_HANDOFF.md]
+    Planner --> Evidence
+    Executor --> Evidence
+    Manual --> Evidence
+    AI --> Evidence
+    Delta --> Evidence
+    
+    Evidence --> Done([Task Complete])
+    
+    style Start fill:#e1f5ff
+    style Done fill:#d4edda
+    style Evidence fill:#fff3cd

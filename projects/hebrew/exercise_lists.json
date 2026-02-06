@@ -1,0 +1,20 @@
+{
+    "exercise1": {
+        "data_file": "exercises/exercise1.txt",
+        "template_file": "templates/exercise1_template.txt",
+        "input_variables": ["input_var1", "input_var2"],
+        "output_variables": ["output_var1", "output_var2"]
+    },
+    "exercise2": {
+        "data_file": "exercises/exercise2.txt",
+        "template_file": "templates/exercise2_template.txt",
+        "input_variables": ["input_var1", "input_var2"],
+        "output_variables": ["output_var1", "output_var2"]
+    },
+    "exercise3": {
+        "data_file": "exercises/exercise3.txt",
+        "template_file": "templates/exercise3_template.txt",
+        "input_variables": ["input_var1", "input_var2"],
+        "output_variables": ["output_var1", "output_var2"]
+    }
+}

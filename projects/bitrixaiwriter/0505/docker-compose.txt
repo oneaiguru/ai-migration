@@ -1,0 +1,20 @@
+version: '3'
+
+services:
+  text-rewriter:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ./config:/var/www/html/config
+      - ./logs:/var/www/html/logs
+      - ./output:/var/www/html/output
+      - ./data:/var/www/html/data
+    ports:
+      - "8080:80"
+    environment:
+      - CLAUDE_API_KEY=${CLAUDE_API_KEY}
+      - TEXTRU_API_KEY=${TEXTRU_API_KEY}
+      - BITRIX_LOGIN=${BITRIX_LOGIN}
+      - BITRIX_PASSWORD=${BITRIX_PASSWORD}
+    restart: unless-stopped

@@ -56,7 +56,7 @@ Follow instructions in ADD_QB_FIELDS_TO_LAYOUT_INSTRUCTIONS.md
 Run this command to manually trigger payment check:
 ```bash
 curl -X POST https://sqint.atocomm.eu/api/check-payment-status \
-  -H "X-API-Key: UPCzgiXsPuXB4GiLuuzjqtXY4+4mGt+vXOmU4gaNCvM=" \
+  -H "X-API-Key: $API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
     "salesforceInstance": "https://customer-inspiration-2543.my.salesforce.com",
@@ -100,7 +100,7 @@ Create a bookmark with this JavaScript:
 fetch('https://sqint.atocomm.eu/api/check-payment-status', {
   method: 'POST',
   headers: {
-    'X-API-Key': 'UPCzgiXsPuXB4GiLuuzjqtXY4+4mGt+vXOmU4gaNCvM=',
+    'X-API-Key': '$API_KEY',
     'Content-Type': 'application/json'
   },
   body: JSON.stringify({
@@ -158,7 +158,7 @@ When everything works, you should see:
 ## 🔑 Key Information
 
 - **API Endpoint:** https://sqint.atocomm.eu/api/check-payment-status
-- **API Key:** UPCzgiXsPuXB4GiLuuzjqtXY4+4mGt+vXOmU4gaNCvM=
+- **API Key:** $API_KEY
 - **SF Instance:** https://customer-inspiration-2543.my.salesforce.com
 - **QB Realm:** 9130354519120066
 - **Unpaid Invoices:** #2050, #2048

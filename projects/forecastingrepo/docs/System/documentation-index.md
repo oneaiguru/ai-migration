@@ -24,6 +24,7 @@
 - `docs/System/Repo_Map.md`
 - `docs/System/Overview.md`
  - `docs/System/Review_Pack.md`
+- `docs/System/Deployment_State.md`
  
 ## Methodology
 - `docs/Methodology/README.md`

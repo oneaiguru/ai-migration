@@ -1,0 +1,5 @@
+# tmp import manifest (20251023-204910)
+docs moved: 5
+docs identical (skipped): 0
+docs conflicts saved under: docs/imports/tmp-20251023-204910 (count=0)
+services snapshot: 5 files under inbox/tmp-services-20251023-204910

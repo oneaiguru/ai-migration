@@ -1,0 +1,76 @@
+Here’s a consolidated, side‑by‑side comparison of the three new demos (Manager Portal, Analytics Dashboard and Employee Portal) against the real Naumen WFM system, using the crosswalk documents and manuals to ensure the correct navigation paths. For each demo, I outline the feature, the relevant manual section, how to find the equivalent in Naumen, and any notable behaviour gaps or deltas.
+
+* * *
+
+### 🔑 Navigation Primer (Common to all demos)
+
+* **Login & Main Interface:** The manuals instruct you to use the OIDC URL and credentials to log in. After authentication, the WFM home page shows a header with top‑level tabs (Прогнозы, Расписание, Сотрудники, Отчёты) and a “Рабочая структура” (Work Structure) side menu. This structure is your starting point for exploring all modules.
+  
+* **Profile Access:** Clicking the avatar opens the user profile, where you can edit password, phone, email, birthdate and address—the self‑service fields mirrored in the Employee Portal’s profile tab.
+  
+
+* * *
+
+## 🧭 Manager Portal Demo vs Naumen
+
+| Demo feature / page                                          | Manual section & navigation                                  | Real Naumen equivalent                                       | Behaviour match / gaps                                       |
+| ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
+| **Dashboard:** KPI cards (Total Employees, Active Today, Pending Requests, Upcoming Vacations) & charts (Team Coverage bar, Request Distribution pie) | **CH3 Employees** for employee counts and profile fields; **CH5_Schedule_Advanced §5.4** for request counts; **CH6_Reports §§6.1–6.3** for coverage/attendance reports; **Manual crosswalk table** lines 24–33 | Naumen has no unified “Manager dashboard.” Employee totals can be derived by counting rows in **Сотрудники** (Employees)![](https://sdmntpreastus2.oaiusercontent.com/files/00000000-65c0-61f6-9401-20eaf2ba812a/raw?se=2025-10-13T08%3A51%3A56Z&sp=r&sv=2024-08-04&sr=b&scid=f048d5c9-7ad2-5ebb-a64d-8aa3dbcc7d31&skoid=c156db82-7a33-468f-9cdd-06af263ceec8&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2025-10-12T22%3A27%3A33Z&ske=2025-10-13T22%3A27%3A33Z&sks=b&skv=2024-08-04&sig=uWSXgQjSdgCzBBmyAlYCPuPnfN1zmlSEgd5lFc01A2g%3D)wfm-practice51.dc.oswfm.ru; pending and approved requests are found under **Расписание → Заявки**![](https://sdmntpreastus2.oaiusercontent.com/files/00000000-afa8-61f6-b9c5-c2fbd89e8273/raw?se=2025-10-13T08%3A51%3A56Z&sp=r&sv=2024-08-04&sr=b&scid=230f5b20-118e-51c9-a848-df5023a2178b&skoid=c156db82-7a33-468f-9cdd-06af263ceec8&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2025-10-12T22%3A29%3A27Z&ske=2025-10-13T22%3A29%3A27Z&sks=b&skv=2024-08-04&sig=0zt%2BrelOKD%2BmD9DxjPKLF/2ORsDS5TkjCngjA5YYBSs%3D)wfm-practice51.dc.oswfm.ru; coverage figures come from reports (Work Schedule, Deviations)![](https://sdmntpreastus2.oaiusercontent.com/files/00000000-bfb0-61f6-904c-bf13288b66e0/raw?se=2025-10-13T08%3A51%3A57Z&sp=r&sv=2024-08-04&sr=b&scid=0c26989d-e283-5123-b66c-003654e98c21&skoid=c156db82-7a33-468f-9cdd-06af263ceec8&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2025-10-13T07%3A36%3A45Z&ske=2025-10-14T07%3A36%3A45Z&sks=b&skv=2024-08-04&sig=XiQLA42cKbo3uz8TpQiXYlIeeQo7aMtllVPTGB5ZQE4%3D)wfm-practice51.dc.oswfm.ru. | **Gap:** The dashboard’s KPI cards and charts are not present in Naumen. Managers must open the Employees list, run reports or open the Requests tab to see counts. |
+| **Teams page:** Cards showing team names, member counts, active today, pending requests & vacations; sort by Name/Coverage/Requests; “View Details” modal | **CH2 Main Interface** (organisation structure) & **CH3 Employees** for member details; crosswalk lines 40–43 note there is no Teams dashboard in Naumen | Naumen provides a **Рабочая структура** side menu and the **Сотрудники** tab. You can filter employees by organisation node or skill, but there’s no separate “Teams” dashboard. | **Gap:** Sorting and aggregated team cards are unique to the demo. In Naumen, managers navigate via the organisation tree and employee filters. |
+| **Approvals page:** Filters by priority (All/High/Medium/Low), request list with employee, team, type, period, priority, submitted; clicking a row opens a modal to Approve/Reject with notes | **CH5_Schedule_Advanced §5.4** – “Заявки” page instructions: select **Расписание → Заявки**, choose “Изменение расписания” or “Обмен сменами,” filter by status, and use bulk approve/reject buttons at the bottom![](https://sdmntpreastus2.oaiusercontent.com/files/00000000-afa8-61f6-b9c5-c2fbd89e8273/raw?se=2025-10-13T08%3A51%3A56Z&sp=r&sv=2024-08-04&sr=b&scid=230f5b20-118e-51c9-a848-df5023a2178b&skoid=c156db82-7a33-468f-9cdd-06af263ceec8&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2025-10-12T22%3A29%3A27Z&ske=2025-10-13T22%3A29%3A27Z&sks=b&skv=2024-08-04&sig=0zt%2BrelOKD%2BmD9DxjPKLF/2ORsDS5TkjCngjA5YYBSs%3D)wfm-practice51.dc.oswfm.ru | Naumen’s **Заявки** tab shows schedule-change and shift-exchange requests with filters and bulk action buttons![](https://sdmntpreastus2.oaiusercontent.com/files/00000000-afa8-61f6-b9c5-c2fbd89e8273/raw?se=2025-10-13T08%3A51%3A56Z&sp=r&sv=2024-08-04&sr=b&scid=230f5b20-118e-51c9-a848-df5023a2178b&skoid=c156db82-7a33-468f-9cdd-06af263ceec8&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2025-10-12T22%3A29%3A27Z&ske=2025-10-13T22%3A29%3A27Z&sks=b&skv=2024-08-04&sig=0zt%2BrelOKD%2BmD9DxjPKLF/2ORsDS5TkjCngjA5YYBSs%3D)wfm-practice51.dc.oswfm.ru. Selecting a request opens a side panel (not a modal) for processing; managers can approve or reject with comments. | **Partial match:** Both UIs support filtering and status counts. Naumen uses a side panel rather than a modal, and includes shift-exchange requests (missing in demo). Bulk actions exist in Naumen but are not visible in the demo. |
+| **Reports page (placeholder)**                               | **CH6 Reports** manual – navigate to **Отчёты**, select a report, set period, generate and export | In Naumen the **Отчёты** tab lists reports such as Work Schedule, Daily Schedule, Punctuality, Employee Schedule, T‑13 and Schedule Build Log![](https://sdmntpreastus2.oaiusercontent.com/files/00000000-bfb0-61f6-904c-bf13288b66e0/raw?se=2025-10-13T08%3A51%3A57Z&sp=r&sv=2024-08-04&sr=b&scid=0c26989d-e283-5123-b66c-003654e98c21&skoid=c156db82-7a33-468f-9cdd-06af263ceec8&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2025-10-13T07%3A36%3A45Z&ske=2025-10-14T07%3A36%3A45Z&sks=b&skv=2024-08-04&sig=XiQLA42cKbo3uz8TpQiXYlIeeQo7aMtllVPTGB5ZQE4%3D)wfm-practice51.dc.oswfm.ru. | **Gap:** The demo’s Reports tab is blank. To match Naumen, it would need a list of reports with period selectors and export buttons. |
+| **Settings page (placeholder)**                              | **CH2 Main Interface** (profile & side menu); no explicit settings section in Naumen | Naumen uses the top‑right avatar for user settings and the “Рабочая структура” side menu for organisation settings; there’s no dedicated Settings page in the scheduling slice. | **Gap:** Settings page content is undefined; no equivalent in this module. |
+
+### Overall for Manager Portal
+
+The demo provides a consolidated manager dashboard with KPIs, team cards and approvals workflow, but Naumen splits this functionality across multiple tabs and reports. To achieve behaviour parity, the demo would need to:
+
+* Replace the dashboard with links to **Employees**, **Zаявки**, and **Отчёты** or replicate the real report generation and request lists.
+  
+* Add shift‑exchange handling and bulk actions in approvals.
+  
+* Remove or align the Teams page with Naumen’s organisation structure.
+  
+
+* * *
+
+## 🧭 Employee Portal Demo vs Naumen
+
+| Demo feature / page                                          | Manual section & navigation                                  | Real Naumen equivalent                                       | Behaviour match / gaps                                       |
+| ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
+| **Home (Dashboard):** stats for total requests, under review, approved, upcoming; leave balance bars; recent requests; quick actions (“Подать заявку на отпуск”, “Мои заявки”, “Профиль”) | **CH5_Schedule_Advanced §5.4** (requests) & **CH2 Profile** editing; crosswalk lines 22–27 | Naumen does **not** have a dedicated employee self‑service dashboard. Employees log in to the same WFM UI as managers and open their profile via the avatar. Requests are submitted by managers in **Заявки**, not by employees. | **Gap:** The Employee Portal is a custom front‑end for self‑service; no equivalent exists in the current Naumen slice. Metrics like leave balance and personal request counters are not exposed in Naumen. |
+| **My Requests (“Мои заявки”):** table of vacation requests with filters (All/Pending/Approved/Rejected), columns for period, duration, type, status, reviewer, submitted, comments; “New Request” button | **CH5_Schedule_Advanced §5.4.1** (vacation requests & approvals): managers process requests via **Расписание → Заявки**![](https://sdmntpreastus2.oaiusercontent.com/files/00000000-afa8-61f6-b9c5-c2fbd89e8273/raw?se=2025-10-13T08%3A51%3A56Z&sp=r&sv=2024-08-04&sr=b&scid=230f5b20-118e-51c9-a848-df5023a2178b&skoid=c156db82-7a33-468f-9cdd-06af263ceec8&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2025-10-12T22%3A29%3A27Z&ske=2025-10-13T22%3A29%3A27Z&sks=b&skv=2024-08-04&sig=0zt%2BrelOKD%2BmD9DxjPKLF/2ORsDS5TkjCngjA5YYBSs%3D)wfm-practice51.dc.oswfm.ru; employees do not submit directly in this module. | Naumen’s requests page is manager‑oriented. Employees cannot submit or view their own vacation requests; this would require a different module. | **Gap:** Submission and tracking of personal vacation requests are absent in Naumen WFM (in the accessible slice). The demo introduces a self‑service workflow that is not present in the real product. |
+| **Profile:** View and edit personal information (name, birthdate, emergency contact) and contact info tabs; Save/Cancel buttons | **CH2_Login_System §2.3** – clicking the avatar opens the profile where employees can change password, phone, email, birthdate and address | In Naumen, the profile panel allows editing of phone, email, password and personal data via the avatar menu. | **Partial match:** The demo’s profile editing aligns with manual guidance (editable fields and Save/Cancel). However, in Naumen this is reached via the avatar rather than a separate “Profile” tab. |
+| **Dark mode / theme toggle**                                 | Not mentioned in manual                                      | No dark mode toggle in Naumen scheduling slice               | **Extra:** Demo feature is cosmetic and has no real counterpart. |
+
+### Overall for Employee Portal
+
+The Employee Portal is a prototype of a self‑service portal and does not map directly onto the existing Naumen scheduling system. Only the profile editing behaviour matches the manual; request submission and dashboards would require additional back‑end support not currently present. For parity, either remove those features or implement a corresponding employee‑facing module in Naumen.
+
+* * *
+
+## 🧭 Analytics Dashboard Demo vs Naumen
+
+The provided URL for the Analytics Dashboard demo (`analytics-dashboard-demo-pfnjtriy6-...`) loaded the Employee Portal UI rather than a dedicated analytics suite, so I couldn’t test line, gauge, heatmap or dual‑axis charts. According to the crosswalk:
+
+* **Manual CH4_Forecasts §§4.2–4.4** explains how to view and analyse forecasts with trend analysis, smoothing and exclusions. In Naumen, this is under the **Прогнозы** tab, where you build forecasts and then use trend analysis tools. There is no central analytics dashboard with KPIs and multi‑type charts.
+  
+* **Manual CH6_Reports §§6.1–6.4** covers generating reports (Work Schedule, Daily Schedule, Deviations, Employee Schedule, T‑13), which provide data summaries but not interactive dashboards.
+  
+
+If a real analytics dashboard exists outside the current Naumen slice, it isn’t accessible here. Therefore the Analytics Dashboard demo cannot be compared directly to the exposed Naumen modules. The crosswalk suggests mapping the demo’s charts to forecast trend analysis and report data, but that requires back‑end analytics features not present in the tested system.
+
+* * *
+
+### 📌 Summary and Next Steps
+
+* **Schedule Grid parity:** Completed earlier; the demo now matches the real Graph page for coverage/adherence, day/period grouping, overlays and KPIs.
+  
+* **Manager Portal:** Many features (dashboards, team cards) are not present in the Naumen scheduling slice. Only the approvals workflow partially aligns. To achieve parity, either add missing manager dashboards to Naumen or scale back the demo to use existing tabs (Employees, Requests, Reports).
+  
+* **Employee Portal:** Serves as a self‑service front‑end; Naumen currently lacks employee‑initiated vacation requests. Profile editing matches but should be accessible via the avatar rather than a separate page.
+  
+* **Analytics Dashboard:** Not available for testing; crosswalk references forecasting and reporting sections. Without a real analytics module, parity cannot be assessed.
+  
+
+These findings should help prioritise future parity efforts and guide UAT agents on where to navigate in Naumen when validating each demo.

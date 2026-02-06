@@ -5,7 +5,7 @@ RESULTS_ROOT := $(if $(CCP_RESULTS_DIR),$(CCP_RESULTS_DIR),$(CURDIR)/results)
 LOG_FILE := $(LOG_ROOT)/usage.jsonl
 
 setup:
-	@echo "setup scripts are not included in this scaffold slice; will be added with the tooling PRs" >&2
+	bash scripts/setup-workdirs.sh
 
 mitm:
 	bash scripts/run-mitm.sh

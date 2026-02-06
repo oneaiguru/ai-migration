@@ -14,7 +14,7 @@ import logging
 
 import pandas as pd
 
-from .rolling_types import CacheMetadata
+from .rolling_types import CacheMetadata, DEFAULT_MIN_OBS, DEFAULT_WINDOW_DAYS
 
 CACHE_DIR = Path(__file__).parent.parent.parent / "data" / "cache" / "forecasts"
 logger = logging.getLogger(__name__)
@@ -44,9 +44,14 @@ def cache_key(
     start: date,
     end: date,
     cache_suffix: str | None = None,
+    window_days: int = DEFAULT_WINDOW_DAYS,
+    min_obs: int = DEFAULT_MIN_OBS,
 ) -> str:
     """Generate cache filename from parameters."""
-    base_key = f"forecast_{cutoff.isoformat()}_{start.isoformat()}_{end.isoformat()}"
+    base_key = (
+        f"forecast_{cutoff.isoformat()}_{start.isoformat()}_{end.isoformat()}"
+        f"_w{int(window_days)}_m{int(min_obs)}"
+    )
     if cache_suffix:
         return f"{base_key}_{cache_suffix}"
     return base_key
@@ -57,9 +62,13 @@ def cache_path(
     start: date,
     end: date,
     cache_suffix: str | None = None,
+    window_days: int = DEFAULT_WINDOW_DAYS,
+    min_obs: int = DEFAULT_MIN_OBS,
 ) -> Path:
     """Full path to cache parquet file."""
-    return CACHE_DIR / f"{cache_key(cutoff, start, end, cache_suffix)}.parquet"
+    return CACHE_DIR / (
+        f"{cache_key(cutoff, start, end, cache_suffix, window_days, min_obs)}.parquet"
+    )
 
 
 def metadata_path(
@@ -67,9 +76,13 @@ def metadata_path(
     start: date,
     end: date,
     cache_suffix: str | None = None,
+    window_days: int = DEFAULT_WINDOW_DAYS,
+    min_obs: int = DEFAULT_MIN_OBS,
 ) -> Path:
     """Full path to cache metadata JSON file."""
-    return CACHE_DIR / f"{cache_key(cutoff, start, end, cache_suffix)}.meta.json"
+    return CACHE_DIR / (
+        f"{cache_key(cutoff, start, end, cache_suffix, window_days, min_obs)}.meta.json"
+    )
 
 
 def cache_exists(
@@ -77,11 +90,13 @@ def cache_exists(
     start: date,
     end: date,
     cache_suffix: str | None = None,
+    window_days: int = DEFAULT_WINDOW_DAYS,
+    min_obs: int = DEFAULT_MIN_OBS,
 ) -> bool:
     """Check if cached forecast exists."""
     if _parquet_engine() is None:
         return False
-    return cache_path(cutoff, start, end, cache_suffix).exists()
+    return cache_path(cutoff, start, end, cache_suffix, window_days, min_obs).exists()
 
 
 def save_to_cache(
@@ -91,6 +106,8 @@ def save_to_cache(
     end: date,
     site_count: int,
     cache_suffix: str | None = None,
+    window_days: int = DEFAULT_WINDOW_DAYS,
+    min_obs: int = DEFAULT_MIN_OBS,
 ) -> Path:
     """
     Save forecast DataFrame to cache.
@@ -100,13 +117,13 @@ def save_to_cache(
     engine = _parquet_engine()
     if engine is None:
         _warn_missing_parquet_engine("cache writes")
-        return cache_path(cutoff, start, end, cache_suffix)
+        return cache_path(cutoff, start, end, cache_suffix, window_days, min_obs)
 
     # Ensure CACHE_DIR exists
     CACHE_DIR.mkdir(parents=True, exist_ok=True)
 
     # Write df to parquet
-    parquet_path = cache_path(cutoff, start, end, cache_suffix)
+    parquet_path = cache_path(cutoff, start, end, cache_suffix, window_days, min_obs)
     df.to_parquet(parquet_path, index=False, engine=engine)
 
     # Write metadata JSON
@@ -119,7 +136,7 @@ def save_to_cache(
         "generated_at": datetime.now().isoformat(),
         "file_size_bytes": file_size_bytes,
     }
-    meta_path = metadata_path(cutoff, start, end, cache_suffix)
+    meta_path = metadata_path(cutoff, start, end, cache_suffix, window_days, min_obs)
     with open(meta_path, "w") as f:
         json.dump(metadata, f, indent=2)
 
@@ -131,6 +148,8 @@ def load_from_cache(
     start: date,
     end: date,
     cache_suffix: str | None = None,
+    window_days: int = DEFAULT_WINDOW_DAYS,
+    min_obs: int = DEFAULT_MIN_OBS,
 ) -> pd.DataFrame | None:
     """
     Load cached forecast if exists.
@@ -141,7 +160,7 @@ def load_from_cache(
     if engine is None:
         _warn_missing_parquet_engine("cache reads")
         return None
-    parquet_path = cache_path(cutoff, start, end, cache_suffix)
+    parquet_path = cache_path(cutoff, start, end, cache_suffix, window_days, min_obs)
     if not parquet_path.exists():
         return None
     return pd.read_parquet(parquet_path, engine=engine)
@@ -152,9 +171,11 @@ def get_cache_metadata(
     start: date,
     end: date,
     cache_suffix: str | None = None,
+    window_days: int = DEFAULT_WINDOW_DAYS,
+    min_obs: int = DEFAULT_MIN_OBS,
 ) -> CacheMetadata | None:
     """Load metadata for cached forecast."""
-    meta_path = metadata_path(cutoff, start, end, cache_suffix)
+    meta_path = metadata_path(cutoff, start, end, cache_suffix, window_days, min_obs)
     if not meta_path.exists():
         return None
     with open(meta_path, "r") as f:

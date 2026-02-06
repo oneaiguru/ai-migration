@@ -1,0 +1,22 @@
+global: scrape_interval: 15s evaluation_interval: 15s
+
+scrape_configs:
+
+- job_name: 'sherlock-api' static_configs:
+  - targets: ['localhost:8000']
+- job_name: 'sherlock-bot' static_configs:
+  - targets: ['localhost:8001']
+- job_name: 'postgres' static_configs:
+  - targets: ['localhost:9187']
+- job_name: 'redis' static_configs:
+  - targets: ['localhost:9121']
+- job_name: 'load-balancer' static_configs:
+  - targets: ['localhost:8080']
+- job_name: 'cdn' static_configs:
+  - targets: ['localhost:9100']
+
+alerting: alertmanagers: - static_configs: - targets: ['localhost:9093']
+
+rule_files:
+
+- "alert-rules.yml"

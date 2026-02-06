@@ -17,7 +17,7 @@
 
 **Configuration (Ready):**
 - ✅ Custom Settings record exists with middleware configuration
-- ✅ API Key configured: UPCzgiXsPuXB4GiLuuzjqtXY4+4mGt+vXOmU4gaNCvM=
+- ✅ API Key configured: $API_KEY
 - ✅ Middleware URL configured: https://sqint.atocomm.eu
 
 ## 🎯 ROMAN - FINAL STEPS TO TEST (5 minutes):

@@ -1,0 +1,1108 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Админ-панель | Система автоматизации переписывания текстов</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <style>
+        .sidebar {
+            height: 100vh;
+            position: sticky;
+            top: 0;
+            background-color: #f8f9fa;
+            border-right: 1px solid #dee2e6;
+        }
+        .sidebar .nav-link {
+            color: #495057;
+            border-radius: 0;
+        }
+        .sidebar .nav-link.active {
+            background-color: #007bff;
+            color: white;
+        }
+        .content {
+            padding: 20px;
+        }
+        .card-dashboard {
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+        .card-dashboard:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+        .progress-lg {
+            height: 20px;
+        }
+        #task-status {
+            font-weight: bold;
+        }
+        .text-comparison {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        .status-icon {
+            font-size: 2.5rem;
+        }
+        .filters-container {
+            background-color: #f8f9fa;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+        #log-container {
+            height: 300px;
+            overflow-y: auto;
+            background-color: #f8f9fa;
+            font-family: monospace;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        .log-entry {
+            margin-bottom: 5px;
+        }
+        .log-info {
+            color: #0d6efd;
+        }
+        .log-warning {
+            color: #ffc107;
+        }
+        .log-error {
+            color: #dc3545;
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Боковое меню -->
+            <nav class="col-md-3 col-lg-2 d-md-block sidebar py-3">
+                <div class="text-center mb-4">
+                    <h5>Система автоматизации</h5>
+                    <p class="text-muted small">Souz-Pribor</p>
+                </div>
+                <div class="nav flex-column">
+                    <a class="nav-link active py-3" href="#dashboard" data-bs-toggle="tab">
+                        <i class="bi bi-speedometer2 me-2"></i> Панель управления
+                    </a>
+                    <a class="nav-link py-3" href="#texts" data-bs-toggle="tab">
+                        <i class="bi bi-file-text me-2"></i> Управление текстами
+                    </a>
+                    <a class="nav-link py-3" href="#settings" data-bs-toggle="tab">
+                        <i class="bi bi-gear me-2"></i> Настройки
+                    </a>
+                    <a class="nav-link py-3" href="#logs" data-bs-toggle="tab">
+                        <i class="bi bi-journal-text me-2"></i> Логи и отчеты
+                    </a>
+                    <a class="nav-link py-3" href="#help" data-bs-toggle="tab">
+                        <i class="bi bi-question-circle me-2"></i> Справка
+                    </a>
+                </div>
+            </nav>
+
+            <!-- Основной контент -->
+            <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+                <div class="tab-content">
+                    <!-- Панель управления -->
+                    <div class="tab-pane active" id="dashboard">
+                        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                            <h1 class="h2">Панель управления</h1>
+                            <div class="btn-toolbar mb-2 mb-md-0">
+                                <button type="button" class="btn btn-sm btn-primary me-2">
+                                    <i class="bi bi-play-fill"></i> Запустить обработку
+                                </button>
+                                <button type="button" class="btn btn-sm btn-outline-secondary">
+                                    <i class="bi bi-download"></i> Экспорт отчета
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Статус текущей задачи -->
+                        <div class="card mb-4">
+                            <div class="card-header bg-primary text-white">
+                                <h5 class="mb-0">Статус обработки</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="row align-items-center">
+                                    <div class="col-md-8">
+                                        <p class="mb-1">Текущая задача: <span id="task-name">Переписывание описаний товаров</span></p>
+                                        <p class="mb-1">Статус: <span id="task-status" class="text-success">В процессе (65%)</span></p>
+                                        <p class="mb-3">Времени прошло: <span id="task-time">1ч 23м</span> | Осталось: <span id="task-remaining">~45м</span></p>
+                                        <div class="progress progress-lg mb-3">
+                                            <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 65%" aria-valuenow="65" aria-valuemin="0" aria-valuemax="100">65%</div>
+                                        </div>
+                                        <p class="mb-0 small text-muted">Задача запущена: <span id="task-started">23.04.2025 14:32</span></p>
+                                    </div>
+                                    <div class="col-md-4 text-center">
+                                        <i class="bi bi-arrow-repeat text-primary status-icon"></i>
+                                        <div class="mt-2">
+                                            <button class="btn btn-sm btn-outline-danger me-2">
+                                                <i class="bi bi-pause-fill"></i> Пауза
+                                            </button>
+                                            <button class="btn btn-sm btn-outline-secondary">
+                                                <i class="bi bi-x-lg"></i> Отмена
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Статистика -->
+                        <div class="row">
+                            <div class="col-md-3 mb-4">
+                                <div class="card card-dashboard h-100 bg-light border-0">
+                                    <div class="card-body text-center">
+                                        <i class="bi bi-file-text text-primary mb-2" style="font-size: 2rem;"></i>
+                                        <h5 class="card-title">Всего товаров</h5>
+                                        <p class="card-text display-6">1,955</p>
+                                        <p class="text-muted small">из 3,000 запланированных</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3 mb-4">
+                                <div class="card card-dashboard h-100 bg-light border-0">
+                                    <div class="card-body text-center">
+                                        <i class="bi bi-check-circle text-success mb-2" style="font-size: 2rem;"></i>
+                                        <h5 class="card-title">Обработано</h5>
+                                        <p class="card-text display-6">1,270</p>
+                                        <p class="text-muted small">65% от общего количества</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3 mb-4">
+                                <div class="card card-dashboard h-100 bg-light border-0">
+                                    <div class="card-body text-center">
+                                        <i class="bi bi-percent text-info mb-2" style="font-size: 2rem;"></i>
+                                        <h5 class="card-title">Средняя уникальность</h5>
+                                        <p class="card-text display-6">83%</p>
+                                        <p class="text-muted small">все тексты > 70%</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3 mb-4">
+                                <div class="card card-dashboard h-100 bg-light border-0">
+                                    <div class="card-body text-center">
+                                        <i class="bi bi-exclamation-triangle text-warning mb-2" style="font-size: 2rem;"></i>
+                                        <h5 class="card-title">Ошибки</h5>
+                                        <p class="card-text display-6">12</p>
+                                        <p class="text-muted small">< 1% от обработанных</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- График прогресса -->
+                        <div class="card mb-4">
+                            <div class="card-header">
+                                <h5 class="mb-0">Прогресс обработки по дням</h5>
+                            </div>
+                            <div class="card-body">
+                                <canvas id="progressChart" height="100"></canvas>
+                            </div>
+                        </div>
+
+                        <!-- Последние обработанные -->
+                        <div class="card">
+                            <div class="card-header">
+                                <h5 class="mb-0">Последние обработанные товары</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-sm table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>ID</th>
+                                                <th>Название товара</th>
+                                                <th>Время обработки</th>
+                                                <th>Уникальность</th>
+                                                <th>Статус</th>
+                                                <th>Действия</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>12458</td>
+                                                <td>Осциллограф цифровой АКТАКОМ ADS-4572</td>
+                                                <td>23.04.2025 16:45</td>
+                                                <td>85%</td>
+                                                <td><span class="badge bg-success">Успешно</span></td>
+                                                <td>
+                                                    <button class="btn btn-sm btn-outline-primary">
+                                                        <i class="bi bi-eye"></i>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>12459</td>
+                                                <td>Анализатор спектра АКТАКОМ АКС-1301</td>
+                                                <td>23.04.2025 16:44</td>
+                                                <td>93%</td>
+                                                <td><span class="badge bg-success">Успешно</span></td>
+                                                <td>
+                                                    <button class="btn btn-sm btn-outline-primary">
+                                                        <i class="bi bi-eye"></i>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>12460</td>
+                                                <td>Мультиметр АКТАКОМ АМ-1109</td>
+                                                <td>23.04.2025 16:43</td>
+                                                <td>77%</td>
+                                                <td><span class="badge bg-success">Успешно</span></td>
+                                                <td>
+                                                    <button class="btn btn-sm btn-outline-primary">
+                                                        <i class="bi bi-eye"></i>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>12461</td>
+                                                <td>Источник питания АКТАКОМ APS-7315</td>
+                                                <td>23.04.2025 16:42</td>
+                                                <td>64%</td>
+                                                <td><span class="badge bg-warning">Требует проверки</span></td>
+                                                <td>
+                                                    <button class="btn btn-sm btn-outline-primary">
+                                                        <i class="bi bi-eye"></i>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>12462</td>
+                                                <td>Генератор сигналов АКТАКОМ AWG-4150</td>
+                                                <td>23.04.2025 16:40</td>
+                                                <td>0%</td>
+                                                <td><span class="badge bg-danger">Ошибка</span></td>
+                                                <td>
+                                                    <button class="btn btn-sm btn-outline-primary">
+                                                        <i class="bi bi-eye"></i>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="text-center mt-3">
+                                    <a href="#texts" class="btn btn-outline-primary btn-sm" data-bs-toggle="tab">
+                                        Смотреть все товары
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Управление текстами -->
+                    <div class="tab-pane" id="texts">
+                        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                            <h1 class="h2">Управление текстами</h1>
+                            <div class="btn-toolbar mb-2 mb-md-0">
+                                <button type="button" class="btn btn-sm btn-success me-2">
+                                    <i class="bi bi-check-all"></i> Применить выбранные
+                                </button>
+                                <button type="button" class="btn btn-sm btn-outline-primary">
+                                    <i class="bi bi-arrow-repeat"></i> Перегенерировать
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Фильтры -->
+                        <div class="filters-container">
+                            <div class="row g-3">
+                                <div class="col-md-3">
+                                    <label for="filter-status" class="form-label">Статус</label>
+                                    <select class="form-select" id="filter-status">
+                                        <option value="all" selected>Все</option>
+                                        <option value="success">Успешно</option>
+                                        <option value="warning">Требует проверки</option>
+                                        <option value="error">Ошибка</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-3">
+                                    <label for="filter-uniqueness" class="form-label">Уникальность</label>
+                                    <select class="form-select" id="filter-uniqueness">
+                                        <option value="all" selected>Все</option>
+                                        <option value="90">Более 90%</option>
+                                        <option value="80">Более 80%</option>
+                                        <option value="70">Более 70%</option>
+                                        <option value="less70">Менее 70%</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="filter-search" class="form-label">Поиск</label>
+                                    <input type="text" class="form-control" id="filter-search" placeholder="Поиск по ID или названию...">
+                                </div>
+                                <div class="col-md-2 d-flex align-items-end">
+                                    <button class="btn btn-primary w-100">
+                                        <i class="bi bi-search"></i> Применить
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Список товаров -->
+                        <div class="card mb-4">
+                            <div class="card-header d-flex justify-content-between align-items-center">
+                                <h5 class="mb-0">Список товаров</h5>
+                                <span class="text-muted small">Найдено: 1270 товаров</span>
+                            </div>
+                            <div class="card-body p-0">
+                                <div class="table-responsive">
+                                    <table class="table table-hover mb-0">
+                                        <thead class="table-light">
+                                            <tr>
+                                                <th>
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="checkbox" id="selectAll">
+                                                    </div>
+                                                </th>
+                                                <th>ID</th>
+                                                <th>Название товара</th>
+                                                <th>Обработано</th>
+                                                <th>Уникальность</th>
+                                                <th>Статус</th>
+                                                <th>Действия</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="checkbox">
+                                                    </div>
+                                                </td>
+                                                <td>12458</td>
+                                                <td>Осциллограф цифровой АКТАКОМ ADS-4572</td>
+                                                <td>23.04.2025</td>
+                                                <td>85%</td>
+                                                <td><span class="badge bg-success">Успешно</span></td>
+                                                <td>
+                                                    <button class="btn btn-sm btn-outline-primary me-1" data-bs-toggle="modal" data-bs-target="#textModal">
+                                                        <i class="bi bi-eye"></i>
+                                                    </button>
+                                                    <button class="btn btn-sm btn-outline-secondary me-1">
+                                                        <i class="bi bi-arrow-repeat"></i>
+                                                    </button>
+                                                    <button class="btn btn-sm btn-outline-success">
+                                                        <i class="bi bi-check-lg"></i>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="checkbox">
+                                                    </div>
+                                                </td>
+                                                <td>12459</td>
+                                                <td>Анализатор спектра АКТАКОМ АКС-1301</td>
+                                                <td>23.04.2025</td>
+                                                <td>93%</td>
+                                                <td><span class="badge bg-success">Успешно</span></td>
+                                                <td>
+                                                    <button class="btn btn-sm btn-outline-primary me-1" data-bs-toggle="modal" data-bs-target="#textModal">
+                                                        <i class="bi bi-eye"></i>
+                                                    </button>
+                                                    <button class="btn btn-sm btn-outline-secondary me-1">
+                                                        <i class="bi bi-arrow-repeat"></i>
+                                                    </button>
+                                                    <button class="btn btn-sm btn-outline-success">
+                                                        <i class="bi bi-check-lg"></i>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="checkbox">
+                                                    </div>
+                                                </td>
+                                                <td>12460</td>
+                                                <td>Мультиметр АКТАКОМ АМ-1109</td>
+                                                <td>23.04.2025</td>
+                                                <td>77%</td>
+                                                <td><span class="badge bg-success">Успешно</span></td>
+                                                <td>
+                                                    <button class="btn btn-sm btn-outline-primary me-1" data-bs-toggle="modal" data-bs-target="#textModal">
+                                                        <i class="bi bi-eye"></i>
+                                                    </button>
+                                                    <button class="btn btn-sm btn-outline-secondary me-1">
+                                                        <i class="bi bi-arrow-repeat"></i>
+                                                    </button>
+                                                    <button class="btn btn-sm btn-outline-success">
+                                                        <i class="bi bi-check-lg"></i>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="checkbox">
+                                                    </div>
+                                                </td>
+                                                <td>12461</td>
+                                                <td>Источник питания АКТАКОМ APS-7315</td>
+                                                <td>23.04.2025</td>
+                                                <td>64%</td>
+                                                <td><span class="badge bg-warning">Требует проверки</span></td>
+                                                <td>
+                                                    <button class="btn btn-sm btn-outline-primary me-1" data-bs-toggle="modal" data-bs-target="#textModal">
+                                                        <i class="bi bi-eye"></i>
+                                                    </button>
+                                                    <button class="btn btn-sm btn-outline-secondary me-1">
+                                                        <i class="bi bi-arrow-repeat"></i>
+                                                    </button>
+                                                    <button class="btn btn-sm btn-outline-warning">
+                                                        <i class="bi bi-pencil"></i>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="checkbox">
+                                                    </div>
+                                                </td>
+                                                <td>12462</td>
+                                                <td>Генератор сигналов АКТАКОМ AWG-4150</td>
+                                                <td>23.04.2025</td>
+                                                <td>0%</td>
+                                                <td><span class="badge bg-danger">Ошибка</span></td>
+                                                <td>
+                                                    <button class="btn btn-sm btn-outline-primary me-1" data-bs-toggle="modal" data-bs-target="#textModal">
+                                                        <i class="bi bi-eye"></i>
+                                                    </button>
+                                                    <button class="btn btn-sm btn-outline-secondary me-1">
+                                                        <i class="bi bi-arrow-repeat"></i>
+                                                    </button>
+                                                    <button class="btn btn-sm btn-outline-danger">
+                                                        <i class="bi bi-pencil"></i>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="card-footer">
+                                <nav aria-label="Page navigation">
+                                    <ul class="pagination justify-content-center mb-0">
+                                        <li class="page-item disabled">
+                                            <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Предыдущая</a>
+                                        </li>
+                                        <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                                        <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                        <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                        <li class="page-item">
+                                            <a class="page-link" href="#">Следующая</a>
+                                        </li>
+                                    </ul>
+                                </nav>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Настройки -->
+                    <div class="tab-pane" id="settings">
+                        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                            <h1 class="h2">Настройки системы</h1>
+                            <div class="btn-toolbar mb-2 mb-md-0">
+                                <button type="button" class="btn btn-sm btn-primary">
+                                    <i class="bi bi-save"></i> Сохранить изменения
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-4">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h5 class="mb-0">Параметры генерации</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="mb-3">
+                                            <label for="ai-model" class="form-label">Модель ИИ</label>
+                                            <select class="form-select" id="ai-model">
+                                                <option value="claude-sonnet" selected>Claude Sonnet</option>
+                                                <option value="claude-opus">Claude Opus</option>
+                                                <option value="gpt-4o">GPT-4o</option>
+                                                <option value="yandex-gpt">YandexGPT</option>
+                                            </select>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="temperature" class="form-label">Температура (креативность): 0.7</label>
+                                            <input type="range" class="form-range" min="0" max="1" step="0.1" value="0.7" id="temperature">
+                                            <div class="d-flex justify-content-between">
+                                                <small class="text-muted">Точно (0.0)</small>
+                                                <small class="text-muted">Креативно (1.0)</small>
+                                            </div>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="batch-size" class="form-label">Размер пакета обработки</label>
+                                            <input type="number" class="form-control" id="batch-size" value="10">
+                                            <small class="text-muted">Количество товаров, обрабатываемых за один раз</small>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="max-tokens" class="form-label">Максимальное количество токенов</label>
+                                            <input type="number" class="form-control" id="max-tokens" value="1000">
+                                        </div>
+                                        <div class="form-check form-switch mb-3">
+                                            <input class="form-check-input" type="checkbox" id="save-history" checked>
+                                            <label class="form-check-label" for="save-history">Сохранять историю текстов для проверки уникальности</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6 mb-4">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h5 class="mb-0">Интеграция с Битрикс</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="mb-3">
+                                            <label for="bitrix-url" class="form-label">URL сайта</label>
+                                            <input type="text" class="form-control" id="bitrix-url" value="https://www.souz-pribor.ru">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="api-endpoint" class="form-label">Endpoint REST API</label>
+                                            <input type="text" class="form-control" id="api-endpoint" value="https://www.souz-pribor.ru/rest">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="api-login" class="form-label">Логин API</label>
+                                            <input type="text" class="form-control" id="api-login" value="admin">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="api-password" class="form-label">Пароль API</label>
+                                            <input type="password" class="form-control" id="api-password" value="********">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="api-timeout" class="form-label">Таймаут запросов (сек)</label>
+                                            <input type="number" class="form-control" id="api-timeout" value="30">
+                                        </div>
+                                        <button class="btn btn-outline-primary">
+                                            <i class="bi bi-arrow-repeat"></i> Проверить соединение
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6 mb-4">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h5 class="mb-0">Проверка уникальности</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="mb-3">
+                                            <label for="uniqueness-threshold" class="form-label">Минимальный порог уникальности: 70%</label>
+                                            <input type="range" class="form-range" min="50" max="95" step="5" value="70" id="uniqueness-threshold">
+                                            <div class="d-flex justify-content-between">
+                                                <small class="text-muted">50%</small>
+                                                <small class="text-muted">95%</small>
+                                            </div>
+                                        </div>
+                                        <div class="form-check form-switch mb-3">
+                                            <input class="form-check-input" type="checkbox" id="use-external-api" checked>
+                                            <label class="form-check-label" for="use-external-api">Использовать внешний API для проверки уникальности</label>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="textru-api-key" class="form-label">API ключ Text.ru</label>
+                                            <input type="text" class="form-control" id="textru-api-key" value="a1b2c3d4e5f6g7h8i9j0">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="retry-attempts" class="form-label">Количество попыток при низкой уникальности</label>
+                                            <input type="number" class="form-control" id="retry-attempts" value="3">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6 mb-4">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h5 class="mb-0">Системные настройки</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="mb-3">
+                                            <label for="log-file" class="form-label">Путь к файлу логов</label>
+                                            <input type="text" class="form-control" id="log-file" value="./logs/rewrite.log">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="output-dir" class="form-label">Директория для выходных файлов</label>
+                                            <input type="text" class="form-control" id="output-dir" value="./output">
+                                        </div>
+                                        <div class="form-check form-switch mb-3">
+                                            <input class="form-check-input" type="checkbox" id="debug-mode">
+                                            <label class="form-check-label" for="debug-mode">Режим отладки</label>
+                                        </div>
+                                        <div class="mb-3">
+                                            <button class="btn btn-outline-secondary me-2">
+                                                <i class="bi bi-arrow-clockwise"></i> Очистить кэш
+                                            </button>
+                                            <button class="btn btn-outline-danger">
+                                                <i class="bi bi-trash"></i> Сбросить настройки
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Логи и отчеты -->
+                    <div class="tab-pane" id="logs">
+                        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                            <h1 class="h2">Логи и отчеты</h1>
+                            <div class="btn-toolbar mb-2 mb-md-0">
+                                <button type="button" class="btn btn-sm btn-outline-secondary me-2">
+                                    <i class="bi bi-download"></i> Экспорт логов
+                                </button>
+                                <button type="button" class="btn btn-sm btn-outline-danger">
+                                    <i class="bi bi-trash"></i> Очистить логи
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Логи системы -->
+                        <div class="card mb-4">
+                            <div class="card-header d-flex justify-content-between align-items-center">
+                                <h5 class="mb-0">Системные логи</h5>
+                                <div>
+                                    <select class="form-select form-select-sm d-inline-block w-auto">
+                                        <option value="all">Все уровни</option>
+                                        <option value="info">Информация</option>
+                                        <option value="warning">Предупреждения</option>
+                                        <option value="error">Ошибки</option>
+                                    </select>
+                                    <button class="btn btn-sm btn-outline-secondary ms-2">
+                                        <i class="bi bi-arrow-clockwise"></i> Обновить
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div id="log-container">
+                                    <div class="log-entry log-info">[2025-04-23 14:32:01] [INFO] Starting full process with limit: 3000</div>
+                                    <div class="log-entry log-info">[2025-04-23 14:32:03] [INFO] Found 1955 products to process</div>
+                                    <div class="log-entry log-info">[2025-04-23 14:32:04] [INFO] Processing batch 1 of 196</div>
+                                    <div class="log-entry log-info">[2025-04-23 14:32:05] [INFO] Processing product #12458: Осциллограф цифровой АКТАКОМ ADS-4572</div>
+                                    <div class="log-entry log-info">[2025-04-23 14:32:15] [INFO] Product #12458 uniqueness: 85%</div>
+                                    <div class="log-entry log-info">[2025-04-23 14:32:16] [INFO] Processing product #12459: Анализатор спектра АКТАКОМ АКС-1301</div>
+                                    <div class="log-entry log-info">[2025-04-23 14:32:26] [INFO] Product #12459 uniqueness: 93%</div>
+                                    <div class="log-entry log-info">[2025-04-23 14:32:27] [INFO] Processing product #12460: Мультиметр АКТАКОМ АМ-1109</div>
+                                    <div class="log-entry log-info">[2025-04-23 14:32:37] [INFO] Product #12460 uniqueness: 77%</div>
+                                    <div class="log-entry log-info">[2025-04-23 14:32:38] [INFO] Processing product #12461: Источник питания АКТАКОМ APS-7315</div>
+                                    <div class="log-entry log-warning">[2025-04-23 14:32:48] [WARNING] Generated text for product #12461 is not unique enough (64%), retrying...</div>
+                                    <div class="log-entry log-warning">[2025-04-23 14:32:58] [WARNING] Generated text for product #12461 is not unique enough (68%), retrying...</div>
+                                    <div class="log-entry log-warning">[2025-04-23 14:33:08] [WARNING] Generated text for product #12461 is not unique enough (64%), retrying...</div>
+                                    <div class="log-entry log-info">[2025-04-23 14:33:09] [INFO] Processing product #12462: Генератор сигналов АКТАКОМ AWG-4150</div>
+                                    <div class="log-entry log-error">[2025-04-23 14:33:10] [ERROR] Error generating text for product #12462: API Error: HTTP code 429 - Rate limit exceeded</div>
+                                    <div class="log-entry log-info">[2025-04-23 14:33:15] [INFO] Processing batch 2 of 196</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Отчеты -->
+                        <div class="card">
+                            <div class="card-header">
+                                <h5 class="mb-0">Отчеты</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>Дата создания</th>
+                                                <th>Название</th>
+                                                <th>Статистика</th>
+                                                <th>Размер</th>
+                                                <th>Действия</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>23.04.2025 14:30</td>
+                                                <td>Отчет по генерации текстов</td>
+                                                <td>Обработано: 1270 / Успешно: 1195 / Ошибки: 75</td>
+                                                <td>245 КБ</td>
+                                                <td>
+                                                    <button class="btn btn-sm btn-outline-primary me-1">
+                                                        <i class="bi bi-eye"></i> Просмотр
+                                                    </button>
+                                                    <button class="btn btn-sm btn-outline-secondary">
+                                                        <i class="bi bi-download"></i> Скачать
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>22.04.2025 18:45</td>
+                                                <td>Промежуточный отчет</td>
+                                                <td>Обработано: 850 / Успешно: 822 / Ошибки: 28</td>
+                                                <td>175 КБ</td>
+                                                <td>
+                                                    <button class="btn btn-sm btn-outline-primary me-1">
+                                                        <i class="bi bi-eye"></i> Просмотр
+                                                    </button>
+                                                    <button class="btn btn-sm btn-outline-secondary">
+                                                        <i class="bi bi-download"></i> Скачать
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>21.04.2025 10:15</td>
+                                                <td>Тестовый запуск</td>
+                                                <td>Обработано: 100 / Успешно: 98 / Ошибки: 2</td>
+                                                <td>56 КБ</td>
+                                                <td>
+                                                    <button class="btn btn-sm btn-outline-primary me-1">
+                                                        <i class="bi bi-eye"></i> Просмотр
+                                                    </button>
+                                                    <button class="btn btn-sm btn-outline-secondary">
+                                                        <i class="bi bi-download"></i> Скачать
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Справка -->
+                    <div class="tab-pane" id="help">
+                        <div class="pt-3 pb-2 mb-3 border-bottom">
+                            <h1 class="h2">Справка по системе</h1>
+                        </div>
+
+                        <div class="accordion" id="helpAccordion">
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="headingOne">
+                                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                        Общая информация о системе
+                                    </button>
+                                </h2>
+                                <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#helpAccordion">
+                                    <div class="accordion-body">
+                                        <p>Система автоматизации переписывания описаний товаров предназначена для создания уникальных текстов с использованием искусственного интеллекта (Claude API).</p>
+                                        
+                                        <p>Основные возможности системы:</p>
+                                        <ul>
+                                            <li>Выгрузка данных о товарах из CMS Битрикс</li>
+                                            <li>Генерация уникальных описаний с сохранением ключевых характеристик</li>
+                                            <li>Проверка уникальности текстов</li>
+                                            <li>Загрузка обновленных описаний обратно в CMS</li>
+                                            <li>Мониторинг и аналитика процесса</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="headingTwo">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                        Начало работы
+                                    </button>
+                                </h2>
+                                <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#helpAccordion">
+                                    <div class="accordion-body">
+                                        <p>Для начала работы с системой выполните следующие шаги:</p>
+                                        <ol>
+                                            <li>Настройте параметры интеграции с Битрикс во вкладке "Настройки"</li>
+                                            <li>Укажите API ключ для Claude в разделе настроек генерации</li>
+                                            <li>Настройте параметры проверки уникальности</li>
+                                            <li>Перейдите на вкладку "Панель управления" и нажмите кнопку "Запустить обработку"</li>
+                                        </ol>
+                                        <p>После запуска система начнет автоматически обрабатывать товары и генерировать новые описания. Прогресс можно отслеживать на панели управления и в логах.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="headingThree">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                                        Управление текстами
+                                    </button>
+                                </h2>
+                                <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#helpAccordion">
+                                    <div class="accordion-body">
+                                        <p>Вкладка "Управление текстами" позволяет просматривать и редактировать сгенерированные описания товаров:</p>
+                                        <ul>
+                                            <li><strong>Просмотр текста</strong> - Нажмите кнопку с иконкой глаза, чтобы увидеть сравнение оригинального и сгенерированного текста</li>
+                                            <li><strong>Перегенерация</strong> - Используйте кнопку с иконкой стрелок, чтобы запустить повторную генерацию текста</li>
+                                            <li><strong>Ручное редактирование</strong> - Для текстов, которые требуют корректировки (низкая уникальность), доступно ручное редактирование</li>
+                                            <li><strong>Применение</strong> - Нажмите кнопку с галочкой, чтобы подтвердить текст и применить его к товару</li>
+                                        </ul>
+                                        <p>Вы можете использовать фильтры для поиска товаров по статусу, уникальности или названию.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="headingFour">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+                                        Часто задаваемые вопросы
+                                    </button>
+                                </h2>
+                                <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="headingFour" data-bs-parent="#helpAccordion">
+                                    <div class="accordion-body">
+                                        <p><strong>Как долго займет обработка всех товаров?</strong><br>
+                                        Время обработки зависит от количества товаров и настроек системы. В среднем система обрабатывает около 500-700 товаров в день при стандартных настройках.</p>
+                                        
+                                        <p><strong>Почему некоторые тексты имеют низкую уникальность?</strong><br>
+                                        Уникальность может быть низкой по нескольким причинам: слишком короткий исходный текст, много технических характеристик, которые нельзя изменить, или ограничения модели ИИ. Для таких текстов рекомендуется ручная корректировка.</p>
+                                        
+                                        <p><strong>Можно ли временно приостановить обработку?</strong><br>
+                                        Да, вы можете приостановить процесс обработки кнопкой "Пауза" на панели управления. Система завершит текущий пакет и приостановит обработку до возобновления.</p>
+                                        
+                                        <p><strong>Как происходит проверка уникальности?</strong><br>
+                                        Система использует два метода проверки: локальное сравнение с ранее сгенерированными текстами и проверку через внешний API (Text.ru). Вы можете настроить порог уникальности в настройках.</p>
+                                        
+                                        <p><strong>Что делать, если возникают ошибки при обработке?</strong><br>
+                                        Проверьте логи системы для получения информации об ошибках. Наиболее частые причины: проблемы с подключением к API, превышение лимитов запросов, некорректные данные в исходных описаниях.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="headingFive">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
+                                        Техническая поддержка
+                                    </button>
+                                </h2>
+                                <div id="collapseFive" class="accordion-collapse collapse" aria-labelledby="headingFive" data-bs-parent="#helpAccordion">
+                                    <div class="accordion-body">
+                                        <p>Если у вас возникли вопросы или проблемы при использовании системы, обратитесь в службу технической поддержки:</p>
+                                        <p><strong>Email:</strong> support@granin.com</p>
+                                        <p><strong>Telegram:</strong> @granin</p>
+                                        <p>При обращении в поддержку рекомендуется приложить логи системы и подробное описание возникшей проблемы.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Модальное окно просмотра текста -->
+    <div class="modal fade" id="textModal" tabindex="-1" aria-labelledby="textModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="textModalLabel">Осциллограф цифровой АКТАКОМ ADS-4572 (ID: 12458)</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <ul class="nav nav-tabs" id="textTabs" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link active" id="compare-tab" data-bs-toggle="tab" data-bs-target="#compare" type="button" role="tab" aria-controls="compare" aria-selected="true">Сравнение</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="original-tab" data-bs-toggle="tab" data-bs-target="#original" type="button" role="tab" aria-controls="original" aria-selected="false">Оригинал</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="generated-tab" data-bs-toggle="tab" data-bs-target="#generated" type="button" role="tab" aria-controls="generated" aria-selected="false">Сгенерированный</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="edit-tab" data-bs-toggle="tab" data-bs-target="#edit" type="button" role="tab" aria-controls="edit" aria-selected="false">Редактирование</button>
+                        </li>
+                    </ul>
+                    <div class="tab-content pt-3" id="textTabsContent">
+                        <div class="tab-pane fade show active" id="compare" role="tabpanel" aria-labelledby="compare-tab">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <h6 class="border-bottom pb-2">Оригинальный текст</h6>
+                                    <div class="text-comparison">
+                                        <p>Осциллограф цифровой АКТАКОМ ADS-4572 – это 2-канальный прибор с полосой пропускания 70 МГц, предназначенный для исследования электронных схем.</p>
+                                        <p>Данный прибор позволяет наблюдать и измерять формы различных сигналов. В устройстве реализованы функции автоматического измерения 32 параметров сигналов, встроенного цифрового частотомера, режим X-Y и различные виды синхронизации. Осциллограф имеет цветной LCD-дисплей с диагональю 7 дюймов.</p>
+                                        <p>Технические характеристики:</p>
+                                        <ul>
+                                            <li>Количество каналов: 2</li>
+                                            <li>Полоса пропускания: 70 МГц</li>
+                                            <li>Частота дискретизации (реальное время): 1 ГГц</li>
+                                            <li>Объем памяти: 40 Мб на канал</li>
+                                            <li>Время нарастания: ≤ 5 нс</li>
+                                            <li>Коэффициент отклонения: 2 мВ/дел - 5 В/дел</li>
+                                            <li>Погрешность измерения напряжения: ±3%</li>
+                                            <li>Тип дисплея: цветной LCD</li>
+                                            <li>Диагональ дисплея: 7 дюймов</li>
+                                            <li>Интерфейсы: USB, LAN</li>
+                                            <li>Габариты (ШхВхГ): 336x164x108 мм</li>
+                                            <li>Вес: 3.5 кг</li>
+                                        </ul>
+                                        <p>Данный осциллограф поставляется в комплекте с двумя пассивными пробниками, кабелем питания, USB-кабелем и руководством по эксплуатации.</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <h6 class="border-bottom pb-2">Сгенерированный текст <span class="badge bg-success ms-2">Уникальность: 85%</span></h6>
+                                    <div class="text-comparison">
+                                        <p>Современный 2-канальный цифровой осциллограф АКТАКОМ ADS-4572 обеспечивает высокоточный анализ электронных схем с полосой пропускания 70 МГц, что делает его незаменимым инструментом для инженеров-электронщиков.</p>
+                                        <p>Этот высокопроизводительный прибор предоставляет возможность визуализации и измерения параметров разнообразных сигналов. Функционал устройства включает автоматическое измерение 32 параметров сигналов, встроенный цифровой частотомер, режим X-Y и множество вариантов синхронизации. Яркий цветной LCD-экран с диагональю 7 дюймов обеспечивает комфортную работу и четкое отображение результатов измерений.</p>
+                                        <p><strong>Технические характеристики:</strong></p>
+                                        <ul>
+                                            <li>Количество каналов: 2</li>
+                                            <li>Полоса пропускания: 70 МГц</li>
+                                            <li>Частота дискретизации (реальное время): 1 ГГц</li>
+                                            <li>Объем памяти: 40 Мб на канал</li>
+                                            <li>Время нарастания: ≤ 5 нс</li>
+                                            <li>Коэффициент отклонения: 2 мВ/дел - 5 В/дел</li>
+                                            <li>Погрешность измерения напряжения: ±3%</li>
+                                            <li>Тип дисплея: цветной LCD</li>
+                                            <li>Диагональ дисплея: 7 дюймов</li>
+                                            <li>Интерфейсы: USB, LAN</li>
+                                            <li>Габариты (ШхВхГ): 336x164x108 мм</li>
+                                            <li>Вес: 3.5 кг</li>
+                                        </ul>
+                                        <p>В комплектацию осциллографа АКТАКОМ ADS-4572 входят два пассивных пробника, кабель питания, USB-кабель и подробное руководство по эксплуатации.</p>
+                                        <p><strong>Преимущества модели:</strong></p>
+                                        <ul>
+                                            <li>Высокая частота дискретизации (1 ГГц) гарантирует точное отображение даже быстроизменяющихся сигналов</li>
+                                            <li>Большой объем памяти (40 Мб на канал) позволяет сохранять длительные записи для последующего анализа</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="original" role="tabpanel" aria-labelledby="original-tab">
+                            <h6 class="border-bottom pb-2">Оригинальный текст</h6>
+                            <div>
+                                <p>Осциллограф цифровой АКТАКОМ ADS-4572 – это 2-канальный прибор с полосой пропускания 70 МГц, предназначенный для исследования электронных схем.</p>
+                                <p>Данный прибор позволяет наблюдать и измерять формы различных сигналов. В устройстве реализованы функции автоматического измерения 32 параметров сигналов, встроенного цифрового частотомера, режим X-Y и различные виды синхронизации. Осциллограф имеет цветной LCD-дисплей с диагональю 7 дюймов.</p>
+                                <p>Технические характеристики:</p>
+                                <ul>
+                                    <li>Количество каналов: 2</li>
+                                    <li>Полоса пропускания: 70 МГц</li>
+                                    <li>Частота дискретизации (реальное время): 1 ГГц</li>
+                                    <li>Объем памяти: 40 Мб на канал</li>
+                                    <li>Время нарастания: ≤ 5 нс</li>
+                                    <li>Коэффициент отклонения: 2 мВ/дел - 5 В/дел</li>
+                                    <li>Погрешность измерения напряжения: ±3%</li>
+                                    <li>Тип дисплея: цветной LCD</li>
+                                    <li>Диагональ дисплея: 7 дюймов</li>
+                                    <li>Интерфейсы: USB, LAN</li>
+                                    <li>Габариты (ШхВхГ): 336x164x108 мм</li>
+                                    <li>Вес: 3.5 кг</li>
+                                </ul>
+                                <p>Данный осциллограф поставляется в комплекте с двумя пассивными пробниками, кабелем питания, USB-кабелем и руководством по эксплуатации.</p>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="generated" role="tabpanel" aria-labelledby="generated-tab">
+                            <h6 class="border-bottom pb-2">Сгенерированный текст <span class="badge bg-success ms-2">Уникальность: 85%</span></h6>
+                            <div>
+                                <p>Современный 2-канальный цифровой осциллограф АКТАКОМ ADS-4572 обеспечивает высокоточный анализ электронных схем с полосой пропускания 70 МГц, что делает его незаменимым инструментом для инженеров-электронщиков.</p>
+                                <p>Этот высокопроизводительный прибор предоставляет возможность визуализации и измерения параметров разнообразных сигналов. Функционал устройства включает автоматическое измерение 32 параметров сигналов, встроенный цифровой частотомер, режим X-Y и множество вариантов синхронизации. Яркий цветной LCD-экран с диагональю 7 дюймов обеспечивает комфортную работу и четкое отображение результатов измерений.</p>
+                                <p><strong>Технические характеристики:</strong></p>
+                                <ul>
+                                    <li>Количество каналов: 2</li>
+                                    <li>Полоса пропускания: 70 МГц</li>
+                                    <li>Частота дискретизации (реальное время): 1 ГГц</li>
+                                    <li>Объем памяти: 40 Мб на канал</li>
+                                    <li>Время нарастания: ≤ 5 нс</li>
+                                    <li>Коэффициент отклонения: 2 мВ/дел - 5 В/дел</li>
+                                    <li>Погрешность измерения напряжения: ±3%</li>
+                                    <li>Тип дисплея: цветной LCD</li>
+                                    <li>Диагональ дисплея: 7 дюймов</li>
+                                    <li>Интерфейсы: USB, LAN</li>
+                                    <li>Габариты (ШхВхГ): 336x164x108 мм</li>
+                                    <li>Вес: 3.5 кг</li>
+                                </ul>
+                                <p>В комплектацию осциллографа АКТАКОМ ADS-4572 входят два пассивных пробника, кабель питания, USB-кабель и подробное руководство по эксплуатации.</p>
+                                <p><strong>Преимущества модели:</strong></p>
+                                <ul>
+                                    <li>Высокая частота дискретизации (1 ГГц) гарантирует точное отображение даже быстроизменяющихся сигналов</li>
+                                    <li>Большой объем памяти (40 Мб на канал) позволяет сохранять длительные записи для последующего анализа</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="edit" role="tabpanel" aria-labelledby="edit-tab">
+                            <h6 class="border-bottom pb-2">Редактирование текста</h6>
+                            <div class="mb-3">
+                                <textarea class="form-control" id="edit-text" rows="16" style="font-family: monospace;">Современный 2-канальный цифровой осциллограф АКТАКОМ ADS-4572 обеспечивает высокоточный анализ электронных схем с полосой пропускания 70 МГц, что делает его незаменимым инструментом для инженеров-электронщиков.
+
+Этот высокопроизводительный прибор предоставляет возможность визуализации и измерения параметров разнообразных сигналов. Функционал устройства включает автоматическое измерение 32 параметров сигналов, встроенный цифровой частотомер, режим X-Y и множество вариантов синхронизации. Яркий цветной LCD-экран с диагональю 7 дюймов обеспечивает комфортную работу и четкое отображение результатов измерений.
+
+**Технические характеристики:**
+- Количество каналов: 2
+- Полоса пропускания: 70 МГц
+- Частота дискретизации (реальное время): 1 ГГц
+- Объем памяти: 40 Мб на канал
+- Время нарастания: ≤ 5 нс
+- Коэффициент отклонения: 2 мВ/дел - 5 В/дел
+- Погрешность измерения напряжения: ±3%
+- Тип дисплея: цветной LCD
+- Диагональ дисплея: 7 дюймов
+- Интерфейсы: USB, LAN
+- Габариты (ШхВхГ): 336x164x108 мм
+- Вес: 3.5 кг
+
+В комплектацию осциллографа АКТАКОМ ADS-4572 входят два пассивных пробника, кабель питания, USB-кабель и подробное руководство по эксплуатации.
+
+**Преимущества модели:**
+- Высокая частота дискретизации (1 ГГц) гарантирует точное отображение даже быстроизменяющихся сигналов
+- Большой объем памяти (40 Мб на канал) позволяет сохранять длительные записи для последующего анализа</textarea>
+                            </div>
+                            <div class="d-flex justify-content-end">
+                                <button class="btn btn-primary">Сохранить изменения</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Закрыть</button>
+                    <button type="button" class="btn btn-outline-success">Применить текст</button>
+                    <button type="button" class="btn btn-primary">Перегенерировать</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // График прогресса
+        const ctx = document.getElementById('progressChart').getContext('2d');
+        const progressChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ['18.04', '19.04', '20.04', '21.04', '22.04', '23.04'],
+                datasets: [{
+                    label: 'Обработано товаров',
+                    data: [150, 320, 650, 850, 1050, 1270],
+                    backgroundColor: 'rgba(13, 110, 253, 0.1)',
+                    borderColor: 'rgba(13, 110, 253, 1)',
+                    borderWidth: 2,
+                    tension: 0.3,
+                    fill: true
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        grid: {
+                            color: 'rgba(0, 0, 0, 0.05)'
+                        }
+                    },
+                    x: {
+                        grid: {
+                            color: 'rgba(0, 0, 0, 0.05)'
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                },
+                responsive: true,
+                maintainAspectRatio: true
+            }
+        });
+
+        // Инициализация тултипов Bootstrap
+        const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
+        const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl));
+    </script>
+</body>
+</html>

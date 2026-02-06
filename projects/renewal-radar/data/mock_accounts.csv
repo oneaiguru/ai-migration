@@ -1,0 +1,199 @@
+account_id,company,tier,arr,renewal_date
+adv-001,AWS,enterprise,500000,2025-03-15
+adv-002,Google Cloud,enterprise,450000,2025-04-01
+adv-003,Anthropic,enterprise,300000,2025-03-30
+adv-004,OpenAI,enterprise,350000,2025-05-15
+adv-005,Stripe,enterprise,280000,2025-02-28
+adv-006,Shopify,enterprise,250000,2025-04-15
+adv-007,Slack,enterprise,220000,2025-03-01
+adv-008,Notion,enterprise,200000,2025-04-30
+adv-009,Figma,enterprise,180000,2025-05-01
+adv-010,Linear,enterprise,150000,2025-02-15
+adv-011,Vercel,enterprise,160000,2025-03-20
+adv-012,Supabase,enterprise,140000,2025-04-10
+adv-013,Prisma,enterprise,130000,2025-05-10
+adv-014,Tailwind Labs,enterprise,120000,2025-02-28
+adv-015,Cloudflare,enterprise,400000,2025-06-01
+adv-016,DigitalOcean,enterprise,190000,2025-03-25
+adv-017,Heroku,enterprise,170000,2025-04-20
+adv-018,Twilio,enterprise,210000,2025-05-05
+adv-019,SendGrid,enterprise,110000,2025-02-20
+adv-020,Mailchimp,enterprise,100000,2025-03-10
+adv-021,HubSpot,enterprise,260000,2025-04-25
+adv-022,Salesforce,enterprise,380000,2025-05-20
+adv-023,Marketo,enterprise,90000,2025-02-25
+adv-024,Adobe,enterprise,320000,2025-06-15
+adv-025,Canva,enterprise,140000,2025-03-18
+adv-026,Zoom,enterprise,230000,2025-04-05
+adv-027,Microsoft Teams,enterprise,200000,2025-05-25
+adv-028,Discord,enterprise,80000,2025-02-10
+adv-029,Telegram,enterprise,70000,2025-03-05
+adv-030,WhatsApp,enterprise,60000,2025-04-12
+adv-031,Dropbox,enterprise,150000,2025-05-08
+adv-032,Box,enterprise,130000,2025-02-18
+adv-033,WeTransfer,mid-market,50000,2025-03-12
+adv-034,Datadog,enterprise,170000,2025-04-18
+adv-035,New Relic,enterprise,160000,2025-05-12
+adv-036,Splunk,enterprise,190000,2025-06-08
+adv-037,Elastic,enterprise,140000,2025-02-22
+adv-038,Grafana,enterprise,120000,2025-03-22
+adv-039,Prometheus,mid-market,100000,2025-04-22
+adv-040,Kubernetes,enterprise,180000,2025-05-18
+adv-041,Docker,enterprise,200000,2025-06-20
+adv-042,Red Hat,enterprise,220000,2025-02-08
+adv-043,Ubuntu,enterprise,110000,2025-03-08
+adv-044,Debian,mid-market,80000,2025-04-08
+adv-045,Fedora,mid-market,70000,2025-05-28
+adv-046,CentOS,mid-market,90000,2025-02-28
+adv-047,AlmaLinux,mid-market,60000,2025-03-28
+adv-048,Rocky Linux,mid-market,50000,2025-04-28
+adv-049,SUSE,enterprise,85000,2025-05-22
+adv-050,Oracle,enterprise,420000,2025-06-25
+adv-051,Microsoft,enterprise,480000,2025-02-05
+adv-052,Apple,enterprise,460000,2025-03-05
+adv-053,Meta,enterprise,440000,2025-04-05
+adv-054,Netflix,enterprise,240000,2025-05-05
+adv-055,Spotify,enterprise,125000,2025-06-05
+adv-056,Amazon,enterprise,500000,2025-02-12
+adv-057,Tesla,enterprise,360000,2025-03-12
+adv-058,SpaceX,enterprise,340000,2025-04-12
+adv-059,Blue Origin,mid-market,90000,2025-05-12
+adv-060,Unity,enterprise,145000,2025-06-12
+adv-061,Unreal Engine,enterprise,135000,2025-02-16
+adv-062,Godot,mid-market,75000,2025-03-16
+adv-063,Blender,mid-market,65000,2025-04-16
+adv-064,Mozilla,enterprise,95000,2025-05-16
+adv-065,Brave,mid-market,85000,2025-06-16
+adv-066,Vivaldi,mid-market,55000,2025-02-19
+adv-067,Opera,mid-market,45000,2025-03-19
+adv-068,Samsung,enterprise,290000,2025-04-19
+adv-069,LG,enterprise,270000,2025-05-19
+adv-070,Sony,enterprise,310000,2025-06-19
+adv-071,Panasonic,enterprise,165000,2025-02-23
+adv-072,Philips,enterprise,155000,2025-03-23
+adv-073,Bosch,enterprise,185000,2025-04-23
+adv-074,Siemens,enterprise,195000,2025-05-23
+adv-075,GE,enterprise,205000,2025-06-23
+adv-076,Honeywell,enterprise,175000,2025-02-26
+adv-077,3M,enterprise,125000,2025-03-26
+adv-078,Caterpillar,enterprise,115000,2025-04-26
+adv-079,John Deere,enterprise,105000,2025-05-26
+adv-080,Boeing,enterprise,225000,2025-06-26
+adv-081,Airbus,enterprise,215000,2025-02-09
+adv-082,Lockheed Martin,enterprise,235000,2025-03-09
+adv-083,Raytheon,enterprise,145000,2025-04-09
+adv-084,Northrop Grumman,enterprise,155000,2025-05-09
+adv-085,General Dynamics,enterprise,135000,2025-06-09
+adv-086,BAE Systems,enterprise,115000,2025-02-13
+adv-087,Thales,enterprise,105000,2025-03-13
+adv-088,Leonardo,enterprise,95000,2025-04-13
+adv-089,Rafael,mid-market,85000,2025-05-13
+adv-090,SAAB,mid-market,75000,2025-06-13
+adv-091,IBM,enterprise,390000,2025-02-17
+adv-092,Intel,enterprise,370000,2025-03-17
+adv-093,AMD,enterprise,330000,2025-04-17
+adv-094,NVIDIA,enterprise,410000,2025-05-17
+adv-095,Qualcomm,enterprise,270000,2025-06-17
+adv-096,Broadcom,enterprise,250000,2025-02-21
+adv-097,Texas Instruments,enterprise,165000,2025-03-21
+adv-098,Analog Devices,mid-market,95000,2025-04-21
+adv-099,ARM,enterprise,155000,2025-05-21
+adv-100,RISC-V,mid-market,85000,2025-06-21
+adv-101,Micron,enterprise,145000,2025-02-24
+adv-102,SK Hynix,enterprise,125000,2025-03-24
+adv-103,Western Digital,enterprise,105000,2025-04-24
+adv-104,Seagate,mid-market,95000,2025-05-24
+adv-105,Kioxia,mid-market,75000,2025-06-24
+adv-106,TSMC,enterprise,350000,2025-02-11
+adv-107,Samsung Electronics,enterprise,380000,2025-03-11
+adv-108,GlobalFoundries,mid-market,135000,2025-04-11
+adv-109,UMC,mid-market,105000,2025-05-11
+adv-110,SMIC,mid-market,115000,2025-06-11
+adv-111,Infineon,mid-market,95000,2025-02-14
+adv-112,NXP,mid-market,85000,2025-03-14
+adv-113,STMicroelectronics,mid-market,75000,2025-04-14
+adv-114,onsemi,mid-market,65000,2025-05-14
+adv-115,Renesas,mid-market,55000,2025-06-14
+adv-116,Visa,enterprise,430000,2025-02-27
+adv-117,Mastercard,enterprise,410000,2025-03-27
+adv-118,American Express,enterprise,390000,2025-04-27
+adv-119,PayPal,enterprise,185000,2025-05-27
+adv-120,Square,enterprise,155000,2025-06-27
+adv-121,Stripe (again),mid-market,145000,2025-02-06
+adv-122,Adyen,enterprise,165000,2025-03-06
+adv-123,Braintree,enterprise,135000,2025-04-06
+adv-124,Checkout.com,enterprise,125000,2025-05-06
+adv-125,Wise,enterprise,115000,2025-06-06
+adv-126,Revolut,enterprise,105000,2025-02-28
+adv-127,N26,mid-market,95000,2025-03-28
+adv-128,Monzo,mid-market,85000,2025-04-28
+adv-129,Starling,mid-market,75000,2025-05-28
+adv-130,Chime,mid-market,65000,2025-06-28
+adv-131,Coinbase,enterprise,155000,2025-02-03
+adv-132,Binance,mid-market,135000,2025-03-03
+adv-133,Kraken,mid-market,115000,2025-04-03
+adv-134,Gemini,mid-market,105000,2025-05-03
+adv-135,Robinhood,mid-market,95000,2025-06-03
+adv-136,eToro,mid-market,85000,2025-02-25
+adv-137,Webull,mid-market,75000,2025-03-25
+adv-138,Public.com,mid-market,65000,2025-04-25
+adv-139,Betterment,mid-market,55000,2025-05-25
+adv-140,Wealthfront,mid-market,45000,2025-06-25
+adv-141,Acorns,mid-market,35000,2025-02-07
+adv-142,Stash,mid-market,25000,2025-03-07
+adv-143,M1 Finance,mid-market,15000,2025-04-07
+adv-144,SoFi,enterprise,135000,2025-05-07
+adv-145,LendingClub,enterprise,125000,2025-06-07
+adv-146,Upstart,enterprise,115000,2025-02-01
+adv-147,Avant,mid-market,105000,2025-03-01
+adv-148,Best Egg,mid-market,95000,2025-04-01
+adv-149,Discover,enterprise,185000,2025-05-01
+adv-150,Capital One,enterprise,195000,2025-06-01
+adv-151,Chase,enterprise,255000,2025-02-04
+adv-152,Bank of America,enterprise,265000,2025-03-04
+adv-153,Wells Fargo,enterprise,245000,2025-04-04
+adv-154,Citi,enterprise,235000,2025-05-04
+adv-155,US Bank,enterprise,155000,2025-06-04
+adv-156,PNC,enterprise,145000,2025-02-02
+adv-157,TD Bank,enterprise,135000,2025-03-02
+adv-158,Scotiabank,enterprise,125000,2025-04-02
+adv-159,RBC,enterprise,165000,2025-05-02
+adv-160,HSBC,enterprise,285000,2025-06-02
+adv-161,Barclays,enterprise,215000,2025-02-18
+adv-162,Lloyds,enterprise,205000,2025-03-18
+adv-163,NatWest,enterprise,195000,2025-04-18
+adv-164,Deutsche Bank,enterprise,225000,2025-05-18
+adv-165,Commerzbank,mid-market,115000,2025-06-18
+adv-166,UBS,enterprise,175000,2025-02-22
+adv-167,Credit Suisse,enterprise,165000,2025-03-22
+adv-168,JPMorgan,enterprise,395000,2025-04-22
+adv-169,Goldman Sachs,enterprise,275000,2025-05-22
+adv-170,Morgan Stanley,enterprise,265000,2025-06-22
+adv-171,BlackRock,enterprise,315000,2025-02-08
+adv-172,Vanguard,enterprise,305000,2025-03-08
+adv-173,Fidelity,enterprise,295000,2025-04-08
+adv-174,Charles Schwab,enterprise,285000,2025-05-08
+adv-175,T. Rowe Price,mid-market,155000,2025-06-08
+adv-176,State Street,enterprise,145000,2025-02-12
+adv-177,Northern Trust,enterprise,135000,2025-03-12
+adv-178,BNY Mellon,enterprise,185000,2025-04-12
+adv-179,Invesco,mid-market,125000,2025-05-12
+adv-180,Franklin Templeton,mid-market,115000,2025-06-12
+adv-181,PIMCO,mid-market,105000,2025-02-15
+adv-182,Allianz,enterprise,195000,2025-03-15
+adv-183,Axa,enterprise,185000,2025-04-15
+adv-184,Zurich,mid-market,135000,2025-05-15
+adv-185,Munich Re,mid-market,125000,2025-06-15
+adv-186,Swiss Re,mid-market,115000,2025-02-19
+adv-187,Hannover Re,mid-market,105000,2025-03-19
+adv-188,Lloyd's of London,mid-market,95000,2025-04-19
+adv-189,AIG,mid-market,85000,2025-05-19
+adv-190,Chubb,mid-market,75000,2025-06-19
+adv-191,Travelers,mid-market,65000,2025-02-23
+adv-192,Lemonade,mid-market,55000,2025-03-23
+adv-193,Root Insurance,mid-market,45000,2025-04-23
+adv-194,Hippo,mid-market,35000,2025-05-23
+adv-195,Breeze,mid-market,25000,2025-06-23
+adv-196,Nextdoor,mid-market,45000,2025-02-06
+adv-197,Nextdoor,mid-market,45000,2025-03-06
+adv-198,Nextdoor,mid-market,45000,2025-04-06

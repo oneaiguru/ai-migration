@@ -1,0 +1,177 @@
+{{ define "email.html" }}
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>{{ template "__subject" . }}</title>
+  <style>
+    body {
+      font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+      color: #333;
+    }
+    h1, h2, h3 {
+      margin-top: 0;
+      color: #0066B2;
+    }
+    .alert-header {
+      padding: 10px;
+      border-radius: 4px;
+      margin-bottom: 15px;
+    }
+    .alert-firing {
+      background-color: #FEE2E2;
+      border-left: 5px solid #DC2626;
+    }
+    .alert-resolved {
+      background-color: #ECFDF5;
+      border-left: 5px solid #10B981;
+    }
+    .alert-summary {
+      font-size: 18px;
+      font-weight: bold;
+    }
+    .alert-description {
+      margin-top: 5px;
+      margin-bottom: 15px;
+    }
+    .alert-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    .alert-table th {
+      text-align: left;
+      padding: 8px;
+      background-color: #F3F4F6;
+      border-bottom: 2px solid #D1D5DB;
+    }
+    .alert-table td {
+      padding: 8px;
+      border-bottom: 1px solid #E5E7EB;
+    }
+    .alert-severity-critical {
+      color: #DC2626;
+      font-weight: bold;
+    }
+    .alert-severity-warning {
+      color: #F59E0B;
+      font-weight: bold;
+    }
+    .alert-severity-info {
+      color: #3B82F6;
+    }
+    .alert-instance {
+      font-family: monospace;
+      background-color: #F3F4F6;
+      padding: 2px 4px;
+      border-radius: 2px;
+    }
+    .alert-links {
+      margin-top: 15px;
+    }
+    .alert-links a {
+      color: #2563EB;
+      text-decoration: none;
+    }
+    .alert-links a:hover {
+      text-decoration: underline;
+    }
+    .footer {
+      margin-top: 30px;
+      font-size: 12px;
+      color: #6B7280;
+      border-top: 1px solid #E5E7EB;
+      padding-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="alert-header {{ if eq .Status "firing" }}alert-firing{{ else }}alert-resolved{{ end }}">
+    <h2>
+      {{ if eq .Status "firing" }}
+        🔥 Alerts Firing ({{ .Alerts.Firing | len }})
+      {{ else }}
+        ✅ Alerts Resolved ({{ .Alerts.Resolved | len }})
+      {{ end }}
+    </h2>
+  </div>
+
+  {{ if gt (len .Alerts.Firing) 0 }}
+  <h3>Firing Alerts</h3>
+  {{ range .Alerts.Firing }}
+  <div class="alert-summary">{{ .Labels.alertname }}</div>
+  <div class="alert-description">{{ .Annotations.description }}</div>
+  
+  <table class="alert-table">
+    <tr>
+      <th>Label</th>
+      <th>Value</th>
+    </tr>
+    <tr>
+      <td>Severity</td>
+      <td class="alert-severity-{{ .Labels.severity }}">{{ .Labels.severity }}</td>
+    </tr>
+    <tr>
+      <td>Instance</td>
+      <td class="alert-instance">{{ .Labels.instance }}</td>
+    </tr>
+    {{ range .Labels.SortedPairs }}
+    {{ if and (ne .Name "alertname") (ne .Name "severity") (ne .Name "instance") }}
+    <tr>
+      <td>{{ .Name }}</td>
+      <td>{{ .Value }}</td>
+    </tr>
+    {{ end }}
+    {{ end }}
+    <tr>
+      <td>Started</td>
+      <td>{{ .StartsAt.Format "Jan 02, 2006 15:04:05 MST" }}</td>
+    </tr>
+  </table>
+
+  {{ if .Annotations.dashboard_url }}
+  <div class="alert-links">
+    <a href="{{ .Annotations.dashboard_url }}" target="_blank">View Dashboard</a>
+  </div>
+  {{ end }}
+  
+  <hr>
+  {{ end }}
+  {{ end }}
+
+  {{ if gt (len .Alerts.Resolved) 0 }}
+  <h3>Resolved Alerts</h3>
+  {{ range .Alerts.Resolved }}
+  <div class="alert-summary">{{ .Labels.alertname }}</div>
+  <div class="alert-description">{{ .Annotations.description }}</div>
+  
+  <table class="alert-table">
+    <tr>
+      <th>Label</th>
+      <th>Value</th>
+    </tr>
+    <tr>
+      <td>Severity</td>
+      <td class="alert-severity-{{ .Labels.severity }}">{{ .Labels.severity }}</td>
+    </tr>
+    <tr>
+      <td>Instance</td>
+      <td class="alert-instance">{{ .Labels.instance }}</td>
+    </tr>
+    <tr>
+      <td>Resolved</td>
+      <td>{{ .EndsAt.Format "Jan 02, 2006 15:04:05 MST" }}</td>
+    </tr>
+  </table>
+  
+  <hr>
+  {{ end }}
+  {{ end }}
+
+  <div class="footer">
+    This alert was sent by AlertManager. Please do not reply to this email.
+  </div>
+</body>
+</html>
+{{ end }}

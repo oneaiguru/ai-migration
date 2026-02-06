@@ -33,7 +33,7 @@ ssh roman@pve.atocomm.eu -p2323
    - Host: `pve.atocomm.eu`
    - Port: `2323`
    - User: `roman`
-   - Password: `3Sd5R069jvuy[3u6yj` (needs verification)
+   - Password: `$SSH_PASS` (needs verification)
 
 2. **Alternative access methods**:
    - SSH key if required
@@ -101,7 +101,7 @@ curl https://sqint.atocomm.eu/api/health
 **Status**: Awaiting updated SSH credentials or alternative access method
 
 **Password Attempts**:
-1. `3Sd5R069jvuy[3u6yj` - Failed (original from July)
+1. `$SSH_PASS` - Failed (original from July)
 2. `ctqxfс` - Failed (provided by user)
 
 **Next Steps**:

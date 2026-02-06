@@ -1,0 +1,14 @@
+Deploy URL
+- https://wfm-employee-portal-jf96k5u9o-granins-projects.vercel.app (prod alias https://wfm-employee-portal.vercel.app)
+
+Focus Checks
+- Header drawer search («Рабочая структура» → «Группа QA 1»)
+- Dashboard stat cards / vacation balance / recent requests
+- Vacation Requests filters, “Заявки за период” dialog, CSV export toast, submit dedupe
+- Profile Appendix 1 fields, calendar/scheme history, self-service buttons
+
+Attachments to Upload
+- portal-work-structure.png — Drawer overview (org path, contacts, emergency contact)
+- portal-work-structure-search.png — Drawer search results for «Группа QA 1»
+- portal-vacation-history.png — “Заявки за период” history dialog (RU labels)
+- portal-profile-appendix.png — Profile Appendix 1 / history / self-service section

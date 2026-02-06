@@ -1,8 +1,13 @@
 """Tests for rolling_forecast module."""
 from datetime import date
 import pytest
-from src.sites.rolling_forecast import generate_rolling_forecast, validate_request
-from src.sites.rolling_types import ForecastRequest, MAX_CUTOFF_DATE
+from src.sites.rolling_forecast import build_cache_suffix, generate_rolling_forecast, validate_request
+from src.sites.rolling_types import (
+    DEFAULT_MIN_OBS,
+    DEFAULT_WINDOW_DAYS,
+    ForecastRequest,
+    MAX_CUTOFF_DATE,
+)
 
 
 class TestValidateRequest:
@@ -146,3 +151,43 @@ class TestGenerateForecast:
 
         assert r1.cached is False
         assert r2.cached is False
+
+
+class TestCacheSuffix:
+    """Tests for cache suffix hashing."""
+
+    def test_cache_suffix_changes_with_window_or_min_obs(self):
+        """Changing window_days or min_obs should change the suffix."""
+        base_suffix = build_cache_suffix(
+            None,
+            None,
+            None,
+            DEFAULT_WINDOW_DAYS,
+            DEFAULT_MIN_OBS,
+        )
+        same_suffix = build_cache_suffix(
+            None,
+            None,
+            None,
+            DEFAULT_WINDOW_DAYS,
+            DEFAULT_MIN_OBS,
+        )
+        window_suffix = build_cache_suffix(
+            None,
+            None,
+            None,
+            DEFAULT_WINDOW_DAYS + 1,
+            DEFAULT_MIN_OBS,
+        )
+        min_obs_suffix = build_cache_suffix(
+            None,
+            None,
+            None,
+            DEFAULT_WINDOW_DAYS,
+            DEFAULT_MIN_OBS + 1,
+        )
+
+        assert base_suffix == same_suffix
+        assert base_suffix != window_suffix
+        assert base_suffix != min_obs_suffix
+        assert window_suffix != min_obs_suffix

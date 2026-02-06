@@ -1,0 +1,24 @@
+FROM node:20-alpine
+
+WORKDIR /app
+
+# Copy package files
+COPY package*.json ./
+
+# Install dependencies
+RUN npm ci --only=production
+
+# Copy application code
+COPY . .
+
+# Create necessary directories
+RUN mkdir -p usage_logs
+
+# Expose port
+EXPOSE 3000
+
+# Set node environment
+ENV NODE_ENV production
+
+# Run the application
+CMD ["node", "server.js"]

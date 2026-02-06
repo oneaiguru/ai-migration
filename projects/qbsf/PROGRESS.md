@@ -6,6 +6,13 @@
 
 ---
 
+- ✅ 2026-01-13: Added cross-entity name conflict detection (Vendor/Employee/OtherName), optional auto-suffix config (`QB_DUPLICATE_NAME_AUTOSUFFIX`, `QB_DUPLICATE_NAME_SUFFIX`), and inactive-customer exact-match lookup; extended duplicate-name Jest coverage; ran `npm test -- quickbooks-customer-duplicate-name.test.js`.
+- ✅ 2026-01-13: Removed `CurrencyRef` from Customer queries to satisfy QBO lint; ran `npm run lint:qbo` (pass) and `npm test` (13/13 suites, 64 tests).
+- ✅ 2026-01-14: Deployed `quickbooks-api.js` + `config/index.js` to `/opt/qb-integration` (backup `20260114-010358`, manifest includes `quickbooks-api.js` + `config/index.js`), restarted node via pkill+nohup, health `https://sqint.atocomm.eu/api/health` returns `401`; host `npm test` failed because backups include duplicate package names and no tests are present on host (jest-haste-map collision).
+- ✅ 2026-01-14: Ran host tests from `/tmp/qb-integration-test` (copied `src/` + `tests/`, symlinked `node_modules` from `/opt/qb-integration` to avoid backup collisions). `npm test` on host: 13/13 suites, 64 tests passing.
+
+- ✅ 2026-01-12: Tagged rollback `qbsf-pre-deploy-2026-01-12` at origin/main; smoke tests passed (`npm test -- quickbooks-customer-duplicate-name.test.js currency-smart-logic.test.js quickbooks-item-currency.test.js`); deployed to `/opt/qb-integration` (backup `20260112-130208`), copied `routes/api.js` + `services/quickbooks-api.js`, restarted via nohup; host hashes match local (`routes/api.js` `ed821ce...`, `quickbooks-api.js` `15bae9...`); `npm run lint:qbo` pass; `npm test` 13/13 suites (61 tests) pass; health `https://sqint.atocomm.eu/api/health` returns `401` (expected without API key).
+- ✅ 2026-01-12: Runtime smoke via middleware API key (`/opt/qb-integration/.env`): created SF Account/Opportunity (`001So00000dXmCKIA0` / `006So00000YA8n8IAD`) with prefix `QBSF_AUTOTEST_*`; `POST /api/opportunity-to-invoice` → QB invoice `2612` with payment link; `POST /api/update-invoice` on `2612` succeeded. Realm `9130354519120066`, instance `https://customer-inspiration-2543.my.salesforce.com`. Cleanup: deleted the test SF Account/Opportunity (invoice remains in QB for traceability).
 - ✅ 2026-01-10: Added asOfDate-aware FX fallback (retry prior day even when asOfDate provided) in `quickbooks-api.js`; extended FX tests; `npm run lint:qbo` pass; `npm test` 13/13 suites (61 tests) pass; deployed `quickbooks-api.js` to host (backup `20260110-074625`), restarted node, health 401.
 - ✅ 2026-01-10: EUR runtime re-test with today’s TxnDate using fallback — Opp `006So00000Y57LRIAZ` (Account=testiruem, Currency=EUR, Email_for_invoice__c set, Stage=Proposal and Agreement) → QB_Sync_Status__c=Success, QB_Invoice_ID__c=2606, payment link populated (prior-day rate used; today’s EUR→USD still missing).
 - ✅ 2026-01-10: Re-ran checks — `npm run lint:qbo` pass; `npm test` (13/13 suites, 59 tests); health https://sqint.atocomm.eu/api/health returned 401 (expected without API key).
@@ -442,8 +449,8 @@ See `P1_BUG_FIX_COMPLETE.md` for complete technical details.
 **Credentials**:
 - SF Sandbox: `sanboxsf` (olga.rybak@atocomm2023.eu.sanboxsf)
 - Middleware: https://sqint.atocomm.eu
-- API Key: `UPCzgiXsPuXB4GiLuuzjqtXY4+4mGt+vXOmU4gaNCvM=`
-- SSH: `roman@pve.atocomm.eu -p2323` (pw: `3Sd5R069jvuy[3u6yj`)
+- API Key: `$API_KEY`
+- SSH: `roman@pve.atocomm.eu -p2323` (pw: `$SSH_PASS`)
 
 **Key Files**:
 ```
@@ -460,7 +467,7 @@ Middleware API: deployment/sf-qb-integration-final/src/routes/api.js
 sf org display --target-org sanboxsf
 
 # Test middleware
-curl -H "X-API-Key: UPCzgiXsPuXB4GiLuuzjqtXY4+4mGt+vXOmU4gaNCvM=" https://sqint.atocomm.eu/api/health
+curl -H "X-API-Key: $API_KEY" https://sqint.atocomm.eu/api/health
 
 # Run tests
 sf apex run test --code-coverage --synchronous --target-org sanboxsf
@@ -519,8 +526,8 @@ See `P1_BUG_FIX_COMPLETE.md` for complete technical details.
 **Credentials**:
 - SF Sandbox: `sanboxsf` (olga.rybak@atocomm2023.eu.sanboxsf)
 - Middleware: https://sqint.atocomm.eu
-- API Key: `UPCzgiXsPuXB4GiLuuzjqtXY4+4mGt+vXOmU4gaNCvM=`
-- SSH: `roman@pve.atocomm.eu -p2323` (pw: `3Sd5R069jvuy[3u6yj`)
+- API Key: `$API_KEY`
+- SSH: `roman@pve.atocomm.eu -p2323` (pw: `$SSH_PASS`)
 
 **Key Files**:
 ```
@@ -537,7 +544,7 @@ Middleware API: deployment/sf-qb-integration-final/src/routes/api.js
 sf org display --target-org sanboxsf
 
 # Test middleware
-curl -H "X-API-Key: UPCzgiXsPuXB4GiLuuzjqtXY4+4mGt+vXOmU4gaNCvM=" https://sqint.atocomm.eu/api/health
+curl -H "X-API-Key: $API_KEY" https://sqint.atocomm.eu/api/health
 
 # Run tests
 sf apex run test --code-coverage --synchronous --target-org sanboxsf

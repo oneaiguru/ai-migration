@@ -44,7 +44,7 @@ COMMUNICATION RULES:
 
 SERVER ACCESS:
 - Host: roman@pve.atocomm.eu -p2323
-- Password: 3Sd5R069jvuy[3u6yj
+- Password: $SSH_PASS
 - Deployment path: /opt/qb-integration/
 
 CRITICAL FIXES NEEDED:

@@ -1,0 +1,10 @@
+# Template manifest for private winget distribution.
+# Do NOT submit to the public winget repository while the project is in stealth.
+PackageIdentifier: Private.Ccp
+PackageVersion: 0.1.0
+InstallerType: exe
+Installers:
+  - Architecture: x64
+    InstallerUrl: https://PRIVATE-LOCATION/ccp-installer.exe
+    InstallerSha256: REPLACE_WITH_SHA256
+ShortDescription: Claude Code Proxy (private build)

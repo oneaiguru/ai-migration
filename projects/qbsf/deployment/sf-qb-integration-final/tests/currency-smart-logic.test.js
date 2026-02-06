@@ -117,6 +117,7 @@ describe('smart currency logic', () => {
 
   beforeEach(() => {
     process.env.API_KEY = 'test-key';
+    process.env.QB_INVOICE_CURRENCY_POLICY = 'customer';
 
     mockGetOpportunityWithRelatedData = jest.fn().mockResolvedValue(baseOpportunityData);
     mockUpdateOpportunityWithQBInvoiceId = jest.fn().mockResolvedValue(undefined);
@@ -164,6 +165,7 @@ describe('smart currency logic', () => {
 
   afterEach(() => {
     jest.clearAllMocks();
+    delete process.env.QB_INVOICE_CURRENCY_POLICY;
   });
 
   it('converts when existing customer currency differs', async () => {

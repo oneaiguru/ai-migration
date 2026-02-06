@@ -1,10 +1,23 @@
-# ClaudeCodeProxy
-- What: Proxy for Claude Code/Chat with multi-user auth, quotas, logging, and admin tooling; ships a Node gateway plus a Go shim for Anthropic/Z.ai lanes.
-- PR plan: 7 slices ≤1MB (01 scaffold+configs, 02 node server+admin/bin, 03 scripts/tooling, 04 go shim services, 05 artifacts+archive+fixtures/results, 06 main docs, 07 cc docs/remaining notes).
-- Setup: Node 18+ and Go (for the shim). Copy config seeds from `configs/*.example` as needed; `.env` can hold `DEFAULT_ANTHROPIC_API_KEY` or `ZAI_API_KEY`.
-- Run (Node proxy): `npm ci --prefix src/server` then `DEFAULT_ANTHROPIC_API_KEY=... npm start --prefix src/server`.
-- Go shim (lands in PR04): `make go-proxy` or `GO111MODULE=on go build -o services/go-anth-shim/bin/ccp ./cmd/ccp`; `source scripts/go-env.sh <port>` exports shim vars.
-- Logs/results: default to `logs/` and `results/` (ignored). Override via `CCP_LOGS_DIR` / `CCP_RESULTS_DIR`. Makefile provides helpers (logs, summarize, repo-map, go-test) once later slices land.
-- Repo SOP: follow `docs/ClaudeCodeProxy_Agent_SOP.md` (root) for PR naming (`import:claudecodeproxy:NN-<scope>` / `docs:claudecodeproxy:<scope>`), branch_state updates, and the standard Codex status comment after fixes.
+# Agent Onboarding Notes
 
-Monorepo note: /Users/m/ai is a multi-project monorepo. See the root README for details.
+Welcome! Before touching the codebase, skim these essentials and stick to the shared structure (no ad-hoc folders elsewhere):
+
+1. **Docs overview** – `docs/README.md` outlines the major tracks (MITM P0, research archive, etc.).
+2. **Standard Operating Procedures** – `docs/SOP/README.md` is the entry point for repeatable playbooks (profiles, deployments, smoke tests). Add new SOPs there when you formalize a process.
+3. **System docs** – `docs/System/README.md` (with backlog in `docs/System/TODO.md`) tracks long-lived references we still need to port. Inspiration: `~/git/tools/agentos/docs/System/` and `~/git/tools/agentos/docs/CE_MAGIC_PROMPTS/`.
+4. **Tasks backlog** – `docs/Tasks/` holds exploratory notes and implementation plans (e.g., thinking-sanitizer plan).
+5. **Current handoff** – `docs/SESSION_HANDOFF.md` summarizes the latest window, outstanding tasks, and where artifacts live.
+6. **Next-agent TODOs** – `docs/TODO-NEXT-AGENT.md` tracks follow-ups beyond the formal SOPs.
+7. **Progress log** – `docs/Progress.md` records session highlights; update it when you wrap a window.
+
+Install the latest aliases with `./scripts/install-shell-aliases.sh` to get `ccp-start`, `ccp-env`, `ccp-logs`, etc., without manual sourcing.
+
+All new docs should live in the existing `docs/` subfolders (SOP, System, Tasks, ops, etc.) to avoid fragmentation.
+
+Tip: set your shell profile (`source scripts/env/prod.sh` or `scripts/env/dev.sh`) before running any scripts so logs/results land in the correct directories.
+
+Credentials (local dev)
+- Z.ai key: place it in the repo‑root `.env` file so our scripts and the Go shim can load it automatically. Two supported formats:
+  - Single line key: `sk-...` (no key name)
+  - Key=value: `ZAI_API_KEY=sk-...`
+- `scripts/run-go-shim.sh` and `make go-proxy` read `.env` and export `ZAI_API_KEY` if set. You can also export it directly in the shell.

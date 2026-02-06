@@ -1,0 +1,42 @@
+# UAT Prompt — WFM Employee Portal (2025-10-29)
+
+Deploy under test: https://wfm-employee-portal-jf96k5u9o-granins-projects.vercel.app (prod alias https://wfm-employee-portal.vercel.app)
+Plan: plans/2025-11-01_employee-portal-parity-remediation.plan.md (Work Structure search, vacation history/export, Appendix 1)
+Manual refs: CH2_Login_System.md §§2.1–2.3, CH3_Employees.md §§3.0–3.4, CH5_Schedule_Advanced.md §5.4, CH7_Appendices.md (Appendix 1)
+UAT packs: docs/Tasks/uat-packs/parity_static.md (Employee Portal section) + docs/Tasks/uat-packs/trimmed_smoke.md (Employee Portal section)
+
+## Focus Checks
+1. Header & Drawer
+   - Open «Рабочая структура» from the header.
+   - Use search with query «Группа QA 1»; confirm the result highlights correctly.
+   - Verify contacts, working parameters (timezone RU), and emergency contact match the manual hierarchy.
+2. Dashboard
+   - Confirm stat cards, vacation balance, and recent requests render (RU dates/numbers).
+3. Vacation Requests
+   - Walk through each status filter.
+   - Open toolbar action «Заявки за период», confirm RU labels inside the dialog.
+   - Submit a valid request and check the list increments only once (no duplicates).
+   - Trigger CSV export, ensure toast appears.
+4. Profile
+   - Inspect Appendix 1 identifiers, external systems, calendar/scheme history, and self-service buttons.
+   - Toggle edit mode, change a non-critical field, save, confirm persistence.
+
+## Deliverables
+- Update parity_static.md and trimmed_smoke.md (Employee Portal rows) with Pass/Fail + notes (include CH references for any failures).
+- Update docs/Workspace/Coordinator/employee-portal/UAT_Findings_2025-10-13_template.md (enter Pass rows or document gaps).
+- Capture screenshots (reason only if requested):
+  - `portal-work-structure.png` (drawer open)
+  - `portal-work-structure-search.png` (search results for «Группа QA 1»)
+  - `portal-vacation-history.png` (“Заявки за период” dialog)
+  - `portal-profile-appendix.png` (Appendix 1 section)
+
+## Pass/Fail Table Template
+| Check | Result | Notes |
+|-------|--------|-------|
+| Header drawer + search | | |
+| Dashboard stats/balance | | |
+| Vacancy filters/history/export | | |
+| Vacation submit dedupe | | |
+| Profile Appendix 1/self-service | | |
+
+Please paste results in markdown and attach the requested screenshots.

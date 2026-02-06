@@ -104,10 +104,10 @@
 **File**: `/opt/qb-integration/.env`
 ```
 PORT=3000
-API_KEY=UPCzgiXsPuXB4GiLuuzjqtXY4+4mGt+vXOmU4gaNCvM=
+API_KEY=$API_KEY
 QB_ENVIRONMENT=production
 QB_SANDBOX=false
-TOKEN_ENCRYPTION_KEY=UPCzgiXsPuXB4GiLuuzjqtXY4+4mGt+vXOmU4gaNCvM=
+TOKEN_ENCRYPTION_KEY=$API_KEY
 SF_INSTANCE_URL=https://customer-inspiration-2543.my.salesforce.com
 ```
 
@@ -153,7 +153,7 @@ SF_INSTANCE_URL=https://customer-inspiration-2543.my.salesforce.com
 ```bash
 # Check payment status
 curl -X POST https://sqint.atocomm.eu/api/check-payment-status \
-  -H "X-API-Key: UPCzgiXsPuXB4GiLuuzjqtXY4+4mGt+vXOmU4gaNCvM=" \
+  -H "X-API-Key: $API_KEY" \
   -H "Content-Type: application/json" \
   -d '{"salesforceInstance":"https://customer-inspiration-2543.my.salesforce.com","quickbooksRealm":"9130354519120066"}'
 

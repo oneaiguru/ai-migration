@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A/B Test Results</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css">
+</head>
+<body class="bg-gray-100">
+    <div class="container mx-auto px-4 py-8">
+        <h1 class="text-3xl font-bold mb-4">A/B Test Results</h1>
+        <h2 class="text-xl mb-4">Test: {{ test_name }} for Chatbot ID: {{ chatbot_id }}</h2>
+        
+        <table class="w-full bg-white shadow-md rounded mb-4">
+            <thead>
+                <tr class="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
+                    <th class="py-3 px-6 text-left">Variant</th>
+                    <th class="py-3 px-6 text-left">Total Assignments</th>
+                    <th class="py-3 px-6 text-left">Positive Feedback</th>
+                    <th class="py-3 px-6 text-left">Negative Feedback</th>
+                    <th class="py-3 px-6 text-left">Feedback Ratio</th>
+                </tr>
+            </thead>
+            <tbody class="text-gray-600 text-sm font-light">
+                {% for result in results %}
+                <tr class="border-b border-gray-200 hover:bg-gray-100">
+                    <td class="py-3 px-6 text-left whitespace-nowrap">{{ result.variant_name }}</td>
+                    <td class="py-3 px-6 text-left">{{ result.total_assignments }}</td>
+                    <td class="py-3 px-6 text-left">{{ result.positive_feedback }}</td>
+                    <td class="py-3 px-6 text-left">{{ result.negative_feedback }}</td>
+                    <td class="py-3 px-6 text-left">{{ "%.2f"|format(result.feedback_ratio * 100) }}%</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

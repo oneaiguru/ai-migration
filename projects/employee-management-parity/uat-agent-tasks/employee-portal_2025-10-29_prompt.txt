@@ -1,0 +1,27 @@
+# UAT Prompt — WFM Employee Portal (2025-10-29)
+
+## Context
+- Deploy under test: https://wfm-employee-portal-jf96k5u9o-granins-projects.vercel.app (prod alias: https://wfm-employee-portal.vercel.app)
+- Plan executed: plans/2025-11-01_employee-portal-parity-remediation.plan.md (Work Structure search, vacation history/export, Appendix 1 fields)
+- Manuals to cross-reference: CH2_Login_System.md §§2.1–2.3, CH3_Employees.md §§3.0–3.4, CH5_Schedule_Advanced.md §5.4, CH7_Appendices.md (Appendix 1)
+- UAT packs to run: docs/Tasks/uat-packs/parity_static.md (Employee Portal section) + docs/Tasks/uat-packs/trimmed_smoke.md (Employee Portal section)
+- Screenshot aliases to capture: `portal-work-structure.png`, `portal-work-structure-search.png`, `portal-vacation-history.png`, `portal-profile-appendix.png`, plus any deltas noted during smoke
+
+## Instructions for Browser Agent
+1. Open the deploy URL and confirm the header, tabs, and Work Structure trigger render without console errors.
+2. Execute the parity_static checklist (Employee Portal rows) against the live build:
+   - Header drawer: search for «Группа QA 1», verify hierarchy, contacts, working parameters, and emergency contact (matches CH2 §2.2). Capture `portal-work-structure.png` and `portal-work-structure-search.png`.
+   - Dashboard: confirm stat cards, vacation balance, and recent requests align with mock data (RU formats).
+   - Vacation Requests: walk through each status filter, open the “Заявки за период” dialog from the toolbar, confirm RU status/type labels match CH5 §5.4, trigger CSV export and note toast behaviour. Capture `portal-vacation-history.png` if dialog contents match.
+   - Profile: review Appendix 1 fields (personnel number, message type, external IDs), calendar/scheme history, and self-service buttons. Capture `portal-profile-appendix.png` if the section matches the manual.
+3. Execute trimmed_smoke (Employee Portal slice) on the same deploy:
+   - Submit a valid vacation request via the modal; confirm list counters increment once (dedupe check) and history is updated.
+   - Toggle Profile edit mode, adjust a non-critical field, save, and confirm persistence (no need to retain change).
+4. Record Pass/Fail results for each checklist row directly in docs/Tasks/uat-packs/parity_static.md and docs/Tasks/uat-packs/trimmed_smoke.md (add short notes with CH references for any issues).
+5. Note any anomalies or missing evidence in docs/Workspace/Coordinator/employee-portal/UAT_Findings_2025-10-13_template.md (use existing table structure).
+6. If the live build diverges from the screenshots, attach the updated captures under the assigned aliases; otherwise reference existing library paths only.
+
+## Deliverables
+- Updated parity_static.md & trimmed_smoke.md rows with Pass/Fail + notes
+- Findings table entries (Pass or documented gaps) in UAT_Findings_2025-10-13_template.md
+- Uploaded screenshots saved to the standard location (~/Desktop/shots epml mamgnt/) using the aliases above

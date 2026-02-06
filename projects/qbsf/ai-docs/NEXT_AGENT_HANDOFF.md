@@ -11,7 +11,7 @@
 ### ✅ PRIORITY 1: API Key Authentication - FIXED
 - **Status**: 100% COMPLETE
 - **Achievement**: Middleware communication working
-- **Verification**: `curl -H "X-API-Key: UPCzgiXsPuXB4GiLuuzjqtXY4+4mGt+vXOmU4gaNCvM=" https://sqint.atocomm.eu/api/health` ✅
+- **Verification**: `curl -H "X-API-Key: $API_KEY" https://sqint.atocomm.eu/api/health` ✅
 
 ### ✅ PRIORITY 2: 75% Test Coverage - ACHIEVED! 
 - **Status**: 100% COMPLETE
@@ -51,8 +51,8 @@
 ### 🔧 PRIORITY 1: API Key Alignment ✅ COMPLETED
 - **Issue**: Salesforce and middleware had different API keys causing 401 errors
 - **Solution**: Updated Salesforce `QB_Integration_Settings__c` to use correct key
-- **Working API Key**: `UPCzgiXsPuXB4GiLuuzjqtXY4+4mGt+vXOmU4gaNCvM=`
-- **Verification**: ✅ `curl -H "X-API-Key: UPCzgiXsPuXB4GiLuuzjqtXY4+4mGt+vXOmU4gaNCvM=" https://sqint.atocomm.eu/api/health` returns `{"success":true}`
+- **Working API Key**: `$API_KEY`
+- **Verification**: ✅ `curl -H "X-API-Key: $API_KEY" https://sqint.atocomm.eu/api/health` returns `{"success":true}`
 
 ### 📊 Test Coverage Improvement: 46% → 52%
 - **Before**: 46% org-wide coverage with failing tests
@@ -136,7 +136,7 @@ QBInvoiceIntegrationQueueable   20% ❌ NEEDS WORK
    ```bash
    curl -X POST https://sqint.atocomm.eu/api/opportunity-to-invoice \
      -H "Content-Type: application/json" \
-     -H "X-API-Key: UPCzgiXsPuXB4GiLuuzjqtXY4+4mGt+vXOmU4gaNCvM=" \
+     -H "X-API-Key: $API_KEY" \
      -d '{"opportunityId":"test123","name":"Test Opportunity","amount":1000}'
    ```
 
@@ -201,12 +201,12 @@ sf org display --target-org sanboxsf
 ### Working API Configuration
 ```bash
 # Salesforce Settings (QB_Integration_Settings__c)
-API_Key__c: UPCzgiXsPuXB4GiLuuzjqtXY4+4mGt+vXOmU4gaNCvM=
+API_Key__c: $API_KEY
 Middleware_Endpoint__c: https://sqint.atocomm.eu
 QB_Realm_ID__c: 9341454378379755
 
 # QuickBooks_Settings__c (separate object)
-API_Key__c: UPCzgiXsPuXB4GiLuuzjqtXY4+4mGt+vXOmU4gaNCvM=
+API_Key__c: $API_KEY
 Middleware_URL__c: https://sqint.atocomm.eu
 QB_Realm_ID__c: 9341454378379755
 ```

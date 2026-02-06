@@ -12,7 +12,7 @@
 Cannot connect to your server with the password provided:
 - **Server**: pve.atocomm.eu:2323  
 - **User**: roman
-- **Password**: 3Sd5R069jvuy[3u6yj (NOT WORKING)
+- **Password**: $SSH_PASS (NOT WORKING)
 
 ### What We Need From You:
 1. **Correct SSH password** OR
